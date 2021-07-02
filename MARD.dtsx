@@ -1,0 +1,2082 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="4/20/2021 7:35:31 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="ARLPBIDEV"
+  DTS:CreatorName="DOMAIN\RPETRELLA"
+  DTS:DTSID="{E4D896A4-F6D9-4032-BF7E-E7EFCCE8B298}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="15.0.2000.152"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="MARD"
+  DTS:PackageType="5"
+  DTS:VersionBuild="8"
+  DTS:VersionGUID="{4ABCE445-8358-48D3-BB23-577558E17229}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\clean"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{C7D38FDF-1794-4D6D-969C-BF4526AD2C17}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="clean"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="TRUNCATE TABLE [MARD_STAGE_UPDATE]&#xA;go&#xA;TRUNCATE TABLE [MARD_STAGE_DELETE]&#xA;go&#xA;TRUNCATE TABLE [MARD_STAGE_INSERT]&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\MARD"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{4E6C8C3B-5F8C-415E-886D-32C7B4D6A313}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="MARD"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\MARD\DB PBI"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="DB PBI"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT A01.[MANDT]
+      ,A01.[MATNR]
+      ,A01.[WERKS]
+      ,A01.[LGORT]
+      ,A01.[LABST]
+FROM [MARD] A01 (NOLOCK)
+ORDER BY A01.[MANDT]
+      ,A01.[MATNR]
+      ,A01.[WERKS]
+      ,A01.[LGORT]</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\MARD\DB PBI.Connections[OleDbConnection]"
+                  connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\MARD\DB PBI.Outputs[OLE DB Source Output]"
+                  isSorted="true"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\MARD\DB PBI.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\MARD\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      length="3"
+                      lineageId="Package\MARD\DB PBI.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      name="MANDT"
+                      sortKeyPosition="1"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\MARD\DB PBI.Outputs[OLE DB Source Output].Columns[MATNR]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\MARD\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[MATNR]"
+                      length="18"
+                      lineageId="Package\MARD\DB PBI.Outputs[OLE DB Source Output].Columns[MATNR]"
+                      name="MATNR"
+                      sortKeyPosition="2"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\MARD\DB PBI.Outputs[OLE DB Source Output].Columns[WERKS]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\MARD\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[WERKS]"
+                      length="4"
+                      lineageId="Package\MARD\DB PBI.Outputs[OLE DB Source Output].Columns[WERKS]"
+                      name="WERKS"
+                      sortKeyPosition="3"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\MARD\DB PBI.Outputs[OLE DB Source Output].Columns[LGORT]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\MARD\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[LGORT]"
+                      length="4"
+                      lineageId="Package\MARD\DB PBI.Outputs[OLE DB Source Output].Columns[LGORT]"
+                      name="LGORT"
+                      sortKeyPosition="4"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\MARD\DB PBI.Outputs[OLE DB Source Output].Columns[LABST]"
+                      dataType="numeric"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\MARD\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[LABST]"
+                      lineageId="Package\MARD\DB PBI.Outputs[OLE DB Source Output].Columns[LABST]"
+                      name="LABST"
+                      precision="13"
+                      scale="3"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\MARD\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      name="MANDT" />
+                    <externalMetadataColumn
+                      refId="Package\MARD\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[MATNR]"
+                      dataType="wstr"
+                      length="18"
+                      name="MATNR" />
+                    <externalMetadataColumn
+                      refId="Package\MARD\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[WERKS]"
+                      dataType="wstr"
+                      length="4"
+                      name="WERKS" />
+                    <externalMetadataColumn
+                      refId="Package\MARD\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[LGORT]"
+                      dataType="wstr"
+                      length="4"
+                      name="LGORT" />
+                    <externalMetadataColumn
+                      refId="Package\MARD\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[LABST]"
+                      dataType="numeric"
+                      name="LABST"
+                      precision="13"
+                      scale="3" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\MARD\DB PBI.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\MARD\DB PBI.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      lineageId="Package\MARD\DB PBI.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      name="MANDT" />
+                    <outputColumn
+                      refId="Package\MARD\DB PBI.Outputs[OLE DB Source Error Output].Columns[MATNR]"
+                      dataType="wstr"
+                      length="18"
+                      lineageId="Package\MARD\DB PBI.Outputs[OLE DB Source Error Output].Columns[MATNR]"
+                      name="MATNR" />
+                    <outputColumn
+                      refId="Package\MARD\DB PBI.Outputs[OLE DB Source Error Output].Columns[WERKS]"
+                      dataType="wstr"
+                      length="4"
+                      lineageId="Package\MARD\DB PBI.Outputs[OLE DB Source Error Output].Columns[WERKS]"
+                      name="WERKS" />
+                    <outputColumn
+                      refId="Package\MARD\DB PBI.Outputs[OLE DB Source Error Output].Columns[LGORT]"
+                      dataType="wstr"
+                      length="4"
+                      lineageId="Package\MARD\DB PBI.Outputs[OLE DB Source Error Output].Columns[LGORT]"
+                      name="LGORT" />
+                    <outputColumn
+                      refId="Package\MARD\DB PBI.Outputs[OLE DB Source Error Output].Columns[LABST]"
+                      dataType="numeric"
+                      lineageId="Package\MARD\DB PBI.Outputs[OLE DB Source Error Output].Columns[LABST]"
+                      name="LABST"
+                      precision="13"
+                      scale="3" />
+                    <outputColumn
+                      refId="Package\MARD\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\MARD\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\MARD\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\MARD\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\MARD\DB SAP"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="DB SAP"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT A01.[MANDT]
+      ,A01.[MATNR]
+      ,A01.[WERKS]
+      ,A01.[LGORT]
+      ,A01.[LABST]
+FROM [ecp].[MARD] A01 (NOLOCK)
+ORDER BY A01.[MANDT]
+      ,A01.[MATNR]
+      ,A01.[WERKS]
+      ,A01.[LGORT]</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\MARD\DB SAP.Connections[OleDbConnection]"
+                  connectionManagerID="{544CCAD9-2CB1-4D87-98D7-A7C478586195}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[SQL_SAP]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\MARD\DB SAP.Outputs[OLE DB Source Output]"
+                  isSorted="true"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\MARD\DB SAP.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\MARD\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      length="3"
+                      lineageId="Package\MARD\DB SAP.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      name="MANDT"
+                      sortKeyPosition="1"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\MARD\DB SAP.Outputs[OLE DB Source Output].Columns[MATNR]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\MARD\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[MATNR]"
+                      length="18"
+                      lineageId="Package\MARD\DB SAP.Outputs[OLE DB Source Output].Columns[MATNR]"
+                      name="MATNR"
+                      sortKeyPosition="2"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\MARD\DB SAP.Outputs[OLE DB Source Output].Columns[WERKS]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\MARD\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[WERKS]"
+                      length="4"
+                      lineageId="Package\MARD\DB SAP.Outputs[OLE DB Source Output].Columns[WERKS]"
+                      name="WERKS"
+                      sortKeyPosition="3"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\MARD\DB SAP.Outputs[OLE DB Source Output].Columns[LGORT]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\MARD\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[LGORT]"
+                      length="4"
+                      lineageId="Package\MARD\DB SAP.Outputs[OLE DB Source Output].Columns[LGORT]"
+                      name="LGORT"
+                      sortKeyPosition="4"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\MARD\DB SAP.Outputs[OLE DB Source Output].Columns[LABST]"
+                      dataType="numeric"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\MARD\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[LABST]"
+                      lineageId="Package\MARD\DB SAP.Outputs[OLE DB Source Output].Columns[LABST]"
+                      name="LABST"
+                      precision="13"
+                      scale="3"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\MARD\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      name="MANDT" />
+                    <externalMetadataColumn
+                      refId="Package\MARD\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[MATNR]"
+                      dataType="wstr"
+                      length="18"
+                      name="MATNR" />
+                    <externalMetadataColumn
+                      refId="Package\MARD\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[WERKS]"
+                      dataType="wstr"
+                      length="4"
+                      name="WERKS" />
+                    <externalMetadataColumn
+                      refId="Package\MARD\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[LGORT]"
+                      dataType="wstr"
+                      length="4"
+                      name="LGORT" />
+                    <externalMetadataColumn
+                      refId="Package\MARD\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[LABST]"
+                      dataType="numeric"
+                      name="LABST"
+                      precision="13"
+                      scale="3" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\MARD\DB SAP.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\MARD\DB SAP.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      lineageId="Package\MARD\DB SAP.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      name="MANDT" />
+                    <outputColumn
+                      refId="Package\MARD\DB SAP.Outputs[OLE DB Source Error Output].Columns[MATNR]"
+                      dataType="wstr"
+                      length="18"
+                      lineageId="Package\MARD\DB SAP.Outputs[OLE DB Source Error Output].Columns[MATNR]"
+                      name="MATNR" />
+                    <outputColumn
+                      refId="Package\MARD\DB SAP.Outputs[OLE DB Source Error Output].Columns[WERKS]"
+                      dataType="wstr"
+                      length="4"
+                      lineageId="Package\MARD\DB SAP.Outputs[OLE DB Source Error Output].Columns[WERKS]"
+                      name="WERKS" />
+                    <outputColumn
+                      refId="Package\MARD\DB SAP.Outputs[OLE DB Source Error Output].Columns[LGORT]"
+                      dataType="wstr"
+                      length="4"
+                      lineageId="Package\MARD\DB SAP.Outputs[OLE DB Source Error Output].Columns[LGORT]"
+                      name="LGORT" />
+                    <outputColumn
+                      refId="Package\MARD\DB SAP.Outputs[OLE DB Source Error Output].Columns[LABST]"
+                      dataType="numeric"
+                      lineageId="Package\MARD\DB SAP.Outputs[OLE DB Source Error Output].Columns[LABST]"
+                      name="LABST"
+                      precision="13"
+                      scale="3" />
+                    <outputColumn
+                      refId="Package\MARD\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\MARD\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\MARD\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\MARD\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\MARD\Find Changed Records"
+              componentClassID="Microsoft.ConditionalSplit"
+              contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
+              name="Find Changed Records"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\MARD\Find Changed Records.Inputs[Conditional Split Input]"
+                  description="Input to the Conditional Split Transformation"
+                  name="Conditional Split Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\MARD\Find Changed Records.Inputs[Conditional Split Input].Columns[LABST]"
+                      cachedDataType="numeric"
+                      cachedName="LABST"
+                      cachedPrecision="13"
+                      cachedScale="3"
+                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[LABST]" />
+                    <inputColumn
+                      refId="Package\MARD\Find Changed Records.Inputs[Conditional Split Input].Columns[LABST (1)]"
+                      cachedDataType="numeric"
+                      cachedName="LABST (1)"
+                      cachedPrecision="13"
+                      cachedScale="3"
+                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[LABST (1)]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\MARD\Find Changed Records.Outputs[update]"
+                  description="Output 1 of the Conditional Split Transformation"
+                  errorOrTruncationOperation="Computation"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="update"
+                  synchronousInputId="Package\MARD\Find Changed Records.Inputs[Conditional Split Input]"
+                  truncationRowDisposition="FailComponent">
+                  <properties>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                      name="Expression">#{Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[LABST]} != #{Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[LABST (1)]}</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the friendly version of the expression. This expression version uses column names."
+                      expressionType="Notify"
+                      name="FriendlyExpression">LABST != [LABST (1)]</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                      name="EvaluationOrder">0</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\MARD\Find Changed Records.Outputs[Conditional Split Default Output]"
+                  description="Default Output of the Conditional Split Transformation"
+                  exclusionGroup="1"
+                  name="Conditional Split Default Output"
+                  synchronousInputId="Package\MARD\Find Changed Records.Inputs[Conditional Split Input]">
+                  <properties>
+                    <property
+                      dataType="System.Boolean"
+                      name="IsDefaultOut">true</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\MARD\Find Changed Records.Outputs[Conditional Split Error Output]"
+                  description="Error Output of the Conditional Split Transformation"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Conditional Split Error Output"
+                  synchronousInputId="Package\MARD\Find Changed Records.Inputs[Conditional Split Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\MARD\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\MARD\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\MARD\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\MARD\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\MARD\Identify Records"
+              componentClassID="Microsoft.ConditionalSplit"
+              contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
+              name="Identify Records"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\MARD\Identify Records.Inputs[Conditional Split Input]"
+                  description="Input to the Conditional Split Transformation"
+                  name="Conditional Split Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\MARD\Identify Records.Inputs[Conditional Split Input].Columns[MANDT]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT"
+                      cachedSortKeyPosition="1"
+                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
+                    <inputColumn
+                      refId="Package\MARD\Identify Records.Inputs[Conditional Split Input].Columns[MANDT (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT (1)"
+                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\MARD\Identify Records.Outputs[update]"
+                  description="Output 1 of the Conditional Split Transformation"
+                  errorOrTruncationOperation="Computation"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="update"
+                  synchronousInputId="Package\MARD\Identify Records.Inputs[Conditional Split Input]"
+                  truncationRowDisposition="FailComponent">
+                  <properties>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                      name="Expression">![ISNULL](#{Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; ![ISNULL](#{Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the friendly version of the expression. This expression version uses column names."
+                      expressionType="Notify"
+                      name="FriendlyExpression">!ISNULL(MANDT) &amp;&amp; !ISNULL([MANDT (1)])</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                      name="EvaluationOrder">0</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\MARD\Identify Records.Outputs[insert]"
+                  description="Output 2 of the Conditional Split Transformation"
+                  errorOrTruncationOperation="Computation"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="insert"
+                  synchronousInputId="Package\MARD\Identify Records.Inputs[Conditional Split Input]"
+                  truncationRowDisposition="FailComponent">
+                  <properties>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                      name="Expression">![ISNULL](#{Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; [ISNULL](#{Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the friendly version of the expression. This expression version uses column names."
+                      expressionType="Notify"
+                      name="FriendlyExpression">!ISNULL(MANDT) &amp;&amp; ISNULL([MANDT (1)])</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                      name="EvaluationOrder">1</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\MARD\Identify Records.Outputs[delete]"
+                  description="Output 3 of the Conditional Split Transformation"
+                  errorOrTruncationOperation="Computation"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="delete"
+                  synchronousInputId="Package\MARD\Identify Records.Inputs[Conditional Split Input]"
+                  truncationRowDisposition="FailComponent">
+                  <properties>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                      name="Expression">[ISNULL](#{Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; ![ISNULL](#{Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the friendly version of the expression. This expression version uses column names."
+                      expressionType="Notify"
+                      name="FriendlyExpression">ISNULL(MANDT) &amp;&amp; !ISNULL([MANDT (1)])</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                      name="EvaluationOrder">2</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\MARD\Identify Records.Outputs[Conditional Split Default Output]"
+                  description="Default Output of the Conditional Split Transformation"
+                  exclusionGroup="1"
+                  name="Conditional Split Default Output"
+                  synchronousInputId="Package\MARD\Identify Records.Inputs[Conditional Split Input]">
+                  <properties>
+                    <property
+                      dataType="System.Boolean"
+                      name="IsDefaultOut">true</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\MARD\Identify Records.Outputs[Conditional Split Error Output]"
+                  description="Error Output of the Conditional Split Transformation"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Conditional Split Error Output"
+                  synchronousInputId="Package\MARD\Identify Records.Inputs[Conditional Split Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\MARD\Identify Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\MARD\Identify Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\MARD\Identify Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\MARD\Identify Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\MARD\insert new records"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="insert new records"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[MARD_STAGE_INSERT]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\MARD\insert new records.Connections[OleDbConnection]"
+                  connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\MARD\insert new records.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\MARD\insert new records.Inputs[OLE DB Destination Input].Columns[MANDT]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT"
+                      cachedSortKeyPosition="1"
+                      externalMetadataColumnId="Package\MARD\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
+                    <inputColumn
+                      refId="Package\MARD\insert new records.Inputs[OLE DB Destination Input].Columns[MATNR]"
+                      cachedDataType="wstr"
+                      cachedLength="18"
+                      cachedName="MATNR"
+                      cachedSortKeyPosition="2"
+                      externalMetadataColumnId="Package\MARD\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MATNR]"
+                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[MATNR]" />
+                    <inputColumn
+                      refId="Package\MARD\insert new records.Inputs[OLE DB Destination Input].Columns[WERKS]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="WERKS"
+                      cachedSortKeyPosition="3"
+                      externalMetadataColumnId="Package\MARD\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[WERKS]"
+                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[WERKS]" />
+                    <inputColumn
+                      refId="Package\MARD\insert new records.Inputs[OLE DB Destination Input].Columns[LGORT]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="LGORT"
+                      cachedSortKeyPosition="4"
+                      externalMetadataColumnId="Package\MARD\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[LGORT]"
+                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[LGORT]" />
+                    <inputColumn
+                      refId="Package\MARD\insert new records.Inputs[OLE DB Destination Input].Columns[LABST]"
+                      cachedDataType="numeric"
+                      cachedName="LABST"
+                      cachedPrecision="13"
+                      cachedScale="3"
+                      externalMetadataColumnId="Package\MARD\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[LABST]"
+                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[LABST]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\MARD\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      name="MANDT" />
+                    <externalMetadataColumn
+                      refId="Package\MARD\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MATNR]"
+                      dataType="wstr"
+                      length="18"
+                      name="MATNR" />
+                    <externalMetadataColumn
+                      refId="Package\MARD\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[WERKS]"
+                      dataType="wstr"
+                      length="4"
+                      name="WERKS" />
+                    <externalMetadataColumn
+                      refId="Package\MARD\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[LGORT]"
+                      dataType="wstr"
+                      length="4"
+                      name="LGORT" />
+                    <externalMetadataColumn
+                      refId="Package\MARD\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[LABST]"
+                      dataType="numeric"
+                      name="LABST"
+                      precision="13"
+                      scale="3" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\MARD\insert new records.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\MARD\insert new records.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\MARD\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\MARD\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\MARD\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\MARD\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\MARD\Merge Join"
+              componentClassID="Microsoft.MergeJoin"
+              contactInfo="Merge Join;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
+              description="Combine two sorted data flows into one using the FULL, LEFT, or INNER join. We recommend this transformation when data flows can be sorted at their sources."
+              name="Merge Join"
+              version="1">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the type of join to perform."
+                  name="JoinType"
+                  typeConverter="JoinType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the number of columns in the ordering key."
+                  name="NumKeyColumns">4</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the null values are treated as equal values."
+                  name="TreatNullsAsEqual">true</property>
+                <property
+                  dataType="System.Int32"
+                  description="Indicates the requested maximum buffers per input before blocking."
+                  name="MaxBuffersPerInput">5</property>
+              </properties>
+              <inputs>
+                <input
+                  refId="Package\MARD\Merge Join.Inputs[Merge Join Left Input]"
+                  hasSideEffects="true"
+                  name="Merge Join Left Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\MARD\Merge Join.Inputs[Merge Join Left Input].Columns[MANDT]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT"
+                      cachedSortKeyPosition="1"
+                      lineageId="Package\MARD\DB SAP.Outputs[OLE DB Source Output].Columns[MANDT]" />
+                    <inputColumn
+                      refId="Package\MARD\Merge Join.Inputs[Merge Join Left Input].Columns[MATNR]"
+                      cachedDataType="wstr"
+                      cachedLength="18"
+                      cachedName="MATNR"
+                      cachedSortKeyPosition="2"
+                      lineageId="Package\MARD\DB SAP.Outputs[OLE DB Source Output].Columns[MATNR]" />
+                    <inputColumn
+                      refId="Package\MARD\Merge Join.Inputs[Merge Join Left Input].Columns[WERKS]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="WERKS"
+                      cachedSortKeyPosition="3"
+                      lineageId="Package\MARD\DB SAP.Outputs[OLE DB Source Output].Columns[WERKS]" />
+                    <inputColumn
+                      refId="Package\MARD\Merge Join.Inputs[Merge Join Left Input].Columns[LGORT]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="LGORT"
+                      cachedSortKeyPosition="4"
+                      lineageId="Package\MARD\DB SAP.Outputs[OLE DB Source Output].Columns[LGORT]" />
+                    <inputColumn
+                      refId="Package\MARD\Merge Join.Inputs[Merge Join Left Input].Columns[LABST]"
+                      cachedDataType="numeric"
+                      cachedName="LABST"
+                      cachedPrecision="13"
+                      cachedScale="3"
+                      lineageId="Package\MARD\DB SAP.Outputs[OLE DB Source Output].Columns[LABST]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+                <input
+                  refId="Package\MARD\Merge Join.Inputs[Merge Join Right Input]"
+                  hasSideEffects="true"
+                  name="Merge Join Right Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\MARD\Merge Join.Inputs[Merge Join Right Input].Columns[MANDT]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT"
+                      cachedSortKeyPosition="1"
+                      lineageId="Package\MARD\DB PBI.Outputs[OLE DB Source Output].Columns[MANDT]" />
+                    <inputColumn
+                      refId="Package\MARD\Merge Join.Inputs[Merge Join Right Input].Columns[MATNR]"
+                      cachedDataType="wstr"
+                      cachedLength="18"
+                      cachedName="MATNR"
+                      cachedSortKeyPosition="2"
+                      lineageId="Package\MARD\DB PBI.Outputs[OLE DB Source Output].Columns[MATNR]" />
+                    <inputColumn
+                      refId="Package\MARD\Merge Join.Inputs[Merge Join Right Input].Columns[WERKS]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="WERKS"
+                      cachedSortKeyPosition="3"
+                      lineageId="Package\MARD\DB PBI.Outputs[OLE DB Source Output].Columns[WERKS]" />
+                    <inputColumn
+                      refId="Package\MARD\Merge Join.Inputs[Merge Join Right Input].Columns[LGORT]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="LGORT"
+                      cachedSortKeyPosition="4"
+                      lineageId="Package\MARD\DB PBI.Outputs[OLE DB Source Output].Columns[LGORT]" />
+                    <inputColumn
+                      refId="Package\MARD\Merge Join.Inputs[Merge Join Right Input].Columns[LABST]"
+                      cachedDataType="numeric"
+                      cachedName="LABST"
+                      cachedPrecision="13"
+                      cachedScale="3"
+                      lineageId="Package\MARD\DB PBI.Outputs[OLE DB Source Output].Columns[LABST]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\MARD\Merge Join.Outputs[Merge Join Output]"
+                  isSorted="true"
+                  name="Merge Join Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[MANDT]"
+                      name="MANDT"
+                      sortKeyPosition="1">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\MARD\Merge Join.Inputs[Merge Join Left Input].Columns[MANDT]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[MATNR]"
+                      dataType="wstr"
+                      length="18"
+                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[MATNR]"
+                      name="MATNR"
+                      sortKeyPosition="2">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\MARD\Merge Join.Inputs[Merge Join Left Input].Columns[MATNR]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[WERKS]"
+                      dataType="wstr"
+                      length="4"
+                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[WERKS]"
+                      name="WERKS"
+                      sortKeyPosition="3">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\MARD\Merge Join.Inputs[Merge Join Left Input].Columns[WERKS]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[LGORT]"
+                      dataType="wstr"
+                      length="4"
+                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[LGORT]"
+                      name="LGORT"
+                      sortKeyPosition="4">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\MARD\Merge Join.Inputs[Merge Join Left Input].Columns[LGORT]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[LABST]"
+                      dataType="numeric"
+                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[LABST]"
+                      name="LABST"
+                      precision="13"
+                      scale="3">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\MARD\Merge Join.Inputs[Merge Join Left Input].Columns[LABST]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]"
+                      dataType="wstr"
+                      length="3"
+                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]"
+                      name="MANDT (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\MARD\Merge Join.Inputs[Merge Join Right Input].Columns[MANDT]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[MATNR (1)]"
+                      dataType="wstr"
+                      length="18"
+                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[MATNR (1)]"
+                      name="MATNR (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\MARD\Merge Join.Inputs[Merge Join Right Input].Columns[MATNR]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[WERKS (1)]"
+                      dataType="wstr"
+                      length="4"
+                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[WERKS (1)]"
+                      name="WERKS (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\MARD\Merge Join.Inputs[Merge Join Right Input].Columns[WERKS]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[LGORT (1)]"
+                      dataType="wstr"
+                      length="4"
+                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[LGORT (1)]"
+                      name="LGORT (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\MARD\Merge Join.Inputs[Merge Join Right Input].Columns[LGORT]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[LABST (1)]"
+                      dataType="numeric"
+                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[LABST (1)]"
+                      name="LABST (1)"
+                      precision="13"
+                      scale="3">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\MARD\Merge Join.Inputs[Merge Join Right Input].Columns[LABST]}</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\MARD\stage changed records"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="stage changed records"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[MARD_STAGE_UPDATE]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\MARD\stage changed records.Connections[OleDbConnection]"
+                  connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\MARD\stage changed records.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\MARD\stage changed records.Inputs[OLE DB Destination Input].Columns[MANDT]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT"
+                      cachedSortKeyPosition="1"
+                      externalMetadataColumnId="Package\MARD\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
+                    <inputColumn
+                      refId="Package\MARD\stage changed records.Inputs[OLE DB Destination Input].Columns[MATNR]"
+                      cachedDataType="wstr"
+                      cachedLength="18"
+                      cachedName="MATNR"
+                      cachedSortKeyPosition="2"
+                      externalMetadataColumnId="Package\MARD\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MATNR]"
+                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[MATNR]" />
+                    <inputColumn
+                      refId="Package\MARD\stage changed records.Inputs[OLE DB Destination Input].Columns[WERKS]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="WERKS"
+                      cachedSortKeyPosition="3"
+                      externalMetadataColumnId="Package\MARD\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[WERKS]"
+                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[WERKS]" />
+                    <inputColumn
+                      refId="Package\MARD\stage changed records.Inputs[OLE DB Destination Input].Columns[LGORT]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="LGORT"
+                      cachedSortKeyPosition="4"
+                      externalMetadataColumnId="Package\MARD\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[LGORT]"
+                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[LGORT]" />
+                    <inputColumn
+                      refId="Package\MARD\stage changed records.Inputs[OLE DB Destination Input].Columns[LABST]"
+                      cachedDataType="numeric"
+                      cachedName="LABST"
+                      cachedPrecision="13"
+                      cachedScale="3"
+                      externalMetadataColumnId="Package\MARD\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[LABST]"
+                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[LABST]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\MARD\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      name="MANDT" />
+                    <externalMetadataColumn
+                      refId="Package\MARD\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MATNR]"
+                      dataType="wstr"
+                      length="18"
+                      name="MATNR" />
+                    <externalMetadataColumn
+                      refId="Package\MARD\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[WERKS]"
+                      dataType="wstr"
+                      length="4"
+                      name="WERKS" />
+                    <externalMetadataColumn
+                      refId="Package\MARD\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[LGORT]"
+                      dataType="wstr"
+                      length="4"
+                      name="LGORT" />
+                    <externalMetadataColumn
+                      refId="Package\MARD\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[LABST]"
+                      dataType="numeric"
+                      name="LABST"
+                      precision="13"
+                      scale="3" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\MARD\stage changed records.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\MARD\stage changed records.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\MARD\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\MARD\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\MARD\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\MARD\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\MARD\stage deleted records"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="stage deleted records"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[MARD_STAGE_DELETE]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\MARD\stage deleted records.Connections[OleDbConnection]"
+                  connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\MARD\stage deleted records.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\MARD\stage deleted records.Inputs[OLE DB Destination Input].Columns[MANDT (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT (1)"
+                      externalMetadataColumnId="Package\MARD\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]" />
+                    <inputColumn
+                      refId="Package\MARD\stage deleted records.Inputs[OLE DB Destination Input].Columns[MATNR (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="18"
+                      cachedName="MATNR (1)"
+                      externalMetadataColumnId="Package\MARD\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MATNR]"
+                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[MATNR (1)]" />
+                    <inputColumn
+                      refId="Package\MARD\stage deleted records.Inputs[OLE DB Destination Input].Columns[WERKS (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="WERKS (1)"
+                      externalMetadataColumnId="Package\MARD\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[WERKS]"
+                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[WERKS (1)]" />
+                    <inputColumn
+                      refId="Package\MARD\stage deleted records.Inputs[OLE DB Destination Input].Columns[LGORT (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="LGORT (1)"
+                      externalMetadataColumnId="Package\MARD\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[LGORT]"
+                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[LGORT (1)]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\MARD\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      name="MANDT" />
+                    <externalMetadataColumn
+                      refId="Package\MARD\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MATNR]"
+                      dataType="wstr"
+                      length="18"
+                      name="MATNR" />
+                    <externalMetadataColumn
+                      refId="Package\MARD\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[WERKS]"
+                      dataType="wstr"
+                      length="4"
+                      name="WERKS" />
+                    <externalMetadataColumn
+                      refId="Package\MARD\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[LGORT]"
+                      dataType="wstr"
+                      length="4"
+                      name="LGORT" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\MARD\stage deleted records.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\MARD\stage deleted records.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\MARD\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\MARD\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\MARD\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\MARD\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\MARD.Paths[delete]"
+              endId="Package\MARD\stage deleted records.Inputs[OLE DB Destination Input]"
+              name="delete"
+              startId="Package\MARD\Identify Records.Outputs[delete]" />
+            <path
+              refId="Package\MARD.Paths[insert]"
+              endId="Package\MARD\insert new records.Inputs[OLE DB Destination Input]"
+              name="insert"
+              startId="Package\MARD\Identify Records.Outputs[insert]" />
+            <path
+              refId="Package\MARD.Paths[Merge Join Output]"
+              endId="Package\MARD\Identify Records.Inputs[Conditional Split Input]"
+              name="Merge Join Output"
+              startId="Package\MARD\Merge Join.Outputs[Merge Join Output]" />
+            <path
+              refId="Package\MARD.Paths[OLE DB Source Output]"
+              endId="Package\MARD\Merge Join.Inputs[Merge Join Left Input]"
+              name="OLE DB Source Output"
+              startId="Package\MARD\DB SAP.Outputs[OLE DB Source Output]" />
+            <path
+              refId="Package\MARD.Paths[OLE DB Source Output1]"
+              endId="Package\MARD\Merge Join.Inputs[Merge Join Right Input]"
+              name="OLE DB Source Output"
+              startId="Package\MARD\DB PBI.Outputs[OLE DB Source Output]" />
+            <path
+              refId="Package\MARD.Paths[update]"
+              endId="Package\MARD\Find Changed Records.Inputs[Conditional Split Input]"
+              name="update"
+              startId="Package\MARD\Identify Records.Outputs[update]" />
+            <path
+              refId="Package\MARD.Paths[update1]"
+              endId="Package\MARD\stage changed records.Inputs[OLE DB Destination Input]"
+              name="update"
+              startId="Package\MARD\Find Changed Records.Outputs[update]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Sequence Container"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Sequence Container"
+      DTS:DTSID="{BF2E2665-6755-46CF-BEAB-129D51D55709}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Sequence Container">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\Sequence Container\delete"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{5957AD6D-8F3A-4144-8FFD-5567A9A08C5D}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="delete"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+              SQLTask:SqlStatementSource="DELETE A01&#xA;FROM [MARD] A01 INNER JOIN [MARD_STAGE_DELETE] B01 ON ( A01.[MANDT] = B01.[MANDT]&#xA;                                                    AND A01.[MATNR] = B01.[MATNR]&#xA;                                                    AND A01.[WERKS] = B01.[WERKS]&#xA;                                                    AND A01.[LGORT] = B01.[LGORT] )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Sequence Container\update"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{3892D120-33B7-4F59-A960-19D19E85F7E9}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="update"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+              SQLTask:SqlStatementSource="UPDATE A01&#xA;SET A01.[LABST] = B01.[LABST]&#xA;FROM [MARD] A01 INNER JOIN [MARD_STAGE_UPDATE] B01 ON ( A01.[MANDT] = B01.[MANDT]&#xA;                                                    AND A01.[MATNR] = B01.[MATNR]&#xA;                                                    AND A01.[WERKS] = B01.[WERKS]&#xA;                                                    AND A01.[LGORT] = B01.[LGORT] )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Sequence Container 1"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Sequence Container"
+      DTS:DTSID="{66d96005-9245-4805-8659-1ce0c5dfe442}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Sequence Container 1">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\Sequence Container 1\Insert"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{666ab0bd-28dd-4b8b-9e72-62d485c8ae6d}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Insert"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+              SQLTask:SqlStatementSource="INSERT INTO [MARD]&#xA;SELECT * FROM [MARD_STAGE_INSERT]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{E78D71C0-9A5E-40B7-8672-681761238FC1}"
+      DTS:From="Package\MARD"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\Sequence Container" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
+      DTS:CreationName=""
+      DTS:DTSID="{3CE47668-F5E5-461D-9CCF-6AB3B8C67096}"
+      DTS:From="Package\clean"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 1"
+      DTS:To="Package\MARD" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
+      DTS:CreationName=""
+      DTS:DTSID="{5D517CAA-673F-4F18-B041-5C98C0AE8DF6}"
+      DTS:From="Package\Sequence Container"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 2"
+      DTS:To="Package\Sequence Container 1" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="104,42"
+          Id="Package\clean"
+          TopLeft="404,44" />
+        <NodeLayout
+          Size="107,42"
+          Id="Package\MARD"
+          TopLeft="198,60" />
+        <NodeLayout
+          Size="108,42"
+          Id="Package\Sequence Container\delete"
+          TopLeft="226,26" />
+        <NodeLayout
+          Size="112,42"
+          Id="Package\Sequence Container\update"
+          TopLeft="22,26" />
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="431,123"
+          Size="431,166"
+          Id="Package\Sequence Container"
+          TopLeft="60,174" />
+        <NodeLayout
+          Size="107,42"
+          Id="Package\Sequence Container 1\Insert"
+          TopLeft="144,28" />
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="431,123"
+          Size="431,166"
+          Id="Package\Sequence Container 1"
+          TopLeft="60,394" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="251.5,102">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="24,72"
+              Start="0,0"
+              End="24,64.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,32" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,32"
+                    Point2="0,36"
+                    Point3="4,36" />
+                  <mssgle:LineSegment
+                    End="20,36" />
+                  <mssgle:CubicBezierSegment
+                    Point1="20,36"
+                    Point2="24,36"
+                    Point3="24,40" />
+                  <mssgle:LineSegment
+                    End="24,64.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="404,65">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-99,16"
+              Start="0,0"
+              End="-91.5,16">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="-45.5,0" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-45.5,0"
+                    Point2="-49.5,0"
+                    Point3="-49.5,4" />
+                  <mssgle:LineSegment
+                    End="-49.5,12" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-49.5,12"
+                    Point2="-49.5,16"
+                    Point3="-53.5,16" />
+                  <mssgle:LineSegment
+                    End="-91.5,16" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 2]"
+          TopLeft="275.5,340">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,54"
+              Start="0,0"
+              End="0,46.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,46.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\MARD">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="114,42"
+          Id="Package\MARD\DB SAP"
+          TopLeft="296,34" />
+        <NodeLayout
+          Size="180,42"
+          Id="Package\MARD\stage deleted records"
+          TopLeft="755,317" />
+        <NodeLayout
+          Size="166,42"
+          Id="Package\MARD\insert new records"
+          TopLeft="157,320" />
+        <NodeLayout
+          Size="186,42"
+          Id="Package\MARD\stage changed records"
+          TopLeft="461,421" />
+        <NodeLayout
+          Size="156,42"
+          Id="Package\MARD\Identify Records"
+          TopLeft="475.888888888889,223" />
+        <NodeLayout
+          Size="130,42"
+          Id="Package\MARD\Merge Join"
+          TopLeft="497,127" />
+        <NodeLayout
+          Size="112,42"
+          Id="Package\MARD\DB PBI"
+          TopLeft="678,38" />
+        <NodeLayout
+          Size="184,42"
+          Id="Package\MARD\Find Changed Records"
+          TopLeft="460,324" />
+        <EdgeLayout
+          Id="Package\MARD.Paths[update1]"
+          TopLeft="553,366">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,55"
+              Start="0,0"
+              End="0,47.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,47.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-15.8025,17.9453125,31.605,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\MARD.Paths[update]"
+          TopLeft="552.944444444444,265">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,59"
+              Start="0,0"
+              End="0,51.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,51.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-15.8025,19.9453125,31.605,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\MARD.Paths[OLE DB Source Output1]"
+          TopLeft="734,80">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-151.666666666667,47"
+              Start="0,0"
+              End="-151.666666666667,39.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,23.8571428571429" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,23.8571428571429"
+                    Point2="0,27.8571428571429"
+                    Point3="-4,27.8571428571429" />
+                  <mssgle:LineSegment
+                    End="-147.666666666667,27.8571428571429" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-147.666666666667,27.8571428571429"
+                    Point2="-151.666666666667,27.8571428571429"
+                    Point3="-151.666666666667,31.8571428571429" />
+                  <mssgle:LineSegment
+                    End="-151.666666666667,39.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\MARD.Paths[OLE DB Source Output]"
+          TopLeft="353,76">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="209,51"
+              Start="0,0"
+              End="209,43.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,21.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,21.5"
+                    Point2="0,25.5"
+                    Point3="4,25.5" />
+                  <mssgle:LineSegment
+                    End="205,25.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="205,25.5"
+                    Point2="209,25.5"
+                    Point3="209,29.5" />
+                  <mssgle:LineSegment
+                    End="209,43.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\MARD.Paths[Merge Join Output]"
+          TopLeft="562,169">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-8.11111111111097,54"
+              Start="0,0"
+              End="-8.11111111111097,46.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,23" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,23"
+                    Point2="0,27"
+                    Point3="-4,27" />
+                  <mssgle:LineSegment
+                    End="-4.11111111111097,27" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-4.11111111111097,27"
+                    Point2="-8.11111111111097,27"
+                    Point3="-8.11111111111097,31" />
+                  <mssgle:LineSegment
+                    End="-8.11111111111097,46.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\MARD.Paths[insert]"
+          TopLeft="516.888888888889,265">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-276.888888888889,55"
+              Start="0,0"
+              End="-276.888888888889,47.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,14.9495798319328" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,14.9495798319328"
+                    Point2="0,18.9495798319328"
+                    Point3="-4,18.9495798319328" />
+                  <mssgle:LineSegment
+                    End="-272.888888888889,18.9495798319328" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-272.888888888889,18.9495798319328"
+                    Point2="-276.888888888889,18.9495798319328"
+                    Point3="-276.888888888889,22.9495798319328" />
+                  <mssgle:LineSegment
+                    End="-276.888888888889,47.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-151.394424913195,23.9495798319328,25.8999609375,9.451171875"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\MARD.Paths[delete]"
+          TopLeft="590.888888888889,265">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="254.111111111111,52"
+              Start="0,0"
+              End="254.111111111111,44.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,13.9159663865546" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,13.9159663865546"
+                    Point2="0,17.9159663865546"
+                    Point3="4,17.9159663865546" />
+                  <mssgle:LineSegment
+                    End="250.111111111111,17.9159663865546" />
+                  <mssgle:CubicBezierSegment
+                    Point1="250.111111111111,17.9159663865546"
+                    Point2="254.111111111111,17.9159663865546"
+                    Point3="254.111111111111,21.9159663865546" />
+                  <mssgle:LineSegment
+                    End="254.111111111111,44.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="112.859598524305,22.9159663865546,28.3919140625,9.7490234375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\MARD\DB SAP">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\MARD\stage deleted records">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\MARD\insert new records">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\MARD\stage changed records">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\MARD\DB PBI">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

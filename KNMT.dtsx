@@ -1,0 +1,2175 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="3/3/2021 8:27:02 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="ARLPBIDEV"
+  DTS:CreatorName="DOMAIN\RPETRELLA"
+  DTS:DTSID="{49011A23-243C-4155-BFDE-10B2B8C7B838}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="15.0.2000.152"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="Package1"
+  DTS:PackageType="5"
+  DTS:VersionBuild="12"
+  DTS:VersionGUID="{42511293-F0D6-43F8-B9D8-B2E881D8873B}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\clean stage"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{3B443E7F-74BB-41DB-A0CE-CB601571DA74}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="clean stage"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="TRUNCATE TABLE [KNMT_STAGE_UPDATE]&#xA;go&#xA;TRUNCATE TABLE [KNMT_STAGE_DELETE]&#xA;go&#xA;TRUNCATE TABLE [KNMT_STAGE_INSERT]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\KNMT"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{E1AB55CC-D38B-4061-BE42-41FCC531815F}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="KNMT"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\KNMT\DB PBI KNMT"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="DB PBI KNMT"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT A01.[MANDT]
+      ,A01.[VKORG]
+      ,A01.[VTWEG]
+      ,A01.[KUNNR]
+      ,A01.[MATNR]
+      ,A01.[KDMAT]
+FROM [KNMT] A01 (NOLOCK)
+ORDER BY A01.[MANDT]
+        ,A01.[VKORG]
+        ,A01.[VTWEG]
+        ,A01.[KUNNR]
+        ,A01.[MATNR]</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\KNMT\DB PBI KNMT.Connections[OleDbConnection]"
+                  connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\KNMT\DB PBI KNMT.Outputs[OLE DB Source Output]"
+                  isSorted="true"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\KNMT\DB PBI KNMT.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\KNMT\DB PBI KNMT.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      length="3"
+                      lineageId="Package\KNMT\DB PBI KNMT.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      name="MANDT"
+                      sortKeyPosition="1"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\KNMT\DB PBI KNMT.Outputs[OLE DB Source Output].Columns[VKORG]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\KNMT\DB PBI KNMT.Outputs[OLE DB Source Output].ExternalColumns[VKORG]"
+                      length="4"
+                      lineageId="Package\KNMT\DB PBI KNMT.Outputs[OLE DB Source Output].Columns[VKORG]"
+                      name="VKORG"
+                      sortKeyPosition="2"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\KNMT\DB PBI KNMT.Outputs[OLE DB Source Output].Columns[VTWEG]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\KNMT\DB PBI KNMT.Outputs[OLE DB Source Output].ExternalColumns[VTWEG]"
+                      length="2"
+                      lineageId="Package\KNMT\DB PBI KNMT.Outputs[OLE DB Source Output].Columns[VTWEG]"
+                      name="VTWEG"
+                      sortKeyPosition="3"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\KNMT\DB PBI KNMT.Outputs[OLE DB Source Output].Columns[KUNNR]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\KNMT\DB PBI KNMT.Outputs[OLE DB Source Output].ExternalColumns[KUNNR]"
+                      length="10"
+                      lineageId="Package\KNMT\DB PBI KNMT.Outputs[OLE DB Source Output].Columns[KUNNR]"
+                      name="KUNNR"
+                      sortKeyPosition="4"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\KNMT\DB PBI KNMT.Outputs[OLE DB Source Output].Columns[MATNR]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\KNMT\DB PBI KNMT.Outputs[OLE DB Source Output].ExternalColumns[MATNR]"
+                      length="18"
+                      lineageId="Package\KNMT\DB PBI KNMT.Outputs[OLE DB Source Output].Columns[MATNR]"
+                      name="MATNR"
+                      sortKeyPosition="5"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\KNMT\DB PBI KNMT.Outputs[OLE DB Source Output].Columns[KDMAT]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\KNMT\DB PBI KNMT.Outputs[OLE DB Source Output].ExternalColumns[KDMAT]"
+                      length="35"
+                      lineageId="Package\KNMT\DB PBI KNMT.Outputs[OLE DB Source Output].Columns[KDMAT]"
+                      name="KDMAT"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\KNMT\DB PBI KNMT.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      name="MANDT" />
+                    <externalMetadataColumn
+                      refId="Package\KNMT\DB PBI KNMT.Outputs[OLE DB Source Output].ExternalColumns[VKORG]"
+                      dataType="wstr"
+                      length="4"
+                      name="VKORG" />
+                    <externalMetadataColumn
+                      refId="Package\KNMT\DB PBI KNMT.Outputs[OLE DB Source Output].ExternalColumns[VTWEG]"
+                      dataType="wstr"
+                      length="2"
+                      name="VTWEG" />
+                    <externalMetadataColumn
+                      refId="Package\KNMT\DB PBI KNMT.Outputs[OLE DB Source Output].ExternalColumns[KUNNR]"
+                      dataType="wstr"
+                      length="10"
+                      name="KUNNR" />
+                    <externalMetadataColumn
+                      refId="Package\KNMT\DB PBI KNMT.Outputs[OLE DB Source Output].ExternalColumns[MATNR]"
+                      dataType="wstr"
+                      length="18"
+                      name="MATNR" />
+                    <externalMetadataColumn
+                      refId="Package\KNMT\DB PBI KNMT.Outputs[OLE DB Source Output].ExternalColumns[KDMAT]"
+                      dataType="wstr"
+                      length="35"
+                      name="KDMAT" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\KNMT\DB PBI KNMT.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\KNMT\DB PBI KNMT.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      lineageId="Package\KNMT\DB PBI KNMT.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      name="MANDT" />
+                    <outputColumn
+                      refId="Package\KNMT\DB PBI KNMT.Outputs[OLE DB Source Error Output].Columns[VKORG]"
+                      dataType="wstr"
+                      length="4"
+                      lineageId="Package\KNMT\DB PBI KNMT.Outputs[OLE DB Source Error Output].Columns[VKORG]"
+                      name="VKORG" />
+                    <outputColumn
+                      refId="Package\KNMT\DB PBI KNMT.Outputs[OLE DB Source Error Output].Columns[VTWEG]"
+                      dataType="wstr"
+                      length="2"
+                      lineageId="Package\KNMT\DB PBI KNMT.Outputs[OLE DB Source Error Output].Columns[VTWEG]"
+                      name="VTWEG" />
+                    <outputColumn
+                      refId="Package\KNMT\DB PBI KNMT.Outputs[OLE DB Source Error Output].Columns[KUNNR]"
+                      dataType="wstr"
+                      length="10"
+                      lineageId="Package\KNMT\DB PBI KNMT.Outputs[OLE DB Source Error Output].Columns[KUNNR]"
+                      name="KUNNR" />
+                    <outputColumn
+                      refId="Package\KNMT\DB PBI KNMT.Outputs[OLE DB Source Error Output].Columns[MATNR]"
+                      dataType="wstr"
+                      length="18"
+                      lineageId="Package\KNMT\DB PBI KNMT.Outputs[OLE DB Source Error Output].Columns[MATNR]"
+                      name="MATNR" />
+                    <outputColumn
+                      refId="Package\KNMT\DB PBI KNMT.Outputs[OLE DB Source Error Output].Columns[KDMAT]"
+                      dataType="wstr"
+                      length="35"
+                      lineageId="Package\KNMT\DB PBI KNMT.Outputs[OLE DB Source Error Output].Columns[KDMAT]"
+                      name="KDMAT" />
+                    <outputColumn
+                      refId="Package\KNMT\DB PBI KNMT.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\KNMT\DB PBI KNMT.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\KNMT\DB PBI KNMT.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\KNMT\DB PBI KNMT.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\KNMT\DB SAP KNMT"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="DB SAP KNMT"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT A01.[MANDT]
+      ,A01.[VKORG]
+      ,A01.[VTWEG]
+      ,A01.[KUNNR]
+      ,A01.[MATNR]
+      ,A01.[KDMAT]
+FROM [ecp].[KNMT] A01 (NOLOCK)
+ORDER BY A01.[MANDT]
+        ,A01.[VKORG]
+        ,A01.[VTWEG]
+        ,A01.[KUNNR]
+        ,A01.[MATNR]</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\KNMT\DB SAP KNMT.Connections[OleDbConnection]"
+                  connectionManagerID="{544CCAD9-2CB1-4D87-98D7-A7C478586195}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[SQL_SAP]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\KNMT\DB SAP KNMT.Outputs[OLE DB Source Output]"
+                  isSorted="true"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\KNMT\DB SAP KNMT.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\KNMT\DB SAP KNMT.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      length="3"
+                      lineageId="Package\KNMT\DB SAP KNMT.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      name="MANDT"
+                      sortKeyPosition="1"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\KNMT\DB SAP KNMT.Outputs[OLE DB Source Output].Columns[VKORG]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\KNMT\DB SAP KNMT.Outputs[OLE DB Source Output].ExternalColumns[VKORG]"
+                      length="4"
+                      lineageId="Package\KNMT\DB SAP KNMT.Outputs[OLE DB Source Output].Columns[VKORG]"
+                      name="VKORG"
+                      sortKeyPosition="2"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\KNMT\DB SAP KNMT.Outputs[OLE DB Source Output].Columns[VTWEG]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\KNMT\DB SAP KNMT.Outputs[OLE DB Source Output].ExternalColumns[VTWEG]"
+                      length="2"
+                      lineageId="Package\KNMT\DB SAP KNMT.Outputs[OLE DB Source Output].Columns[VTWEG]"
+                      name="VTWEG"
+                      sortKeyPosition="3"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\KNMT\DB SAP KNMT.Outputs[OLE DB Source Output].Columns[KUNNR]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\KNMT\DB SAP KNMT.Outputs[OLE DB Source Output].ExternalColumns[KUNNR]"
+                      length="10"
+                      lineageId="Package\KNMT\DB SAP KNMT.Outputs[OLE DB Source Output].Columns[KUNNR]"
+                      name="KUNNR"
+                      sortKeyPosition="4"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\KNMT\DB SAP KNMT.Outputs[OLE DB Source Output].Columns[MATNR]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\KNMT\DB SAP KNMT.Outputs[OLE DB Source Output].ExternalColumns[MATNR]"
+                      length="18"
+                      lineageId="Package\KNMT\DB SAP KNMT.Outputs[OLE DB Source Output].Columns[MATNR]"
+                      name="MATNR"
+                      sortKeyPosition="5"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\KNMT\DB SAP KNMT.Outputs[OLE DB Source Output].Columns[KDMAT]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\KNMT\DB SAP KNMT.Outputs[OLE DB Source Output].ExternalColumns[KDMAT]"
+                      length="35"
+                      lineageId="Package\KNMT\DB SAP KNMT.Outputs[OLE DB Source Output].Columns[KDMAT]"
+                      name="KDMAT"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\KNMT\DB SAP KNMT.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      name="MANDT" />
+                    <externalMetadataColumn
+                      refId="Package\KNMT\DB SAP KNMT.Outputs[OLE DB Source Output].ExternalColumns[VKORG]"
+                      dataType="wstr"
+                      length="4"
+                      name="VKORG" />
+                    <externalMetadataColumn
+                      refId="Package\KNMT\DB SAP KNMT.Outputs[OLE DB Source Output].ExternalColumns[VTWEG]"
+                      dataType="wstr"
+                      length="2"
+                      name="VTWEG" />
+                    <externalMetadataColumn
+                      refId="Package\KNMT\DB SAP KNMT.Outputs[OLE DB Source Output].ExternalColumns[KUNNR]"
+                      dataType="wstr"
+                      length="10"
+                      name="KUNNR" />
+                    <externalMetadataColumn
+                      refId="Package\KNMT\DB SAP KNMT.Outputs[OLE DB Source Output].ExternalColumns[MATNR]"
+                      dataType="wstr"
+                      length="18"
+                      name="MATNR" />
+                    <externalMetadataColumn
+                      refId="Package\KNMT\DB SAP KNMT.Outputs[OLE DB Source Output].ExternalColumns[KDMAT]"
+                      dataType="wstr"
+                      length="35"
+                      name="KDMAT" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\KNMT\DB SAP KNMT.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\KNMT\DB SAP KNMT.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      lineageId="Package\KNMT\DB SAP KNMT.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      name="MANDT" />
+                    <outputColumn
+                      refId="Package\KNMT\DB SAP KNMT.Outputs[OLE DB Source Error Output].Columns[VKORG]"
+                      dataType="wstr"
+                      length="4"
+                      lineageId="Package\KNMT\DB SAP KNMT.Outputs[OLE DB Source Error Output].Columns[VKORG]"
+                      name="VKORG" />
+                    <outputColumn
+                      refId="Package\KNMT\DB SAP KNMT.Outputs[OLE DB Source Error Output].Columns[VTWEG]"
+                      dataType="wstr"
+                      length="2"
+                      lineageId="Package\KNMT\DB SAP KNMT.Outputs[OLE DB Source Error Output].Columns[VTWEG]"
+                      name="VTWEG" />
+                    <outputColumn
+                      refId="Package\KNMT\DB SAP KNMT.Outputs[OLE DB Source Error Output].Columns[KUNNR]"
+                      dataType="wstr"
+                      length="10"
+                      lineageId="Package\KNMT\DB SAP KNMT.Outputs[OLE DB Source Error Output].Columns[KUNNR]"
+                      name="KUNNR" />
+                    <outputColumn
+                      refId="Package\KNMT\DB SAP KNMT.Outputs[OLE DB Source Error Output].Columns[MATNR]"
+                      dataType="wstr"
+                      length="18"
+                      lineageId="Package\KNMT\DB SAP KNMT.Outputs[OLE DB Source Error Output].Columns[MATNR]"
+                      name="MATNR" />
+                    <outputColumn
+                      refId="Package\KNMT\DB SAP KNMT.Outputs[OLE DB Source Error Output].Columns[KDMAT]"
+                      dataType="wstr"
+                      length="35"
+                      lineageId="Package\KNMT\DB SAP KNMT.Outputs[OLE DB Source Error Output].Columns[KDMAT]"
+                      name="KDMAT" />
+                    <outputColumn
+                      refId="Package\KNMT\DB SAP KNMT.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\KNMT\DB SAP KNMT.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\KNMT\DB SAP KNMT.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\KNMT\DB SAP KNMT.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\KNMT\Find Changed Records"
+              componentClassID="Microsoft.ConditionalSplit"
+              contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
+              name="Find Changed Records"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\KNMT\Find Changed Records.Inputs[Conditional Split Input]"
+                  description="Input to the Conditional Split Transformation"
+                  name="Conditional Split Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\KNMT\Find Changed Records.Inputs[Conditional Split Input].Columns[KDMAT]"
+                      cachedDataType="wstr"
+                      cachedLength="35"
+                      cachedName="KDMAT"
+                      cachedSortKeyPosition="6"
+                      lineageId="Package\KNMT\Merge Join.Outputs[Merge Join Output].Columns[KDMAT]" />
+                    <inputColumn
+                      refId="Package\KNMT\Find Changed Records.Inputs[Conditional Split Input].Columns[KDMAT (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="35"
+                      cachedName="KDMAT (1)"
+                      lineageId="Package\KNMT\Merge Join.Outputs[Merge Join Output].Columns[KDMAT (1)]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\KNMT\Find Changed Records.Outputs[update]"
+                  description="Output 1 of the Conditional Split Transformation"
+                  errorOrTruncationOperation="Computation"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="update"
+                  synchronousInputId="Package\KNMT\Find Changed Records.Inputs[Conditional Split Input]"
+                  truncationRowDisposition="FailComponent">
+                  <properties>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                      name="Expression">#{Package\KNMT\Merge Join.Outputs[Merge Join Output].Columns[KDMAT]} != #{Package\KNMT\Merge Join.Outputs[Merge Join Output].Columns[KDMAT (1)]}</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the friendly version of the expression. This expression version uses column names."
+                      expressionType="Notify"
+                      name="FriendlyExpression">KDMAT != [KDMAT (1)]</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                      name="EvaluationOrder">0</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\KNMT\Find Changed Records.Outputs[Conditional Split Default Output]"
+                  description="Default Output of the Conditional Split Transformation"
+                  exclusionGroup="1"
+                  name="Conditional Split Default Output"
+                  synchronousInputId="Package\KNMT\Find Changed Records.Inputs[Conditional Split Input]">
+                  <properties>
+                    <property
+                      dataType="System.Boolean"
+                      name="IsDefaultOut">true</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\KNMT\Find Changed Records.Outputs[Conditional Split Error Output]"
+                  description="Error Output of the Conditional Split Transformation"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Conditional Split Error Output"
+                  synchronousInputId="Package\KNMT\Find Changed Records.Inputs[Conditional Split Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\KNMT\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\KNMT\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\KNMT\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\KNMT\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\KNMT\Identify records"
+              componentClassID="Microsoft.ConditionalSplit"
+              contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
+              name="Identify records"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\KNMT\Identify records.Inputs[Conditional Split Input]"
+                  description="Input to the Conditional Split Transformation"
+                  name="Conditional Split Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\KNMT\Identify records.Inputs[Conditional Split Input].Columns[MANDT]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT"
+                      cachedSortKeyPosition="1"
+                      lineageId="Package\KNMT\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
+                    <inputColumn
+                      refId="Package\KNMT\Identify records.Inputs[Conditional Split Input].Columns[MANDT (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT (1)"
+                      lineageId="Package\KNMT\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\KNMT\Identify records.Outputs[update]"
+                  description="Output 1 of the Conditional Split Transformation"
+                  errorOrTruncationOperation="Computation"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="update"
+                  synchronousInputId="Package\KNMT\Identify records.Inputs[Conditional Split Input]"
+                  truncationRowDisposition="FailComponent">
+                  <properties>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                      name="Expression">![ISNULL](#{Package\KNMT\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; ![ISNULL](#{Package\KNMT\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the friendly version of the expression. This expression version uses column names."
+                      expressionType="Notify"
+                      name="FriendlyExpression">!ISNULL(MANDT) &amp;&amp; !ISNULL([MANDT (1)])</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                      name="EvaluationOrder">0</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\KNMT\Identify records.Outputs[insert]"
+                  description="Output 2 of the Conditional Split Transformation"
+                  errorOrTruncationOperation="Computation"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="insert"
+                  synchronousInputId="Package\KNMT\Identify records.Inputs[Conditional Split Input]"
+                  truncationRowDisposition="FailComponent">
+                  <properties>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                      name="Expression">![ISNULL](#{Package\KNMT\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; [ISNULL](#{Package\KNMT\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the friendly version of the expression. This expression version uses column names."
+                      expressionType="Notify"
+                      name="FriendlyExpression">!ISNULL(MANDT) &amp;&amp; ISNULL([MANDT (1)])</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                      name="EvaluationOrder">1</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\KNMT\Identify records.Outputs[delete]"
+                  description="Output 3 of the Conditional Split Transformation"
+                  errorOrTruncationOperation="Computation"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="delete"
+                  synchronousInputId="Package\KNMT\Identify records.Inputs[Conditional Split Input]"
+                  truncationRowDisposition="FailComponent">
+                  <properties>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                      name="Expression">[ISNULL](#{Package\KNMT\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; ![ISNULL](#{Package\KNMT\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the friendly version of the expression. This expression version uses column names."
+                      expressionType="Notify"
+                      name="FriendlyExpression">ISNULL(MANDT) &amp;&amp; !ISNULL([MANDT (1)])</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                      name="EvaluationOrder">2</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\KNMT\Identify records.Outputs[Conditional Split Default Output]"
+                  description="Default Output of the Conditional Split Transformation"
+                  exclusionGroup="1"
+                  name="Conditional Split Default Output"
+                  synchronousInputId="Package\KNMT\Identify records.Inputs[Conditional Split Input]">
+                  <properties>
+                    <property
+                      dataType="System.Boolean"
+                      name="IsDefaultOut">true</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\KNMT\Identify records.Outputs[Conditional Split Error Output]"
+                  description="Error Output of the Conditional Split Transformation"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Conditional Split Error Output"
+                  synchronousInputId="Package\KNMT\Identify records.Inputs[Conditional Split Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\KNMT\Identify records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\KNMT\Identify records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\KNMT\Identify records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\KNMT\Identify records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\KNMT\insert new records"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="insert new records"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[KNMT_STAGE_INSERT]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\KNMT\insert new records.Connections[OleDbConnection]"
+                  connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\KNMT\insert new records.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\KNMT\insert new records.Inputs[OLE DB Destination Input].Columns[MANDT]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT"
+                      cachedSortKeyPosition="1"
+                      externalMetadataColumnId="Package\KNMT\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      lineageId="Package\KNMT\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
+                    <inputColumn
+                      refId="Package\KNMT\insert new records.Inputs[OLE DB Destination Input].Columns[VKORG]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="VKORG"
+                      cachedSortKeyPosition="2"
+                      externalMetadataColumnId="Package\KNMT\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[VKORG]"
+                      lineageId="Package\KNMT\Merge Join.Outputs[Merge Join Output].Columns[VKORG]" />
+                    <inputColumn
+                      refId="Package\KNMT\insert new records.Inputs[OLE DB Destination Input].Columns[VTWEG]"
+                      cachedDataType="wstr"
+                      cachedLength="2"
+                      cachedName="VTWEG"
+                      cachedSortKeyPosition="3"
+                      externalMetadataColumnId="Package\KNMT\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[VTWEG]"
+                      lineageId="Package\KNMT\Merge Join.Outputs[Merge Join Output].Columns[VTWEG]" />
+                    <inputColumn
+                      refId="Package\KNMT\insert new records.Inputs[OLE DB Destination Input].Columns[KUNNR]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="KUNNR"
+                      cachedSortKeyPosition="4"
+                      externalMetadataColumnId="Package\KNMT\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[KUNNR]"
+                      lineageId="Package\KNMT\Merge Join.Outputs[Merge Join Output].Columns[KUNNR]" />
+                    <inputColumn
+                      refId="Package\KNMT\insert new records.Inputs[OLE DB Destination Input].Columns[MATNR]"
+                      cachedDataType="wstr"
+                      cachedLength="18"
+                      cachedName="MATNR"
+                      cachedSortKeyPosition="5"
+                      externalMetadataColumnId="Package\KNMT\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MATNR]"
+                      lineageId="Package\KNMT\Merge Join.Outputs[Merge Join Output].Columns[MATNR]" />
+                    <inputColumn
+                      refId="Package\KNMT\insert new records.Inputs[OLE DB Destination Input].Columns[KDMAT]"
+                      cachedDataType="wstr"
+                      cachedLength="35"
+                      cachedName="KDMAT"
+                      cachedSortKeyPosition="6"
+                      externalMetadataColumnId="Package\KNMT\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[KDMAT]"
+                      lineageId="Package\KNMT\Merge Join.Outputs[Merge Join Output].Columns[KDMAT]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\KNMT\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      name="MANDT" />
+                    <externalMetadataColumn
+                      refId="Package\KNMT\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[VKORG]"
+                      dataType="wstr"
+                      length="4"
+                      name="VKORG" />
+                    <externalMetadataColumn
+                      refId="Package\KNMT\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[VTWEG]"
+                      dataType="wstr"
+                      length="2"
+                      name="VTWEG" />
+                    <externalMetadataColumn
+                      refId="Package\KNMT\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[KUNNR]"
+                      dataType="wstr"
+                      length="10"
+                      name="KUNNR" />
+                    <externalMetadataColumn
+                      refId="Package\KNMT\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MATNR]"
+                      dataType="wstr"
+                      length="18"
+                      name="MATNR" />
+                    <externalMetadataColumn
+                      refId="Package\KNMT\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[KDMAT]"
+                      dataType="wstr"
+                      length="35"
+                      name="KDMAT" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\KNMT\insert new records.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\KNMT\insert new records.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\KNMT\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\KNMT\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\KNMT\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\KNMT\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\KNMT\Merge Join"
+              componentClassID="Microsoft.MergeJoin"
+              contactInfo="Merge Join;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
+              description="Combine two sorted data flows into one using the FULL, LEFT, or INNER join. We recommend this transformation when data flows can be sorted at their sources."
+              name="Merge Join"
+              version="1">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the type of join to perform."
+                  name="JoinType"
+                  typeConverter="JoinType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the number of columns in the ordering key."
+                  name="NumKeyColumns">5</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the null values are treated as equal values."
+                  name="TreatNullsAsEqual">true</property>
+                <property
+                  dataType="System.Int32"
+                  description="Indicates the requested maximum buffers per input before blocking."
+                  name="MaxBuffersPerInput">5</property>
+              </properties>
+              <inputs>
+                <input
+                  refId="Package\KNMT\Merge Join.Inputs[Merge Join Left Input]"
+                  hasSideEffects="true"
+                  name="Merge Join Left Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\KNMT\Merge Join.Inputs[Merge Join Left Input].Columns[MANDT]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT"
+                      cachedSortKeyPosition="1"
+                      lineageId="Package\KNMT\DB SAP KNMT.Outputs[OLE DB Source Output].Columns[MANDT]" />
+                    <inputColumn
+                      refId="Package\KNMT\Merge Join.Inputs[Merge Join Left Input].Columns[VKORG]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="VKORG"
+                      cachedSortKeyPosition="2"
+                      lineageId="Package\KNMT\DB SAP KNMT.Outputs[OLE DB Source Output].Columns[VKORG]" />
+                    <inputColumn
+                      refId="Package\KNMT\Merge Join.Inputs[Merge Join Left Input].Columns[VTWEG]"
+                      cachedDataType="wstr"
+                      cachedLength="2"
+                      cachedName="VTWEG"
+                      cachedSortKeyPosition="3"
+                      lineageId="Package\KNMT\DB SAP KNMT.Outputs[OLE DB Source Output].Columns[VTWEG]" />
+                    <inputColumn
+                      refId="Package\KNMT\Merge Join.Inputs[Merge Join Left Input].Columns[KUNNR]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="KUNNR"
+                      cachedSortKeyPosition="4"
+                      lineageId="Package\KNMT\DB SAP KNMT.Outputs[OLE DB Source Output].Columns[KUNNR]" />
+                    <inputColumn
+                      refId="Package\KNMT\Merge Join.Inputs[Merge Join Left Input].Columns[MATNR]"
+                      cachedDataType="wstr"
+                      cachedLength="18"
+                      cachedName="MATNR"
+                      cachedSortKeyPosition="5"
+                      lineageId="Package\KNMT\DB SAP KNMT.Outputs[OLE DB Source Output].Columns[MATNR]" />
+                    <inputColumn
+                      refId="Package\KNMT\Merge Join.Inputs[Merge Join Left Input].Columns[KDMAT]"
+                      cachedDataType="wstr"
+                      cachedLength="35"
+                      cachedName="KDMAT"
+                      lineageId="Package\KNMT\DB SAP KNMT.Outputs[OLE DB Source Output].Columns[KDMAT]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+                <input
+                  refId="Package\KNMT\Merge Join.Inputs[Merge Join Right Input]"
+                  hasSideEffects="true"
+                  name="Merge Join Right Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\KNMT\Merge Join.Inputs[Merge Join Right Input].Columns[MANDT]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT"
+                      cachedSortKeyPosition="1"
+                      lineageId="Package\KNMT\DB PBI KNMT.Outputs[OLE DB Source Output].Columns[MANDT]" />
+                    <inputColumn
+                      refId="Package\KNMT\Merge Join.Inputs[Merge Join Right Input].Columns[VKORG]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="VKORG"
+                      cachedSortKeyPosition="2"
+                      lineageId="Package\KNMT\DB PBI KNMT.Outputs[OLE DB Source Output].Columns[VKORG]" />
+                    <inputColumn
+                      refId="Package\KNMT\Merge Join.Inputs[Merge Join Right Input].Columns[VTWEG]"
+                      cachedDataType="wstr"
+                      cachedLength="2"
+                      cachedName="VTWEG"
+                      cachedSortKeyPosition="3"
+                      lineageId="Package\KNMT\DB PBI KNMT.Outputs[OLE DB Source Output].Columns[VTWEG]" />
+                    <inputColumn
+                      refId="Package\KNMT\Merge Join.Inputs[Merge Join Right Input].Columns[KUNNR]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="KUNNR"
+                      cachedSortKeyPosition="4"
+                      lineageId="Package\KNMT\DB PBI KNMT.Outputs[OLE DB Source Output].Columns[KUNNR]" />
+                    <inputColumn
+                      refId="Package\KNMT\Merge Join.Inputs[Merge Join Right Input].Columns[MATNR]"
+                      cachedDataType="wstr"
+                      cachedLength="18"
+                      cachedName="MATNR"
+                      cachedSortKeyPosition="5"
+                      lineageId="Package\KNMT\DB PBI KNMT.Outputs[OLE DB Source Output].Columns[MATNR]" />
+                    <inputColumn
+                      refId="Package\KNMT\Merge Join.Inputs[Merge Join Right Input].Columns[KDMAT]"
+                      cachedDataType="wstr"
+                      cachedLength="35"
+                      cachedName="KDMAT"
+                      lineageId="Package\KNMT\DB PBI KNMT.Outputs[OLE DB Source Output].Columns[KDMAT]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\KNMT\Merge Join.Outputs[Merge Join Output]"
+                  isSorted="true"
+                  name="Merge Join Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\KNMT\Merge Join.Outputs[Merge Join Output].Columns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      lineageId="Package\KNMT\Merge Join.Outputs[Merge Join Output].Columns[MANDT]"
+                      name="MANDT"
+                      sortKeyPosition="1">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\KNMT\Merge Join.Inputs[Merge Join Left Input].Columns[MANDT]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\KNMT\Merge Join.Outputs[Merge Join Output].Columns[VKORG]"
+                      dataType="wstr"
+                      length="4"
+                      lineageId="Package\KNMT\Merge Join.Outputs[Merge Join Output].Columns[VKORG]"
+                      name="VKORG"
+                      sortKeyPosition="2">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\KNMT\Merge Join.Inputs[Merge Join Left Input].Columns[VKORG]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\KNMT\Merge Join.Outputs[Merge Join Output].Columns[VTWEG]"
+                      dataType="wstr"
+                      length="2"
+                      lineageId="Package\KNMT\Merge Join.Outputs[Merge Join Output].Columns[VTWEG]"
+                      name="VTWEG"
+                      sortKeyPosition="3">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\KNMT\Merge Join.Inputs[Merge Join Left Input].Columns[VTWEG]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\KNMT\Merge Join.Outputs[Merge Join Output].Columns[KUNNR]"
+                      dataType="wstr"
+                      length="10"
+                      lineageId="Package\KNMT\Merge Join.Outputs[Merge Join Output].Columns[KUNNR]"
+                      name="KUNNR"
+                      sortKeyPosition="4">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\KNMT\Merge Join.Inputs[Merge Join Left Input].Columns[KUNNR]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\KNMT\Merge Join.Outputs[Merge Join Output].Columns[MATNR]"
+                      dataType="wstr"
+                      length="18"
+                      lineageId="Package\KNMT\Merge Join.Outputs[Merge Join Output].Columns[MATNR]"
+                      name="MATNR"
+                      sortKeyPosition="5">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\KNMT\Merge Join.Inputs[Merge Join Left Input].Columns[MATNR]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\KNMT\Merge Join.Outputs[Merge Join Output].Columns[KDMAT]"
+                      dataType="wstr"
+                      length="35"
+                      lineageId="Package\KNMT\Merge Join.Outputs[Merge Join Output].Columns[KDMAT]"
+                      name="KDMAT"
+                      sortKeyPosition="6">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\KNMT\Merge Join.Inputs[Merge Join Left Input].Columns[KDMAT]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\KNMT\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]"
+                      dataType="wstr"
+                      length="3"
+                      lineageId="Package\KNMT\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]"
+                      name="MANDT (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\KNMT\Merge Join.Inputs[Merge Join Right Input].Columns[MANDT]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\KNMT\Merge Join.Outputs[Merge Join Output].Columns[VKORG (1)]"
+                      dataType="wstr"
+                      length="4"
+                      lineageId="Package\KNMT\Merge Join.Outputs[Merge Join Output].Columns[VKORG (1)]"
+                      name="VKORG (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\KNMT\Merge Join.Inputs[Merge Join Right Input].Columns[VKORG]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\KNMT\Merge Join.Outputs[Merge Join Output].Columns[VTWEG (1)]"
+                      dataType="wstr"
+                      length="2"
+                      lineageId="Package\KNMT\Merge Join.Outputs[Merge Join Output].Columns[VTWEG (1)]"
+                      name="VTWEG (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\KNMT\Merge Join.Inputs[Merge Join Right Input].Columns[VTWEG]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\KNMT\Merge Join.Outputs[Merge Join Output].Columns[KUNNR (1)]"
+                      dataType="wstr"
+                      length="10"
+                      lineageId="Package\KNMT\Merge Join.Outputs[Merge Join Output].Columns[KUNNR (1)]"
+                      name="KUNNR (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\KNMT\Merge Join.Inputs[Merge Join Right Input].Columns[KUNNR]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\KNMT\Merge Join.Outputs[Merge Join Output].Columns[MATNR (1)]"
+                      dataType="wstr"
+                      length="18"
+                      lineageId="Package\KNMT\Merge Join.Outputs[Merge Join Output].Columns[MATNR (1)]"
+                      name="MATNR (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\KNMT\Merge Join.Inputs[Merge Join Right Input].Columns[MATNR]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\KNMT\Merge Join.Outputs[Merge Join Output].Columns[KDMAT (1)]"
+                      dataType="wstr"
+                      length="35"
+                      lineageId="Package\KNMT\Merge Join.Outputs[Merge Join Output].Columns[KDMAT (1)]"
+                      name="KDMAT (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\KNMT\Merge Join.Inputs[Merge Join Right Input].Columns[KDMAT]}</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\KNMT\stage changed records"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="stage changed records"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[KNMT_STAGE_UPDATE]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\KNMT\stage changed records.Connections[OleDbConnection]"
+                  connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\KNMT\stage changed records.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\KNMT\stage changed records.Inputs[OLE DB Destination Input].Columns[MANDT]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT"
+                      cachedSortKeyPosition="1"
+                      externalMetadataColumnId="Package\KNMT\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      lineageId="Package\KNMT\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
+                    <inputColumn
+                      refId="Package\KNMT\stage changed records.Inputs[OLE DB Destination Input].Columns[VKORG]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="VKORG"
+                      cachedSortKeyPosition="2"
+                      externalMetadataColumnId="Package\KNMT\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[VKORG]"
+                      lineageId="Package\KNMT\Merge Join.Outputs[Merge Join Output].Columns[VKORG]" />
+                    <inputColumn
+                      refId="Package\KNMT\stage changed records.Inputs[OLE DB Destination Input].Columns[VTWEG]"
+                      cachedDataType="wstr"
+                      cachedLength="2"
+                      cachedName="VTWEG"
+                      cachedSortKeyPosition="3"
+                      externalMetadataColumnId="Package\KNMT\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[VTWEG]"
+                      lineageId="Package\KNMT\Merge Join.Outputs[Merge Join Output].Columns[VTWEG]" />
+                    <inputColumn
+                      refId="Package\KNMT\stage changed records.Inputs[OLE DB Destination Input].Columns[KUNNR]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="KUNNR"
+                      cachedSortKeyPosition="4"
+                      externalMetadataColumnId="Package\KNMT\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[KUNNR]"
+                      lineageId="Package\KNMT\Merge Join.Outputs[Merge Join Output].Columns[KUNNR]" />
+                    <inputColumn
+                      refId="Package\KNMT\stage changed records.Inputs[OLE DB Destination Input].Columns[MATNR]"
+                      cachedDataType="wstr"
+                      cachedLength="18"
+                      cachedName="MATNR"
+                      cachedSortKeyPosition="5"
+                      externalMetadataColumnId="Package\KNMT\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MATNR]"
+                      lineageId="Package\KNMT\Merge Join.Outputs[Merge Join Output].Columns[MATNR]" />
+                    <inputColumn
+                      refId="Package\KNMT\stage changed records.Inputs[OLE DB Destination Input].Columns[KDMAT]"
+                      cachedDataType="wstr"
+                      cachedLength="35"
+                      cachedName="KDMAT"
+                      cachedSortKeyPosition="6"
+                      externalMetadataColumnId="Package\KNMT\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[KDMAT]"
+                      lineageId="Package\KNMT\Merge Join.Outputs[Merge Join Output].Columns[KDMAT]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\KNMT\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      name="MANDT" />
+                    <externalMetadataColumn
+                      refId="Package\KNMT\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[VKORG]"
+                      dataType="wstr"
+                      length="4"
+                      name="VKORG" />
+                    <externalMetadataColumn
+                      refId="Package\KNMT\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[VTWEG]"
+                      dataType="wstr"
+                      length="2"
+                      name="VTWEG" />
+                    <externalMetadataColumn
+                      refId="Package\KNMT\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[KUNNR]"
+                      dataType="wstr"
+                      length="10"
+                      name="KUNNR" />
+                    <externalMetadataColumn
+                      refId="Package\KNMT\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MATNR]"
+                      dataType="wstr"
+                      length="18"
+                      name="MATNR" />
+                    <externalMetadataColumn
+                      refId="Package\KNMT\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[KDMAT]"
+                      dataType="wstr"
+                      length="35"
+                      name="KDMAT" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\KNMT\stage changed records.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\KNMT\stage changed records.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\KNMT\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\KNMT\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\KNMT\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\KNMT\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\KNMT\stage deleted records"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="stage deleted records"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[KNMT_STAGE_DELETE]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\KNMT\stage deleted records.Connections[OleDbConnection]"
+                  connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\KNMT\stage deleted records.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\KNMT\stage deleted records.Inputs[OLE DB Destination Input].Columns[MANDT (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT (1)"
+                      externalMetadataColumnId="Package\KNMT\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      lineageId="Package\KNMT\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]" />
+                    <inputColumn
+                      refId="Package\KNMT\stage deleted records.Inputs[OLE DB Destination Input].Columns[VKORG (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="VKORG (1)"
+                      externalMetadataColumnId="Package\KNMT\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[VKORG]"
+                      lineageId="Package\KNMT\Merge Join.Outputs[Merge Join Output].Columns[VKORG (1)]" />
+                    <inputColumn
+                      refId="Package\KNMT\stage deleted records.Inputs[OLE DB Destination Input].Columns[VTWEG (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="2"
+                      cachedName="VTWEG (1)"
+                      externalMetadataColumnId="Package\KNMT\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[VTWEG]"
+                      lineageId="Package\KNMT\Merge Join.Outputs[Merge Join Output].Columns[VTWEG (1)]" />
+                    <inputColumn
+                      refId="Package\KNMT\stage deleted records.Inputs[OLE DB Destination Input].Columns[KUNNR (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="KUNNR (1)"
+                      externalMetadataColumnId="Package\KNMT\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[KUNNR]"
+                      lineageId="Package\KNMT\Merge Join.Outputs[Merge Join Output].Columns[KUNNR (1)]" />
+                    <inputColumn
+                      refId="Package\KNMT\stage deleted records.Inputs[OLE DB Destination Input].Columns[MATNR (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="18"
+                      cachedName="MATNR (1)"
+                      externalMetadataColumnId="Package\KNMT\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MATNR]"
+                      lineageId="Package\KNMT\Merge Join.Outputs[Merge Join Output].Columns[MATNR (1)]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\KNMT\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      name="MANDT" />
+                    <externalMetadataColumn
+                      refId="Package\KNMT\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[VKORG]"
+                      dataType="wstr"
+                      length="4"
+                      name="VKORG" />
+                    <externalMetadataColumn
+                      refId="Package\KNMT\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[VTWEG]"
+                      dataType="wstr"
+                      length="2"
+                      name="VTWEG" />
+                    <externalMetadataColumn
+                      refId="Package\KNMT\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[KUNNR]"
+                      dataType="wstr"
+                      length="10"
+                      name="KUNNR" />
+                    <externalMetadataColumn
+                      refId="Package\KNMT\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MATNR]"
+                      dataType="wstr"
+                      length="18"
+                      name="MATNR" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\KNMT\stage deleted records.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\KNMT\stage deleted records.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\KNMT\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\KNMT\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\KNMT\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\KNMT\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\KNMT.Paths[delete]"
+              endId="Package\KNMT\stage deleted records.Inputs[OLE DB Destination Input]"
+              name="delete"
+              startId="Package\KNMT\Identify records.Outputs[delete]" />
+            <path
+              refId="Package\KNMT.Paths[insert]"
+              endId="Package\KNMT\insert new records.Inputs[OLE DB Destination Input]"
+              name="insert"
+              startId="Package\KNMT\Identify records.Outputs[insert]" />
+            <path
+              refId="Package\KNMT.Paths[Merge Join Output]"
+              endId="Package\KNMT\Identify records.Inputs[Conditional Split Input]"
+              name="Merge Join Output"
+              startId="Package\KNMT\Merge Join.Outputs[Merge Join Output]" />
+            <path
+              refId="Package\KNMT.Paths[OLE DB Source Output]"
+              endId="Package\KNMT\Merge Join.Inputs[Merge Join Left Input]"
+              name="OLE DB Source Output"
+              startId="Package\KNMT\DB SAP KNMT.Outputs[OLE DB Source Output]" />
+            <path
+              refId="Package\KNMT.Paths[OLE DB Source Output1]"
+              endId="Package\KNMT\Merge Join.Inputs[Merge Join Right Input]"
+              name="OLE DB Source Output"
+              startId="Package\KNMT\DB PBI KNMT.Outputs[OLE DB Source Output]" />
+            <path
+              refId="Package\KNMT.Paths[update]"
+              endId="Package\KNMT\Find Changed Records.Inputs[Conditional Split Input]"
+              name="update"
+              startId="Package\KNMT\Identify records.Outputs[update]" />
+            <path
+              refId="Package\KNMT.Paths[update1]"
+              endId="Package\KNMT\stage changed records.Inputs[OLE DB Destination Input]"
+              name="update"
+              startId="Package\KNMT\Find Changed Records.Outputs[update]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Sequence Container"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Sequence Container"
+      DTS:DTSID="{D5CAC105-D158-4A69-9142-B70E474CF9A2}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Sequence Container">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\Sequence Container\delete"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{D07E2777-D948-4632-868C-F1AC057B35CA}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="delete"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+              SQLTask:SqlStatementSource="DELETE A01&#xA;FROM [KNMT] A01 INNER JOIN [KNMT_STAGE_DELETE] B01 ON ( A01.[MANDT] = B01.[MANDT]&#xA;                                                    AND A01.[VKORG] = B01.[VKORG]&#xA;                                                    AND A01.[VTWEG] = B01.[VTWEG]&#xA;                                                    AND A01.[KUNNR] = B01.[KUNNR]&#xA;                                                    AND A01.[MATNR] = B01.[MATNR] )" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Sequence Container\update"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{B57D8F57-288D-4FCB-993C-2A0C25227A4E}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="update"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+              SQLTask:SqlStatementSource="UPDATE A01&#xA;SET A01.[KDMAT] = B01.[KDMAT]&#xA;FROM [KNMT] A01 INNER JOIN [KNMT_STAGE_UPDATE] B01 ON ( A01.[MANDT] = B01.[MANDT]&#xA;                                                    AND A01.[VKORG] = B01.[VKORG]&#xA;                                                    AND A01.[VTWEG] = B01.[VTWEG]&#xA;                                                    AND A01.[KUNNR] = B01.[KUNNR]&#xA;                                                    AND A01.[MATNR] = B01.[MATNR] )" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Sequence Container 1"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Sequence Container"
+      DTS:DTSID="{f0b05edd-5a55-48a8-ad33-2f5272d05722}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Sequence Container 1">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\Sequence Container 1\Insert"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{030ad026-3ab0-4fb3-954c-c819c995512d}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Insert"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+              SQLTask:SqlStatementSource="INSERT INTO [KNMT]&#xA;SELECT * FROM [KNMT_STAGE_INSERT]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{94365535-BEF8-4653-BB07-EA57162F1999}"
+      DTS:From="Package\clean stage"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\KNMT" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
+      DTS:CreationName=""
+      DTS:DTSID="{E111F246-D535-4538-B4AA-6CCFA509CF6E}"
+      DTS:From="Package\KNMT"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 1"
+      DTS:To="Package\Sequence Container" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
+      DTS:CreationName=""
+      DTS:DTSID="{60529974-5FE8-4A3B-8FEA-639FEB9CDC35}"
+      DTS:From="Package\Sequence Container"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 2"
+      DTS:To="Package\Sequence Container 1" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="132,42"
+          Id="Package\clean stage"
+          TopLeft="140,15" />
+        <NodeLayout
+          Size="107,42"
+          Id="Package\KNMT"
+          TopLeft="399,36" />
+        <NodeLayout
+          Size="108,42"
+          Id="Package\Sequence Container\delete"
+          TopLeft="166,28" />
+        <NodeLayout
+          Size="112,42"
+          Id="Package\Sequence Container\update"
+          TopLeft="21,29" />
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="303,107"
+          Size="303,150"
+          Id="Package\Sequence Container"
+          TopLeft="302,146" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="272,36">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="127,21"
+              Start="0,0"
+              End="119.5,21">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="59.5,0" />
+                  <mssgle:CubicBezierSegment
+                    Point1="59.5,0"
+                    Point2="63.5,0"
+                    Point3="63.5,4" />
+                  <mssgle:LineSegment
+                    End="63.5,17" />
+                  <mssgle:CubicBezierSegment
+                    Point1="63.5,17"
+                    Point2="63.5,21"
+                    Point3="67.5,21" />
+                  <mssgle:LineSegment
+                    End="119.5,21" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="453,78">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,68"
+              Start="0,0"
+              End="0,60.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,60.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="107,42"
+          Id="Package\Sequence Container 1\Insert"
+          TopLeft="87,29" />
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="303,126"
+          Size="303,169"
+          Id="Package\Sequence Container 1"
+          TopLeft="296,354" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 2]"
+          TopLeft="450.5,296">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,58"
+              Start="0,0"
+              End="0,50.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,50.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\KNMT">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="166,42"
+          Id="Package\KNMT\insert new records"
+          TopLeft="209,279" />
+        <NodeLayout
+          Size="153,42"
+          Id="Package\KNMT\Identify records"
+          TopLeft="446,193" />
+        <NodeLayout
+          Size="130,42"
+          Id="Package\KNMT\Merge Join"
+          TopLeft="457,103" />
+        <NodeLayout
+          Size="180,42"
+          Id="Package\KNMT\stage deleted records"
+          TopLeft="669,281" />
+        <NodeLayout
+          Size="186,42"
+          Id="Package\KNMT\stage changed records"
+          TopLeft="432,373" />
+        <NodeLayout
+          Size="143,42"
+          Id="Package\KNMT\DB PBI KNMT"
+          TopLeft="593,37" />
+        <NodeLayout
+          Size="145,42"
+          Id="Package\KNMT\DB SAP KNMT"
+          TopLeft="265,32" />
+        <NodeLayout
+          Size="184,42"
+          Id="Package\KNMT\Find Changed Records"
+          TopLeft="436,281" />
+        <EdgeLayout
+          Id="Package\KNMT.Paths[update1]"
+          TopLeft="526.5,323">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,50"
+              Start="0,0"
+              End="0,42.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,42.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-15.8025,15.4453125,31.605,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\KNMT.Paths[update]"
+          TopLeft="525.25,235">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,46"
+              Start="0,0"
+              End="0,38.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,38.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-15.8025,13.4453125,31.605,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\KNMT.Paths[OLE DB Source Output1]"
+          TopLeft="664.5,79">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-122.166666666667,24"
+              Start="0,0"
+              End="-122.166666666667,16.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,10.2249240121581" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,10.2249240121581"
+                    Point2="0,14.2249240121581"
+                    Point3="-4,14.2249240121581" />
+                  <mssgle:LineSegment
+                    End="-118.166666666667,14.2249240121581" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-118.166666666667,14.2249240121581"
+                    Point2="-122.166666666667,14.2249240121581"
+                    Point3="-122.166666666667,18.2249240121581" />
+                  <mssgle:LineSegment
+                    End="-122.166666666667,16.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\KNMT.Paths[OLE DB Source Output]"
+          TopLeft="337.5,74">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="164.166666666667,29"
+              Start="0,0"
+              End="164.166666666667,21.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,13.1884498480243" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,13.1884498480243"
+                    Point2="0,17.1884498480243"
+                    Point3="4,17.1884498480243" />
+                  <mssgle:LineSegment
+                    End="160.166666666667,17.1884498480243" />
+                  <mssgle:CubicBezierSegment
+                    Point1="160.166666666667,17.1884498480243"
+                    Point2="164.166666666667,17.1884498480243"
+                    Point3="164.166666666667,21.1884498480243" />
+                  <mssgle:LineSegment
+                    End="164.166666666667,21.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\KNMT.Paths[Merge Join Output]"
+          TopLeft="522.25,145">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,48"
+              Start="0,0"
+              End="0,40.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,40.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\KNMT.Paths[insert]"
+          TopLeft="486.25,235">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-194.25,44"
+              Start="0,0"
+              End="-194.25,36.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,11.169164882227" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,11.169164882227"
+                    Point2="0,15.169164882227"
+                    Point3="-4,15.169164882227" />
+                  <mssgle:LineSegment
+                    End="-190.25,15.169164882227" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-190.25,15.169164882227"
+                    Point2="-194.25,15.169164882227"
+                    Point3="-194.25,19.169164882227" />
+                  <mssgle:LineSegment
+                    End="-194.25,36.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-110.07498046875,20.169164882227,25.8999609375,9.451171875"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\KNMT.Paths[delete]"
+          TopLeft="558.75,235">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="200.25,46"
+              Start="0,0"
+              End="200.25,38.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,11.8586723768737" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,11.8586723768737"
+                    Point2="0,15.8586723768737"
+                    Point3="4,15.8586723768737" />
+                  <mssgle:LineSegment
+                    End="196.25,15.8586723768737" />
+                  <mssgle:CubicBezierSegment
+                    Point1="196.25,15.8586723768737"
+                    Point2="200.25,15.8586723768737"
+                    Point3="200.25,19.8586723768737" />
+                  <mssgle:LineSegment
+                    End="200.25,38.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="85.92904296875,20.8586723768737,28.3919140625,9.7490234375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\KNMT\insert new records">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\KNMT\stage deleted records">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\KNMT\stage changed records">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\KNMT\DB PBI KNMT">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\KNMT\DB SAP KNMT">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

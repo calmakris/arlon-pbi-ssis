@@ -1,0 +1,2156 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="2/10/2021 9:53:07 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="ARLPBIDEV"
+  DTS:CreatorName="DOMAIN\RPETRELLA"
+  DTS:DTSID="{E08A0CF2-4826-4686-97FB-6438FB6A8784}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="15.0.2000.152"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="VBPA"
+  DTS:PackageType="5"
+  DTS:VersionBuild="32"
+  DTS:VersionGUID="{8B531513-A674-46FA-B8A7-3E9E9AC6CD62}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\clean stage"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{E46DC450-EEE1-4F92-955F-42735314C312}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="clean stage"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="TRUNCATE TABLE [VBPA_STAGE_UPDATE]&#xA;go&#xA;TRUNCATE TABLE [VBPA_STAGE_DELETE]&#xA;go&#xA;TRUNCATE TABLE [VBPA_STAGE_INSERT]&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\step 1"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Sequence Container"
+      DTS:DTSID="{3406A689-5880-433B-8148-CF26D9DD910C}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="step 1">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\step 1\delete"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{E000406A-559F-4BC6-8F88-7E0910E70201}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="delete"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+              SQLTask:SqlStatementSource="DELETE A01&#xA;FROM [VBPA] A01 INNER JOIN [VBPA_STAGE_DELETE] B01 ON ( A01.[MANDT] = B01.[MANDT]&#xA;                                                    AND A01.[VBELN] = B01.[VBELN]&#xA;                                                    AND A01.[POSNR] = B01.[POSNR]&#xA;                                                    AND A01.[PARVW] = B01.[PARVW] )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\step 1\update"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{06C5A000-EDA8-4D7E-954D-7FA83C3E22A7}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="update"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+              SQLTask:SqlStatementSource="UPDATE A01&#xA;SET A01.[KUNNR] = B01.[KUNNR]&#xA;      ,A01.[ADRNR] = B01.[ADRNR]&#xA;FROM [VBPA] A01 INNER JOIN [VBPA_STAGE_UPDATE] B01 ON ( A01.[MANDT] = B01.[MANDT]&#xA;                                                    AND A01.[VBELN] = B01.[VBELN]&#xA;                                                    AND A01.[POSNR] = B01.[POSNR]&#xA;                                                    AND A01.[PARVW] = B01.[PARVW] )" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\step 2"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Sequence Container"
+      DTS:DTSID="{878ea7e2-846c-4fd7-bc51-d9a90c72850b}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="step 2">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\step 2\Insert"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{be03a395-69d8-4f58-b338-d4e8c42414fc}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Insert"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+              SQLTask:SqlStatementSource="INSERT INTO [VBPA]&#xA;SELECT * FROM [VBPA_STAGE_INSERT]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\VBPA"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{6DFF43B3-7924-4222-9BED-5D6B3C6400AD}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="VBPA"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\VBPA\DB DBI VBPA"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="DB DBI VBPA"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT A01.[MANDT]
+      ,A01.[VBELN]
+      ,A01.[POSNR]
+      ,A01.[KUNNR]
+      ,A01.[ADRNR]
+      ,A01.[PARVW]
+FROM [VBPA] A01 (NOLOCK)
+ORDER BY A01.[MANDT]
+        ,A01.[VBELN]
+        ,A01.[POSNR]
+        ,A01.[PARVW]</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\VBPA\DB DBI VBPA.Connections[OleDbConnection]"
+                  connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\VBPA\DB DBI VBPA.Outputs[OLE DB Source Output]"
+                  isSorted="true"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\VBPA\DB DBI VBPA.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\VBPA\DB DBI VBPA.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      length="3"
+                      lineageId="Package\VBPA\DB DBI VBPA.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      name="MANDT"
+                      sortKeyPosition="1"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\VBPA\DB DBI VBPA.Outputs[OLE DB Source Output].Columns[VBELN]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\VBPA\DB DBI VBPA.Outputs[OLE DB Source Output].ExternalColumns[VBELN]"
+                      length="10"
+                      lineageId="Package\VBPA\DB DBI VBPA.Outputs[OLE DB Source Output].Columns[VBELN]"
+                      name="VBELN"
+                      sortKeyPosition="2"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\VBPA\DB DBI VBPA.Outputs[OLE DB Source Output].Columns[POSNR]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\VBPA\DB DBI VBPA.Outputs[OLE DB Source Output].ExternalColumns[POSNR]"
+                      length="6"
+                      lineageId="Package\VBPA\DB DBI VBPA.Outputs[OLE DB Source Output].Columns[POSNR]"
+                      name="POSNR"
+                      sortKeyPosition="3"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\VBPA\DB DBI VBPA.Outputs[OLE DB Source Output].Columns[ADRNR]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\VBPA\DB DBI VBPA.Outputs[OLE DB Source Output].ExternalColumns[ADRNR]"
+                      length="10"
+                      lineageId="Package\VBPA\DB DBI VBPA.Outputs[OLE DB Source Output].Columns[ADRNR]"
+                      name="ADRNR"
+                      sortKeyPosition="5"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\VBPA\DB DBI VBPA.Outputs[OLE DB Source Output].Columns[PARVW]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\VBPA\DB DBI VBPA.Outputs[OLE DB Source Output].ExternalColumns[PARVW]"
+                      length="2"
+                      lineageId="Package\VBPA\DB DBI VBPA.Outputs[OLE DB Source Output].Columns[PARVW]"
+                      name="PARVW"
+                      sortKeyPosition="4"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\VBPA\DB DBI VBPA.Outputs[OLE DB Source Output].Columns[KUNNR]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\VBPA\DB DBI VBPA.Outputs[OLE DB Source Output].ExternalColumns[KUNNR]"
+                      length="10"
+                      lineageId="Package\VBPA\DB DBI VBPA.Outputs[OLE DB Source Output].Columns[KUNNR]"
+                      name="KUNNR"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\VBPA\DB DBI VBPA.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      name="MANDT" />
+                    <externalMetadataColumn
+                      refId="Package\VBPA\DB DBI VBPA.Outputs[OLE DB Source Output].ExternalColumns[VBELN]"
+                      dataType="wstr"
+                      length="10"
+                      name="VBELN" />
+                    <externalMetadataColumn
+                      refId="Package\VBPA\DB DBI VBPA.Outputs[OLE DB Source Output].ExternalColumns[POSNR]"
+                      dataType="wstr"
+                      length="6"
+                      name="POSNR" />
+                    <externalMetadataColumn
+                      refId="Package\VBPA\DB DBI VBPA.Outputs[OLE DB Source Output].ExternalColumns[ADRNR]"
+                      dataType="wstr"
+                      length="10"
+                      name="ADRNR" />
+                    <externalMetadataColumn
+                      refId="Package\VBPA\DB DBI VBPA.Outputs[OLE DB Source Output].ExternalColumns[PARVW]"
+                      dataType="wstr"
+                      length="2"
+                      name="PARVW" />
+                    <externalMetadataColumn
+                      refId="Package\VBPA\DB DBI VBPA.Outputs[OLE DB Source Output].ExternalColumns[KUNNR]"
+                      dataType="wstr"
+                      length="10"
+                      name="KUNNR" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\VBPA\DB DBI VBPA.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\VBPA\DB DBI VBPA.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      lineageId="Package\VBPA\DB DBI VBPA.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      name="MANDT" />
+                    <outputColumn
+                      refId="Package\VBPA\DB DBI VBPA.Outputs[OLE DB Source Error Output].Columns[VBELN]"
+                      dataType="wstr"
+                      length="10"
+                      lineageId="Package\VBPA\DB DBI VBPA.Outputs[OLE DB Source Error Output].Columns[VBELN]"
+                      name="VBELN" />
+                    <outputColumn
+                      refId="Package\VBPA\DB DBI VBPA.Outputs[OLE DB Source Error Output].Columns[POSNR]"
+                      dataType="wstr"
+                      length="6"
+                      lineageId="Package\VBPA\DB DBI VBPA.Outputs[OLE DB Source Error Output].Columns[POSNR]"
+                      name="POSNR" />
+                    <outputColumn
+                      refId="Package\VBPA\DB DBI VBPA.Outputs[OLE DB Source Error Output].Columns[KUNNR]"
+                      dataType="wstr"
+                      length="10"
+                      lineageId="Package\VBPA\DB DBI VBPA.Outputs[OLE DB Source Error Output].Columns[KUNNR]"
+                      name="KUNNR" />
+                    <outputColumn
+                      refId="Package\VBPA\DB DBI VBPA.Outputs[OLE DB Source Error Output].Columns[ADRNR]"
+                      dataType="wstr"
+                      length="10"
+                      lineageId="Package\VBPA\DB DBI VBPA.Outputs[OLE DB Source Error Output].Columns[ADRNR]"
+                      name="ADRNR" />
+                    <outputColumn
+                      refId="Package\VBPA\DB DBI VBPA.Outputs[OLE DB Source Error Output].Columns[PARVW]"
+                      dataType="wstr"
+                      length="2"
+                      lineageId="Package\VBPA\DB DBI VBPA.Outputs[OLE DB Source Error Output].Columns[PARVW]"
+                      name="PARVW" />
+                    <outputColumn
+                      refId="Package\VBPA\DB DBI VBPA.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\VBPA\DB DBI VBPA.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\VBPA\DB DBI VBPA.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\VBPA\DB DBI VBPA.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\VBPA\DB SAP VBPA"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="DB SAP VBPA"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT A01.[MANDT]
+      ,A01.[VBELN]
+      ,A01.[POSNR]
+      ,A01.[KUNNR]
+      ,A01.[ADRNR]
+      ,A01.[PARVW]
+FROM [ecp].[VBPA] A01 (NOLOCK)
+ORDER BY A01.[MANDT]
+        ,A01.[VBELN]
+        ,A01.[POSNR]
+        ,A01.[PARVW]</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\VBPA\DB SAP VBPA.Connections[OleDbConnection]"
+                  connectionManagerID="{544CCAD9-2CB1-4D87-98D7-A7C478586195}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[SQL_SAP]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\VBPA\DB SAP VBPA.Outputs[OLE DB Source Output]"
+                  isSorted="true"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\VBPA\DB SAP VBPA.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\VBPA\DB SAP VBPA.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      length="3"
+                      lineageId="Package\VBPA\DB SAP VBPA.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      name="MANDT"
+                      sortKeyPosition="1"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\VBPA\DB SAP VBPA.Outputs[OLE DB Source Output].Columns[VBELN]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\VBPA\DB SAP VBPA.Outputs[OLE DB Source Output].ExternalColumns[VBELN]"
+                      length="10"
+                      lineageId="Package\VBPA\DB SAP VBPA.Outputs[OLE DB Source Output].Columns[VBELN]"
+                      name="VBELN"
+                      sortKeyPosition="2"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\VBPA\DB SAP VBPA.Outputs[OLE DB Source Output].Columns[POSNR]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\VBPA\DB SAP VBPA.Outputs[OLE DB Source Output].ExternalColumns[POSNR]"
+                      length="6"
+                      lineageId="Package\VBPA\DB SAP VBPA.Outputs[OLE DB Source Output].Columns[POSNR]"
+                      name="POSNR"
+                      sortKeyPosition="3"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\VBPA\DB SAP VBPA.Outputs[OLE DB Source Output].Columns[ADRNR]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\VBPA\DB SAP VBPA.Outputs[OLE DB Source Output].ExternalColumns[ADRNR]"
+                      length="10"
+                      lineageId="Package\VBPA\DB SAP VBPA.Outputs[OLE DB Source Output].Columns[ADRNR]"
+                      name="ADRNR"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\VBPA\DB SAP VBPA.Outputs[OLE DB Source Output].Columns[PARVW]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\VBPA\DB SAP VBPA.Outputs[OLE DB Source Output].ExternalColumns[PARVW]"
+                      length="2"
+                      lineageId="Package\VBPA\DB SAP VBPA.Outputs[OLE DB Source Output].Columns[PARVW]"
+                      name="PARVW"
+                      sortKeyPosition="4"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\VBPA\DB SAP VBPA.Outputs[OLE DB Source Output].Columns[KUNNR]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\VBPA\DB SAP VBPA.Outputs[OLE DB Source Output].ExternalColumns[KUNNR]"
+                      length="10"
+                      lineageId="Package\VBPA\DB SAP VBPA.Outputs[OLE DB Source Output].Columns[KUNNR]"
+                      name="KUNNR"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\VBPA\DB SAP VBPA.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      name="MANDT" />
+                    <externalMetadataColumn
+                      refId="Package\VBPA\DB SAP VBPA.Outputs[OLE DB Source Output].ExternalColumns[VBELN]"
+                      dataType="wstr"
+                      length="10"
+                      name="VBELN" />
+                    <externalMetadataColumn
+                      refId="Package\VBPA\DB SAP VBPA.Outputs[OLE DB Source Output].ExternalColumns[POSNR]"
+                      dataType="wstr"
+                      length="6"
+                      name="POSNR" />
+                    <externalMetadataColumn
+                      refId="Package\VBPA\DB SAP VBPA.Outputs[OLE DB Source Output].ExternalColumns[ADRNR]"
+                      dataType="wstr"
+                      length="10"
+                      name="ADRNR" />
+                    <externalMetadataColumn
+                      refId="Package\VBPA\DB SAP VBPA.Outputs[OLE DB Source Output].ExternalColumns[PARVW]"
+                      dataType="wstr"
+                      length="2"
+                      name="PARVW" />
+                    <externalMetadataColumn
+                      refId="Package\VBPA\DB SAP VBPA.Outputs[OLE DB Source Output].ExternalColumns[KUNNR]"
+                      dataType="wstr"
+                      length="10"
+                      name="KUNNR" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\VBPA\DB SAP VBPA.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\VBPA\DB SAP VBPA.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      lineageId="Package\VBPA\DB SAP VBPA.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      name="MANDT" />
+                    <outputColumn
+                      refId="Package\VBPA\DB SAP VBPA.Outputs[OLE DB Source Error Output].Columns[VBELN]"
+                      dataType="wstr"
+                      length="10"
+                      lineageId="Package\VBPA\DB SAP VBPA.Outputs[OLE DB Source Error Output].Columns[VBELN]"
+                      name="VBELN" />
+                    <outputColumn
+                      refId="Package\VBPA\DB SAP VBPA.Outputs[OLE DB Source Error Output].Columns[POSNR]"
+                      dataType="wstr"
+                      length="6"
+                      lineageId="Package\VBPA\DB SAP VBPA.Outputs[OLE DB Source Error Output].Columns[POSNR]"
+                      name="POSNR" />
+                    <outputColumn
+                      refId="Package\VBPA\DB SAP VBPA.Outputs[OLE DB Source Error Output].Columns[KUNNR]"
+                      dataType="wstr"
+                      length="10"
+                      lineageId="Package\VBPA\DB SAP VBPA.Outputs[OLE DB Source Error Output].Columns[KUNNR]"
+                      name="KUNNR" />
+                    <outputColumn
+                      refId="Package\VBPA\DB SAP VBPA.Outputs[OLE DB Source Error Output].Columns[ADRNR]"
+                      dataType="wstr"
+                      length="10"
+                      lineageId="Package\VBPA\DB SAP VBPA.Outputs[OLE DB Source Error Output].Columns[ADRNR]"
+                      name="ADRNR" />
+                    <outputColumn
+                      refId="Package\VBPA\DB SAP VBPA.Outputs[OLE DB Source Error Output].Columns[PARVW]"
+                      dataType="wstr"
+                      length="2"
+                      lineageId="Package\VBPA\DB SAP VBPA.Outputs[OLE DB Source Error Output].Columns[PARVW]"
+                      name="PARVW" />
+                    <outputColumn
+                      refId="Package\VBPA\DB SAP VBPA.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\VBPA\DB SAP VBPA.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\VBPA\DB SAP VBPA.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\VBPA\DB SAP VBPA.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\VBPA\Find Changed Records"
+              componentClassID="Microsoft.ConditionalSplit"
+              contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
+              name="Find Changed Records"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\VBPA\Find Changed Records.Inputs[Conditional Split Input]"
+                  description="Input to the Conditional Split Transformation"
+                  name="Conditional Split Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\VBPA\Find Changed Records.Inputs[Conditional Split Input].Columns[ADRNR]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="ADRNR"
+                      cachedSortKeyPosition="5"
+                      lineageId="Package\VBPA\Merge Join.Outputs[Merge Join Output].Columns[ADRNR]" />
+                    <inputColumn
+                      refId="Package\VBPA\Find Changed Records.Inputs[Conditional Split Input].Columns[ADRNR (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="ADRNR (1)"
+                      lineageId="Package\VBPA\Merge Join.Outputs[Merge Join Output].Columns[ADRNR (1)]" />
+                    <inputColumn
+                      refId="Package\VBPA\Find Changed Records.Inputs[Conditional Split Input].Columns[KUNNR]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="KUNNR"
+                      lineageId="Package\VBPA\Merge Join.Outputs[Merge Join Output].Columns[KUNNR]" />
+                    <inputColumn
+                      refId="Package\VBPA\Find Changed Records.Inputs[Conditional Split Input].Columns[KUNNR (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="20"
+                      cachedName="KUNNR (1)"
+                      lineageId="Package\VBPA\Merge Join.Outputs[Merge Join Output].Columns[KUNNR (1)]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\VBPA\Find Changed Records.Outputs[update]"
+                  description="Output 1 of the Conditional Split Transformation"
+                  errorOrTruncationOperation="Computation"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="update"
+                  synchronousInputId="Package\VBPA\Find Changed Records.Inputs[Conditional Split Input]"
+                  truncationRowDisposition="FailComponent">
+                  <properties>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                      name="Expression">#{Package\VBPA\Merge Join.Outputs[Merge Join Output].Columns[ADRNR]} != #{Package\VBPA\Merge Join.Outputs[Merge Join Output].Columns[ADRNR (1)]} || #{Package\VBPA\Merge Join.Outputs[Merge Join Output].Columns[KUNNR]} != #{Package\VBPA\Merge Join.Outputs[Merge Join Output].Columns[KUNNR (1)]}</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the friendly version of the expression. This expression version uses column names."
+                      expressionType="Notify"
+                      name="FriendlyExpression">ADRNR != [ADRNR (1)] || KUNNR != [KUNNR (1)]</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                      name="EvaluationOrder">0</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\VBPA\Find Changed Records.Outputs[Conditional Split Default Output]"
+                  description="Default Output of the Conditional Split Transformation"
+                  exclusionGroup="1"
+                  name="Conditional Split Default Output"
+                  synchronousInputId="Package\VBPA\Find Changed Records.Inputs[Conditional Split Input]">
+                  <properties>
+                    <property
+                      dataType="System.Boolean"
+                      name="IsDefaultOut">true</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\VBPA\Find Changed Records.Outputs[Conditional Split Error Output]"
+                  description="Error Output of the Conditional Split Transformation"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Conditional Split Error Output"
+                  synchronousInputId="Package\VBPA\Find Changed Records.Inputs[Conditional Split Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\VBPA\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\VBPA\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\VBPA\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\VBPA\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\VBPA\Identify Record"
+              componentClassID="Microsoft.ConditionalSplit"
+              contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
+              name="Identify Record"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\VBPA\Identify Record.Inputs[Conditional Split Input]"
+                  description="Input to the Conditional Split Transformation"
+                  name="Conditional Split Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\VBPA\Identify Record.Inputs[Conditional Split Input].Columns[MANDT]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT"
+                      cachedSortKeyPosition="1"
+                      lineageId="Package\VBPA\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
+                    <inputColumn
+                      refId="Package\VBPA\Identify Record.Inputs[Conditional Split Input].Columns[MANDT (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT (1)"
+                      lineageId="Package\VBPA\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\VBPA\Identify Record.Outputs[update]"
+                  description="Output 1 of the Conditional Split Transformation"
+                  errorOrTruncationOperation="Computation"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="update"
+                  synchronousInputId="Package\VBPA\Identify Record.Inputs[Conditional Split Input]"
+                  truncationRowDisposition="FailComponent">
+                  <properties>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                      name="Expression">![ISNULL](#{Package\VBPA\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; ![ISNULL](#{Package\VBPA\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the friendly version of the expression. This expression version uses column names."
+                      expressionType="Notify"
+                      name="FriendlyExpression">!ISNULL(MANDT) &amp;&amp; !ISNULL([MANDT (1)])</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                      name="EvaluationOrder">0</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\VBPA\Identify Record.Outputs[insert]"
+                  description="Output 2 of the Conditional Split Transformation"
+                  errorOrTruncationOperation="Computation"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="insert"
+                  synchronousInputId="Package\VBPA\Identify Record.Inputs[Conditional Split Input]"
+                  truncationRowDisposition="FailComponent">
+                  <properties>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                      name="Expression">![ISNULL](#{Package\VBPA\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; [ISNULL](#{Package\VBPA\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the friendly version of the expression. This expression version uses column names."
+                      expressionType="Notify"
+                      name="FriendlyExpression">!ISNULL(MANDT) &amp;&amp; ISNULL([MANDT (1)])</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                      name="EvaluationOrder">1</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\VBPA\Identify Record.Outputs[delete]"
+                  description="Output 3 of the Conditional Split Transformation"
+                  errorOrTruncationOperation="Computation"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="delete"
+                  synchronousInputId="Package\VBPA\Identify Record.Inputs[Conditional Split Input]"
+                  truncationRowDisposition="FailComponent">
+                  <properties>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                      name="Expression">[ISNULL](#{Package\VBPA\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; ![ISNULL](#{Package\VBPA\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the friendly version of the expression. This expression version uses column names."
+                      expressionType="Notify"
+                      name="FriendlyExpression">ISNULL(MANDT) &amp;&amp; !ISNULL([MANDT (1)])</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                      name="EvaluationOrder">2</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\VBPA\Identify Record.Outputs[Conditional Split Default Output]"
+                  description="Default Output of the Conditional Split Transformation"
+                  exclusionGroup="1"
+                  name="Conditional Split Default Output"
+                  synchronousInputId="Package\VBPA\Identify Record.Inputs[Conditional Split Input]">
+                  <properties>
+                    <property
+                      dataType="System.Boolean"
+                      name="IsDefaultOut">true</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\VBPA\Identify Record.Outputs[Conditional Split Error Output]"
+                  description="Error Output of the Conditional Split Transformation"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Conditional Split Error Output"
+                  synchronousInputId="Package\VBPA\Identify Record.Inputs[Conditional Split Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\VBPA\Identify Record.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\VBPA\Identify Record.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\VBPA\Identify Record.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\VBPA\Identify Record.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\VBPA\insert new records"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="insert new records"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[VBPA_STAGE_INSERT]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\VBPA\insert new records.Connections[OleDbConnection]"
+                  connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\VBPA\insert new records.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\VBPA\insert new records.Inputs[OLE DB Destination Input].Columns[MANDT]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT"
+                      cachedSortKeyPosition="1"
+                      externalMetadataColumnId="Package\VBPA\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      lineageId="Package\VBPA\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
+                    <inputColumn
+                      refId="Package\VBPA\insert new records.Inputs[OLE DB Destination Input].Columns[VBELN]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="VBELN"
+                      cachedSortKeyPosition="2"
+                      externalMetadataColumnId="Package\VBPA\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[VBELN]"
+                      lineageId="Package\VBPA\Merge Join.Outputs[Merge Join Output].Columns[VBELN]" />
+                    <inputColumn
+                      refId="Package\VBPA\insert new records.Inputs[OLE DB Destination Input].Columns[POSNR]"
+                      cachedDataType="wstr"
+                      cachedLength="6"
+                      cachedName="POSNR"
+                      cachedSortKeyPosition="3"
+                      externalMetadataColumnId="Package\VBPA\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[POSNR]"
+                      lineageId="Package\VBPA\Merge Join.Outputs[Merge Join Output].Columns[POSNR]" />
+                    <inputColumn
+                      refId="Package\VBPA\insert new records.Inputs[OLE DB Destination Input].Columns[ADRNR]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="ADRNR"
+                      cachedSortKeyPosition="5"
+                      externalMetadataColumnId="Package\VBPA\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[ADRNR]"
+                      lineageId="Package\VBPA\Merge Join.Outputs[Merge Join Output].Columns[ADRNR]" />
+                    <inputColumn
+                      refId="Package\VBPA\insert new records.Inputs[OLE DB Destination Input].Columns[PARVW]"
+                      cachedDataType="wstr"
+                      cachedLength="2"
+                      cachedName="PARVW"
+                      cachedSortKeyPosition="4"
+                      externalMetadataColumnId="Package\VBPA\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[PARVW]"
+                      lineageId="Package\VBPA\Merge Join.Outputs[Merge Join Output].Columns[PARVW]" />
+                    <inputColumn
+                      refId="Package\VBPA\insert new records.Inputs[OLE DB Destination Input].Columns[KUNNR]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="KUNNR"
+                      externalMetadataColumnId="Package\VBPA\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[KUNNR]"
+                      lineageId="Package\VBPA\Merge Join.Outputs[Merge Join Output].Columns[KUNNR]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\VBPA\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      name="MANDT" />
+                    <externalMetadataColumn
+                      refId="Package\VBPA\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[VBELN]"
+                      dataType="wstr"
+                      length="10"
+                      name="VBELN" />
+                    <externalMetadataColumn
+                      refId="Package\VBPA\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[POSNR]"
+                      dataType="wstr"
+                      length="6"
+                      name="POSNR" />
+                    <externalMetadataColumn
+                      refId="Package\VBPA\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[ADRNR]"
+                      dataType="wstr"
+                      length="10"
+                      name="ADRNR" />
+                    <externalMetadataColumn
+                      refId="Package\VBPA\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[PARVW]"
+                      dataType="wstr"
+                      length="2"
+                      name="PARVW" />
+                    <externalMetadataColumn
+                      refId="Package\VBPA\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[KUNNR]"
+                      dataType="wstr"
+                      length="10"
+                      name="KUNNR" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\VBPA\insert new records.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\VBPA\insert new records.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\VBPA\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\VBPA\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\VBPA\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\VBPA\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\VBPA\Merge Join"
+              componentClassID="Microsoft.MergeJoin"
+              contactInfo="Merge Join;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
+              description="Combine two sorted data flows into one using the FULL, LEFT, or INNER join. We recommend this transformation when data flows can be sorted at their sources."
+              name="Merge Join"
+              version="1">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the type of join to perform."
+                  name="JoinType"
+                  typeConverter="JoinType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the number of columns in the ordering key."
+                  name="NumKeyColumns">4</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the null values are treated as equal values."
+                  name="TreatNullsAsEqual">true</property>
+                <property
+                  dataType="System.Int32"
+                  description="Indicates the requested maximum buffers per input before blocking."
+                  name="MaxBuffersPerInput">5</property>
+              </properties>
+              <inputs>
+                <input
+                  refId="Package\VBPA\Merge Join.Inputs[Merge Join Left Input]"
+                  hasSideEffects="true"
+                  name="Merge Join Left Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\VBPA\Merge Join.Inputs[Merge Join Left Input].Columns[MANDT]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT"
+                      cachedSortKeyPosition="1"
+                      lineageId="Package\VBPA\DB SAP VBPA.Outputs[OLE DB Source Output].Columns[MANDT]" />
+                    <inputColumn
+                      refId="Package\VBPA\Merge Join.Inputs[Merge Join Left Input].Columns[VBELN]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="VBELN"
+                      cachedSortKeyPosition="2"
+                      lineageId="Package\VBPA\DB SAP VBPA.Outputs[OLE DB Source Output].Columns[VBELN]" />
+                    <inputColumn
+                      refId="Package\VBPA\Merge Join.Inputs[Merge Join Left Input].Columns[POSNR]"
+                      cachedDataType="wstr"
+                      cachedLength="6"
+                      cachedName="POSNR"
+                      cachedSortKeyPosition="3"
+                      lineageId="Package\VBPA\DB SAP VBPA.Outputs[OLE DB Source Output].Columns[POSNR]" />
+                    <inputColumn
+                      refId="Package\VBPA\Merge Join.Inputs[Merge Join Left Input].Columns[ADRNR]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="ADRNR"
+                      lineageId="Package\VBPA\DB SAP VBPA.Outputs[OLE DB Source Output].Columns[ADRNR]" />
+                    <inputColumn
+                      refId="Package\VBPA\Merge Join.Inputs[Merge Join Left Input].Columns[PARVW]"
+                      cachedDataType="wstr"
+                      cachedLength="2"
+                      cachedName="PARVW"
+                      cachedSortKeyPosition="4"
+                      lineageId="Package\VBPA\DB SAP VBPA.Outputs[OLE DB Source Output].Columns[PARVW]" />
+                    <inputColumn
+                      refId="Package\VBPA\Merge Join.Inputs[Merge Join Left Input].Columns[KUNNR]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="KUNNR"
+                      lineageId="Package\VBPA\DB SAP VBPA.Outputs[OLE DB Source Output].Columns[KUNNR]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+                <input
+                  refId="Package\VBPA\Merge Join.Inputs[Merge Join Right Input]"
+                  hasSideEffects="true"
+                  name="Merge Join Right Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\VBPA\Merge Join.Inputs[Merge Join Right Input].Columns[MANDT]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT"
+                      cachedSortKeyPosition="1"
+                      lineageId="Package\VBPA\DB DBI VBPA.Outputs[OLE DB Source Output].Columns[MANDT]" />
+                    <inputColumn
+                      refId="Package\VBPA\Merge Join.Inputs[Merge Join Right Input].Columns[VBELN]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="VBELN"
+                      cachedSortKeyPosition="2"
+                      lineageId="Package\VBPA\DB DBI VBPA.Outputs[OLE DB Source Output].Columns[VBELN]" />
+                    <inputColumn
+                      refId="Package\VBPA\Merge Join.Inputs[Merge Join Right Input].Columns[POSNR]"
+                      cachedDataType="wstr"
+                      cachedLength="6"
+                      cachedName="POSNR"
+                      cachedSortKeyPosition="3"
+                      lineageId="Package\VBPA\DB DBI VBPA.Outputs[OLE DB Source Output].Columns[POSNR]" />
+                    <inputColumn
+                      refId="Package\VBPA\Merge Join.Inputs[Merge Join Right Input].Columns[ADRNR]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="ADRNR"
+                      cachedSortKeyPosition="5"
+                      lineageId="Package\VBPA\DB DBI VBPA.Outputs[OLE DB Source Output].Columns[ADRNR]" />
+                    <inputColumn
+                      refId="Package\VBPA\Merge Join.Inputs[Merge Join Right Input].Columns[PARVW]"
+                      cachedDataType="wstr"
+                      cachedLength="2"
+                      cachedName="PARVW"
+                      cachedSortKeyPosition="4"
+                      lineageId="Package\VBPA\DB DBI VBPA.Outputs[OLE DB Source Output].Columns[PARVW]" />
+                    <inputColumn
+                      refId="Package\VBPA\Merge Join.Inputs[Merge Join Right Input].Columns[KUNNR]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="KUNNR"
+                      lineageId="Package\VBPA\DB DBI VBPA.Outputs[OLE DB Source Output].Columns[KUNNR]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\VBPA\Merge Join.Outputs[Merge Join Output]"
+                  isSorted="true"
+                  name="Merge Join Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\VBPA\Merge Join.Outputs[Merge Join Output].Columns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      lineageId="Package\VBPA\Merge Join.Outputs[Merge Join Output].Columns[MANDT]"
+                      name="MANDT"
+                      sortKeyPosition="1">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\VBPA\Merge Join.Inputs[Merge Join Left Input].Columns[MANDT]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\VBPA\Merge Join.Outputs[Merge Join Output].Columns[VBELN]"
+                      dataType="wstr"
+                      length="10"
+                      lineageId="Package\VBPA\Merge Join.Outputs[Merge Join Output].Columns[VBELN]"
+                      name="VBELN"
+                      sortKeyPosition="2">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\VBPA\Merge Join.Inputs[Merge Join Left Input].Columns[VBELN]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\VBPA\Merge Join.Outputs[Merge Join Output].Columns[POSNR]"
+                      dataType="wstr"
+                      length="6"
+                      lineageId="Package\VBPA\Merge Join.Outputs[Merge Join Output].Columns[POSNR]"
+                      name="POSNR"
+                      sortKeyPosition="3">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\VBPA\Merge Join.Inputs[Merge Join Left Input].Columns[POSNR]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\VBPA\Merge Join.Outputs[Merge Join Output].Columns[ADRNR]"
+                      dataType="wstr"
+                      length="10"
+                      lineageId="Package\VBPA\Merge Join.Outputs[Merge Join Output].Columns[ADRNR]"
+                      name="ADRNR"
+                      sortKeyPosition="5">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\VBPA\Merge Join.Inputs[Merge Join Left Input].Columns[ADRNR]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\VBPA\Merge Join.Outputs[Merge Join Output].Columns[PARVW]"
+                      dataType="wstr"
+                      length="2"
+                      lineageId="Package\VBPA\Merge Join.Outputs[Merge Join Output].Columns[PARVW]"
+                      name="PARVW"
+                      sortKeyPosition="4">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\VBPA\Merge Join.Inputs[Merge Join Left Input].Columns[PARVW]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\VBPA\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]"
+                      dataType="wstr"
+                      length="3"
+                      lineageId="Package\VBPA\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]"
+                      name="MANDT (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\VBPA\Merge Join.Inputs[Merge Join Right Input].Columns[MANDT]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\VBPA\Merge Join.Outputs[Merge Join Output].Columns[VBELN (1)]"
+                      dataType="wstr"
+                      length="10"
+                      lineageId="Package\VBPA\Merge Join.Outputs[Merge Join Output].Columns[VBELN (1)]"
+                      name="VBELN (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\VBPA\Merge Join.Inputs[Merge Join Right Input].Columns[VBELN]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\VBPA\Merge Join.Outputs[Merge Join Output].Columns[POSNR (1)]"
+                      dataType="wstr"
+                      length="6"
+                      lineageId="Package\VBPA\Merge Join.Outputs[Merge Join Output].Columns[POSNR (1)]"
+                      name="POSNR (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\VBPA\Merge Join.Inputs[Merge Join Right Input].Columns[POSNR]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\VBPA\Merge Join.Outputs[Merge Join Output].Columns[ADRNR (1)]"
+                      dataType="wstr"
+                      length="10"
+                      lineageId="Package\VBPA\Merge Join.Outputs[Merge Join Output].Columns[ADRNR (1)]"
+                      name="ADRNR (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\VBPA\Merge Join.Inputs[Merge Join Right Input].Columns[ADRNR]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\VBPA\Merge Join.Outputs[Merge Join Output].Columns[PARVW (1)]"
+                      dataType="wstr"
+                      length="2"
+                      lineageId="Package\VBPA\Merge Join.Outputs[Merge Join Output].Columns[PARVW (1)]"
+                      name="PARVW (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\VBPA\Merge Join.Inputs[Merge Join Right Input].Columns[PARVW]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\VBPA\Merge Join.Outputs[Merge Join Output].Columns[KUNNR]"
+                      dataType="wstr"
+                      length="10"
+                      lineageId="Package\VBPA\Merge Join.Outputs[Merge Join Output].Columns[KUNNR]"
+                      name="KUNNR">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\VBPA\Merge Join.Inputs[Merge Join Left Input].Columns[KUNNR]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\VBPA\Merge Join.Outputs[Merge Join Output].Columns[KUNNR (1)]"
+                      dataType="wstr"
+                      length="20"
+                      lineageId="Package\VBPA\Merge Join.Outputs[Merge Join Output].Columns[KUNNR (1)]"
+                      name="KUNNR (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\VBPA\Merge Join.Inputs[Merge Join Right Input].Columns[KUNNR]}</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\VBPA\stage changed records"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="stage changed records"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[VBPA_STAGE_UPDATE]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\VBPA\stage changed records.Connections[OleDbConnection]"
+                  connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\VBPA\stage changed records.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\VBPA\stage changed records.Inputs[OLE DB Destination Input].Columns[MANDT]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT"
+                      cachedSortKeyPosition="1"
+                      externalMetadataColumnId="Package\VBPA\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      lineageId="Package\VBPA\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
+                    <inputColumn
+                      refId="Package\VBPA\stage changed records.Inputs[OLE DB Destination Input].Columns[VBELN]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="VBELN"
+                      cachedSortKeyPosition="2"
+                      externalMetadataColumnId="Package\VBPA\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[VBELN]"
+                      lineageId="Package\VBPA\Merge Join.Outputs[Merge Join Output].Columns[VBELN]" />
+                    <inputColumn
+                      refId="Package\VBPA\stage changed records.Inputs[OLE DB Destination Input].Columns[POSNR]"
+                      cachedDataType="wstr"
+                      cachedLength="6"
+                      cachedName="POSNR"
+                      cachedSortKeyPosition="3"
+                      externalMetadataColumnId="Package\VBPA\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[POSNR]"
+                      lineageId="Package\VBPA\Merge Join.Outputs[Merge Join Output].Columns[POSNR]" />
+                    <inputColumn
+                      refId="Package\VBPA\stage changed records.Inputs[OLE DB Destination Input].Columns[ADRNR]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="ADRNR"
+                      cachedSortKeyPosition="5"
+                      externalMetadataColumnId="Package\VBPA\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[ADRNR]"
+                      lineageId="Package\VBPA\Merge Join.Outputs[Merge Join Output].Columns[ADRNR]" />
+                    <inputColumn
+                      refId="Package\VBPA\stage changed records.Inputs[OLE DB Destination Input].Columns[PARVW]"
+                      cachedDataType="wstr"
+                      cachedLength="2"
+                      cachedName="PARVW"
+                      cachedSortKeyPosition="4"
+                      externalMetadataColumnId="Package\VBPA\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[PARVW]"
+                      lineageId="Package\VBPA\Merge Join.Outputs[Merge Join Output].Columns[PARVW]" />
+                    <inputColumn
+                      refId="Package\VBPA\stage changed records.Inputs[OLE DB Destination Input].Columns[KUNNR]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="KUNNR"
+                      externalMetadataColumnId="Package\VBPA\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[KUNNR]"
+                      lineageId="Package\VBPA\Merge Join.Outputs[Merge Join Output].Columns[KUNNR]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\VBPA\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      name="MANDT" />
+                    <externalMetadataColumn
+                      refId="Package\VBPA\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[VBELN]"
+                      dataType="wstr"
+                      length="10"
+                      name="VBELN" />
+                    <externalMetadataColumn
+                      refId="Package\VBPA\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[POSNR]"
+                      dataType="wstr"
+                      length="6"
+                      name="POSNR" />
+                    <externalMetadataColumn
+                      refId="Package\VBPA\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[ADRNR]"
+                      dataType="wstr"
+                      length="10"
+                      name="ADRNR" />
+                    <externalMetadataColumn
+                      refId="Package\VBPA\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[PARVW]"
+                      dataType="wstr"
+                      length="2"
+                      name="PARVW" />
+                    <externalMetadataColumn
+                      refId="Package\VBPA\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[KUNNR]"
+                      dataType="wstr"
+                      length="10"
+                      name="KUNNR" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\VBPA\stage changed records.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\VBPA\stage changed records.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\VBPA\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\VBPA\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\VBPA\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\VBPA\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\VBPA\stage deleted records"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="stage deleted records"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[VBPA_STAGE_DELETE]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\VBPA\stage deleted records.Connections[OleDbConnection]"
+                  connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\VBPA\stage deleted records.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\VBPA\stage deleted records.Inputs[OLE DB Destination Input].Columns[MANDT (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT (1)"
+                      externalMetadataColumnId="Package\VBPA\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      lineageId="Package\VBPA\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]" />
+                    <inputColumn
+                      refId="Package\VBPA\stage deleted records.Inputs[OLE DB Destination Input].Columns[VBELN (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="VBELN (1)"
+                      externalMetadataColumnId="Package\VBPA\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[VBELN]"
+                      lineageId="Package\VBPA\Merge Join.Outputs[Merge Join Output].Columns[VBELN (1)]" />
+                    <inputColumn
+                      refId="Package\VBPA\stage deleted records.Inputs[OLE DB Destination Input].Columns[POSNR (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="6"
+                      cachedName="POSNR (1)"
+                      externalMetadataColumnId="Package\VBPA\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[POSNR]"
+                      lineageId="Package\VBPA\Merge Join.Outputs[Merge Join Output].Columns[POSNR (1)]" />
+                    <inputColumn
+                      refId="Package\VBPA\stage deleted records.Inputs[OLE DB Destination Input].Columns[PARVW (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="2"
+                      cachedName="PARVW (1)"
+                      externalMetadataColumnId="Package\VBPA\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[PARVW]"
+                      lineageId="Package\VBPA\Merge Join.Outputs[Merge Join Output].Columns[PARVW (1)]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\VBPA\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      name="MANDT" />
+                    <externalMetadataColumn
+                      refId="Package\VBPA\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[VBELN]"
+                      dataType="wstr"
+                      length="10"
+                      name="VBELN" />
+                    <externalMetadataColumn
+                      refId="Package\VBPA\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[POSNR]"
+                      dataType="wstr"
+                      length="6"
+                      name="POSNR" />
+                    <externalMetadataColumn
+                      refId="Package\VBPA\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[PARVW]"
+                      dataType="wstr"
+                      length="2"
+                      name="PARVW" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\VBPA\stage deleted records.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\VBPA\stage deleted records.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\VBPA\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\VBPA\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\VBPA\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\VBPA\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\VBPA.Paths[delete]"
+              endId="Package\VBPA\stage deleted records.Inputs[OLE DB Destination Input]"
+              name="delete"
+              startId="Package\VBPA\Identify Record.Outputs[delete]" />
+            <path
+              refId="Package\VBPA.Paths[insert]"
+              endId="Package\VBPA\insert new records.Inputs[OLE DB Destination Input]"
+              name="insert"
+              startId="Package\VBPA\Identify Record.Outputs[insert]" />
+            <path
+              refId="Package\VBPA.Paths[Merge Join Output]"
+              endId="Package\VBPA\Identify Record.Inputs[Conditional Split Input]"
+              name="Merge Join Output"
+              startId="Package\VBPA\Merge Join.Outputs[Merge Join Output]" />
+            <path
+              refId="Package\VBPA.Paths[OLE DB Source Output]"
+              endId="Package\VBPA\Merge Join.Inputs[Merge Join Left Input]"
+              name="OLE DB Source Output"
+              startId="Package\VBPA\DB SAP VBPA.Outputs[OLE DB Source Output]" />
+            <path
+              refId="Package\VBPA.Paths[OLE DB Source Output1]"
+              endId="Package\VBPA\Merge Join.Inputs[Merge Join Right Input]"
+              name="OLE DB Source Output"
+              startId="Package\VBPA\DB DBI VBPA.Outputs[OLE DB Source Output]" />
+            <path
+              refId="Package\VBPA.Paths[update]"
+              endId="Package\VBPA\Find Changed Records.Inputs[Conditional Split Input]"
+              name="update"
+              startId="Package\VBPA\Identify Record.Outputs[update]" />
+            <path
+              refId="Package\VBPA.Paths[update1]"
+              endId="Package\VBPA\stage changed records.Inputs[OLE DB Destination Input]"
+              name="update"
+              startId="Package\VBPA\Find Changed Records.Outputs[update]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{61EEBF6E-FF68-4689-8288-60C2409CE0C1}"
+      DTS:From="Package\VBPA"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\step 1" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
+      DTS:CreationName=""
+      DTS:DTSID="{BA1779B0-3DED-460C-8E16-1F57CA7DF731}"
+      DTS:From="Package\clean stage"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 1"
+      DTS:To="Package\VBPA" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
+      DTS:CreationName=""
+      DTS:DTSID="{AE586CE1-D7EA-4BD9-BA1D-8A1EE67733C0}"
+      DTS:From="Package\step 1"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 2"
+      DTS:To="Package\step 2" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="132,42"
+          Id="Package\clean stage"
+          TopLeft="348,32.230769230769" />
+        <NodeLayout
+          Size="108,42"
+          Id="Package\step 1\delete"
+          TopLeft="198,25" />
+        <NodeLayout
+          Size="112,42"
+          Id="Package\step 1\update"
+          TopLeft="51.076923076923,28" />
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="374,96"
+          Size="374,139"
+          Id="Package\step 1"
+          TopLeft="234.307692307692,200.230769230769" />
+        <NodeLayout
+          Size="107,42"
+          Id="Package\step 2\Insert"
+          TopLeft="121.076923076923,32" />
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="374,129"
+          Size="374,172"
+          Id="Package\step 2"
+          TopLeft="228,386.230769230769" />
+        <NodeLayout
+          Size="104,42"
+          Id="Package\VBPA"
+          TopLeft="364.384615384616,114" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="418.846153846154,156">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,44.230769230769"
+              Start="0,0"
+              End="0,36.730769230769">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,36.730769230769" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="415.192307692308,74.230769230769">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,39.769230769231"
+              Start="0,0"
+              End="0,32.269230769231">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,32.269230769231" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 2]"
+          TopLeft="418.153846153846,339.230769230769">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,47"
+              Start="0,0"
+              End="0,39.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,39.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\VBPA">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="151,42"
+          Id="Package\VBPA\Identify Record"
+          TopLeft="421,249" />
+        <NodeLayout
+          Size="130,42"
+          Id="Package\VBPA\Merge Join"
+          TopLeft="434,128" />
+        <NodeLayout
+          Size="166,42"
+          Id="Package\VBPA\insert new records"
+          TopLeft="118,369" />
+        <NodeLayout
+          Size="180,42"
+          Id="Package\VBPA\stage deleted records"
+          TopLeft="731,378" />
+        <NodeLayout
+          Size="186,42"
+          Id="Package\VBPA\stage changed records"
+          TopLeft="409,478" />
+        <NodeLayout
+          Size="142,42"
+          Id="Package\VBPA\DB DBI VBPA"
+          TopLeft="610,29" />
+        <NodeLayout
+          Size="142,42"
+          Id="Package\VBPA\DB SAP VBPA"
+          TopLeft="255,26" />
+        <NodeLayout
+          Size="184,42"
+          Id="Package\VBPA\Find Changed Records"
+          TopLeft="407,373" />
+        <EdgeLayout
+          Id="Package\VBPA.Paths[update1]"
+          TopLeft="500.5,415">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,63"
+              Start="0,0"
+              End="0,55.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,55.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-15.8025,21.9453125,31.605,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\VBPA.Paths[update]"
+          TopLeft="497.75,291">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,82"
+              Start="0,0"
+              End="0,74.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,74.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-15.8025,31.4453125,31.605,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\VBPA.Paths[OLE DB Source Output1]"
+          TopLeft="681,71">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-161.666666666667,57"
+              Start="0,0"
+              End="-161.666666666667,49.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,29.7841945288754" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,29.7841945288754"
+                    Point2="0,33.7841945288754"
+                    Point3="-4,33.7841945288754" />
+                  <mssgle:LineSegment
+                    End="-157.666666666667,33.7841945288754" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-157.666666666667,33.7841945288754"
+                    Point2="-161.666666666667,33.7841945288754"
+                    Point3="-161.666666666667,37.7841945288754" />
+                  <mssgle:LineSegment
+                    End="-161.666666666667,49.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\VBPA.Paths[OLE DB Source Output]"
+          TopLeft="326,68">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="173,60"
+              Start="0,0"
+              End="173,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,26" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,26"
+                    Point2="0,30"
+                    Point3="4,30" />
+                  <mssgle:LineSegment
+                    End="169,30" />
+                  <mssgle:CubicBezierSegment
+                    Point1="169,30"
+                    Point2="173,30"
+                    Point3="173,34" />
+                  <mssgle:LineSegment
+                    End="173,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\VBPA.Paths[Merge Join Output]"
+          TopLeft="497.75,170">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,79"
+              Start="0,0"
+              End="0,71.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,71.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\VBPA.Paths[insert]"
+          TopLeft="475.5,291">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-274.5,78"
+              Start="0,0"
+              End="-274.5,70.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,35" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,35"
+                    Point2="0,39"
+                    Point3="-4,39" />
+                  <mssgle:LineSegment
+                    End="-270.5,39" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-270.5,39"
+                    Point2="-274.5,39"
+                    Point3="-274.5,43" />
+                  <mssgle:LineSegment
+                    End="-274.5,70.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-150.19998046875,44,25.8999609375,9.451171875"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\VBPA.Paths[delete]"
+          TopLeft="520.333333333333,291">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="300.666666666667,87"
+              Start="0,0"
+              End="300.666666666667,79.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,31.3473132372215" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,31.3473132372215"
+                    Point2="0,35.3473132372215"
+                    Point3="4,35.3473132372215" />
+                  <mssgle:LineSegment
+                    End="296.666666666667,35.3473132372215" />
+                  <mssgle:CubicBezierSegment
+                    Point1="296.666666666667,35.3473132372215"
+                    Point2="300.666666666667,35.3473132372215"
+                    Point3="300.666666666667,39.3473132372215" />
+                  <mssgle:LineSegment
+                    End="300.666666666667,79.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="136.137376302084,40.3473132372215,28.3919140625,9.7490234375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\VBPA\insert new records">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\VBPA\stage deleted records">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\VBPA\stage changed records">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\VBPA\DB DBI VBPA">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\VBPA\DB SAP VBPA">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>
