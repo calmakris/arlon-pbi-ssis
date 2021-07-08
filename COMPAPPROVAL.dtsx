@@ -1,0 +1,1986 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="4/19/2021 12:54:51 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="ARLPBIDEV"
+  DTS:CreatorName="DOMAIN\RPETRELLA"
+  DTS:DTSID="{337FECC5-464A-4FFA-9B66-C7A65C8F5B13}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="15.0.2000.166"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="COMPAPPROVAL"
+  DTS:PackageType="5"
+  DTS:VersionBuild="17"
+  DTS:VersionGUID="{E5C67771-35C6-4A4E-9CB7-BC0FB0CD7D14}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\clean stage"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{84442154-6DA7-4C83-A04B-81DC30008542}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="clean stage"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="TRUNCATE TABLE [COMPAPPROVAL_STAGE_UPDATE]&#xA;go&#xA;TRUNCATE TABLE [COMPAPPROVAL_STAGE_DELETE]&#xA;go&#xA;TRUNCATE TABLE [COMPAPPROVAL_STAGE_INSERT]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\COMPAPPROVAL"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{4EEBC615-446A-4B83-8809-7469C94273B1}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="COMPAPPROVAL"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\COMPAPPROVAL\DB EDOCDB"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="DB EDOCDB"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT [SSPECNO]
+      ,[SREV]
+      ,[SAPPTYPE]
+      ,[SAPPID]
+      ,[SAPPROVED]
+FROM [COMPAPPROVAL] (NOLOCK)
+ORDER BY [SSPECNO]
+      ,[SREV]
+      ,[SAPPTYPE]</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\COMPAPPROVAL\DB EDOCDB.Connections[OleDbConnection]"
+                  connectionManagerID="{5F52B4F9-7589-4D39-8600-167A0E82AE0A}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[ARLSQL01.EDOCDB]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\COMPAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Output]"
+                  isSorted="true"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\COMPAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Output].Columns[SSPECNO]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\COMPAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Output].ExternalColumns[SSPECNO]"
+                      length="50"
+                      lineageId="Package\COMPAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Output].Columns[SSPECNO]"
+                      name="SSPECNO"
+                      sortKeyPosition="1"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\COMPAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Output].Columns[SREV]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\COMPAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Output].ExternalColumns[SREV]"
+                      lineageId="Package\COMPAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Output].Columns[SREV]"
+                      name="SREV"
+                      sortKeyPosition="2"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\COMPAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Output].Columns[SAPPID]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\COMPAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Output].ExternalColumns[SAPPID]"
+                      lineageId="Package\COMPAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Output].Columns[SAPPID]"
+                      name="SAPPID"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\COMPAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Output].Columns[SAPPROVED]"
+                      dataType="bool"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\COMPAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Output].ExternalColumns[SAPPROVED]"
+                      lineageId="Package\COMPAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Output].Columns[SAPPROVED]"
+                      name="SAPPROVED"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\COMPAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Output].Columns[SAPPTYPE]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\COMPAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Output].ExternalColumns[SAPPTYPE]"
+                      lineageId="Package\COMPAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Output].Columns[SAPPTYPE]"
+                      name="SAPPTYPE"
+                      sortKeyPosition="3"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\COMPAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Output].ExternalColumns[SSPECNO]"
+                      dataType="wstr"
+                      length="50"
+                      name="SSPECNO" />
+                    <externalMetadataColumn
+                      refId="Package\COMPAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Output].ExternalColumns[SREV]"
+                      dataType="i4"
+                      name="SREV" />
+                    <externalMetadataColumn
+                      refId="Package\COMPAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Output].ExternalColumns[SAPPID]"
+                      dataType="i4"
+                      name="SAPPID" />
+                    <externalMetadataColumn
+                      refId="Package\COMPAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Output].ExternalColumns[SAPPROVED]"
+                      dataType="bool"
+                      name="SAPPROVED" />
+                    <externalMetadataColumn
+                      refId="Package\COMPAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Output].ExternalColumns[SAPPTYPE]"
+                      dataType="i4"
+                      name="SAPPTYPE" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\COMPAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  isSorted="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\COMPAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Error Output].Columns[SSPECNO]"
+                      dataType="wstr"
+                      length="50"
+                      lineageId="Package\COMPAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Error Output].Columns[SSPECNO]"
+                      name="SSPECNO"
+                      sortKeyPosition="1" />
+                    <outputColumn
+                      refId="Package\COMPAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Error Output].Columns[SREV]"
+                      dataType="i4"
+                      lineageId="Package\COMPAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Error Output].Columns[SREV]"
+                      name="SREV"
+                      sortKeyPosition="2" />
+                    <outputColumn
+                      refId="Package\COMPAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Error Output].Columns[SAPPTYPE]"
+                      dataType="i4"
+                      lineageId="Package\COMPAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Error Output].Columns[SAPPTYPE]"
+                      name="SAPPTYPE"
+                      sortKeyPosition="3" />
+                    <outputColumn
+                      refId="Package\COMPAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Error Output].Columns[SAPPID]"
+                      dataType="i4"
+                      lineageId="Package\COMPAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Error Output].Columns[SAPPID]"
+                      name="SAPPID" />
+                    <outputColumn
+                      refId="Package\COMPAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Error Output].Columns[SAPPROVED]"
+                      dataType="bool"
+                      lineageId="Package\COMPAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Error Output].Columns[SAPPROVED]"
+                      name="SAPPROVED" />
+                    <outputColumn
+                      refId="Package\COMPAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\COMPAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\COMPAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\COMPAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\COMPAPPROVAL\DB PBI"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="DB PBI"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT [SSPECNO]
+      ,[SREV]
+      ,[SAPPTYPE]
+      ,[SAPPID]
+      ,[SAPPROVED]
+FROM [COMPAPPROVAL] (NOLOCK)
+ORDER BY [SSPECNO]
+      ,[SREV]
+      ,[SAPPTYPE]</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\COMPAPPROVAL\DB PBI.Connections[OleDbConnection]"
+                  connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\COMPAPPROVAL\DB PBI.Outputs[OLE DB Source Output]"
+                  isSorted="true"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\COMPAPPROVAL\DB PBI.Outputs[OLE DB Source Output].Columns[SSPECNO]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\COMPAPPROVAL\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[SSPECNO]"
+                      length="50"
+                      lineageId="Package\COMPAPPROVAL\DB PBI.Outputs[OLE DB Source Output].Columns[SSPECNO]"
+                      name="SSPECNO"
+                      sortKeyPosition="1"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\COMPAPPROVAL\DB PBI.Outputs[OLE DB Source Output].Columns[SREV]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\COMPAPPROVAL\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[SREV]"
+                      lineageId="Package\COMPAPPROVAL\DB PBI.Outputs[OLE DB Source Output].Columns[SREV]"
+                      name="SREV"
+                      sortKeyPosition="2"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\COMPAPPROVAL\DB PBI.Outputs[OLE DB Source Output].Columns[SAPPID]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\COMPAPPROVAL\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[SAPPID]"
+                      lineageId="Package\COMPAPPROVAL\DB PBI.Outputs[OLE DB Source Output].Columns[SAPPID]"
+                      name="SAPPID"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\COMPAPPROVAL\DB PBI.Outputs[OLE DB Source Output].Columns[SAPPROVED]"
+                      dataType="bool"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\COMPAPPROVAL\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[SAPPROVED]"
+                      lineageId="Package\COMPAPPROVAL\DB PBI.Outputs[OLE DB Source Output].Columns[SAPPROVED]"
+                      name="SAPPROVED"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\COMPAPPROVAL\DB PBI.Outputs[OLE DB Source Output].Columns[SAPPTYPE]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\COMPAPPROVAL\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[SAPPTYPE]"
+                      lineageId="Package\COMPAPPROVAL\DB PBI.Outputs[OLE DB Source Output].Columns[SAPPTYPE]"
+                      name="SAPPTYPE"
+                      sortKeyPosition="3"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\COMPAPPROVAL\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[SSPECNO]"
+                      dataType="wstr"
+                      length="50"
+                      name="SSPECNO" />
+                    <externalMetadataColumn
+                      refId="Package\COMPAPPROVAL\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[SREV]"
+                      dataType="i4"
+                      name="SREV" />
+                    <externalMetadataColumn
+                      refId="Package\COMPAPPROVAL\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[SAPPID]"
+                      dataType="i4"
+                      name="SAPPID" />
+                    <externalMetadataColumn
+                      refId="Package\COMPAPPROVAL\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[SAPPROVED]"
+                      dataType="bool"
+                      name="SAPPROVED" />
+                    <externalMetadataColumn
+                      refId="Package\COMPAPPROVAL\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[SAPPTYPE]"
+                      dataType="i4"
+                      name="SAPPTYPE" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\COMPAPPROVAL\DB PBI.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  isSorted="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\COMPAPPROVAL\DB PBI.Outputs[OLE DB Source Error Output].Columns[SSPECNO]"
+                      dataType="wstr"
+                      length="50"
+                      lineageId="Package\COMPAPPROVAL\DB PBI.Outputs[OLE DB Source Error Output].Columns[SSPECNO]"
+                      name="SSPECNO"
+                      sortKeyPosition="1" />
+                    <outputColumn
+                      refId="Package\COMPAPPROVAL\DB PBI.Outputs[OLE DB Source Error Output].Columns[SREV]"
+                      dataType="i4"
+                      lineageId="Package\COMPAPPROVAL\DB PBI.Outputs[OLE DB Source Error Output].Columns[SREV]"
+                      name="SREV"
+                      sortKeyPosition="2" />
+                    <outputColumn
+                      refId="Package\COMPAPPROVAL\DB PBI.Outputs[OLE DB Source Error Output].Columns[SAPPTYPE]"
+                      dataType="i4"
+                      lineageId="Package\COMPAPPROVAL\DB PBI.Outputs[OLE DB Source Error Output].Columns[SAPPTYPE]"
+                      name="SAPPTYPE"
+                      sortKeyPosition="3" />
+                    <outputColumn
+                      refId="Package\COMPAPPROVAL\DB PBI.Outputs[OLE DB Source Error Output].Columns[SAPPID]"
+                      dataType="i4"
+                      lineageId="Package\COMPAPPROVAL\DB PBI.Outputs[OLE DB Source Error Output].Columns[SAPPID]"
+                      name="SAPPID" />
+                    <outputColumn
+                      refId="Package\COMPAPPROVAL\DB PBI.Outputs[OLE DB Source Error Output].Columns[SAPPROVED]"
+                      dataType="bool"
+                      lineageId="Package\COMPAPPROVAL\DB PBI.Outputs[OLE DB Source Error Output].Columns[SAPPROVED]"
+                      name="SAPPROVED" />
+                    <outputColumn
+                      refId="Package\COMPAPPROVAL\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\COMPAPPROVAL\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\COMPAPPROVAL\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\COMPAPPROVAL\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\COMPAPPROVAL\Find Changed Records"
+              componentClassID="Microsoft.ConditionalSplit"
+              contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
+              name="Find Changed Records"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\COMPAPPROVAL\Find Changed Records.Inputs[Conditional Split Input]"
+                  description="Input to the Conditional Split Transformation"
+                  name="Conditional Split Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\COMPAPPROVAL\Find Changed Records.Inputs[Conditional Split Input].Columns[SAPPID]"
+                      cachedDataType="i4"
+                      cachedName="SAPPID"
+                      lineageId="Package\COMPAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[SAPPID]" />
+                    <inputColumn
+                      refId="Package\COMPAPPROVAL\Find Changed Records.Inputs[Conditional Split Input].Columns[SAPPROVED]"
+                      cachedDataType="bool"
+                      cachedName="SAPPROVED"
+                      lineageId="Package\COMPAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[SAPPROVED]" />
+                    <inputColumn
+                      refId="Package\COMPAPPROVAL\Find Changed Records.Inputs[Conditional Split Input].Columns[SAPPID (1)]"
+                      cachedDataType="i4"
+                      cachedName="SAPPID (1)"
+                      lineageId="Package\COMPAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[SAPPID (1)]" />
+                    <inputColumn
+                      refId="Package\COMPAPPROVAL\Find Changed Records.Inputs[Conditional Split Input].Columns[SAPPROVED (1)]"
+                      cachedDataType="bool"
+                      cachedName="SAPPROVED (1)"
+                      lineageId="Package\COMPAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[SAPPROVED (1)]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\COMPAPPROVAL\Find Changed Records.Outputs[update]"
+                  description="Output 1 of the Conditional Split Transformation"
+                  errorOrTruncationOperation="Computation"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="update"
+                  synchronousInputId="Package\COMPAPPROVAL\Find Changed Records.Inputs[Conditional Split Input]"
+                  truncationRowDisposition="FailComponent">
+                  <properties>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                      name="Expression">#{Package\COMPAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[SAPPID]} != #{Package\COMPAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[SAPPID (1)]} || #{Package\COMPAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[SAPPROVED]} != #{Package\COMPAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[SAPPROVED (1)]}</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the friendly version of the expression. This expression version uses column names."
+                      expressionType="Notify"
+                      name="FriendlyExpression">SAPPID != [SAPPID (1)] || SAPPROVED != [SAPPROVED (1)]</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                      name="EvaluationOrder">0</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\COMPAPPROVAL\Find Changed Records.Outputs[Conditional Split Default Output]"
+                  description="Default Output of the Conditional Split Transformation"
+                  exclusionGroup="1"
+                  name="Conditional Split Default Output"
+                  synchronousInputId="Package\COMPAPPROVAL\Find Changed Records.Inputs[Conditional Split Input]">
+                  <properties>
+                    <property
+                      dataType="System.Boolean"
+                      name="IsDefaultOut">true</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\COMPAPPROVAL\Find Changed Records.Outputs[Conditional Split Error Output]"
+                  description="Error Output of the Conditional Split Transformation"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Conditional Split Error Output"
+                  synchronousInputId="Package\COMPAPPROVAL\Find Changed Records.Inputs[Conditional Split Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\COMPAPPROVAL\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\COMPAPPROVAL\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\COMPAPPROVAL\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\COMPAPPROVAL\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\COMPAPPROVAL\Identity records"
+              componentClassID="Microsoft.ConditionalSplit"
+              contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
+              name="Identity records"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\COMPAPPROVAL\Identity records.Inputs[Conditional Split Input]"
+                  description="Input to the Conditional Split Transformation"
+                  name="Conditional Split Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\COMPAPPROVAL\Identity records.Inputs[Conditional Split Input].Columns[SSPECNO]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="SSPECNO"
+                      cachedSortKeyPosition="1"
+                      lineageId="Package\COMPAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[SSPECNO]" />
+                    <inputColumn
+                      refId="Package\COMPAPPROVAL\Identity records.Inputs[Conditional Split Input].Columns[SSPECNO (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="SSPECNO (1)"
+                      lineageId="Package\COMPAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[SSPECNO (1)]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\COMPAPPROVAL\Identity records.Outputs[update]"
+                  description="Output 1 of the Conditional Split Transformation"
+                  errorOrTruncationOperation="Computation"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="update"
+                  synchronousInputId="Package\COMPAPPROVAL\Identity records.Inputs[Conditional Split Input]"
+                  truncationRowDisposition="FailComponent">
+                  <properties>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                      name="Expression">![ISNULL](#{Package\COMPAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[SSPECNO]}) &amp;&amp; ![ISNULL](#{Package\COMPAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[SSPECNO (1)]})</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the friendly version of the expression. This expression version uses column names."
+                      expressionType="Notify"
+                      name="FriendlyExpression">!ISNULL(SSPECNO) &amp;&amp; !ISNULL([SSPECNO (1)])</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                      name="EvaluationOrder">0</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\COMPAPPROVAL\Identity records.Outputs[insert]"
+                  description="Output 2 of the Conditional Split Transformation"
+                  errorOrTruncationOperation="Computation"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="insert"
+                  synchronousInputId="Package\COMPAPPROVAL\Identity records.Inputs[Conditional Split Input]"
+                  truncationRowDisposition="FailComponent">
+                  <properties>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                      name="Expression">![ISNULL](#{Package\COMPAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[SSPECNO]}) &amp;&amp; [ISNULL](#{Package\COMPAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[SSPECNO (1)]})</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the friendly version of the expression. This expression version uses column names."
+                      expressionType="Notify"
+                      name="FriendlyExpression">!ISNULL(SSPECNO) &amp;&amp; ISNULL([SSPECNO (1)])</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                      name="EvaluationOrder">1</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\COMPAPPROVAL\Identity records.Outputs[delete]"
+                  description="Output 3 of the Conditional Split Transformation"
+                  errorOrTruncationOperation="Computation"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="delete"
+                  synchronousInputId="Package\COMPAPPROVAL\Identity records.Inputs[Conditional Split Input]"
+                  truncationRowDisposition="FailComponent">
+                  <properties>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                      name="Expression">[ISNULL](#{Package\COMPAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[SSPECNO]}) &amp;&amp; ![ISNULL](#{Package\COMPAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[SSPECNO (1)]})</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the friendly version of the expression. This expression version uses column names."
+                      expressionType="Notify"
+                      name="FriendlyExpression">ISNULL(SSPECNO) &amp;&amp; !ISNULL([SSPECNO (1)])</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                      name="EvaluationOrder">2</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\COMPAPPROVAL\Identity records.Outputs[Conditional Split Default Output]"
+                  description="Default Output of the Conditional Split Transformation"
+                  exclusionGroup="1"
+                  name="Conditional Split Default Output"
+                  synchronousInputId="Package\COMPAPPROVAL\Identity records.Inputs[Conditional Split Input]">
+                  <properties>
+                    <property
+                      dataType="System.Boolean"
+                      name="IsDefaultOut">true</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\COMPAPPROVAL\Identity records.Outputs[Conditional Split Error Output]"
+                  description="Error Output of the Conditional Split Transformation"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Conditional Split Error Output"
+                  synchronousInputId="Package\COMPAPPROVAL\Identity records.Inputs[Conditional Split Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\COMPAPPROVAL\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\COMPAPPROVAL\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\COMPAPPROVAL\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\COMPAPPROVAL\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\COMPAPPROVAL\insert new records"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="insert new records"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[COMPAPPROVAL_STAGE_INSERT]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\COMPAPPROVAL\insert new records.Connections[OleDbConnection]"
+                  connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\COMPAPPROVAL\insert new records.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\COMPAPPROVAL\insert new records.Inputs[OLE DB Destination Input].Columns[SSPECNO]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="SSPECNO"
+                      cachedSortKeyPosition="1"
+                      externalMetadataColumnId="Package\COMPAPPROVAL\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[SSPECNO]"
+                      lineageId="Package\COMPAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[SSPECNO]" />
+                    <inputColumn
+                      refId="Package\COMPAPPROVAL\insert new records.Inputs[OLE DB Destination Input].Columns[SREV]"
+                      cachedDataType="i4"
+                      cachedName="SREV"
+                      cachedSortKeyPosition="2"
+                      externalMetadataColumnId="Package\COMPAPPROVAL\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[SREV]"
+                      lineageId="Package\COMPAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[SREV]" />
+                    <inputColumn
+                      refId="Package\COMPAPPROVAL\insert new records.Inputs[OLE DB Destination Input].Columns[SAPPID]"
+                      cachedDataType="i4"
+                      cachedName="SAPPID"
+                      externalMetadataColumnId="Package\COMPAPPROVAL\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[SAPPID]"
+                      lineageId="Package\COMPAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[SAPPID]" />
+                    <inputColumn
+                      refId="Package\COMPAPPROVAL\insert new records.Inputs[OLE DB Destination Input].Columns[SAPPROVED]"
+                      cachedDataType="bool"
+                      cachedName="SAPPROVED"
+                      externalMetadataColumnId="Package\COMPAPPROVAL\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[SAPPROVED]"
+                      lineageId="Package\COMPAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[SAPPROVED]" />
+                    <inputColumn
+                      refId="Package\COMPAPPROVAL\insert new records.Inputs[OLE DB Destination Input].Columns[SAPPTYPE]"
+                      cachedDataType="i4"
+                      cachedName="SAPPTYPE"
+                      cachedSortKeyPosition="3"
+                      externalMetadataColumnId="Package\COMPAPPROVAL\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[SAPPTYPE]"
+                      lineageId="Package\COMPAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[SAPPTYPE]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\COMPAPPROVAL\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[SSPECNO]"
+                      dataType="wstr"
+                      length="50"
+                      name="SSPECNO" />
+                    <externalMetadataColumn
+                      refId="Package\COMPAPPROVAL\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[SREV]"
+                      dataType="i4"
+                      name="SREV" />
+                    <externalMetadataColumn
+                      refId="Package\COMPAPPROVAL\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[SAPPID]"
+                      dataType="i4"
+                      name="SAPPID" />
+                    <externalMetadataColumn
+                      refId="Package\COMPAPPROVAL\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[SAPPROVED]"
+                      dataType="bool"
+                      name="SAPPROVED" />
+                    <externalMetadataColumn
+                      refId="Package\COMPAPPROVAL\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[SAPPTYPE]"
+                      dataType="i4"
+                      name="SAPPTYPE" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\COMPAPPROVAL\insert new records.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\COMPAPPROVAL\insert new records.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\COMPAPPROVAL\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\COMPAPPROVAL\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\COMPAPPROVAL\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\COMPAPPROVAL\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\COMPAPPROVAL\Merge Join"
+              componentClassID="Microsoft.MergeJoin"
+              contactInfo="Merge Join;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
+              description="Combine two sorted data flows into one using the FULL, LEFT, or INNER join. We recommend this transformation when data flows can be sorted at their sources."
+              name="Merge Join"
+              version="1">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the type of join to perform."
+                  name="JoinType"
+                  typeConverter="JoinType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the number of columns in the ordering key."
+                  name="NumKeyColumns">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the null values are treated as equal values."
+                  name="TreatNullsAsEqual">true</property>
+                <property
+                  dataType="System.Int32"
+                  description="Indicates the requested maximum buffers per input before blocking."
+                  name="MaxBuffersPerInput">5</property>
+              </properties>
+              <inputs>
+                <input
+                  refId="Package\COMPAPPROVAL\Merge Join.Inputs[Merge Join Left Input]"
+                  hasSideEffects="true"
+                  name="Merge Join Left Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\COMPAPPROVAL\Merge Join.Inputs[Merge Join Left Input].Columns[SSPECNO]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="SSPECNO"
+                      cachedSortKeyPosition="1"
+                      lineageId="Package\COMPAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Output].Columns[SSPECNO]" />
+                    <inputColumn
+                      refId="Package\COMPAPPROVAL\Merge Join.Inputs[Merge Join Left Input].Columns[SREV]"
+                      cachedDataType="i4"
+                      cachedName="SREV"
+                      cachedSortKeyPosition="2"
+                      lineageId="Package\COMPAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Output].Columns[SREV]" />
+                    <inputColumn
+                      refId="Package\COMPAPPROVAL\Merge Join.Inputs[Merge Join Left Input].Columns[SAPPID]"
+                      cachedDataType="i4"
+                      cachedName="SAPPID"
+                      lineageId="Package\COMPAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Output].Columns[SAPPID]" />
+                    <inputColumn
+                      refId="Package\COMPAPPROVAL\Merge Join.Inputs[Merge Join Left Input].Columns[SAPPROVED]"
+                      cachedDataType="bool"
+                      cachedName="SAPPROVED"
+                      lineageId="Package\COMPAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Output].Columns[SAPPROVED]" />
+                    <inputColumn
+                      refId="Package\COMPAPPROVAL\Merge Join.Inputs[Merge Join Left Input].Columns[SAPPTYPE]"
+                      cachedDataType="i4"
+                      cachedName="SAPPTYPE"
+                      cachedSortKeyPosition="3"
+                      lineageId="Package\COMPAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Output].Columns[SAPPTYPE]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+                <input
+                  refId="Package\COMPAPPROVAL\Merge Join.Inputs[Merge Join Right Input]"
+                  hasSideEffects="true"
+                  name="Merge Join Right Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\COMPAPPROVAL\Merge Join.Inputs[Merge Join Right Input].Columns[SSPECNO]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="SSPECNO"
+                      cachedSortKeyPosition="1"
+                      lineageId="Package\COMPAPPROVAL\DB PBI.Outputs[OLE DB Source Output].Columns[SSPECNO]" />
+                    <inputColumn
+                      refId="Package\COMPAPPROVAL\Merge Join.Inputs[Merge Join Right Input].Columns[SREV]"
+                      cachedDataType="i4"
+                      cachedName="SREV"
+                      cachedSortKeyPosition="2"
+                      lineageId="Package\COMPAPPROVAL\DB PBI.Outputs[OLE DB Source Output].Columns[SREV]" />
+                    <inputColumn
+                      refId="Package\COMPAPPROVAL\Merge Join.Inputs[Merge Join Right Input].Columns[SAPPID]"
+                      cachedDataType="i4"
+                      cachedName="SAPPID"
+                      lineageId="Package\COMPAPPROVAL\DB PBI.Outputs[OLE DB Source Output].Columns[SAPPID]" />
+                    <inputColumn
+                      refId="Package\COMPAPPROVAL\Merge Join.Inputs[Merge Join Right Input].Columns[SAPPROVED]"
+                      cachedDataType="bool"
+                      cachedName="SAPPROVED"
+                      lineageId="Package\COMPAPPROVAL\DB PBI.Outputs[OLE DB Source Output].Columns[SAPPROVED]" />
+                    <inputColumn
+                      refId="Package\COMPAPPROVAL\Merge Join.Inputs[Merge Join Right Input].Columns[SAPPTYPE]"
+                      cachedDataType="i4"
+                      cachedName="SAPPTYPE"
+                      cachedSortKeyPosition="3"
+                      lineageId="Package\COMPAPPROVAL\DB PBI.Outputs[OLE DB Source Output].Columns[SAPPTYPE]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\COMPAPPROVAL\Merge Join.Outputs[Merge Join Output]"
+                  isSorted="true"
+                  name="Merge Join Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\COMPAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[SSPECNO]"
+                      dataType="wstr"
+                      length="50"
+                      lineageId="Package\COMPAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[SSPECNO]"
+                      name="SSPECNO"
+                      sortKeyPosition="1">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\COMPAPPROVAL\Merge Join.Inputs[Merge Join Left Input].Columns[SSPECNO]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\COMPAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[SREV]"
+                      dataType="i4"
+                      lineageId="Package\COMPAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[SREV]"
+                      name="SREV"
+                      sortKeyPosition="2">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\COMPAPPROVAL\Merge Join.Inputs[Merge Join Left Input].Columns[SREV]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\COMPAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[SAPPID]"
+                      dataType="i4"
+                      lineageId="Package\COMPAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[SAPPID]"
+                      name="SAPPID">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\COMPAPPROVAL\Merge Join.Inputs[Merge Join Left Input].Columns[SAPPID]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\COMPAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[SAPPROVED]"
+                      dataType="bool"
+                      lineageId="Package\COMPAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[SAPPROVED]"
+                      name="SAPPROVED">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\COMPAPPROVAL\Merge Join.Inputs[Merge Join Left Input].Columns[SAPPROVED]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\COMPAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[SSPECNO (1)]"
+                      dataType="wstr"
+                      length="50"
+                      lineageId="Package\COMPAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[SSPECNO (1)]"
+                      name="SSPECNO (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\COMPAPPROVAL\Merge Join.Inputs[Merge Join Right Input].Columns[SSPECNO]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\COMPAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[SREV (1)]"
+                      dataType="i4"
+                      lineageId="Package\COMPAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[SREV (1)]"
+                      name="SREV (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\COMPAPPROVAL\Merge Join.Inputs[Merge Join Right Input].Columns[SREV]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\COMPAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[SAPPID (1)]"
+                      dataType="i4"
+                      lineageId="Package\COMPAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[SAPPID (1)]"
+                      name="SAPPID (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\COMPAPPROVAL\Merge Join.Inputs[Merge Join Right Input].Columns[SAPPID]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\COMPAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[SAPPROVED (1)]"
+                      dataType="bool"
+                      lineageId="Package\COMPAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[SAPPROVED (1)]"
+                      name="SAPPROVED (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\COMPAPPROVAL\Merge Join.Inputs[Merge Join Right Input].Columns[SAPPROVED]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\COMPAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[SAPPTYPE]"
+                      dataType="i4"
+                      lineageId="Package\COMPAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[SAPPTYPE]"
+                      name="SAPPTYPE"
+                      sortKeyPosition="3">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\COMPAPPROVAL\Merge Join.Inputs[Merge Join Left Input].Columns[SAPPTYPE]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\COMPAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[SAPPTYPE (1)]"
+                      dataType="i4"
+                      lineageId="Package\COMPAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[SAPPTYPE (1)]"
+                      name="SAPPTYPE (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\COMPAPPROVAL\Merge Join.Inputs[Merge Join Right Input].Columns[SAPPTYPE]}</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\COMPAPPROVAL\stage changed records"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="stage changed records"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[COMPAPPROVAL_STAGE_UPDATE]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\COMPAPPROVAL\stage changed records.Connections[OleDbConnection]"
+                  connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\COMPAPPROVAL\stage changed records.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\COMPAPPROVAL\stage changed records.Inputs[OLE DB Destination Input].Columns[SSPECNO]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="SSPECNO"
+                      cachedSortKeyPosition="1"
+                      externalMetadataColumnId="Package\COMPAPPROVAL\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[SSPECNO]"
+                      lineageId="Package\COMPAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[SSPECNO]" />
+                    <inputColumn
+                      refId="Package\COMPAPPROVAL\stage changed records.Inputs[OLE DB Destination Input].Columns[SREV]"
+                      cachedDataType="i4"
+                      cachedName="SREV"
+                      cachedSortKeyPosition="2"
+                      externalMetadataColumnId="Package\COMPAPPROVAL\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[SREV]"
+                      lineageId="Package\COMPAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[SREV]" />
+                    <inputColumn
+                      refId="Package\COMPAPPROVAL\stage changed records.Inputs[OLE DB Destination Input].Columns[SAPPID]"
+                      cachedDataType="i4"
+                      cachedName="SAPPID"
+                      externalMetadataColumnId="Package\COMPAPPROVAL\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[SAPPID]"
+                      lineageId="Package\COMPAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[SAPPID]" />
+                    <inputColumn
+                      refId="Package\COMPAPPROVAL\stage changed records.Inputs[OLE DB Destination Input].Columns[SAPPROVED]"
+                      cachedDataType="bool"
+                      cachedName="SAPPROVED"
+                      externalMetadataColumnId="Package\COMPAPPROVAL\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[SAPPROVED]"
+                      lineageId="Package\COMPAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[SAPPROVED]" />
+                    <inputColumn
+                      refId="Package\COMPAPPROVAL\stage changed records.Inputs[OLE DB Destination Input].Columns[SAPPTYPE]"
+                      cachedDataType="i4"
+                      cachedName="SAPPTYPE"
+                      cachedSortKeyPosition="3"
+                      externalMetadataColumnId="Package\COMPAPPROVAL\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[SAPPTYPE]"
+                      lineageId="Package\COMPAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[SAPPTYPE]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\COMPAPPROVAL\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[SSPECNO]"
+                      dataType="wstr"
+                      length="50"
+                      name="SSPECNO" />
+                    <externalMetadataColumn
+                      refId="Package\COMPAPPROVAL\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[SREV]"
+                      dataType="i4"
+                      name="SREV" />
+                    <externalMetadataColumn
+                      refId="Package\COMPAPPROVAL\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[SAPPID]"
+                      dataType="i4"
+                      name="SAPPID" />
+                    <externalMetadataColumn
+                      refId="Package\COMPAPPROVAL\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[SAPPROVED]"
+                      dataType="bool"
+                      name="SAPPROVED" />
+                    <externalMetadataColumn
+                      refId="Package\COMPAPPROVAL\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[SAPPTYPE]"
+                      dataType="i4"
+                      name="SAPPTYPE" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\COMPAPPROVAL\stage changed records.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\COMPAPPROVAL\stage changed records.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\COMPAPPROVAL\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\COMPAPPROVAL\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\COMPAPPROVAL\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\COMPAPPROVAL\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\COMPAPPROVAL\stage deleted records"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="stage deleted records"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[COMPAPPROVAL_STAGE_DELETE]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\COMPAPPROVAL\stage deleted records.Connections[OleDbConnection]"
+                  connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\COMPAPPROVAL\stage deleted records.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\COMPAPPROVAL\stage deleted records.Inputs[OLE DB Destination Input].Columns[SSPECNO]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="SSPECNO"
+                      cachedSortKeyPosition="1"
+                      externalMetadataColumnId="Package\COMPAPPROVAL\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[SSPECNO]"
+                      lineageId="Package\COMPAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[SSPECNO]" />
+                    <inputColumn
+                      refId="Package\COMPAPPROVAL\stage deleted records.Inputs[OLE DB Destination Input].Columns[SREV]"
+                      cachedDataType="i4"
+                      cachedName="SREV"
+                      cachedSortKeyPosition="2"
+                      externalMetadataColumnId="Package\COMPAPPROVAL\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[SREV]"
+                      lineageId="Package\COMPAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[SREV]" />
+                    <inputColumn
+                      refId="Package\COMPAPPROVAL\stage deleted records.Inputs[OLE DB Destination Input].Columns[SAPPTYPE]"
+                      cachedDataType="i4"
+                      cachedName="SAPPTYPE"
+                      cachedSortKeyPosition="3"
+                      externalMetadataColumnId="Package\COMPAPPROVAL\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[SAPPTYPE]"
+                      lineageId="Package\COMPAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[SAPPTYPE]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\COMPAPPROVAL\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[SSPECNO]"
+                      dataType="wstr"
+                      length="50"
+                      name="SSPECNO" />
+                    <externalMetadataColumn
+                      refId="Package\COMPAPPROVAL\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[SREV]"
+                      dataType="i4"
+                      name="SREV" />
+                    <externalMetadataColumn
+                      refId="Package\COMPAPPROVAL\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[SAPPTYPE]"
+                      dataType="i4"
+                      name="SAPPTYPE" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\COMPAPPROVAL\stage deleted records.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\COMPAPPROVAL\stage deleted records.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\COMPAPPROVAL\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\COMPAPPROVAL\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\COMPAPPROVAL\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\COMPAPPROVAL\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\COMPAPPROVAL.Paths[delete]"
+              endId="Package\COMPAPPROVAL\stage deleted records.Inputs[OLE DB Destination Input]"
+              name="delete"
+              startId="Package\COMPAPPROVAL\Identity records.Outputs[delete]" />
+            <path
+              refId="Package\COMPAPPROVAL.Paths[insert]"
+              endId="Package\COMPAPPROVAL\insert new records.Inputs[OLE DB Destination Input]"
+              name="insert"
+              startId="Package\COMPAPPROVAL\Identity records.Outputs[insert]" />
+            <path
+              refId="Package\COMPAPPROVAL.Paths[Merge Join Output]"
+              endId="Package\COMPAPPROVAL\Identity records.Inputs[Conditional Split Input]"
+              name="Merge Join Output"
+              startId="Package\COMPAPPROVAL\Merge Join.Outputs[Merge Join Output]" />
+            <path
+              refId="Package\COMPAPPROVAL.Paths[OLE DB Source Output]"
+              endId="Package\COMPAPPROVAL\Merge Join.Inputs[Merge Join Left Input]"
+              name="OLE DB Source Output"
+              startId="Package\COMPAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Output]" />
+            <path
+              refId="Package\COMPAPPROVAL.Paths[OLE DB Source Output1]"
+              endId="Package\COMPAPPROVAL\Merge Join.Inputs[Merge Join Right Input]"
+              name="OLE DB Source Output"
+              startId="Package\COMPAPPROVAL\DB PBI.Outputs[OLE DB Source Output]" />
+            <path
+              refId="Package\COMPAPPROVAL.Paths[update]"
+              endId="Package\COMPAPPROVAL\Find Changed Records.Inputs[Conditional Split Input]"
+              name="update"
+              startId="Package\COMPAPPROVAL\Identity records.Outputs[update]" />
+            <path
+              refId="Package\COMPAPPROVAL.Paths[update1]"
+              endId="Package\COMPAPPROVAL\stage changed records.Inputs[OLE DB Destination Input]"
+              name="update"
+              startId="Package\COMPAPPROVAL\Find Changed Records.Outputs[update]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Sequence Container"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Sequence Container"
+      DTS:DTSID="{51210A48-8FF2-47CD-8E90-7385D7E7C8AF}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Sequence Container">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\Sequence Container\delete"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{E91D7877-842B-42B3-8722-A91D583C999F}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="delete"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+              SQLTask:SqlStatementSource="DELETE A01&#xA;FROM [COMPAPPROVAL] A01 &#xA;INNER JOIN [COMPAPPROVAL_STAGE_DELETE] B01 &#xA;ON (A01.[SSPECNO] = B01.[SSPECNO]&#xA;      AND A01.[SREV] = B01.[SREV]&#xA;      AND A01.[SAPPTYPE] = B01.[SAPPTYPE])&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Sequence Container\update"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{8C36EFE9-70A8-4AEA-854C-E94F17EB8DF0}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="update"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+              SQLTask:SqlStatementSource="UPDATE A01&#xA;SET A01.[SSPECNO] = B01.[SSPECNO]&#xA;      ,A01.[SREV] = B01.[SREV]&#xA;      ,A01.[SAPPTYPE] = B01.[SAPPTYPE]&#xA;      ,A01.[SAPPID] = B01.[SAPPID]&#xA;      ,A01.[SAPPROVED] = B01.[SAPPROVED]&#xA;FROM [COMPAPPROVAL] A01 &#xA;INNER JOIN [COMPAPPROVAL_STAGE_UPDATE] B01 &#xA;ON (A01.[SSPECNO] = B01.[SSPECNO]&#xA;      AND A01.[SREV] = B01.[SREV]&#xA;      AND A01.[SAPPTYPE] = B01.[SAPPTYPE])&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Sequence Container 1"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Sequence Container"
+      DTS:DTSID="{39AA0785-F8FB-4759-BB07-975E4FDF795D}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Sequence Container 1">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\Sequence Container 1\Insert"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{64226E63-5EC3-40E4-9C47-06E3116D9F0F}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Insert"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+              SQLTask:SqlStatementSource="INSERT INTO [COMPAPPROVAL]&#xA;SELECT * FROM [COMPAPPROVAL_STAGE_INSERT]&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{12229A4B-08CC-46AD-B125-43C3CF2DCEE6}"
+      DTS:From="Package\COMPAPPROVAL"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\Sequence Container" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
+      DTS:CreationName=""
+      DTS:DTSID="{BBF2E1C5-EEDA-45ED-B93B-F6995C7EF25D}"
+      DTS:From="Package\clean stage"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 1"
+      DTS:To="Package\COMPAPPROVAL" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
+      DTS:CreationName=""
+      DTS:DTSID="{D76D0DD1-555F-497E-AA6E-8C8BEFB9E3F7}"
+      DTS:From="Package\Sequence Container"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 2"
+      DTS:To="Package\Sequence Container 1" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="132,42"
+          Id="Package\clean stage"
+          TopLeft="359,34" />
+        <NodeLayout
+          Size="157,42"
+          Id="Package\COMPAPPROVAL"
+          TopLeft="199,58" />
+        <NodeLayout
+          Size="108,42"
+          Id="Package\Sequence Container\delete"
+          TopLeft="195,39" />
+        <NodeLayout
+          Size="112,42"
+          Id="Package\Sequence Container\update"
+          TopLeft="17,42" />
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="383,139"
+          Size="383,182"
+          Id="Package\Sequence Container"
+          TopLeft="60,174" />
+        <NodeLayout
+          Size="107,42"
+          Id="Package\Sequence Container 1\Insert"
+          TopLeft="128,41" />
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="383,139"
+          Size="383,182"
+          Id="Package\Sequence Container 1"
+          TopLeft="60,416" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="277.5,100">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-26,74"
+              Start="0,0"
+              End="-26,66.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,33" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,33"
+                    Point2="0,37"
+                    Point3="-4,37" />
+                  <mssgle:LineSegment
+                    End="-22,37" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-22,37"
+                    Point2="-26,37"
+                    Point3="-26,41" />
+                  <mssgle:LineSegment
+                    End="-26,66.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="359,35.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-81.5,22.5"
+              Start="0,0"
+              End="-81.5,15">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="-77.5,0" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-77.5,0"
+                    Point2="-81.5,0"
+                    Point3="-81.5,4" />
+                  <mssgle:LineSegment
+                    End="-81.5,15" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 2]"
+          TopLeft="251.5,356">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\COMPAPPROVAL">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="166,42"
+          Id="Package\COMPAPPROVAL\insert new records"
+          TopLeft="159,370" />
+        <NodeLayout
+          Size="130,42"
+          Id="Package\COMPAPPROVAL\Merge Join"
+          TopLeft="450,137" />
+        <NodeLayout
+          Size="186,42"
+          Id="Package\COMPAPPROVAL\stage changed records"
+          TopLeft="417,479" />
+        <NodeLayout
+          Size="153,42"
+          Id="Package\COMPAPPROVAL\Identity records"
+          TopLeft="435,233" />
+        <NodeLayout
+          Size="180,42"
+          Id="Package\COMPAPPROVAL\stage deleted records"
+          TopLeft="687,371" />
+        <NodeLayout
+          Size="137,42"
+          Id="Package\COMPAPPROVAL\DB EDOCDB"
+          TopLeft="199,46" />
+        <NodeLayout
+          Size="112,42"
+          Id="Package\COMPAPPROVAL\DB PBI"
+          TopLeft="671,48" />
+        <NodeLayout
+          Size="184,42"
+          Id="Package\COMPAPPROVAL\Find Changed Records"
+          TopLeft="420,366" />
+        <EdgeLayout
+          Id="Package\COMPAPPROVAL.Paths[update1]"
+          TopLeft="511,408">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,71"
+              Start="0,0"
+              End="0,63.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,63.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-15.8025,25.9453125,31.605,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\COMPAPPROVAL.Paths[update]"
+          TopLeft="511.75,275">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,91"
+              Start="0,0"
+              End="0,83.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,83.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-15.8025,35.9453125,31.605,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\COMPAPPROVAL.Paths[OLE DB Source Output1]"
+          TopLeft="727,90">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-191.666666666667,47"
+              Start="0,0"
+              End="-191.666666666667,39.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,23.8571428571429" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,23.8571428571429"
+                    Point2="0,27.8571428571429"
+                    Point3="-4,27.8571428571429" />
+                  <mssgle:LineSegment
+                    End="-187.666666666667,27.8571428571429" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-187.666666666667,27.8571428571429"
+                    Point2="-191.666666666667,27.8571428571429"
+                    Point3="-191.666666666667,31.8571428571429" />
+                  <mssgle:LineSegment
+                    End="-191.666666666667,39.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\COMPAPPROVAL.Paths[OLE DB Source Output]"
+          TopLeft="267.5,88">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="227.166666666667,49"
+              Start="0,0"
+              End="227.166666666667,41.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,25.0425531914894" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,25.0425531914894"
+                    Point2="0,29.0425531914894"
+                    Point3="4,29.0425531914894" />
+                  <mssgle:LineSegment
+                    End="223.166666666667,29.0425531914894" />
+                  <mssgle:CubicBezierSegment
+                    Point1="223.166666666667,29.0425531914894"
+                    Point2="227.166666666667,29.0425531914894"
+                    Point3="227.166666666667,33.0425531914894" />
+                  <mssgle:LineSegment
+                    End="227.166666666667,41.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\COMPAPPROVAL.Paths[Merge Join Output]"
+          TopLeft="513.25,179">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,54"
+              Start="0,0"
+              End="0,46.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,46.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\COMPAPPROVAL.Paths[insert]"
+          TopLeft="475.25,275">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-233.25,95"
+              Start="0,0"
+              End="-233.25,87.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,28.7516059957173" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,28.7516059957173"
+                    Point2="0,32.7516059957173"
+                    Point3="-4,32.7516059957173" />
+                  <mssgle:LineSegment
+                    End="-229.25,32.7516059957173" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-229.25,32.7516059957173"
+                    Point2="-233.25,32.7516059957173"
+                    Point3="-233.25,36.7516059957173" />
+                  <mssgle:LineSegment
+                    End="-233.25,87.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-129.57498046875,37.7516059957173,25.8999609375,9.451171875"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\COMPAPPROVAL.Paths[delete]"
+          TopLeft="547.75,275">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="229.25,96"
+              Start="0,0"
+              End="229.25,88.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,29.0963597430407" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,29.0963597430407"
+                    Point2="0,33.0963597430407"
+                    Point3="4,33.0963597430407" />
+                  <mssgle:LineSegment
+                    End="225.25,33.0963597430407" />
+                  <mssgle:CubicBezierSegment
+                    Point1="225.25,33.0963597430407"
+                    Point2="229.25,33.0963597430407"
+                    Point3="229.25,37.0963597430407" />
+                  <mssgle:LineSegment
+                    End="229.25,88.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="100.42904296875,38.0963597430407,28.3919140625,9.7490234375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\COMPAPPROVAL\insert new records">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\COMPAPPROVAL\stage changed records">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\COMPAPPROVAL\stage deleted records">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\COMPAPPROVAL\DB EDOCDB">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\COMPAPPROVAL\DB PBI">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>
