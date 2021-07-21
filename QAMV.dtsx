@@ -1,0 +1,2598 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="2/10/2021 6:49:29 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="ARLPBIDEV"
+  DTS:CreatorName="DOMAIN\RPETRELLA"
+  DTS:DTSID="{5F0DF77D-989D-4485-8013-91EF47C23968}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="15.0.2000.152"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="QAMV"
+  DTS:PackageType="5"
+  DTS:VersionBuild="38"
+  DTS:VersionGUID="{57A9A6F6-CBD6-4FFA-91AB-252EAA1DD080}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\clean stage"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{B2A5745E-6FA1-49F9-85F0-518198AFDCD7}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="clean stage"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="TRUNCATE TABLE [QAMV_STAGE_UPDATE]&#xA;go&#xA;TRUNCATE TABLE [QAMV_STAGE_DELETE]&#xA;go&#xA;TRUNCATE TABLE [QAMV_STAGE_INSERT]&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\QAMV"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{03135798-B986-447C-A839-300C49CC73DF}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="QAMV"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\QAMV\DB PBI ADRC"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="DB PBI ADRC"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT A01.[MANDANT]
+      ,A01.[PRUEFLOS]
+      ,A01.[VORGLFNR]
+      ,A01.[MERKNR]
+      ,A01.[KURZTEXT]
+      ,A01.[QPMK_WERKS]
+      ,A01.[STEUERKZ]
+      ,A01.[TOLERANZOB]
+      ,A01.[TOLERANZUN]
+      ,A01.[VERWMERKM]
+FROM [QAMV] A01 (NOLOCK)
+ORDER BY A01.[MANDANT]
+      ,A01.[PRUEFLOS]
+      ,A01.[VORGLFNR]
+      ,A01.[MERKNR]</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\QAMV\DB PBI ADRC.Connections[OleDbConnection]"
+                  connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Output]"
+                  isSorted="true"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[MANDANT]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Output].ExternalColumns[MANDANT]"
+                      length="3"
+                      lineageId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[MANDANT]"
+                      name="MANDANT"
+                      sortKeyPosition="1"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[PRUEFLOS]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Output].ExternalColumns[PRUEFLOS]"
+                      length="12"
+                      lineageId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[PRUEFLOS]"
+                      name="PRUEFLOS"
+                      sortKeyPosition="2"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[VORGLFNR]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Output].ExternalColumns[VORGLFNR]"
+                      length="8"
+                      lineageId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[VORGLFNR]"
+                      name="VORGLFNR"
+                      sortKeyPosition="3"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[MERKNR]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Output].ExternalColumns[MERKNR]"
+                      length="4"
+                      lineageId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[MERKNR]"
+                      name="MERKNR"
+                      sortKeyPosition="4"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[KURZTEXT]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Output].ExternalColumns[KURZTEXT]"
+                      length="40"
+                      lineageId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[KURZTEXT]"
+                      name="KURZTEXT"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[QPMK_WERKS]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Output].ExternalColumns[QPMK_WERKS]"
+                      length="4"
+                      lineageId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[QPMK_WERKS]"
+                      name="QPMK_WERKS"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[STEUERKZ]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Output].ExternalColumns[STEUERKZ]"
+                      length="30"
+                      lineageId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[STEUERKZ]"
+                      name="STEUERKZ"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[TOLERANZOB]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Output].ExternalColumns[TOLERANZOB]"
+                      lineageId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[TOLERANZOB]"
+                      name="TOLERANZOB"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[TOLERANZUN]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Output].ExternalColumns[TOLERANZUN]"
+                      lineageId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[TOLERANZUN]"
+                      name="TOLERANZUN"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[VERWMERKM]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Output].ExternalColumns[VERWMERKM]"
+                      length="8"
+                      lineageId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[VERWMERKM]"
+                      name="VERWMERKM"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Output].ExternalColumns[MANDANT]"
+                      dataType="wstr"
+                      length="3"
+                      name="MANDANT" />
+                    <externalMetadataColumn
+                      refId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Output].ExternalColumns[PRUEFLOS]"
+                      dataType="wstr"
+                      length="12"
+                      name="PRUEFLOS" />
+                    <externalMetadataColumn
+                      refId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Output].ExternalColumns[VORGLFNR]"
+                      dataType="wstr"
+                      length="8"
+                      name="VORGLFNR" />
+                    <externalMetadataColumn
+                      refId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Output].ExternalColumns[MERKNR]"
+                      dataType="wstr"
+                      length="4"
+                      name="MERKNR" />
+                    <externalMetadataColumn
+                      refId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Output].ExternalColumns[KURZTEXT]"
+                      dataType="wstr"
+                      length="40"
+                      name="KURZTEXT" />
+                    <externalMetadataColumn
+                      refId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Output].ExternalColumns[QPMK_WERKS]"
+                      dataType="wstr"
+                      length="4"
+                      name="QPMK_WERKS" />
+                    <externalMetadataColumn
+                      refId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Output].ExternalColumns[STEUERKZ]"
+                      dataType="wstr"
+                      length="30"
+                      name="STEUERKZ" />
+                    <externalMetadataColumn
+                      refId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Output].ExternalColumns[TOLERANZOB]"
+                      dataType="r8"
+                      name="TOLERANZOB" />
+                    <externalMetadataColumn
+                      refId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Output].ExternalColumns[TOLERANZUN]"
+                      dataType="r8"
+                      name="TOLERANZUN" />
+                    <externalMetadataColumn
+                      refId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Output].ExternalColumns[VERWMERKM]"
+                      dataType="wstr"
+                      length="8"
+                      name="VERWMERKM" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[MANDANT]"
+                      dataType="wstr"
+                      length="3"
+                      lineageId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[MANDANT]"
+                      name="MANDANT" />
+                    <outputColumn
+                      refId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[PRUEFLOS]"
+                      dataType="wstr"
+                      length="12"
+                      lineageId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[PRUEFLOS]"
+                      name="PRUEFLOS" />
+                    <outputColumn
+                      refId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[VORGLFNR]"
+                      dataType="wstr"
+                      length="8"
+                      lineageId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[VORGLFNR]"
+                      name="VORGLFNR" />
+                    <outputColumn
+                      refId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[MERKNR]"
+                      dataType="wstr"
+                      length="4"
+                      lineageId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[MERKNR]"
+                      name="MERKNR" />
+                    <outputColumn
+                      refId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[KURZTEXT]"
+                      dataType="wstr"
+                      length="40"
+                      lineageId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[KURZTEXT]"
+                      name="KURZTEXT" />
+                    <outputColumn
+                      refId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[QPMK_WERKS]"
+                      dataType="wstr"
+                      length="4"
+                      lineageId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[QPMK_WERKS]"
+                      name="QPMK_WERKS" />
+                    <outputColumn
+                      refId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[STEUERKZ]"
+                      dataType="wstr"
+                      length="30"
+                      lineageId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[STEUERKZ]"
+                      name="STEUERKZ" />
+                    <outputColumn
+                      refId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[TOLERANZOB]"
+                      dataType="r8"
+                      lineageId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[TOLERANZOB]"
+                      name="TOLERANZOB" />
+                    <outputColumn
+                      refId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[TOLERANZUN]"
+                      dataType="r8"
+                      lineageId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[TOLERANZUN]"
+                      name="TOLERANZUN" />
+                    <outputColumn
+                      refId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[VERWMERKM]"
+                      dataType="wstr"
+                      length="8"
+                      lineageId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[VERWMERKM]"
+                      name="VERWMERKM" />
+                    <outputColumn
+                      refId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\QAMV\DB SAP ADRC"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="DB SAP ADRC"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT A01.[MANDANT]
+      ,A01.[PRUEFLOS]
+      ,A01.[VORGLFNR]
+      ,A01.[MERKNR]
+      ,A01.[KURZTEXT]
+      ,A01.[QPMK_WERKS]
+      ,A01.[STEUERKZ]
+      ,A01.[TOLERANZOB]
+      ,A01.[TOLERANZUN]
+      ,A01.[VERWMERKM]
+FROM [ecp].[QAMV] A01 (NOLOCK)
+ORDER BY A01.[MANDANT]
+      ,A01.[PRUEFLOS]
+      ,A01.[VORGLFNR]
+      ,A01.[MERKNR]</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\QAMV\DB SAP ADRC.Connections[OleDbConnection]"
+                  connectionManagerID="{544CCAD9-2CB1-4D87-98D7-A7C478586195}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[SQL_SAP]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Output]"
+                  isSorted="true"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[MANDANT]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Output].ExternalColumns[MANDANT]"
+                      length="3"
+                      lineageId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[MANDANT]"
+                      name="MANDANT"
+                      sortKeyPosition="1"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[PRUEFLOS]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Output].ExternalColumns[PRUEFLOS]"
+                      length="12"
+                      lineageId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[PRUEFLOS]"
+                      name="PRUEFLOS"
+                      sortKeyPosition="2"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[VORGLFNR]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Output].ExternalColumns[VORGLFNR]"
+                      length="8"
+                      lineageId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[VORGLFNR]"
+                      name="VORGLFNR"
+                      sortKeyPosition="3"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[MERKNR]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Output].ExternalColumns[MERKNR]"
+                      length="4"
+                      lineageId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[MERKNR]"
+                      name="MERKNR"
+                      sortKeyPosition="4"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[KURZTEXT]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Output].ExternalColumns[KURZTEXT]"
+                      length="40"
+                      lineageId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[KURZTEXT]"
+                      name="KURZTEXT"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[QPMK_WERKS]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Output].ExternalColumns[QPMK_WERKS]"
+                      length="4"
+                      lineageId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[QPMK_WERKS]"
+                      name="QPMK_WERKS"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[STEUERKZ]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Output].ExternalColumns[STEUERKZ]"
+                      length="30"
+                      lineageId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[STEUERKZ]"
+                      name="STEUERKZ"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[TOLERANZOB]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Output].ExternalColumns[TOLERANZOB]"
+                      lineageId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[TOLERANZOB]"
+                      name="TOLERANZOB"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[TOLERANZUN]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Output].ExternalColumns[TOLERANZUN]"
+                      lineageId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[TOLERANZUN]"
+                      name="TOLERANZUN"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[VERWMERKM]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Output].ExternalColumns[VERWMERKM]"
+                      length="8"
+                      lineageId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[VERWMERKM]"
+                      name="VERWMERKM"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Output].ExternalColumns[MANDANT]"
+                      dataType="wstr"
+                      length="3"
+                      name="MANDANT" />
+                    <externalMetadataColumn
+                      refId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Output].ExternalColumns[PRUEFLOS]"
+                      dataType="wstr"
+                      length="12"
+                      name="PRUEFLOS" />
+                    <externalMetadataColumn
+                      refId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Output].ExternalColumns[VORGLFNR]"
+                      dataType="wstr"
+                      length="8"
+                      name="VORGLFNR" />
+                    <externalMetadataColumn
+                      refId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Output].ExternalColumns[MERKNR]"
+                      dataType="wstr"
+                      length="4"
+                      name="MERKNR" />
+                    <externalMetadataColumn
+                      refId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Output].ExternalColumns[KURZTEXT]"
+                      dataType="wstr"
+                      length="40"
+                      name="KURZTEXT" />
+                    <externalMetadataColumn
+                      refId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Output].ExternalColumns[QPMK_WERKS]"
+                      dataType="wstr"
+                      length="4"
+                      name="QPMK_WERKS" />
+                    <externalMetadataColumn
+                      refId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Output].ExternalColumns[STEUERKZ]"
+                      dataType="wstr"
+                      length="30"
+                      name="STEUERKZ" />
+                    <externalMetadataColumn
+                      refId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Output].ExternalColumns[TOLERANZOB]"
+                      dataType="r8"
+                      name="TOLERANZOB" />
+                    <externalMetadataColumn
+                      refId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Output].ExternalColumns[TOLERANZUN]"
+                      dataType="r8"
+                      name="TOLERANZUN" />
+                    <externalMetadataColumn
+                      refId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Output].ExternalColumns[VERWMERKM]"
+                      dataType="wstr"
+                      length="8"
+                      name="VERWMERKM" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[MANDANT]"
+                      dataType="wstr"
+                      length="3"
+                      lineageId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[MANDANT]"
+                      name="MANDANT" />
+                    <outputColumn
+                      refId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[PRUEFLOS]"
+                      dataType="wstr"
+                      length="12"
+                      lineageId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[PRUEFLOS]"
+                      name="PRUEFLOS" />
+                    <outputColumn
+                      refId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[VORGLFNR]"
+                      dataType="wstr"
+                      length="8"
+                      lineageId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[VORGLFNR]"
+                      name="VORGLFNR" />
+                    <outputColumn
+                      refId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[MERKNR]"
+                      dataType="wstr"
+                      length="4"
+                      lineageId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[MERKNR]"
+                      name="MERKNR" />
+                    <outputColumn
+                      refId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[KURZTEXT]"
+                      dataType="wstr"
+                      length="40"
+                      lineageId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[KURZTEXT]"
+                      name="KURZTEXT" />
+                    <outputColumn
+                      refId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[QPMK_WERKS]"
+                      dataType="wstr"
+                      length="4"
+                      lineageId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[QPMK_WERKS]"
+                      name="QPMK_WERKS" />
+                    <outputColumn
+                      refId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[STEUERKZ]"
+                      dataType="wstr"
+                      length="30"
+                      lineageId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[STEUERKZ]"
+                      name="STEUERKZ" />
+                    <outputColumn
+                      refId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[TOLERANZOB]"
+                      dataType="r8"
+                      lineageId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[TOLERANZOB]"
+                      name="TOLERANZOB" />
+                    <outputColumn
+                      refId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[TOLERANZUN]"
+                      dataType="r8"
+                      lineageId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[TOLERANZUN]"
+                      name="TOLERANZUN" />
+                    <outputColumn
+                      refId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[VERWMERKM]"
+                      dataType="wstr"
+                      length="8"
+                      lineageId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[VERWMERKM]"
+                      name="VERWMERKM" />
+                    <outputColumn
+                      refId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\QAMV\Find Changed Records"
+              componentClassID="Microsoft.ConditionalSplit"
+              contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
+              name="Find Changed Records"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\QAMV\Find Changed Records.Inputs[Conditional Split Input]"
+                  description="Input to the Conditional Split Transformation"
+                  name="Conditional Split Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\QAMV\Find Changed Records.Inputs[Conditional Split Input].Columns[KURZTEXT]"
+                      cachedDataType="wstr"
+                      cachedLength="40"
+                      cachedName="KURZTEXT"
+                      lineageId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[KURZTEXT]" />
+                    <inputColumn
+                      refId="Package\QAMV\Find Changed Records.Inputs[Conditional Split Input].Columns[QPMK_WERKS]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="QPMK_WERKS"
+                      lineageId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[QPMK_WERKS]" />
+                    <inputColumn
+                      refId="Package\QAMV\Find Changed Records.Inputs[Conditional Split Input].Columns[STEUERKZ]"
+                      cachedDataType="wstr"
+                      cachedLength="30"
+                      cachedName="STEUERKZ"
+                      lineageId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[STEUERKZ]" />
+                    <inputColumn
+                      refId="Package\QAMV\Find Changed Records.Inputs[Conditional Split Input].Columns[TOLERANZOB]"
+                      cachedDataType="r8"
+                      cachedName="TOLERANZOB"
+                      lineageId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[TOLERANZOB]" />
+                    <inputColumn
+                      refId="Package\QAMV\Find Changed Records.Inputs[Conditional Split Input].Columns[TOLERANZUN]"
+                      cachedDataType="r8"
+                      cachedName="TOLERANZUN"
+                      lineageId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[TOLERANZUN]" />
+                    <inputColumn
+                      refId="Package\QAMV\Find Changed Records.Inputs[Conditional Split Input].Columns[VERWMERKM]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="VERWMERKM"
+                      lineageId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[VERWMERKM]" />
+                    <inputColumn
+                      refId="Package\QAMV\Find Changed Records.Inputs[Conditional Split Input].Columns[KURZTEXT (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="40"
+                      cachedName="KURZTEXT (1)"
+                      lineageId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[KURZTEXT (1)]" />
+                    <inputColumn
+                      refId="Package\QAMV\Find Changed Records.Inputs[Conditional Split Input].Columns[QPMK_WERKS (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="QPMK_WERKS (1)"
+                      lineageId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[QPMK_WERKS (1)]" />
+                    <inputColumn
+                      refId="Package\QAMV\Find Changed Records.Inputs[Conditional Split Input].Columns[STEUERKZ (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="30"
+                      cachedName="STEUERKZ (1)"
+                      lineageId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[STEUERKZ (1)]" />
+                    <inputColumn
+                      refId="Package\QAMV\Find Changed Records.Inputs[Conditional Split Input].Columns[TOLERANZOB (1)]"
+                      cachedDataType="r8"
+                      cachedName="TOLERANZOB (1)"
+                      lineageId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[TOLERANZOB (1)]" />
+                    <inputColumn
+                      refId="Package\QAMV\Find Changed Records.Inputs[Conditional Split Input].Columns[TOLERANZUN (1)]"
+                      cachedDataType="r8"
+                      cachedName="TOLERANZUN (1)"
+                      lineageId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[TOLERANZUN (1)]" />
+                    <inputColumn
+                      refId="Package\QAMV\Find Changed Records.Inputs[Conditional Split Input].Columns[VERWMERKM (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="VERWMERKM (1)"
+                      lineageId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[VERWMERKM (1)]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\QAMV\Find Changed Records.Outputs[update]"
+                  description="Output 1 of the Conditional Split Transformation"
+                  errorOrTruncationOperation="Computation"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="update"
+                  synchronousInputId="Package\QAMV\Find Changed Records.Inputs[Conditional Split Input]"
+                  truncationRowDisposition="FailComponent">
+                  <properties>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                      name="Expression">#{Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[KURZTEXT]} != #{Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[KURZTEXT (1)]} || #{Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[QPMK_WERKS]} != #{Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[QPMK_WERKS (1)]} || #{Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[STEUERKZ]} != #{Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[STEUERKZ (1)]} || #{Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[TOLERANZOB]} != #{Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[TOLERANZOB (1)]} || #{Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[TOLERANZUN]} != #{Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[TOLERANZUN (1)]} || #{Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[VERWMERKM]} != #{Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[VERWMERKM (1)]}</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the friendly version of the expression. This expression version uses column names."
+                      expressionType="Notify"
+                      name="FriendlyExpression">KURZTEXT != [KURZTEXT (1)] || QPMK_WERKS != [QPMK_WERKS (1)] || STEUERKZ != [STEUERKZ (1)] || TOLERANZOB != [TOLERANZOB (1)] || TOLERANZUN != [TOLERANZUN (1)] || VERWMERKM != [VERWMERKM (1)]</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                      name="EvaluationOrder">0</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\QAMV\Find Changed Records.Outputs[Conditional Split Default Output]"
+                  description="Default Output of the Conditional Split Transformation"
+                  exclusionGroup="1"
+                  name="Conditional Split Default Output"
+                  synchronousInputId="Package\QAMV\Find Changed Records.Inputs[Conditional Split Input]">
+                  <properties>
+                    <property
+                      dataType="System.Boolean"
+                      name="IsDefaultOut">true</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\QAMV\Find Changed Records.Outputs[Conditional Split Error Output]"
+                  description="Error Output of the Conditional Split Transformation"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Conditional Split Error Output"
+                  synchronousInputId="Package\QAMV\Find Changed Records.Inputs[Conditional Split Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\QAMV\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\QAMV\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\QAMV\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\QAMV\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\QAMV\Identify records"
+              componentClassID="Microsoft.ConditionalSplit"
+              contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
+              name="Identify records"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\QAMV\Identify records.Inputs[Conditional Split Input]"
+                  description="Input to the Conditional Split Transformation"
+                  name="Conditional Split Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\QAMV\Identify records.Inputs[Conditional Split Input].Columns[MANDANT]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDANT"
+                      cachedSortKeyPosition="1"
+                      lineageId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[MANDANT]" />
+                    <inputColumn
+                      refId="Package\QAMV\Identify records.Inputs[Conditional Split Input].Columns[MANDANT (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDANT (1)"
+                      lineageId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[MANDANT (1)]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\QAMV\Identify records.Outputs[update]"
+                  description="Output 1 of the Conditional Split Transformation"
+                  errorOrTruncationOperation="Computation"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="update"
+                  synchronousInputId="Package\QAMV\Identify records.Inputs[Conditional Split Input]"
+                  truncationRowDisposition="FailComponent">
+                  <properties>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                      name="Expression">![ISNULL](#{Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[MANDANT]}) &amp;&amp; ![ISNULL](#{Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[MANDANT (1)]})</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the friendly version of the expression. This expression version uses column names."
+                      expressionType="Notify"
+                      name="FriendlyExpression">!ISNULL(MANDANT) &amp;&amp; !ISNULL([MANDANT (1)])</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                      name="EvaluationOrder">0</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\QAMV\Identify records.Outputs[insert]"
+                  description="Output 2 of the Conditional Split Transformation"
+                  errorOrTruncationOperation="Computation"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="insert"
+                  synchronousInputId="Package\QAMV\Identify records.Inputs[Conditional Split Input]"
+                  truncationRowDisposition="FailComponent">
+                  <properties>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                      name="Expression">![ISNULL](#{Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[MANDANT]}) &amp;&amp; [ISNULL](#{Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[MANDANT (1)]})</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the friendly version of the expression. This expression version uses column names."
+                      expressionType="Notify"
+                      name="FriendlyExpression">!ISNULL(MANDANT) &amp;&amp; ISNULL([MANDANT (1)])</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                      name="EvaluationOrder">1</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\QAMV\Identify records.Outputs[delete]"
+                  description="Output 3 of the Conditional Split Transformation"
+                  errorOrTruncationOperation="Computation"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="delete"
+                  synchronousInputId="Package\QAMV\Identify records.Inputs[Conditional Split Input]"
+                  truncationRowDisposition="FailComponent">
+                  <properties>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                      name="Expression">[ISNULL](#{Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[MANDANT]}) &amp;&amp; ![ISNULL](#{Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[MANDANT (1)]})</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the friendly version of the expression. This expression version uses column names."
+                      expressionType="Notify"
+                      name="FriendlyExpression">ISNULL(MANDANT) &amp;&amp; !ISNULL([MANDANT (1)])</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                      name="EvaluationOrder">2</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\QAMV\Identify records.Outputs[Conditional Split Default Output]"
+                  description="Default Output of the Conditional Split Transformation"
+                  exclusionGroup="1"
+                  name="Conditional Split Default Output"
+                  synchronousInputId="Package\QAMV\Identify records.Inputs[Conditional Split Input]">
+                  <properties>
+                    <property
+                      dataType="System.Boolean"
+                      name="IsDefaultOut">true</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\QAMV\Identify records.Outputs[Conditional Split Error Output]"
+                  description="Error Output of the Conditional Split Transformation"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Conditional Split Error Output"
+                  synchronousInputId="Package\QAMV\Identify records.Inputs[Conditional Split Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\QAMV\Identify records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\QAMV\Identify records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\QAMV\Identify records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\QAMV\Identify records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\QAMV\insert new records"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="insert new records"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[QAMV_STAGE_INSERT]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\QAMV\insert new records.Connections[OleDbConnection]"
+                  connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\QAMV\insert new records.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\QAMV\insert new records.Inputs[OLE DB Destination Input].Columns[MANDANT]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDANT"
+                      cachedSortKeyPosition="1"
+                      externalMetadataColumnId="Package\QAMV\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MANDANT]"
+                      lineageId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[MANDANT]" />
+                    <inputColumn
+                      refId="Package\QAMV\insert new records.Inputs[OLE DB Destination Input].Columns[PRUEFLOS]"
+                      cachedDataType="wstr"
+                      cachedLength="12"
+                      cachedName="PRUEFLOS"
+                      cachedSortKeyPosition="2"
+                      externalMetadataColumnId="Package\QAMV\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[PRUEFLOS]"
+                      lineageId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[PRUEFLOS]" />
+                    <inputColumn
+                      refId="Package\QAMV\insert new records.Inputs[OLE DB Destination Input].Columns[VORGLFNR]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="VORGLFNR"
+                      cachedSortKeyPosition="3"
+                      externalMetadataColumnId="Package\QAMV\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[VORGLFNR]"
+                      lineageId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[VORGLFNR]" />
+                    <inputColumn
+                      refId="Package\QAMV\insert new records.Inputs[OLE DB Destination Input].Columns[MERKNR]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="MERKNR"
+                      cachedSortKeyPosition="4"
+                      externalMetadataColumnId="Package\QAMV\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MERKNR]"
+                      lineageId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[MERKNR]" />
+                    <inputColumn
+                      refId="Package\QAMV\insert new records.Inputs[OLE DB Destination Input].Columns[KURZTEXT]"
+                      cachedDataType="wstr"
+                      cachedLength="40"
+                      cachedName="KURZTEXT"
+                      externalMetadataColumnId="Package\QAMV\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[KURZTEXT]"
+                      lineageId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[KURZTEXT]" />
+                    <inputColumn
+                      refId="Package\QAMV\insert new records.Inputs[OLE DB Destination Input].Columns[QPMK_WERKS]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="QPMK_WERKS"
+                      externalMetadataColumnId="Package\QAMV\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[QPMK_WERKS]"
+                      lineageId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[QPMK_WERKS]" />
+                    <inputColumn
+                      refId="Package\QAMV\insert new records.Inputs[OLE DB Destination Input].Columns[STEUERKZ]"
+                      cachedDataType="wstr"
+                      cachedLength="30"
+                      cachedName="STEUERKZ"
+                      externalMetadataColumnId="Package\QAMV\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[STEUERKZ]"
+                      lineageId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[STEUERKZ]" />
+                    <inputColumn
+                      refId="Package\QAMV\insert new records.Inputs[OLE DB Destination Input].Columns[TOLERANZOB]"
+                      cachedDataType="r8"
+                      cachedName="TOLERANZOB"
+                      externalMetadataColumnId="Package\QAMV\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[TOLERANZOB]"
+                      lineageId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[TOLERANZOB]" />
+                    <inputColumn
+                      refId="Package\QAMV\insert new records.Inputs[OLE DB Destination Input].Columns[TOLERANZUN]"
+                      cachedDataType="r8"
+                      cachedName="TOLERANZUN"
+                      externalMetadataColumnId="Package\QAMV\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[TOLERANZUN]"
+                      lineageId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[TOLERANZUN]" />
+                    <inputColumn
+                      refId="Package\QAMV\insert new records.Inputs[OLE DB Destination Input].Columns[VERWMERKM]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="VERWMERKM"
+                      externalMetadataColumnId="Package\QAMV\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[VERWMERKM]"
+                      lineageId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[VERWMERKM]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\QAMV\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MANDANT]"
+                      dataType="wstr"
+                      length="3"
+                      name="MANDANT" />
+                    <externalMetadataColumn
+                      refId="Package\QAMV\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[PRUEFLOS]"
+                      dataType="wstr"
+                      length="12"
+                      name="PRUEFLOS" />
+                    <externalMetadataColumn
+                      refId="Package\QAMV\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[VORGLFNR]"
+                      dataType="wstr"
+                      length="8"
+                      name="VORGLFNR" />
+                    <externalMetadataColumn
+                      refId="Package\QAMV\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MERKNR]"
+                      dataType="wstr"
+                      length="4"
+                      name="MERKNR" />
+                    <externalMetadataColumn
+                      refId="Package\QAMV\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[KURZTEXT]"
+                      dataType="wstr"
+                      length="40"
+                      name="KURZTEXT" />
+                    <externalMetadataColumn
+                      refId="Package\QAMV\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[QPMK_WERKS]"
+                      dataType="wstr"
+                      length="4"
+                      name="QPMK_WERKS" />
+                    <externalMetadataColumn
+                      refId="Package\QAMV\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[STEUERKZ]"
+                      dataType="wstr"
+                      length="30"
+                      name="STEUERKZ" />
+                    <externalMetadataColumn
+                      refId="Package\QAMV\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[TOLERANZOB]"
+                      dataType="r8"
+                      name="TOLERANZOB" />
+                    <externalMetadataColumn
+                      refId="Package\QAMV\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[TOLERANZUN]"
+                      dataType="r8"
+                      name="TOLERANZUN" />
+                    <externalMetadataColumn
+                      refId="Package\QAMV\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[VERWMERKM]"
+                      dataType="wstr"
+                      length="8"
+                      name="VERWMERKM" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\QAMV\insert new records.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\QAMV\insert new records.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\QAMV\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\QAMV\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\QAMV\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\QAMV\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\QAMV\Merge Join"
+              componentClassID="Microsoft.MergeJoin"
+              contactInfo="Merge Join;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
+              description="Combine two sorted data flows into one using the FULL, LEFT, or INNER join. We recommend this transformation when data flows can be sorted at their sources."
+              name="Merge Join"
+              version="1">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the type of join to perform."
+                  name="JoinType"
+                  typeConverter="JoinType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the number of columns in the ordering key."
+                  name="NumKeyColumns">4</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the null values are treated as equal values."
+                  name="TreatNullsAsEqual">true</property>
+                <property
+                  dataType="System.Int32"
+                  description="Indicates the requested maximum buffers per input before blocking."
+                  name="MaxBuffersPerInput">5</property>
+              </properties>
+              <inputs>
+                <input
+                  refId="Package\QAMV\Merge Join.Inputs[Merge Join Left Input]"
+                  hasSideEffects="true"
+                  name="Merge Join Left Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\QAMV\Merge Join.Inputs[Merge Join Left Input].Columns[MANDANT]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDANT"
+                      cachedSortKeyPosition="1"
+                      lineageId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[MANDANT]" />
+                    <inputColumn
+                      refId="Package\QAMV\Merge Join.Inputs[Merge Join Left Input].Columns[PRUEFLOS]"
+                      cachedDataType="wstr"
+                      cachedLength="12"
+                      cachedName="PRUEFLOS"
+                      cachedSortKeyPosition="2"
+                      lineageId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[PRUEFLOS]" />
+                    <inputColumn
+                      refId="Package\QAMV\Merge Join.Inputs[Merge Join Left Input].Columns[VORGLFNR]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="VORGLFNR"
+                      cachedSortKeyPosition="3"
+                      lineageId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[VORGLFNR]" />
+                    <inputColumn
+                      refId="Package\QAMV\Merge Join.Inputs[Merge Join Left Input].Columns[MERKNR]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="MERKNR"
+                      cachedSortKeyPosition="4"
+                      lineageId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[MERKNR]" />
+                    <inputColumn
+                      refId="Package\QAMV\Merge Join.Inputs[Merge Join Left Input].Columns[KURZTEXT]"
+                      cachedDataType="wstr"
+                      cachedLength="40"
+                      cachedName="KURZTEXT"
+                      lineageId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[KURZTEXT]" />
+                    <inputColumn
+                      refId="Package\QAMV\Merge Join.Inputs[Merge Join Left Input].Columns[QPMK_WERKS]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="QPMK_WERKS"
+                      lineageId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[QPMK_WERKS]" />
+                    <inputColumn
+                      refId="Package\QAMV\Merge Join.Inputs[Merge Join Left Input].Columns[STEUERKZ]"
+                      cachedDataType="wstr"
+                      cachedLength="30"
+                      cachedName="STEUERKZ"
+                      lineageId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[STEUERKZ]" />
+                    <inputColumn
+                      refId="Package\QAMV\Merge Join.Inputs[Merge Join Left Input].Columns[TOLERANZOB]"
+                      cachedDataType="r8"
+                      cachedName="TOLERANZOB"
+                      lineageId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[TOLERANZOB]" />
+                    <inputColumn
+                      refId="Package\QAMV\Merge Join.Inputs[Merge Join Left Input].Columns[TOLERANZUN]"
+                      cachedDataType="r8"
+                      cachedName="TOLERANZUN"
+                      lineageId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[TOLERANZUN]" />
+                    <inputColumn
+                      refId="Package\QAMV\Merge Join.Inputs[Merge Join Left Input].Columns[VERWMERKM]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="VERWMERKM"
+                      lineageId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[VERWMERKM]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+                <input
+                  refId="Package\QAMV\Merge Join.Inputs[Merge Join Right Input]"
+                  hasSideEffects="true"
+                  name="Merge Join Right Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\QAMV\Merge Join.Inputs[Merge Join Right Input].Columns[MANDANT]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDANT"
+                      cachedSortKeyPosition="1"
+                      lineageId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[MANDANT]" />
+                    <inputColumn
+                      refId="Package\QAMV\Merge Join.Inputs[Merge Join Right Input].Columns[PRUEFLOS]"
+                      cachedDataType="wstr"
+                      cachedLength="12"
+                      cachedName="PRUEFLOS"
+                      cachedSortKeyPosition="2"
+                      lineageId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[PRUEFLOS]" />
+                    <inputColumn
+                      refId="Package\QAMV\Merge Join.Inputs[Merge Join Right Input].Columns[VORGLFNR]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="VORGLFNR"
+                      cachedSortKeyPosition="3"
+                      lineageId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[VORGLFNR]" />
+                    <inputColumn
+                      refId="Package\QAMV\Merge Join.Inputs[Merge Join Right Input].Columns[MERKNR]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="MERKNR"
+                      cachedSortKeyPosition="4"
+                      lineageId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[MERKNR]" />
+                    <inputColumn
+                      refId="Package\QAMV\Merge Join.Inputs[Merge Join Right Input].Columns[KURZTEXT]"
+                      cachedDataType="wstr"
+                      cachedLength="40"
+                      cachedName="KURZTEXT"
+                      lineageId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[KURZTEXT]" />
+                    <inputColumn
+                      refId="Package\QAMV\Merge Join.Inputs[Merge Join Right Input].Columns[QPMK_WERKS]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="QPMK_WERKS"
+                      lineageId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[QPMK_WERKS]" />
+                    <inputColumn
+                      refId="Package\QAMV\Merge Join.Inputs[Merge Join Right Input].Columns[STEUERKZ]"
+                      cachedDataType="wstr"
+                      cachedLength="30"
+                      cachedName="STEUERKZ"
+                      lineageId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[STEUERKZ]" />
+                    <inputColumn
+                      refId="Package\QAMV\Merge Join.Inputs[Merge Join Right Input].Columns[TOLERANZOB]"
+                      cachedDataType="r8"
+                      cachedName="TOLERANZOB"
+                      lineageId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[TOLERANZOB]" />
+                    <inputColumn
+                      refId="Package\QAMV\Merge Join.Inputs[Merge Join Right Input].Columns[TOLERANZUN]"
+                      cachedDataType="r8"
+                      cachedName="TOLERANZUN"
+                      lineageId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[TOLERANZUN]" />
+                    <inputColumn
+                      refId="Package\QAMV\Merge Join.Inputs[Merge Join Right Input].Columns[VERWMERKM]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="VERWMERKM"
+                      lineageId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[VERWMERKM]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\QAMV\Merge Join.Outputs[Merge Join Output]"
+                  isSorted="true"
+                  name="Merge Join Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[MANDANT]"
+                      dataType="wstr"
+                      length="3"
+                      lineageId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[MANDANT]"
+                      name="MANDANT"
+                      sortKeyPosition="1">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\QAMV\Merge Join.Inputs[Merge Join Left Input].Columns[MANDANT]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[PRUEFLOS]"
+                      dataType="wstr"
+                      length="12"
+                      lineageId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[PRUEFLOS]"
+                      name="PRUEFLOS"
+                      sortKeyPosition="2">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\QAMV\Merge Join.Inputs[Merge Join Left Input].Columns[PRUEFLOS]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[VORGLFNR]"
+                      dataType="wstr"
+                      length="8"
+                      lineageId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[VORGLFNR]"
+                      name="VORGLFNR"
+                      sortKeyPosition="3">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\QAMV\Merge Join.Inputs[Merge Join Left Input].Columns[VORGLFNR]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[MERKNR]"
+                      dataType="wstr"
+                      length="4"
+                      lineageId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[MERKNR]"
+                      name="MERKNR"
+                      sortKeyPosition="4">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\QAMV\Merge Join.Inputs[Merge Join Left Input].Columns[MERKNR]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[KURZTEXT]"
+                      dataType="wstr"
+                      length="40"
+                      lineageId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[KURZTEXT]"
+                      name="KURZTEXT">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\QAMV\Merge Join.Inputs[Merge Join Left Input].Columns[KURZTEXT]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[QPMK_WERKS]"
+                      dataType="wstr"
+                      length="4"
+                      lineageId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[QPMK_WERKS]"
+                      name="QPMK_WERKS">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\QAMV\Merge Join.Inputs[Merge Join Left Input].Columns[QPMK_WERKS]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[STEUERKZ]"
+                      dataType="wstr"
+                      length="30"
+                      lineageId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[STEUERKZ]"
+                      name="STEUERKZ">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\QAMV\Merge Join.Inputs[Merge Join Left Input].Columns[STEUERKZ]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[TOLERANZOB]"
+                      dataType="r8"
+                      lineageId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[TOLERANZOB]"
+                      name="TOLERANZOB">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\QAMV\Merge Join.Inputs[Merge Join Left Input].Columns[TOLERANZOB]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[TOLERANZUN]"
+                      dataType="r8"
+                      lineageId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[TOLERANZUN]"
+                      name="TOLERANZUN">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\QAMV\Merge Join.Inputs[Merge Join Left Input].Columns[TOLERANZUN]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[VERWMERKM]"
+                      dataType="wstr"
+                      length="8"
+                      lineageId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[VERWMERKM]"
+                      name="VERWMERKM">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\QAMV\Merge Join.Inputs[Merge Join Left Input].Columns[VERWMERKM]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[MANDANT (1)]"
+                      dataType="wstr"
+                      length="3"
+                      lineageId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[MANDANT (1)]"
+                      name="MANDANT (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\QAMV\Merge Join.Inputs[Merge Join Right Input].Columns[MANDANT]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[PRUEFLOS (1)]"
+                      dataType="wstr"
+                      length="12"
+                      lineageId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[PRUEFLOS (1)]"
+                      name="PRUEFLOS (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\QAMV\Merge Join.Inputs[Merge Join Right Input].Columns[PRUEFLOS]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[VORGLFNR (1)]"
+                      dataType="wstr"
+                      length="8"
+                      lineageId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[VORGLFNR (1)]"
+                      name="VORGLFNR (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\QAMV\Merge Join.Inputs[Merge Join Right Input].Columns[VORGLFNR]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[MERKNR (1)]"
+                      dataType="wstr"
+                      length="4"
+                      lineageId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[MERKNR (1)]"
+                      name="MERKNR (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\QAMV\Merge Join.Inputs[Merge Join Right Input].Columns[MERKNR]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[KURZTEXT (1)]"
+                      dataType="wstr"
+                      length="40"
+                      lineageId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[KURZTEXT (1)]"
+                      name="KURZTEXT (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\QAMV\Merge Join.Inputs[Merge Join Right Input].Columns[KURZTEXT]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[QPMK_WERKS (1)]"
+                      dataType="wstr"
+                      length="4"
+                      lineageId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[QPMK_WERKS (1)]"
+                      name="QPMK_WERKS (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\QAMV\Merge Join.Inputs[Merge Join Right Input].Columns[QPMK_WERKS]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[STEUERKZ (1)]"
+                      dataType="wstr"
+                      length="30"
+                      lineageId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[STEUERKZ (1)]"
+                      name="STEUERKZ (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\QAMV\Merge Join.Inputs[Merge Join Right Input].Columns[STEUERKZ]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[TOLERANZOB (1)]"
+                      dataType="r8"
+                      lineageId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[TOLERANZOB (1)]"
+                      name="TOLERANZOB (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\QAMV\Merge Join.Inputs[Merge Join Right Input].Columns[TOLERANZOB]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[TOLERANZUN (1)]"
+                      dataType="r8"
+                      lineageId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[TOLERANZUN (1)]"
+                      name="TOLERANZUN (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\QAMV\Merge Join.Inputs[Merge Join Right Input].Columns[TOLERANZUN]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[VERWMERKM (1)]"
+                      dataType="wstr"
+                      length="8"
+                      lineageId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[VERWMERKM (1)]"
+                      name="VERWMERKM (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\QAMV\Merge Join.Inputs[Merge Join Right Input].Columns[VERWMERKM]}</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\QAMV\stage changed records"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="stage changed records"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[QAMV_STAGE_UPDATE]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\QAMV\stage changed records.Connections[OleDbConnection]"
+                  connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\QAMV\stage changed records.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\QAMV\stage changed records.Inputs[OLE DB Destination Input].Columns[MANDANT]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDANT"
+                      cachedSortKeyPosition="1"
+                      externalMetadataColumnId="Package\QAMV\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MANDANT]"
+                      lineageId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[MANDANT]" />
+                    <inputColumn
+                      refId="Package\QAMV\stage changed records.Inputs[OLE DB Destination Input].Columns[PRUEFLOS]"
+                      cachedDataType="wstr"
+                      cachedLength="12"
+                      cachedName="PRUEFLOS"
+                      cachedSortKeyPosition="2"
+                      externalMetadataColumnId="Package\QAMV\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[PRUEFLOS]"
+                      lineageId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[PRUEFLOS]" />
+                    <inputColumn
+                      refId="Package\QAMV\stage changed records.Inputs[OLE DB Destination Input].Columns[VORGLFNR]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="VORGLFNR"
+                      cachedSortKeyPosition="3"
+                      externalMetadataColumnId="Package\QAMV\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[VORGLFNR]"
+                      lineageId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[VORGLFNR]" />
+                    <inputColumn
+                      refId="Package\QAMV\stage changed records.Inputs[OLE DB Destination Input].Columns[MERKNR]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="MERKNR"
+                      cachedSortKeyPosition="4"
+                      externalMetadataColumnId="Package\QAMV\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MERKNR]"
+                      lineageId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[MERKNR]" />
+                    <inputColumn
+                      refId="Package\QAMV\stage changed records.Inputs[OLE DB Destination Input].Columns[KURZTEXT]"
+                      cachedDataType="wstr"
+                      cachedLength="40"
+                      cachedName="KURZTEXT"
+                      externalMetadataColumnId="Package\QAMV\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[KURZTEXT]"
+                      lineageId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[KURZTEXT]" />
+                    <inputColumn
+                      refId="Package\QAMV\stage changed records.Inputs[OLE DB Destination Input].Columns[QPMK_WERKS]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="QPMK_WERKS"
+                      externalMetadataColumnId="Package\QAMV\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[QPMK_WERKS]"
+                      lineageId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[QPMK_WERKS]" />
+                    <inputColumn
+                      refId="Package\QAMV\stage changed records.Inputs[OLE DB Destination Input].Columns[STEUERKZ]"
+                      cachedDataType="wstr"
+                      cachedLength="30"
+                      cachedName="STEUERKZ"
+                      externalMetadataColumnId="Package\QAMV\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[STEUERKZ]"
+                      lineageId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[STEUERKZ]" />
+                    <inputColumn
+                      refId="Package\QAMV\stage changed records.Inputs[OLE DB Destination Input].Columns[TOLERANZOB]"
+                      cachedDataType="r8"
+                      cachedName="TOLERANZOB"
+                      externalMetadataColumnId="Package\QAMV\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[TOLERANZOB]"
+                      lineageId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[TOLERANZOB]" />
+                    <inputColumn
+                      refId="Package\QAMV\stage changed records.Inputs[OLE DB Destination Input].Columns[TOLERANZUN]"
+                      cachedDataType="r8"
+                      cachedName="TOLERANZUN"
+                      externalMetadataColumnId="Package\QAMV\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[TOLERANZUN]"
+                      lineageId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[TOLERANZUN]" />
+                    <inputColumn
+                      refId="Package\QAMV\stage changed records.Inputs[OLE DB Destination Input].Columns[VERWMERKM]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="VERWMERKM"
+                      externalMetadataColumnId="Package\QAMV\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[VERWMERKM]"
+                      lineageId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[VERWMERKM]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\QAMV\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MANDANT]"
+                      dataType="wstr"
+                      length="3"
+                      name="MANDANT" />
+                    <externalMetadataColumn
+                      refId="Package\QAMV\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[PRUEFLOS]"
+                      dataType="wstr"
+                      length="12"
+                      name="PRUEFLOS" />
+                    <externalMetadataColumn
+                      refId="Package\QAMV\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[VORGLFNR]"
+                      dataType="wstr"
+                      length="8"
+                      name="VORGLFNR" />
+                    <externalMetadataColumn
+                      refId="Package\QAMV\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MERKNR]"
+                      dataType="wstr"
+                      length="4"
+                      name="MERKNR" />
+                    <externalMetadataColumn
+                      refId="Package\QAMV\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[KURZTEXT]"
+                      dataType="wstr"
+                      length="40"
+                      name="KURZTEXT" />
+                    <externalMetadataColumn
+                      refId="Package\QAMV\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[QPMK_WERKS]"
+                      dataType="wstr"
+                      length="4"
+                      name="QPMK_WERKS" />
+                    <externalMetadataColumn
+                      refId="Package\QAMV\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[STEUERKZ]"
+                      dataType="wstr"
+                      length="30"
+                      name="STEUERKZ" />
+                    <externalMetadataColumn
+                      refId="Package\QAMV\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[TOLERANZOB]"
+                      dataType="r8"
+                      name="TOLERANZOB" />
+                    <externalMetadataColumn
+                      refId="Package\QAMV\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[TOLERANZUN]"
+                      dataType="r8"
+                      name="TOLERANZUN" />
+                    <externalMetadataColumn
+                      refId="Package\QAMV\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[VERWMERKM]"
+                      dataType="wstr"
+                      length="8"
+                      name="VERWMERKM" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\QAMV\stage changed records.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\QAMV\stage changed records.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\QAMV\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\QAMV\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\QAMV\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\QAMV\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\QAMV\stage deleted records"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="stage deleted records"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[QAMV_STAGE_DELETE]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\QAMV\stage deleted records.Connections[OleDbConnection]"
+                  connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\QAMV\stage deleted records.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\QAMV\stage deleted records.Inputs[OLE DB Destination Input].Columns[MANDANT (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDANT (1)"
+                      externalMetadataColumnId="Package\QAMV\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MANDANT]"
+                      lineageId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[MANDANT (1)]" />
+                    <inputColumn
+                      refId="Package\QAMV\stage deleted records.Inputs[OLE DB Destination Input].Columns[PRUEFLOS (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="12"
+                      cachedName="PRUEFLOS (1)"
+                      externalMetadataColumnId="Package\QAMV\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[PRUEFLOS]"
+                      lineageId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[PRUEFLOS (1)]" />
+                    <inputColumn
+                      refId="Package\QAMV\stage deleted records.Inputs[OLE DB Destination Input].Columns[VORGLFNR (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="VORGLFNR (1)"
+                      externalMetadataColumnId="Package\QAMV\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[VORGLFNR]"
+                      lineageId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[VORGLFNR (1)]" />
+                    <inputColumn
+                      refId="Package\QAMV\stage deleted records.Inputs[OLE DB Destination Input].Columns[MERKNR (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="MERKNR (1)"
+                      externalMetadataColumnId="Package\QAMV\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MERKNR]"
+                      lineageId="Package\QAMV\Merge Join.Outputs[Merge Join Output].Columns[MERKNR (1)]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\QAMV\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MANDANT]"
+                      dataType="wstr"
+                      length="3"
+                      name="MANDANT" />
+                    <externalMetadataColumn
+                      refId="Package\QAMV\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[PRUEFLOS]"
+                      dataType="wstr"
+                      length="12"
+                      name="PRUEFLOS" />
+                    <externalMetadataColumn
+                      refId="Package\QAMV\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[VORGLFNR]"
+                      dataType="wstr"
+                      length="8"
+                      name="VORGLFNR" />
+                    <externalMetadataColumn
+                      refId="Package\QAMV\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MERKNR]"
+                      dataType="wstr"
+                      length="4"
+                      name="MERKNR" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\QAMV\stage deleted records.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\QAMV\stage deleted records.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\QAMV\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\QAMV\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\QAMV\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\QAMV\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\QAMV.Paths[delete]"
+              endId="Package\QAMV\stage deleted records.Inputs[OLE DB Destination Input]"
+              name="delete"
+              startId="Package\QAMV\Identify records.Outputs[delete]" />
+            <path
+              refId="Package\QAMV.Paths[insert]"
+              endId="Package\QAMV\insert new records.Inputs[OLE DB Destination Input]"
+              name="insert"
+              startId="Package\QAMV\Identify records.Outputs[insert]" />
+            <path
+              refId="Package\QAMV.Paths[Merge Join Output]"
+              endId="Package\QAMV\Identify records.Inputs[Conditional Split Input]"
+              name="Merge Join Output"
+              startId="Package\QAMV\Merge Join.Outputs[Merge Join Output]" />
+            <path
+              refId="Package\QAMV.Paths[OLE DB Source Output]"
+              endId="Package\QAMV\Merge Join.Inputs[Merge Join Left Input]"
+              name="OLE DB Source Output"
+              startId="Package\QAMV\DB SAP ADRC.Outputs[OLE DB Source Output]" />
+            <path
+              refId="Package\QAMV.Paths[OLE DB Source Output1]"
+              endId="Package\QAMV\Merge Join.Inputs[Merge Join Right Input]"
+              name="OLE DB Source Output"
+              startId="Package\QAMV\DB PBI ADRC.Outputs[OLE DB Source Output]" />
+            <path
+              refId="Package\QAMV.Paths[update]"
+              endId="Package\QAMV\Find Changed Records.Inputs[Conditional Split Input]"
+              name="update"
+              startId="Package\QAMV\Identify records.Outputs[update]" />
+            <path
+              refId="Package\QAMV.Paths[update1]"
+              endId="Package\QAMV\stage changed records.Inputs[OLE DB Destination Input]"
+              name="update"
+              startId="Package\QAMV\Find Changed Records.Outputs[update]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Sequence Container"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Sequence Container"
+      DTS:DTSID="{B768D9B6-1B46-4349-B7B1-D14924D0FC5E}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Sequence Container">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\Sequence Container\delete"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{94F43AB6-4410-4D37-9E8D-F25D113DE4C5}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="delete"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+              SQLTask:SqlStatementSource="DELETE A01&#xA;FROM [QAMV] A01 INNER JOIN [QAMV_STAGE_DELETE] B01 ON ( A01.[MANDANT] = B01.[MANDANT]&#xA;                                                    AND A01.[PRUEFLOS] = B01.[PRUEFLOS]&#xA;                                                    AND A01.[VORGLFNR] = B01.[VORGLFNR]&#xA;                                                    AND A01.[MERKNR] = B01.[MERKNR] )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Sequence Container\update"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{1ACE45E2-EE24-43A6-A5AB-BDD5F370726C}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="update"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+              SQLTask:SqlStatementSource="UPDATE A01&#xA;SET A01.[KURZTEXT] = B01.[KURZTEXT]&#xA;   ,A01.[QPMK_WERKS] = B01.[QPMK_WERKS]&#xA;   ,A01.[STEUERKZ] = B01.[STEUERKZ]&#xA;   ,A01.[TOLERANZOB] = B01.[TOLERANZOB]&#xA;   ,A01.[TOLERANZUN] = B01.[TOLERANZUN]&#xA;   ,A01.[VERWMERKM] = B01.[VERWMERKM]&#xA;FROM [QAMV] A01 INNER JOIN [QAMV_STAGE_UPDATE] B01 ON ( A01.[MANDANT] = B01.[MANDANT]&#xA;                                                    AND A01.[PRUEFLOS] = B01.[PRUEFLOS]&#xA;                                                    AND A01.[VORGLFNR] = B01.[VORGLFNR]&#xA;                                                    AND A01.[MERKNR] = B01.[MERKNR] )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Sequence Container 1"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Sequence Container"
+      DTS:DTSID="{E0D27F5B-1EA3-4656-AE16-D9F9ACD9A6EC}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Sequence Container 1">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\Sequence Container 1\insert"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{4A18E43C-2DA3-4B0F-9215-B99CDD386A51}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="insert"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+              SQLTask:SqlStatementSource="INSERT INTO [QAMV]&#xA;SELECT * FROM [QAMV_STAGE_INSERT]&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{2C8BA026-2B5A-4D45-9DDB-5049B01F0228}"
+      DTS:From="Package\QAMV"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\Sequence Container" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
+      DTS:CreationName=""
+      DTS:DTSID="{A706CED9-6A06-45EA-B67B-D7AF88E98093}"
+      DTS:From="Package\clean stage"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 1"
+      DTS:To="Package\QAMV" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
+      DTS:CreationName=""
+      DTS:DTSID="{A58F0506-1A00-4D61-A536-059A907F7710}"
+      DTS:From="Package\Sequence Container"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 2"
+      DTS:To="Package\Sequence Container 1" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="132,42"
+          Id="Package\clean stage"
+          TopLeft="116,44.333333333333" />
+        <NodeLayout
+          Size="108,42"
+          Id="Package\QAMV"
+          TopLeft="350,43" />
+        <NodeLayout
+          Size="108,42"
+          Id="Package\Sequence Container\delete"
+          TopLeft="161,14" />
+        <NodeLayout
+          Size="112,42"
+          Id="Package\Sequence Container\update"
+          TopLeft="14,14" />
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="305,79"
+          Size="305,122"
+          Id="Package\Sequence Container"
+          TopLeft="250,153" />
+        <NodeLayout
+          Size="105,42"
+          Id="Package\Sequence Container 1\insert"
+          TopLeft="86.5,28.75" />
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="305,126"
+          Size="305,169"
+          Id="Package\Sequence Container 1"
+          TopLeft="248.75,327.75" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="403.25,85">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,68"
+              Start="0,0"
+              End="0,60.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,60.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="248,64.6666666666665">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="102,0"
+              Start="0,0"
+              End="94.5,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="94.5,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 2]"
+          TopLeft="401.875,275">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,52.75"
+              Start="0,0"
+              End="0,45.25">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,45.25" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\QAMV">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="153,42"
+          Id="Package\QAMV\Identify records"
+          TopLeft="382,209" />
+        <NodeLayout
+          Size="166,42"
+          Id="Package\QAMV\insert new records"
+          TopLeft="89,302" />
+        <NodeLayout
+          Size="180,42"
+          Id="Package\QAMV\stage deleted records"
+          TopLeft="654,301" />
+        <NodeLayout
+          Size="186,42"
+          Id="Package\QAMV\stage changed records"
+          TopLeft="367,379" />
+        <NodeLayout
+          Size="142,42"
+          Id="Package\QAMV\DB PBI ADRC"
+          TopLeft="511,35" />
+        <NodeLayout
+          Size="144,42"
+          Id="Package\QAMV\DB SAP ADRC"
+          TopLeft="224,40" />
+        <NodeLayout
+          Size="184,42"
+          Id="Package\QAMV\Find Changed Records"
+          TopLeft="371,303" />
+        <EdgeLayout
+          Id="Package\QAMV.Paths[update1]"
+          TopLeft="461.5,345">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,34"
+              Start="0,0"
+              End="0,26.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,26.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-15.8025,7.4453125,31.605,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\QAMV.Paths[update]"
+          TopLeft="460.75,251">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,52"
+              Start="0,0"
+              End="0,44.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,44.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-15.8025,16.4453125,31.605,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\QAMV.Paths[insert]"
+          TopLeft="422.25,251">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-250.25,51"
+              Start="0,0"
+              End="-250.25,43.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,13.5824411134904" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,13.5824411134904"
+                    Point2="0,17.5824411134904"
+                    Point3="-4,17.5824411134904" />
+                  <mssgle:LineSegment
+                    End="-246.25,17.5824411134904" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-246.25,17.5824411134904"
+                    Point2="-250.25,17.5824411134904"
+                    Point3="-250.25,21.5824411134904" />
+                  <mssgle:LineSegment
+                    End="-250.25,43.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-138.07498046875,22.5824411134904,25.8999609375,9.451171875"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\QAMV.Paths[delete]"
+          TopLeft="494.75,251">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="249.25,50"
+              Start="0,0"
+              End="249.25,42.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,13.237687366167" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,13.237687366167"
+                    Point2="0,17.237687366167"
+                    Point3="4,17.237687366167" />
+                  <mssgle:LineSegment
+                    End="245.25,17.237687366167" />
+                  <mssgle:CubicBezierSegment
+                    Point1="245.25,17.237687366167"
+                    Point2="249.25,17.237687366167"
+                    Point3="249.25,21.237687366167" />
+                  <mssgle:LineSegment
+                    End="249.25,42.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="110.42904296875,22.237687366167,28.3919140625,9.7490234375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="130,42"
+          Id="Package\QAMV\Merge Join"
+          TopLeft="399,131" />
+        <EdgeLayout
+          Id="Package\QAMV.Paths[OLE DB Source Output]"
+          TopLeft="296,82">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="168,49"
+              Start="0,0"
+              End="168,41.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,20.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,20.5"
+                    Point2="0,24.5"
+                    Point3="4,24.5" />
+                  <mssgle:LineSegment
+                    End="164,24.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="164,24.5"
+                    Point2="168,24.5"
+                    Point3="168,28.5" />
+                  <mssgle:LineSegment
+                    End="168,41.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\QAMV.Paths[OLE DB Source Output1]"
+          TopLeft="582,77">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-97.6666666666667,54"
+              Start="0,0"
+              End="-97.6666666666667,46.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,28.0060790273556" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,28.0060790273556"
+                    Point2="0,32.0060790273556"
+                    Point3="-4,32.0060790273556" />
+                  <mssgle:LineSegment
+                    End="-93.6666666666667,32.0060790273556" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-93.6666666666667,32.0060790273556"
+                    Point2="-97.6666666666667,32.0060790273556"
+                    Point3="-97.6666666666667,36.0060790273556" />
+                  <mssgle:LineSegment
+                    End="-97.6666666666667,46.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\QAMV.Paths[Merge Join Output]"
+          TopLeft="461.25,173">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,36"
+              Start="0,0"
+              End="0,28.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,28.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\QAMV\insert new records">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\QAMV\stage deleted records">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\QAMV\stage changed records">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\QAMV\DB PBI ADRC">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\QAMV\DB SAP ADRC">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

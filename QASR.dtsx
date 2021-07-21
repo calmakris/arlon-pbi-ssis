@@ -1,18 +1,18 @@
 ﻿<?xml version="1.0"?>
 <DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
   DTS:refId="Package"
-  DTS:CreationDate="3/3/2021 6:16:30 PM"
+  DTS:CreationDate="2/10/2021 6:49:29 PM"
   DTS:CreationName="Microsoft.Package"
   DTS:CreatorComputerName="ARLPBIDEV"
   DTS:CreatorName="DOMAIN\RPETRELLA"
-  DTS:DTSID="{D09A9297-8B37-4016-B8C8-1605B0313791}"
+  DTS:DTSID="{D7BF386C-AFA7-4642-9669-A030820DC812}"
   DTS:ExecutableType="Microsoft.Package"
   DTS:LastModifiedProductVersion="15.0.2000.152"
   DTS:LocaleID="1033"
-  DTS:ObjectName="Package1"
+  DTS:ObjectName="QASR"
   DTS:PackageType="5"
-  DTS:VersionBuild="41"
-  DTS:VersionGUID="{13065D35-03D8-4107-B9B4-6B597883F0AB}">
+  DTS:VersionBuild="43"
+  DTS:VersionGUID="{EDE27974-CDF6-439E-A9F5-92B0B33A48CF}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:Variables />
@@ -21,7 +21,7 @@
       DTS:refId="Package\clean stage"
       DTS:CreationName="Microsoft.ExecuteSQLTask"
       DTS:Description="Execute SQL Task"
-      DTS:DTSID="{68db05be-7e67-4391-83f9-4d11d73b6bb0}"
+      DTS:DTSID="{127992D0-64A2-4017-9A9A-9E58456CA55B}"
       DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
       DTS:ObjectName="clean stage"
@@ -31,17 +31,17 @@
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
           SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-          SQLTask:SqlStatementSource="TRUNCATE TABLE [MARA_STAGE_UPDATE]&#xA;go&#xA;TRUNCATE TABLE [MARA_STAGE_DELETE]&#xA;go&#xA;TRUNCATE TABLE [MARA_STAGE_INSERT]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          SQLTask:SqlStatementSource="TRUNCATE TABLE [QASR_STAGE_UPDATE]&#xA;go&#xA;TRUNCATE TABLE [QASR_STAGE_DELETE]&#xA;go&#xA;TRUNCATE TABLE [QASR_STAGE_INSERT]&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
-      DTS:refId="Package\MARA"
+      DTS:refId="Package\QASR"
       DTS:CreationName="Microsoft.Pipeline"
       DTS:Description="Data Flow Task"
-      DTS:DTSID="{9B427BB1-C022-44E8-AF61-49D6DB878B18}"
+      DTS:DTSID="{89158324-5FDA-4934-9B45-CD1020E199A2}"
       DTS:ExecutableType="Microsoft.Pipeline"
       DTS:LocaleID="-1"
-      DTS:ObjectName="MARA"
+      DTS:ObjectName="QASR"
       DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
       <DTS:Variables />
       <DTS:ObjectData>
@@ -49,11 +49,11 @@
           version="1">
           <components>
             <component
-              refId="Package\MARA\DB PBI MARA"
+              refId="Package\QASR\DB PBI ADRC"
               componentClassID="Microsoft.OLEDBSource"
               contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
               description="OLE DB Source"
-              name="DB PBI MARA"
+              name="DB PBI ADRC"
               usesDispositions="true"
               version="7">
               <properties>
@@ -73,18 +73,20 @@
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT A01.[MANDT]
-      ,A01.[MATNR]
-      ,A01.[MTART]
-      ,A01.[MATKL]
-      ,A01.[MEINS]
-      ,A01.[MSTAV]
-      ,A01.[PRDHA]
-      ,A01.[ERSDA]
-      ,A01.[ZEINR]
-FROM [MARA] A01 (NOLOCK)
-ORDER BY A01.[MANDT]
-      ,A01.[MATNR]</property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT A01.[MANDANT]
+      ,A01.[PRUEFLOS]
+      ,A01.[VORGLFNR]
+      ,A01.[MERKNR]
+      ,A01.[PROBENR]
+      ,A01.[MASCHINE]
+      ,A01.[MITTELWERT]
+      ,A01.[PRUEFBEMKT]
+FROM [QASR] A01 (NOLOCK)
+ORDER BY A01.[MANDANT]
+      ,A01.[PRUEFLOS]
+      ,A01.[VORGLFNR]
+      ,A01.[MERKNR]
+      ,A01.[PROBENR]</property>
                 <property
                   dataType="System.String"
                   description="The variable that contains the SQL command to be executed."
@@ -109,7 +111,7 @@ ORDER BY A01.[MANDT]
               </properties>
               <connections>
                 <connection
-                  refId="Package\MARA\DB PBI MARA.Connections[OleDbConnection]"
+                  refId="Package\QASR\DB PBI ADRC.Connections[OleDbConnection]"
                   connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
                   connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
                   description="The OLE DB runtime connection used to access the database."
@@ -117,221 +119,200 @@ ORDER BY A01.[MANDT]
               </connections>
               <outputs>
                 <output
-                  refId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Output]"
+                  refId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output]"
                   isSorted="true"
                   name="OLE DB Source Output">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      refId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[PRUEFLOS]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
-                      length="3"
-                      lineageId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Output].Columns[MANDT]"
-                      name="MANDT"
-                      sortKeyPosition="1"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Output].Columns[MATNR]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Output].ExternalColumns[MATNR]"
-                      length="18"
-                      lineageId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Output].Columns[MATNR]"
-                      name="MATNR"
+                      externalMetadataColumnId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].ExternalColumns[PRUEFLOS]"
+                      length="12"
+                      lineageId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[PRUEFLOS]"
+                      name="PRUEFLOS"
                       sortKeyPosition="2"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Output].Columns[MATKL]"
+                      refId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[VORGLFNR]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Output].ExternalColumns[MATKL]"
-                      length="9"
-                      lineageId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Output].Columns[MATKL]"
-                      name="MATKL"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Output].Columns[MTART]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Output].ExternalColumns[MTART]"
-                      length="4"
-                      lineageId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Output].Columns[MTART]"
-                      name="MTART"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Output].Columns[MEINS]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Output].ExternalColumns[MEINS]"
-                      length="3"
-                      lineageId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Output].Columns[MEINS]"
-                      name="MEINS"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Output].Columns[MSTAV]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Output].ExternalColumns[MSTAV]"
-                      length="2"
-                      lineageId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Output].Columns[MSTAV]"
-                      name="MSTAV"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Output].Columns[PRDHA]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Output].ExternalColumns[PRDHA]"
-                      length="18"
-                      lineageId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Output].Columns[PRDHA]"
-                      name="PRDHA"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Output].Columns[ERSDA]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Output].ExternalColumns[ERSDA]"
+                      externalMetadataColumnId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].ExternalColumns[VORGLFNR]"
                       length="8"
-                      lineageId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Output].Columns[ERSDA]"
-                      name="ERSDA"
+                      lineageId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[VORGLFNR]"
+                      name="VORGLFNR"
+                      sortKeyPosition="3"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Output].Columns[ZEINR]"
+                      refId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[PROBENR]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Output].ExternalColumns[ZEINR]"
-                      length="22"
-                      lineageId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Output].Columns[ZEINR]"
-                      name="ZEINR"
+                      externalMetadataColumnId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].ExternalColumns[PROBENR]"
+                      length="6"
+                      lineageId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[PROBENR]"
+                      name="PROBENR"
+                      sortKeyPosition="5"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[MANDANT]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].ExternalColumns[MANDANT]"
+                      length="3"
+                      lineageId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[MANDANT]"
+                      name="MANDANT"
+                      sortKeyPosition="1"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[MERKNR]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].ExternalColumns[MERKNR]"
+                      length="4"
+                      lineageId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[MERKNR]"
+                      name="MERKNR"
+                      sortKeyPosition="4"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[MASCHINE]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].ExternalColumns[MASCHINE]"
+                      length="18"
+                      lineageId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[MASCHINE]"
+                      name="MASCHINE"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[PRUEFBEMKT]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].ExternalColumns[PRUEFBEMKT]"
+                      length="40"
+                      lineageId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[PRUEFBEMKT]"
+                      name="PRUEFBEMKT"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[MITTELWERT]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].ExternalColumns[MITTELWERT]"
+                      lineageId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[MITTELWERT]"
+                      name="MITTELWERT"
                       truncationRowDisposition="FailComponent" />
                   </outputColumns>
                   <externalMetadataColumns
                     isUsed="True">
                     <externalMetadataColumn
-                      refId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      refId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].ExternalColumns[PRUEFLOS]"
                       dataType="wstr"
-                      length="3"
-                      name="MANDT" />
+                      length="12"
+                      name="PRUEFLOS" />
                     <externalMetadataColumn
-                      refId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Output].ExternalColumns[MATNR]"
-                      dataType="wstr"
-                      length="18"
-                      name="MATNR" />
-                    <externalMetadataColumn
-                      refId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Output].ExternalColumns[MATKL]"
-                      dataType="wstr"
-                      length="9"
-                      name="MATKL" />
-                    <externalMetadataColumn
-                      refId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Output].ExternalColumns[MTART]"
-                      dataType="wstr"
-                      length="4"
-                      name="MTART" />
-                    <externalMetadataColumn
-                      refId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Output].ExternalColumns[MEINS]"
-                      dataType="wstr"
-                      length="3"
-                      name="MEINS" />
-                    <externalMetadataColumn
-                      refId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Output].ExternalColumns[MSTAV]"
-                      dataType="wstr"
-                      length="2"
-                      name="MSTAV" />
-                    <externalMetadataColumn
-                      refId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Output].ExternalColumns[PRDHA]"
-                      dataType="wstr"
-                      length="18"
-                      name="PRDHA" />
-                    <externalMetadataColumn
-                      refId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Output].ExternalColumns[ERSDA]"
+                      refId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].ExternalColumns[VORGLFNR]"
                       dataType="wstr"
                       length="8"
-                      name="ERSDA" />
+                      name="VORGLFNR" />
                     <externalMetadataColumn
-                      refId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Output].ExternalColumns[ZEINR]"
+                      refId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].ExternalColumns[PROBENR]"
                       dataType="wstr"
-                      length="22"
-                      name="ZEINR" />
+                      length="6"
+                      name="PROBENR" />
+                    <externalMetadataColumn
+                      refId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].ExternalColumns[MANDANT]"
+                      dataType="wstr"
+                      length="3"
+                      name="MANDANT" />
+                    <externalMetadataColumn
+                      refId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].ExternalColumns[MERKNR]"
+                      dataType="wstr"
+                      length="4"
+                      name="MERKNR" />
+                    <externalMetadataColumn
+                      refId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].ExternalColumns[MASCHINE]"
+                      dataType="wstr"
+                      length="18"
+                      name="MASCHINE" />
+                    <externalMetadataColumn
+                      refId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].ExternalColumns[PRUEFBEMKT]"
+                      dataType="wstr"
+                      length="40"
+                      name="PRUEFBEMKT" />
+                    <externalMetadataColumn
+                      refId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].ExternalColumns[MITTELWERT]"
+                      dataType="r8"
+                      name="MITTELWERT" />
                   </externalMetadataColumns>
                 </output>
                 <output
-                  refId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Error Output]"
+                  refId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Error Output]"
                   isErrorOut="true"
                   name="OLE DB Source Error Output">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      refId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[MANDANT]"
                       dataType="wstr"
                       length="3"
-                      lineageId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Error Output].Columns[MANDT]"
-                      name="MANDT" />
+                      lineageId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[MANDANT]"
+                      name="MANDANT" />
                     <outputColumn
-                      refId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Error Output].Columns[MATNR]"
+                      refId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[PRUEFLOS]"
                       dataType="wstr"
-                      length="18"
-                      lineageId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Error Output].Columns[MATNR]"
-                      name="MATNR" />
+                      length="12"
+                      lineageId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[PRUEFLOS]"
+                      name="PRUEFLOS" />
                     <outputColumn
-                      refId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Error Output].Columns[MATKL]"
-                      dataType="wstr"
-                      length="9"
-                      lineageId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Error Output].Columns[MATKL]"
-                      name="MATKL" />
-                    <outputColumn
-                      refId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Error Output].Columns[MTART]"
-                      dataType="wstr"
-                      length="4"
-                      lineageId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Error Output].Columns[MTART]"
-                      name="MTART" />
-                    <outputColumn
-                      refId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Error Output].Columns[MEINS]"
-                      dataType="wstr"
-                      length="3"
-                      lineageId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Error Output].Columns[MEINS]"
-                      name="MEINS" />
-                    <outputColumn
-                      refId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Error Output].Columns[MSTAV]"
-                      dataType="wstr"
-                      length="2"
-                      lineageId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Error Output].Columns[MSTAV]"
-                      name="MSTAV" />
-                    <outputColumn
-                      refId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Error Output].Columns[PRDHA]"
-                      dataType="wstr"
-                      length="18"
-                      lineageId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Error Output].Columns[PRDHA]"
-                      name="PRDHA" />
-                    <outputColumn
-                      refId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Error Output].Columns[ERSDA]"
+                      refId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[VORGLFNR]"
                       dataType="wstr"
                       length="8"
-                      lineageId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Error Output].Columns[ERSDA]"
-                      name="ERSDA" />
+                      lineageId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[VORGLFNR]"
+                      name="VORGLFNR" />
                     <outputColumn
-                      refId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Error Output].Columns[ZEINR]"
+                      refId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[MERKNR]"
                       dataType="wstr"
-                      length="22"
-                      lineageId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Error Output].Columns[ZEINR]"
-                      name="ZEINR" />
+                      length="4"
+                      lineageId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[MERKNR]"
+                      name="MERKNR" />
                     <outputColumn
-                      refId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      refId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[MASCHINE]"
+                      dataType="wstr"
+                      length="18"
+                      lineageId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[MASCHINE]"
+                      name="MASCHINE" />
+                    <outputColumn
+                      refId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[PROBENR]"
+                      dataType="wstr"
+                      length="6"
+                      lineageId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[PROBENR]"
+                      name="PROBENR" />
+                    <outputColumn
+                      refId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[MITTELWERT]"
+                      dataType="r8"
+                      lineageId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[MITTELWERT]"
+                      name="MITTELWERT" />
+                    <outputColumn
+                      refId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[PRUEFBEMKT]"
+                      dataType="wstr"
+                      length="40"
+                      lineageId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[PRUEFBEMKT]"
+                      name="PRUEFBEMKT" />
+                    <outputColumn
+                      refId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      lineageId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      refId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -340,11 +321,11 @@ ORDER BY A01.[MANDT]
               </outputs>
             </component>
             <component
-              refId="Package\MARA\DB SAP MARA"
+              refId="Package\QASR\DB SAP ADRC"
               componentClassID="Microsoft.OLEDBSource"
               contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
               description="OLE DB Source"
-              name="DB SAP MARA"
+              name="DB SAP ADRC"
               usesDispositions="true"
               version="7">
               <properties>
@@ -364,18 +345,20 @@ ORDER BY A01.[MANDT]
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT A01.[MANDT]
-      ,A01.[MATNR]
-      ,A01.[MTART]
-      ,A01.[MATKL]
-      ,A01.[MEINS]
-      ,A01.[MSTAV]
-      ,A01.[PRDHA]
-      ,A01.[ERSDA]
-      ,A01.[ZEINR]
-FROM [ecp].[MARA] A01 (NOLOCK)
-ORDER BY A01.[MANDT]
-      ,A01.[MATNR]</property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT A01.[MANDANT]
+      ,A01.[PRUEFLOS]
+      ,A01.[VORGLFNR]
+      ,A01.[MERKNR]
+      ,A01.[PROBENR]
+      ,A01.[MASCHINE]
+      ,A01.[MITTELWERT]
+      ,A01.[PRUEFBEMKT]
+FROM [ecp].[QASR] A01 (NOLOCK)
+ORDER BY A01.[MANDANT]
+      ,A01.[PRUEFLOS]
+      ,A01.[VORGLFNR]
+      ,A01.[MERKNR]
+      ,A01.[PROBENR]</property>
                 <property
                   dataType="System.String"
                   description="The variable that contains the SQL command to be executed."
@@ -400,7 +383,7 @@ ORDER BY A01.[MANDT]
               </properties>
               <connections>
                 <connection
-                  refId="Package\MARA\DB SAP MARA.Connections[OleDbConnection]"
+                  refId="Package\QASR\DB SAP ADRC.Connections[OleDbConnection]"
                   connectionManagerID="{544CCAD9-2CB1-4D87-98D7-A7C478586195}:external"
                   connectionManagerRefId="Project.ConnectionManagers[SQL_SAP]"
                   description="The OLE DB runtime connection used to access the database."
@@ -408,221 +391,200 @@ ORDER BY A01.[MANDT]
               </connections>
               <outputs>
                 <output
-                  refId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Output]"
+                  refId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output]"
                   isSorted="true"
                   name="OLE DB Source Output">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      refId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[PRUEFLOS]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
-                      length="3"
-                      lineageId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Output].Columns[MANDT]"
-                      name="MANDT"
-                      sortKeyPosition="1"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Output].Columns[MATNR]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Output].ExternalColumns[MATNR]"
-                      length="18"
-                      lineageId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Output].Columns[MATNR]"
-                      name="MATNR"
+                      externalMetadataColumnId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].ExternalColumns[PRUEFLOS]"
+                      length="12"
+                      lineageId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[PRUEFLOS]"
+                      name="PRUEFLOS"
                       sortKeyPosition="2"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Output].Columns[MATKL]"
+                      refId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[VORGLFNR]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Output].ExternalColumns[MATKL]"
-                      length="9"
-                      lineageId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Output].Columns[MATKL]"
-                      name="MATKL"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Output].Columns[MTART]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Output].ExternalColumns[MTART]"
-                      length="4"
-                      lineageId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Output].Columns[MTART]"
-                      name="MTART"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Output].Columns[MEINS]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Output].ExternalColumns[MEINS]"
-                      length="3"
-                      lineageId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Output].Columns[MEINS]"
-                      name="MEINS"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Output].Columns[MSTAV]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Output].ExternalColumns[MSTAV]"
-                      length="2"
-                      lineageId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Output].Columns[MSTAV]"
-                      name="MSTAV"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Output].Columns[PRDHA]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Output].ExternalColumns[PRDHA]"
-                      length="18"
-                      lineageId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Output].Columns[PRDHA]"
-                      name="PRDHA"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Output].Columns[ERSDA]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Output].ExternalColumns[ERSDA]"
+                      externalMetadataColumnId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].ExternalColumns[VORGLFNR]"
                       length="8"
-                      lineageId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Output].Columns[ERSDA]"
-                      name="ERSDA"
+                      lineageId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[VORGLFNR]"
+                      name="VORGLFNR"
+                      sortKeyPosition="3"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Output].Columns[ZEINR]"
+                      refId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[PROBENR]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Output].ExternalColumns[ZEINR]"
-                      length="22"
-                      lineageId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Output].Columns[ZEINR]"
-                      name="ZEINR"
+                      externalMetadataColumnId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].ExternalColumns[PROBENR]"
+                      length="6"
+                      lineageId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[PROBENR]"
+                      name="PROBENR"
+                      sortKeyPosition="5"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[MANDANT]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].ExternalColumns[MANDANT]"
+                      length="3"
+                      lineageId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[MANDANT]"
+                      name="MANDANT"
+                      sortKeyPosition="1"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[MERKNR]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].ExternalColumns[MERKNR]"
+                      length="4"
+                      lineageId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[MERKNR]"
+                      name="MERKNR"
+                      sortKeyPosition="4"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[MASCHINE]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].ExternalColumns[MASCHINE]"
+                      length="18"
+                      lineageId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[MASCHINE]"
+                      name="MASCHINE"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[PRUEFBEMKT]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].ExternalColumns[PRUEFBEMKT]"
+                      length="40"
+                      lineageId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[PRUEFBEMKT]"
+                      name="PRUEFBEMKT"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[MITTELWERT]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].ExternalColumns[MITTELWERT]"
+                      lineageId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[MITTELWERT]"
+                      name="MITTELWERT"
                       truncationRowDisposition="FailComponent" />
                   </outputColumns>
                   <externalMetadataColumns
                     isUsed="True">
                     <externalMetadataColumn
-                      refId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      refId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].ExternalColumns[PRUEFLOS]"
                       dataType="wstr"
-                      length="3"
-                      name="MANDT" />
+                      length="12"
+                      name="PRUEFLOS" />
                     <externalMetadataColumn
-                      refId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Output].ExternalColumns[MATNR]"
-                      dataType="wstr"
-                      length="18"
-                      name="MATNR" />
-                    <externalMetadataColumn
-                      refId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Output].ExternalColumns[MATKL]"
-                      dataType="wstr"
-                      length="9"
-                      name="MATKL" />
-                    <externalMetadataColumn
-                      refId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Output].ExternalColumns[MTART]"
-                      dataType="wstr"
-                      length="4"
-                      name="MTART" />
-                    <externalMetadataColumn
-                      refId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Output].ExternalColumns[MEINS]"
-                      dataType="wstr"
-                      length="3"
-                      name="MEINS" />
-                    <externalMetadataColumn
-                      refId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Output].ExternalColumns[MSTAV]"
-                      dataType="wstr"
-                      length="2"
-                      name="MSTAV" />
-                    <externalMetadataColumn
-                      refId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Output].ExternalColumns[PRDHA]"
-                      dataType="wstr"
-                      length="18"
-                      name="PRDHA" />
-                    <externalMetadataColumn
-                      refId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Output].ExternalColumns[ERSDA]"
+                      refId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].ExternalColumns[VORGLFNR]"
                       dataType="wstr"
                       length="8"
-                      name="ERSDA" />
+                      name="VORGLFNR" />
                     <externalMetadataColumn
-                      refId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Output].ExternalColumns[ZEINR]"
+                      refId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].ExternalColumns[PROBENR]"
                       dataType="wstr"
-                      length="22"
-                      name="ZEINR" />
+                      length="6"
+                      name="PROBENR" />
+                    <externalMetadataColumn
+                      refId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].ExternalColumns[MANDANT]"
+                      dataType="wstr"
+                      length="3"
+                      name="MANDANT" />
+                    <externalMetadataColumn
+                      refId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].ExternalColumns[MERKNR]"
+                      dataType="wstr"
+                      length="4"
+                      name="MERKNR" />
+                    <externalMetadataColumn
+                      refId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].ExternalColumns[MASCHINE]"
+                      dataType="wstr"
+                      length="18"
+                      name="MASCHINE" />
+                    <externalMetadataColumn
+                      refId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].ExternalColumns[PRUEFBEMKT]"
+                      dataType="wstr"
+                      length="40"
+                      name="PRUEFBEMKT" />
+                    <externalMetadataColumn
+                      refId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].ExternalColumns[MITTELWERT]"
+                      dataType="r8"
+                      name="MITTELWERT" />
                   </externalMetadataColumns>
                 </output>
                 <output
-                  refId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Error Output]"
+                  refId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Error Output]"
                   isErrorOut="true"
                   name="OLE DB Source Error Output">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      refId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[MANDANT]"
                       dataType="wstr"
                       length="3"
-                      lineageId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Error Output].Columns[MANDT]"
-                      name="MANDT" />
+                      lineageId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[MANDANT]"
+                      name="MANDANT" />
                     <outputColumn
-                      refId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Error Output].Columns[MATNR]"
+                      refId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[PRUEFLOS]"
                       dataType="wstr"
-                      length="18"
-                      lineageId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Error Output].Columns[MATNR]"
-                      name="MATNR" />
+                      length="12"
+                      lineageId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[PRUEFLOS]"
+                      name="PRUEFLOS" />
                     <outputColumn
-                      refId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Error Output].Columns[MATKL]"
-                      dataType="wstr"
-                      length="9"
-                      lineageId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Error Output].Columns[MATKL]"
-                      name="MATKL" />
-                    <outputColumn
-                      refId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Error Output].Columns[MTART]"
-                      dataType="wstr"
-                      length="4"
-                      lineageId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Error Output].Columns[MTART]"
-                      name="MTART" />
-                    <outputColumn
-                      refId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Error Output].Columns[MEINS]"
-                      dataType="wstr"
-                      length="3"
-                      lineageId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Error Output].Columns[MEINS]"
-                      name="MEINS" />
-                    <outputColumn
-                      refId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Error Output].Columns[MSTAV]"
-                      dataType="wstr"
-                      length="2"
-                      lineageId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Error Output].Columns[MSTAV]"
-                      name="MSTAV" />
-                    <outputColumn
-                      refId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Error Output].Columns[PRDHA]"
-                      dataType="wstr"
-                      length="18"
-                      lineageId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Error Output].Columns[PRDHA]"
-                      name="PRDHA" />
-                    <outputColumn
-                      refId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Error Output].Columns[ERSDA]"
+                      refId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[VORGLFNR]"
                       dataType="wstr"
                       length="8"
-                      lineageId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Error Output].Columns[ERSDA]"
-                      name="ERSDA" />
+                      lineageId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[VORGLFNR]"
+                      name="VORGLFNR" />
                     <outputColumn
-                      refId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Error Output].Columns[ZEINR]"
+                      refId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[MERKNR]"
                       dataType="wstr"
-                      length="22"
-                      lineageId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Error Output].Columns[ZEINR]"
-                      name="ZEINR" />
+                      length="4"
+                      lineageId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[MERKNR]"
+                      name="MERKNR" />
                     <outputColumn
-                      refId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      refId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[MASCHINE]"
+                      dataType="wstr"
+                      length="18"
+                      lineageId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[MASCHINE]"
+                      name="MASCHINE" />
+                    <outputColumn
+                      refId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[PROBENR]"
+                      dataType="wstr"
+                      length="6"
+                      lineageId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[PROBENR]"
+                      name="PROBENR" />
+                    <outputColumn
+                      refId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[MITTELWERT]"
+                      dataType="r8"
+                      lineageId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[MITTELWERT]"
+                      name="MITTELWERT" />
+                    <outputColumn
+                      refId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[PRUEFBEMKT]"
+                      dataType="wstr"
+                      length="40"
+                      lineageId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[PRUEFBEMKT]"
+                      name="PRUEFBEMKT" />
+                    <outputColumn
+                      refId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      lineageId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      refId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -631,7 +593,7 @@ ORDER BY A01.[MANDT]
               </outputs>
             </component>
             <component
-              refId="Package\MARA\Find Changed Records"
+              refId="Package\QASR\Find Changed Records"
               componentClassID="Microsoft.ConditionalSplit"
               contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
               description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
@@ -639,84 +601,70 @@ ORDER BY A01.[MANDT]
               usesDispositions="true">
               <inputs>
                 <input
-                  refId="Package\MARA\Find Changed Records.Inputs[Conditional Split Input]"
+                  refId="Package\QASR\Find Changed Records.Inputs[Conditional Split Input]"
                   description="Input to the Conditional Split Transformation"
                   name="Conditional Split Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\MARA\Find Changed Records.Inputs[Conditional Split Input].Columns[MATKL]"
+                      refId="Package\QASR\Find Changed Records.Inputs[Conditional Split Input].Columns[MASCHINE]"
                       cachedDataType="wstr"
-                      cachedLength="9"
-                      cachedName="MATKL"
-                      lineageId="Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[MATKL]" />
+                      cachedLength="18"
+                      cachedName="MASCHINE"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MASCHINE]" />
                     <inputColumn
-                      refId="Package\MARA\Find Changed Records.Inputs[Conditional Split Input].Columns[MTART]"
+                      refId="Package\QASR\Find Changed Records.Inputs[Conditional Split Input].Columns[PRUEFBEMKT]"
                       cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="MTART"
-                      lineageId="Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[MTART]" />
+                      cachedLength="40"
+                      cachedName="PRUEFBEMKT"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[PRUEFBEMKT]" />
                     <inputColumn
-                      refId="Package\MARA\Find Changed Records.Inputs[Conditional Split Input].Columns[MATKL (2)]"
+                      refId="Package\QASR\Find Changed Records.Inputs[Conditional Split Input].Columns[MASCHINE (1)]"
                       cachedDataType="wstr"
-                      cachedLength="9"
-                      cachedName="MATKL (2)"
-                      lineageId="Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[MATKL (2)]" />
+                      cachedLength="18"
+                      cachedName="MASCHINE (1)"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MASCHINE (1)]" />
                     <inputColumn
-                      refId="Package\MARA\Find Changed Records.Inputs[Conditional Split Input].Columns[MTART (2)]"
+                      refId="Package\QASR\Find Changed Records.Inputs[Conditional Split Input].Columns[PRUEFBEMKT (1)]"
                       cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="MTART (2)"
-                      lineageId="Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[MTART (2)]" />
+                      cachedLength="40"
+                      cachedName="PRUEFBEMKT (1)"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[PRUEFBEMKT (1)]" />
                     <inputColumn
-                      refId="Package\MARA\Find Changed Records.Inputs[Conditional Split Input].Columns[MEINS]"
-                      cachedDataType="wstr"
-                      cachedLength="3"
-                      cachedName="MEINS"
-                      lineageId="Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[MEINS]" />
+                      refId="Package\QASR\Find Changed Records.Inputs[Conditional Split Input].Columns[MITTELWERT]"
+                      cachedDataType="r8"
+                      cachedName="MITTELWERT"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MITTELWERT]" />
                     <inputColumn
-                      refId="Package\MARA\Find Changed Records.Inputs[Conditional Split Input].Columns[MSTAV]"
-                      cachedDataType="wstr"
-                      cachedLength="2"
-                      cachedName="MSTAV"
-                      lineageId="Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[MSTAV]" />
-                    <inputColumn
-                      refId="Package\MARA\Find Changed Records.Inputs[Conditional Split Input].Columns[MEINS (2)]"
-                      cachedDataType="wstr"
-                      cachedLength="3"
-                      cachedName="MEINS (2)"
-                      lineageId="Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[MEINS (2)]" />
-                    <inputColumn
-                      refId="Package\MARA\Find Changed Records.Inputs[Conditional Split Input].Columns[MSTAV (2)]"
-                      cachedDataType="wstr"
-                      cachedLength="2"
-                      cachedName="MSTAV (2)"
-                      lineageId="Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[MSTAV (2)]" />
+                      refId="Package\QASR\Find Changed Records.Inputs[Conditional Split Input].Columns[MITTELWERT (1)]"
+                      cachedDataType="r8"
+                      cachedName="MITTELWERT (1)"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MITTELWERT (1)]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\MARA\Find Changed Records.Outputs[update]"
+                  refId="Package\QASR\Find Changed Records.Outputs[update]"
                   description="Output 1 of the Conditional Split Transformation"
                   errorOrTruncationOperation="Computation"
                   errorRowDisposition="FailComponent"
                   exclusionGroup="1"
                   name="update"
-                  synchronousInputId="Package\MARA\Find Changed Records.Inputs[Conditional Split Input]"
+                  synchronousInputId="Package\QASR\Find Changed Records.Inputs[Conditional Split Input]"
                   truncationRowDisposition="FailComponent">
                   <properties>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
-                      name="Expression">#{Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[MATKL]} != #{Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[MATKL (2)]} || #{Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[MTART]} != #{Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[MTART (2)]} || #{Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[MEINS]} != #{Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[MEINS (2)]} || #{Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[MSTAV]} != #{Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[MSTAV (2)]}</property>
+                      name="Expression">#{Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MASCHINE]} != #{Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MASCHINE (1)]} || #{Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MITTELWERT]} != #{Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MITTELWERT (1)]} || #{Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[PRUEFBEMKT]} != #{Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[PRUEFBEMKT (1)]}</property>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the friendly version of the expression. This expression version uses column names."
                       expressionType="Notify"
-                      name="FriendlyExpression">MATKL != [MATKL (1)] || MTART != [MTART (1)] || MEINS != [MEINS (1)] || MSTAV != [MSTAV (1)]</property>
+                      name="FriendlyExpression">MASCHINE != [MASCHINE (1)] || MITTELWERT != [MITTELWERT (1)] || PRUEFBEMKT != [PRUEFBEMKT (1)]</property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
@@ -725,11 +673,11 @@ ORDER BY A01.[MANDT]
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\MARA\Find Changed Records.Outputs[Conditional Split Default Output]"
+                  refId="Package\QASR\Find Changed Records.Outputs[Conditional Split Default Output]"
                   description="Default Output of the Conditional Split Transformation"
                   exclusionGroup="1"
                   name="Conditional Split Default Output"
-                  synchronousInputId="Package\MARA\Find Changed Records.Inputs[Conditional Split Input]">
+                  synchronousInputId="Package\QASR\Find Changed Records.Inputs[Conditional Split Input]">
                   <properties>
                     <property
                       dataType="System.Boolean"
@@ -738,23 +686,23 @@ ORDER BY A01.[MANDT]
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\MARA\Find Changed Records.Outputs[Conditional Split Error Output]"
+                  refId="Package\QASR\Find Changed Records.Outputs[Conditional Split Error Output]"
                   description="Error Output of the Conditional Split Transformation"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="Conditional Split Error Output"
-                  synchronousInputId="Package\MARA\Find Changed Records.Inputs[Conditional Split Input]">
+                  synchronousInputId="Package\QASR\Find Changed Records.Inputs[Conditional Split Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\MARA\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      refId="Package\QASR\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\MARA\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      lineageId="Package\QASR\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\MARA\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      refId="Package\QASR\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\MARA\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\QASR\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -763,7 +711,7 @@ ORDER BY A01.[MANDT]
               </outputs>
             </component>
             <component
-              refId="Package\MARA\Identify records"
+              refId="Package\QASR\Identify records"
               componentClassID="Microsoft.ConditionalSplit"
               contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
               description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
@@ -771,49 +719,49 @@ ORDER BY A01.[MANDT]
               usesDispositions="true">
               <inputs>
                 <input
-                  refId="Package\MARA\Identify records.Inputs[Conditional Split Input]"
+                  refId="Package\QASR\Identify records.Inputs[Conditional Split Input]"
                   description="Input to the Conditional Split Transformation"
                   name="Conditional Split Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\MARA\Identify records.Inputs[Conditional Split Input].Columns[MANDT]"
+                      refId="Package\QASR\Identify records.Inputs[Conditional Split Input].Columns[MANDANT]"
                       cachedDataType="wstr"
                       cachedLength="3"
-                      cachedName="MANDT"
+                      cachedName="MANDANT"
                       cachedSortKeyPosition="1"
-                      lineageId="Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MANDANT]" />
                     <inputColumn
-                      refId="Package\MARA\Identify records.Inputs[Conditional Split Input].Columns[MANDT (2)]"
+                      refId="Package\QASR\Identify records.Inputs[Conditional Split Input].Columns[MANDANT (1)]"
                       cachedDataType="wstr"
                       cachedLength="3"
-                      cachedName="MANDT (2)"
-                      lineageId="Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[MANDT (2)]" />
+                      cachedName="MANDANT (1)"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MANDANT (1)]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\MARA\Identify records.Outputs[update]"
+                  refId="Package\QASR\Identify records.Outputs[update]"
                   description="Output 1 of the Conditional Split Transformation"
                   errorOrTruncationOperation="Computation"
                   errorRowDisposition="FailComponent"
                   exclusionGroup="1"
                   name="update"
-                  synchronousInputId="Package\MARA\Identify records.Inputs[Conditional Split Input]"
+                  synchronousInputId="Package\QASR\Identify records.Inputs[Conditional Split Input]"
                   truncationRowDisposition="FailComponent">
                   <properties>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
-                      name="Expression">![ISNULL](#{Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; ![ISNULL](#{Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[MANDT (2)]})</property>
+                      name="Expression">![ISNULL](#{Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MANDANT]}) &amp;&amp; ![ISNULL](#{Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MANDANT (1)]})</property>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the friendly version of the expression. This expression version uses column names."
                       expressionType="Notify"
-                      name="FriendlyExpression">!ISNULL(MANDT) &amp;&amp; !ISNULL([MANDT (1)])</property>
+                      name="FriendlyExpression">!ISNULL(MANDANT) &amp;&amp; !ISNULL([MANDANT (1)])</property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
@@ -822,26 +770,26 @@ ORDER BY A01.[MANDT]
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\MARA\Identify records.Outputs[insert]"
+                  refId="Package\QASR\Identify records.Outputs[insert]"
                   description="Output 2 of the Conditional Split Transformation"
                   errorOrTruncationOperation="Computation"
                   errorRowDisposition="FailComponent"
                   exclusionGroup="1"
                   name="insert"
-                  synchronousInputId="Package\MARA\Identify records.Inputs[Conditional Split Input]"
+                  synchronousInputId="Package\QASR\Identify records.Inputs[Conditional Split Input]"
                   truncationRowDisposition="FailComponent">
                   <properties>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
-                      name="Expression">![ISNULL](#{Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; [ISNULL](#{Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[MANDT (2)]})</property>
+                      name="Expression">![ISNULL](#{Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MANDANT]}) &amp;&amp; [ISNULL](#{Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MANDANT (1)]})</property>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the friendly version of the expression. This expression version uses column names."
                       expressionType="Notify"
-                      name="FriendlyExpression">!ISNULL(MANDT) &amp;&amp; ISNULL([MANDT (1)])</property>
+                      name="FriendlyExpression">!ISNULL(MANDANT) &amp;&amp; ISNULL([MANDANT (1)])</property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
@@ -850,26 +798,26 @@ ORDER BY A01.[MANDT]
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\MARA\Identify records.Outputs[delete]"
+                  refId="Package\QASR\Identify records.Outputs[delete]"
                   description="Output 3 of the Conditional Split Transformation"
                   errorOrTruncationOperation="Computation"
                   errorRowDisposition="FailComponent"
                   exclusionGroup="1"
                   name="delete"
-                  synchronousInputId="Package\MARA\Identify records.Inputs[Conditional Split Input]"
+                  synchronousInputId="Package\QASR\Identify records.Inputs[Conditional Split Input]"
                   truncationRowDisposition="FailComponent">
                   <properties>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
-                      name="Expression">[ISNULL](#{Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; ![ISNULL](#{Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[MANDT (2)]})</property>
+                      name="Expression">[ISNULL](#{Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MANDANT]}) &amp;&amp; ![ISNULL](#{Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MANDANT (1)]})</property>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the friendly version of the expression. This expression version uses column names."
                       expressionType="Notify"
-                      name="FriendlyExpression">ISNULL(MANDT) &amp;&amp; !ISNULL([MANDT (1)])</property>
+                      name="FriendlyExpression">ISNULL(MANDANT) &amp;&amp; !ISNULL([MANDANT (1)])</property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
@@ -878,11 +826,11 @@ ORDER BY A01.[MANDT]
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\MARA\Identify records.Outputs[Conditional Split Default Output]"
+                  refId="Package\QASR\Identify records.Outputs[Conditional Split Default Output]"
                   description="Default Output of the Conditional Split Transformation"
                   exclusionGroup="1"
                   name="Conditional Split Default Output"
-                  synchronousInputId="Package\MARA\Identify records.Inputs[Conditional Split Input]">
+                  synchronousInputId="Package\QASR\Identify records.Inputs[Conditional Split Input]">
                   <properties>
                     <property
                       dataType="System.Boolean"
@@ -891,23 +839,23 @@ ORDER BY A01.[MANDT]
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\MARA\Identify records.Outputs[Conditional Split Error Output]"
+                  refId="Package\QASR\Identify records.Outputs[Conditional Split Error Output]"
                   description="Error Output of the Conditional Split Transformation"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="Conditional Split Error Output"
-                  synchronousInputId="Package\MARA\Identify records.Inputs[Conditional Split Input]">
+                  synchronousInputId="Package\QASR\Identify records.Inputs[Conditional Split Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\MARA\Identify records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      refId="Package\QASR\Identify records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\MARA\Identify records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      lineageId="Package\QASR\Identify records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\MARA\Identify records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      refId="Package\QASR\Identify records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\MARA\Identify records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\QASR\Identify records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -916,7 +864,7 @@ ORDER BY A01.[MANDT]
               </outputs>
             </component>
             <component
-              refId="Package\MARA\insert new records"
+              refId="Package\QASR\insert new records"
               componentClassID="Microsoft.OLEDBDestination"
               contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
               description="OLE DB Destination"
@@ -931,7 +879,7 @@ ORDER BY A01.[MANDT]
                 <property
                   dataType="System.String"
                   description="Specifies the name of the database object used to open a rowset."
-                  name="OpenRowset">[dbo].[MARA_STAGE_INSERT]</property>
+                  name="OpenRowset">[dbo].[QASR_STAGE_INSERT]</property>
                 <property
                   dataType="System.String"
                   description="Specifies the variable that contains the name of the database object used to open a rowset."
@@ -973,7 +921,7 @@ ORDER BY A01.[MANDT]
               </properties>
               <connections>
                 <connection
-                  refId="Package\MARA\insert new records.Connections[OleDbConnection]"
+                  refId="Package\QASR\insert new records.Connections[OleDbConnection]"
                   connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
                   connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
                   description="The OLE DB runtime connection used to access the database."
@@ -981,146 +929,135 @@ ORDER BY A01.[MANDT]
               </connections>
               <inputs>
                 <input
-                  refId="Package\MARA\insert new records.Inputs[OLE DB Destination Input]"
+                  refId="Package\QASR\insert new records.Inputs[OLE DB Destination Input]"
                   errorOrTruncationOperation="Insert"
                   errorRowDisposition="FailComponent"
                   hasSideEffects="true"
                   name="OLE DB Destination Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\MARA\insert new records.Inputs[OLE DB Destination Input].Columns[MANDT]"
+                      refId="Package\QASR\insert new records.Inputs[OLE DB Destination Input].Columns[PRUEFLOS]"
                       cachedDataType="wstr"
-                      cachedLength="3"
-                      cachedName="MANDT"
-                      cachedSortKeyPosition="1"
-                      externalMetadataColumnId="Package\MARA\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
-                      lineageId="Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
-                    <inputColumn
-                      refId="Package\MARA\insert new records.Inputs[OLE DB Destination Input].Columns[MATNR]"
-                      cachedDataType="wstr"
-                      cachedLength="18"
-                      cachedName="MATNR"
+                      cachedLength="12"
+                      cachedName="PRUEFLOS"
                       cachedSortKeyPosition="2"
-                      externalMetadataColumnId="Package\MARA\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MATNR]"
-                      lineageId="Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[MATNR]" />
+                      externalMetadataColumnId="Package\QASR\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[PRUEFLOS]"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[PRUEFLOS]" />
                     <inputColumn
-                      refId="Package\MARA\insert new records.Inputs[OLE DB Destination Input].Columns[MATKL]"
-                      cachedDataType="wstr"
-                      cachedLength="9"
-                      cachedName="MATKL"
-                      externalMetadataColumnId="Package\MARA\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MATKL]"
-                      lineageId="Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[MATKL]" />
-                    <inputColumn
-                      refId="Package\MARA\insert new records.Inputs[OLE DB Destination Input].Columns[MTART]"
-                      cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="MTART"
-                      externalMetadataColumnId="Package\MARA\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MTART]"
-                      lineageId="Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[MTART]" />
-                    <inputColumn
-                      refId="Package\MARA\insert new records.Inputs[OLE DB Destination Input].Columns[MEINS]"
-                      cachedDataType="wstr"
-                      cachedLength="3"
-                      cachedName="MEINS"
-                      externalMetadataColumnId="Package\MARA\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MEINS]"
-                      lineageId="Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[MEINS]" />
-                    <inputColumn
-                      refId="Package\MARA\insert new records.Inputs[OLE DB Destination Input].Columns[MSTAV]"
-                      cachedDataType="wstr"
-                      cachedLength="2"
-                      cachedName="MSTAV"
-                      externalMetadataColumnId="Package\MARA\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MSTAV]"
-                      lineageId="Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[MSTAV]" />
-                    <inputColumn
-                      refId="Package\MARA\insert new records.Inputs[OLE DB Destination Input].Columns[PRDHA]"
-                      cachedDataType="wstr"
-                      cachedLength="18"
-                      cachedName="PRDHA"
-                      externalMetadataColumnId="Package\MARA\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[PRDHA]"
-                      lineageId="Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[PRDHA]" />
-                    <inputColumn
-                      refId="Package\MARA\insert new records.Inputs[OLE DB Destination Input].Columns[ERSDA]"
+                      refId="Package\QASR\insert new records.Inputs[OLE DB Destination Input].Columns[VORGLFNR]"
                       cachedDataType="wstr"
                       cachedLength="8"
-                      cachedName="ERSDA"
-                      externalMetadataColumnId="Package\MARA\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[ERSDA]"
-                      lineageId="Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[ERSDA]" />
+                      cachedName="VORGLFNR"
+                      cachedSortKeyPosition="3"
+                      externalMetadataColumnId="Package\QASR\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[VORGLFNR]"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[VORGLFNR]" />
                     <inputColumn
-                      refId="Package\MARA\insert new records.Inputs[OLE DB Destination Input].Columns[ZEINR]"
+                      refId="Package\QASR\insert new records.Inputs[OLE DB Destination Input].Columns[PROBENR]"
                       cachedDataType="wstr"
-                      cachedLength="22"
-                      cachedName="ZEINR"
-                      externalMetadataColumnId="Package\MARA\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[ZEINR]"
-                      lineageId="Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[ZEINR]" />
+                      cachedLength="6"
+                      cachedName="PROBENR"
+                      cachedSortKeyPosition="5"
+                      externalMetadataColumnId="Package\QASR\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[PROBENR]"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[PROBENR]" />
+                    <inputColumn
+                      refId="Package\QASR\insert new records.Inputs[OLE DB Destination Input].Columns[MANDANT]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDANT"
+                      cachedSortKeyPosition="1"
+                      externalMetadataColumnId="Package\QASR\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MANDANT]"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MANDANT]" />
+                    <inputColumn
+                      refId="Package\QASR\insert new records.Inputs[OLE DB Destination Input].Columns[MERKNR]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="MERKNR"
+                      cachedSortKeyPosition="4"
+                      externalMetadataColumnId="Package\QASR\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MERKNR]"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MERKNR]" />
+                    <inputColumn
+                      refId="Package\QASR\insert new records.Inputs[OLE DB Destination Input].Columns[MASCHINE]"
+                      cachedDataType="wstr"
+                      cachedLength="18"
+                      cachedName="MASCHINE"
+                      externalMetadataColumnId="Package\QASR\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MASCHINE]"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MASCHINE]" />
+                    <inputColumn
+                      refId="Package\QASR\insert new records.Inputs[OLE DB Destination Input].Columns[PRUEFBEMKT]"
+                      cachedDataType="wstr"
+                      cachedLength="40"
+                      cachedName="PRUEFBEMKT"
+                      externalMetadataColumnId="Package\QASR\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[PRUEFBEMKT]"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[PRUEFBEMKT]" />
+                    <inputColumn
+                      refId="Package\QASR\insert new records.Inputs[OLE DB Destination Input].Columns[MITTELWERT]"
+                      cachedDataType="r8"
+                      cachedName="MITTELWERT"
+                      externalMetadataColumnId="Package\QASR\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MITTELWERT]"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MITTELWERT]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
                     <externalMetadataColumn
-                      refId="Package\MARA\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      refId="Package\QASR\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[PRUEFLOS]"
                       dataType="wstr"
-                      length="3"
-                      name="MANDT" />
+                      length="12"
+                      name="PRUEFLOS" />
                     <externalMetadataColumn
-                      refId="Package\MARA\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MATNR]"
-                      dataType="wstr"
-                      length="18"
-                      name="MATNR" />
-                    <externalMetadataColumn
-                      refId="Package\MARA\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MATKL]"
-                      dataType="wstr"
-                      length="9"
-                      name="MATKL" />
-                    <externalMetadataColumn
-                      refId="Package\MARA\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MTART]"
-                      dataType="wstr"
-                      length="4"
-                      name="MTART" />
-                    <externalMetadataColumn
-                      refId="Package\MARA\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MEINS]"
-                      dataType="wstr"
-                      length="3"
-                      name="MEINS" />
-                    <externalMetadataColumn
-                      refId="Package\MARA\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MSTAV]"
-                      dataType="wstr"
-                      length="2"
-                      name="MSTAV" />
-                    <externalMetadataColumn
-                      refId="Package\MARA\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[PRDHA]"
-                      dataType="wstr"
-                      length="18"
-                      name="PRDHA" />
-                    <externalMetadataColumn
-                      refId="Package\MARA\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[ERSDA]"
+                      refId="Package\QASR\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[VORGLFNR]"
                       dataType="wstr"
                       length="8"
-                      name="ERSDA" />
+                      name="VORGLFNR" />
                     <externalMetadataColumn
-                      refId="Package\MARA\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[ZEINR]"
+                      refId="Package\QASR\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[PROBENR]"
                       dataType="wstr"
-                      length="22"
-                      name="ZEINR" />
+                      length="6"
+                      name="PROBENR" />
+                    <externalMetadataColumn
+                      refId="Package\QASR\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MANDANT]"
+                      dataType="wstr"
+                      length="3"
+                      name="MANDANT" />
+                    <externalMetadataColumn
+                      refId="Package\QASR\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MERKNR]"
+                      dataType="wstr"
+                      length="4"
+                      name="MERKNR" />
+                    <externalMetadataColumn
+                      refId="Package\QASR\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MASCHINE]"
+                      dataType="wstr"
+                      length="18"
+                      name="MASCHINE" />
+                    <externalMetadataColumn
+                      refId="Package\QASR\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[PRUEFBEMKT]"
+                      dataType="wstr"
+                      length="40"
+                      name="PRUEFBEMKT" />
+                    <externalMetadataColumn
+                      refId="Package\QASR\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MITTELWERT]"
+                      dataType="r8"
+                      name="MITTELWERT" />
                   </externalMetadataColumns>
                 </input>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\MARA\insert new records.Outputs[OLE DB Destination Error Output]"
+                  refId="Package\QASR\insert new records.Outputs[OLE DB Destination Error Output]"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="OLE DB Destination Error Output"
-                  synchronousInputId="Package\MARA\insert new records.Inputs[OLE DB Destination Input]">
+                  synchronousInputId="Package\QASR\insert new records.Inputs[OLE DB Destination Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\MARA\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      refId="Package\QASR\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\MARA\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      lineageId="Package\QASR\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\MARA\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      refId="Package\QASR\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\MARA\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\QASR\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -1129,7 +1066,7 @@ ORDER BY A01.[MANDT]
               </outputs>
             </component>
             <component
-              refId="Package\MARA\Merge Join"
+              refId="Package\QASR\Merge Join"
               componentClassID="Microsoft.MergeJoin"
               contactInfo="Merge Join;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
               description="Combine two sorted data flows into one using the FULL, LEFT, or INNER join. We recommend this transformation when data flows can be sorted at their sources."
@@ -1144,7 +1081,7 @@ ORDER BY A01.[MANDT]
                 <property
                   dataType="System.Int32"
                   description="Specifies the number of columns in the ordering key."
-                  name="NumKeyColumns">2</property>
+                  name="NumKeyColumns">5</property>
                 <property
                   dataType="System.Boolean"
                   description="Indicates whether the null values are treated as equal values."
@@ -1156,392 +1093,357 @@ ORDER BY A01.[MANDT]
               </properties>
               <inputs>
                 <input
-                  refId="Package\MARA\Merge Join.Inputs[Merge Join Left Input]"
+                  refId="Package\QASR\Merge Join.Inputs[Merge Join Left Input]"
                   hasSideEffects="true"
                   name="Merge Join Left Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\MARA\Merge Join.Inputs[Merge Join Left Input].Columns[MANDT]"
+                      refId="Package\QASR\Merge Join.Inputs[Merge Join Left Input].Columns[PRUEFLOS]"
                       cachedDataType="wstr"
-                      cachedLength="3"
-                      cachedName="MANDT"
-                      cachedSortKeyPosition="1"
-                      lineageId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Output].Columns[MANDT]" />
-                    <inputColumn
-                      refId="Package\MARA\Merge Join.Inputs[Merge Join Left Input].Columns[MATNR]"
-                      cachedDataType="wstr"
-                      cachedLength="18"
-                      cachedName="MATNR"
+                      cachedLength="12"
+                      cachedName="PRUEFLOS"
                       cachedSortKeyPosition="2"
-                      lineageId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Output].Columns[MATNR]" />
+                      lineageId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[PRUEFLOS]" />
                     <inputColumn
-                      refId="Package\MARA\Merge Join.Inputs[Merge Join Left Input].Columns[MATKL]"
-                      cachedDataType="wstr"
-                      cachedLength="9"
-                      cachedName="MATKL"
-                      lineageId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Output].Columns[MATKL]" />
-                    <inputColumn
-                      refId="Package\MARA\Merge Join.Inputs[Merge Join Left Input].Columns[MTART]"
-                      cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="MTART"
-                      lineageId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Output].Columns[MTART]" />
-                    <inputColumn
-                      refId="Package\MARA\Merge Join.Inputs[Merge Join Left Input].Columns[MEINS]"
-                      cachedDataType="wstr"
-                      cachedLength="3"
-                      cachedName="MEINS"
-                      lineageId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Output].Columns[MEINS]" />
-                    <inputColumn
-                      refId="Package\MARA\Merge Join.Inputs[Merge Join Left Input].Columns[MSTAV]"
-                      cachedDataType="wstr"
-                      cachedLength="2"
-                      cachedName="MSTAV"
-                      lineageId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Output].Columns[MSTAV]" />
-                    <inputColumn
-                      refId="Package\MARA\Merge Join.Inputs[Merge Join Left Input].Columns[PRDHA]"
-                      cachedDataType="wstr"
-                      cachedLength="18"
-                      cachedName="PRDHA"
-                      lineageId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Output].Columns[PRDHA]" />
-                    <inputColumn
-                      refId="Package\MARA\Merge Join.Inputs[Merge Join Left Input].Columns[ERSDA]"
+                      refId="Package\QASR\Merge Join.Inputs[Merge Join Left Input].Columns[VORGLFNR]"
                       cachedDataType="wstr"
                       cachedLength="8"
-                      cachedName="ERSDA"
-                      lineageId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Output].Columns[ERSDA]" />
+                      cachedName="VORGLFNR"
+                      cachedSortKeyPosition="3"
+                      lineageId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[VORGLFNR]" />
                     <inputColumn
-                      refId="Package\MARA\Merge Join.Inputs[Merge Join Left Input].Columns[ZEINR]"
+                      refId="Package\QASR\Merge Join.Inputs[Merge Join Left Input].Columns[PROBENR]"
                       cachedDataType="wstr"
-                      cachedLength="22"
-                      cachedName="ZEINR"
-                      lineageId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Output].Columns[ZEINR]" />
+                      cachedLength="6"
+                      cachedName="PROBENR"
+                      cachedSortKeyPosition="5"
+                      lineageId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[PROBENR]" />
+                    <inputColumn
+                      refId="Package\QASR\Merge Join.Inputs[Merge Join Left Input].Columns[MANDANT]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDANT"
+                      cachedSortKeyPosition="1"
+                      lineageId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[MANDANT]" />
+                    <inputColumn
+                      refId="Package\QASR\Merge Join.Inputs[Merge Join Left Input].Columns[MERKNR]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="MERKNR"
+                      cachedSortKeyPosition="4"
+                      lineageId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[MERKNR]" />
+                    <inputColumn
+                      refId="Package\QASR\Merge Join.Inputs[Merge Join Left Input].Columns[MASCHINE]"
+                      cachedDataType="wstr"
+                      cachedLength="18"
+                      cachedName="MASCHINE"
+                      lineageId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[MASCHINE]" />
+                    <inputColumn
+                      refId="Package\QASR\Merge Join.Inputs[Merge Join Left Input].Columns[PRUEFBEMKT]"
+                      cachedDataType="wstr"
+                      cachedLength="40"
+                      cachedName="PRUEFBEMKT"
+                      lineageId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[PRUEFBEMKT]" />
+                    <inputColumn
+                      refId="Package\QASR\Merge Join.Inputs[Merge Join Left Input].Columns[MITTELWERT]"
+                      cachedDataType="r8"
+                      cachedName="MITTELWERT"
+                      lineageId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[MITTELWERT]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
                 <input
-                  refId="Package\MARA\Merge Join.Inputs[Merge Join Right Input]"
+                  refId="Package\QASR\Merge Join.Inputs[Merge Join Right Input]"
                   hasSideEffects="true"
                   name="Merge Join Right Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\MARA\Merge Join.Inputs[Merge Join Right Input].Columns[MANDT]"
+                      refId="Package\QASR\Merge Join.Inputs[Merge Join Right Input].Columns[PRUEFLOS]"
                       cachedDataType="wstr"
-                      cachedLength="3"
-                      cachedName="MANDT"
-                      cachedSortKeyPosition="1"
-                      lineageId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Output].Columns[MANDT]" />
-                    <inputColumn
-                      refId="Package\MARA\Merge Join.Inputs[Merge Join Right Input].Columns[MATNR]"
-                      cachedDataType="wstr"
-                      cachedLength="18"
-                      cachedName="MATNR"
+                      cachedLength="12"
+                      cachedName="PRUEFLOS"
                       cachedSortKeyPosition="2"
-                      lineageId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Output].Columns[MATNR]" />
+                      lineageId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[PRUEFLOS]" />
                     <inputColumn
-                      refId="Package\MARA\Merge Join.Inputs[Merge Join Right Input].Columns[MATKL]"
-                      cachedDataType="wstr"
-                      cachedLength="9"
-                      cachedName="MATKL"
-                      lineageId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Output].Columns[MATKL]" />
-                    <inputColumn
-                      refId="Package\MARA\Merge Join.Inputs[Merge Join Right Input].Columns[MTART]"
-                      cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="MTART"
-                      lineageId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Output].Columns[MTART]" />
-                    <inputColumn
-                      refId="Package\MARA\Merge Join.Inputs[Merge Join Right Input].Columns[MEINS]"
-                      cachedDataType="wstr"
-                      cachedLength="3"
-                      cachedName="MEINS"
-                      lineageId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Output].Columns[MEINS]" />
-                    <inputColumn
-                      refId="Package\MARA\Merge Join.Inputs[Merge Join Right Input].Columns[MSTAV]"
-                      cachedDataType="wstr"
-                      cachedLength="2"
-                      cachedName="MSTAV"
-                      lineageId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Output].Columns[MSTAV]" />
-                    <inputColumn
-                      refId="Package\MARA\Merge Join.Inputs[Merge Join Right Input].Columns[PRDHA]"
-                      cachedDataType="wstr"
-                      cachedLength="18"
-                      cachedName="PRDHA"
-                      lineageId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Output].Columns[PRDHA]" />
-                    <inputColumn
-                      refId="Package\MARA\Merge Join.Inputs[Merge Join Right Input].Columns[ERSDA]"
+                      refId="Package\QASR\Merge Join.Inputs[Merge Join Right Input].Columns[VORGLFNR]"
                       cachedDataType="wstr"
                       cachedLength="8"
-                      cachedName="ERSDA"
-                      lineageId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Output].Columns[ERSDA]" />
+                      cachedName="VORGLFNR"
+                      cachedSortKeyPosition="3"
+                      lineageId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[VORGLFNR]" />
                     <inputColumn
-                      refId="Package\MARA\Merge Join.Inputs[Merge Join Right Input].Columns[ZEINR]"
+                      refId="Package\QASR\Merge Join.Inputs[Merge Join Right Input].Columns[PROBENR]"
                       cachedDataType="wstr"
-                      cachedLength="22"
-                      cachedName="ZEINR"
-                      lineageId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Output].Columns[ZEINR]" />
+                      cachedLength="6"
+                      cachedName="PROBENR"
+                      cachedSortKeyPosition="5"
+                      lineageId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[PROBENR]" />
+                    <inputColumn
+                      refId="Package\QASR\Merge Join.Inputs[Merge Join Right Input].Columns[MANDANT]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDANT"
+                      cachedSortKeyPosition="1"
+                      lineageId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[MANDANT]" />
+                    <inputColumn
+                      refId="Package\QASR\Merge Join.Inputs[Merge Join Right Input].Columns[MERKNR]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="MERKNR"
+                      cachedSortKeyPosition="4"
+                      lineageId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[MERKNR]" />
+                    <inputColumn
+                      refId="Package\QASR\Merge Join.Inputs[Merge Join Right Input].Columns[MASCHINE]"
+                      cachedDataType="wstr"
+                      cachedLength="18"
+                      cachedName="MASCHINE"
+                      lineageId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[MASCHINE]" />
+                    <inputColumn
+                      refId="Package\QASR\Merge Join.Inputs[Merge Join Right Input].Columns[PRUEFBEMKT]"
+                      cachedDataType="wstr"
+                      cachedLength="40"
+                      cachedName="PRUEFBEMKT"
+                      lineageId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[PRUEFBEMKT]" />
+                    <inputColumn
+                      refId="Package\QASR\Merge Join.Inputs[Merge Join Right Input].Columns[MITTELWERT]"
+                      cachedDataType="r8"
+                      cachedName="MITTELWERT"
+                      lineageId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[MITTELWERT]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\MARA\Merge Join.Outputs[Merge Join Output]"
+                  refId="Package\QASR\Merge Join.Outputs[Merge Join Output]"
                   isSorted="true"
                   name="Merge Join Output">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[MANDT]"
+                      refId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[PRUEFLOS]"
                       dataType="wstr"
-                      length="3"
-                      lineageId="Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[MANDT]"
-                      name="MANDT"
-                      sortKeyPosition="1">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\MARA\Merge Join.Inputs[Merge Join Left Input].Columns[MANDT]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[MATNR]"
-                      dataType="wstr"
-                      length="18"
-                      lineageId="Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[MATNR]"
-                      name="MATNR"
+                      length="12"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[PRUEFLOS]"
+                      name="PRUEFLOS"
                       sortKeyPosition="2">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\MARA\Merge Join.Inputs[Merge Join Left Input].Columns[MATNR]}</property>
+                          name="InputColumnID">#{Package\QASR\Merge Join.Inputs[Merge Join Left Input].Columns[PRUEFLOS]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[MATKL]"
-                      dataType="wstr"
-                      length="9"
-                      lineageId="Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[MATKL]"
-                      name="MATKL">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\MARA\Merge Join.Inputs[Merge Join Left Input].Columns[MATKL]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[MTART]"
-                      dataType="wstr"
-                      length="4"
-                      lineageId="Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[MTART]"
-                      name="MTART">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\MARA\Merge Join.Inputs[Merge Join Left Input].Columns[MTART]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[MANDT (2)]"
-                      dataType="wstr"
-                      length="3"
-                      lineageId="Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[MANDT (2)]"
-                      name="MANDT (2)">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\MARA\Merge Join.Inputs[Merge Join Right Input].Columns[MANDT]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[MATNR (2)]"
-                      dataType="wstr"
-                      length="18"
-                      lineageId="Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[MATNR (2)]"
-                      name="MATNR (2)">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\MARA\Merge Join.Inputs[Merge Join Right Input].Columns[MATNR]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[MATKL (2)]"
-                      dataType="wstr"
-                      length="9"
-                      lineageId="Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[MATKL (2)]"
-                      name="MATKL (2)">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\MARA\Merge Join.Inputs[Merge Join Right Input].Columns[MATKL]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[MTART (2)]"
-                      dataType="wstr"
-                      length="4"
-                      lineageId="Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[MTART (2)]"
-                      name="MTART (2)">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\MARA\Merge Join.Inputs[Merge Join Right Input].Columns[MTART]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[MEINS]"
-                      dataType="wstr"
-                      length="3"
-                      lineageId="Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[MEINS]"
-                      name="MEINS">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\MARA\Merge Join.Inputs[Merge Join Left Input].Columns[MEINS]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[MSTAV]"
-                      dataType="wstr"
-                      length="2"
-                      lineageId="Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[MSTAV]"
-                      name="MSTAV">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\MARA\Merge Join.Inputs[Merge Join Left Input].Columns[MSTAV]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[MEINS (2)]"
-                      dataType="wstr"
-                      length="3"
-                      lineageId="Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[MEINS (2)]"
-                      name="MEINS (2)">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\MARA\Merge Join.Inputs[Merge Join Right Input].Columns[MEINS]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[MSTAV (2)]"
-                      dataType="wstr"
-                      length="2"
-                      lineageId="Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[MSTAV (2)]"
-                      name="MSTAV (2)">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\MARA\Merge Join.Inputs[Merge Join Right Input].Columns[MSTAV]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[PRDHA]"
-                      dataType="wstr"
-                      length="18"
-                      lineageId="Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[PRDHA]"
-                      name="PRDHA">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\MARA\Merge Join.Inputs[Merge Join Left Input].Columns[PRDHA]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[PRDHA (2)]"
-                      dataType="wstr"
-                      length="18"
-                      lineageId="Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[PRDHA (2)]"
-                      name="PRDHA (2)">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\MARA\Merge Join.Inputs[Merge Join Right Input].Columns[PRDHA]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[ERSDA]"
+                      refId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[VORGLFNR]"
                       dataType="wstr"
                       length="8"
-                      lineageId="Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[ERSDA]"
-                      name="ERSDA">
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[VORGLFNR]"
+                      name="VORGLFNR"
+                      sortKeyPosition="3">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\MARA\Merge Join.Inputs[Merge Join Left Input].Columns[ERSDA]}</property>
+                          name="InputColumnID">#{Package\QASR\Merge Join.Inputs[Merge Join Left Input].Columns[VORGLFNR]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[ZEINR]"
+                      refId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[PROBENR]"
                       dataType="wstr"
-                      length="22"
-                      lineageId="Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[ZEINR]"
-                      name="ZEINR">
+                      length="6"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[PROBENR]"
+                      name="PROBENR"
+                      sortKeyPosition="5">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\MARA\Merge Join.Inputs[Merge Join Left Input].Columns[ZEINR]}</property>
+                          name="InputColumnID">#{Package\QASR\Merge Join.Inputs[Merge Join Left Input].Columns[PROBENR]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[ERSDA (1)]"
+                      refId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MANDANT]"
+                      dataType="wstr"
+                      length="3"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MANDANT]"
+                      name="MANDANT"
+                      sortKeyPosition="1">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\QASR\Merge Join.Inputs[Merge Join Left Input].Columns[MANDANT]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MERKNR]"
+                      dataType="wstr"
+                      length="4"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MERKNR]"
+                      name="MERKNR"
+                      sortKeyPosition="4">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\QASR\Merge Join.Inputs[Merge Join Left Input].Columns[MERKNR]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MASCHINE]"
+                      dataType="wstr"
+                      length="18"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MASCHINE]"
+                      name="MASCHINE">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\QASR\Merge Join.Inputs[Merge Join Left Input].Columns[MASCHINE]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[PRUEFBEMKT]"
+                      dataType="wstr"
+                      length="40"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[PRUEFBEMKT]"
+                      name="PRUEFBEMKT">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\QASR\Merge Join.Inputs[Merge Join Left Input].Columns[PRUEFBEMKT]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MITTELWERT]"
+                      dataType="r8"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MITTELWERT]"
+                      name="MITTELWERT">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\QASR\Merge Join.Inputs[Merge Join Left Input].Columns[MITTELWERT]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[PRUEFLOS (1)]"
+                      dataType="wstr"
+                      length="12"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[PRUEFLOS (1)]"
+                      name="PRUEFLOS (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\QASR\Merge Join.Inputs[Merge Join Right Input].Columns[PRUEFLOS]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[VORGLFNR (1)]"
                       dataType="wstr"
                       length="8"
-                      lineageId="Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[ERSDA (1)]"
-                      name="ERSDA (1)">
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[VORGLFNR (1)]"
+                      name="VORGLFNR (1)">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\MARA\Merge Join.Inputs[Merge Join Right Input].Columns[ERSDA]}</property>
+                          name="InputColumnID">#{Package\QASR\Merge Join.Inputs[Merge Join Right Input].Columns[VORGLFNR]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[ZEINR (1)]"
+                      refId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[PROBENR (1)]"
                       dataType="wstr"
-                      length="22"
-                      lineageId="Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[ZEINR (1)]"
-                      name="ZEINR (1)">
+                      length="6"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[PROBENR (1)]"
+                      name="PROBENR (1)">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\MARA\Merge Join.Inputs[Merge Join Right Input].Columns[ZEINR]}</property>
+                          name="InputColumnID">#{Package\QASR\Merge Join.Inputs[Merge Join Right Input].Columns[PROBENR]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MANDANT (1)]"
+                      dataType="wstr"
+                      length="3"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MANDANT (1)]"
+                      name="MANDANT (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\QASR\Merge Join.Inputs[Merge Join Right Input].Columns[MANDANT]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MERKNR (1)]"
+                      dataType="wstr"
+                      length="4"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MERKNR (1)]"
+                      name="MERKNR (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\QASR\Merge Join.Inputs[Merge Join Right Input].Columns[MERKNR]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MASCHINE (1)]"
+                      dataType="wstr"
+                      length="18"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MASCHINE (1)]"
+                      name="MASCHINE (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\QASR\Merge Join.Inputs[Merge Join Right Input].Columns[MASCHINE]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[PRUEFBEMKT (1)]"
+                      dataType="wstr"
+                      length="40"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[PRUEFBEMKT (1)]"
+                      name="PRUEFBEMKT (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\QASR\Merge Join.Inputs[Merge Join Right Input].Columns[PRUEFBEMKT]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MITTELWERT (1)]"
+                      dataType="r8"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MITTELWERT (1)]"
+                      name="MITTELWERT (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\QASR\Merge Join.Inputs[Merge Join Right Input].Columns[MITTELWERT]}</property>
                       </properties>
                     </outputColumn>
                   </outputColumns>
@@ -1550,7 +1452,7 @@ ORDER BY A01.[MANDT]
               </outputs>
             </component>
             <component
-              refId="Package\MARA\stage changed records"
+              refId="Package\QASR\stage changed records"
               componentClassID="Microsoft.OLEDBDestination"
               contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
               description="OLE DB Destination"
@@ -1565,7 +1467,7 @@ ORDER BY A01.[MANDT]
                 <property
                   dataType="System.String"
                   description="Specifies the name of the database object used to open a rowset."
-                  name="OpenRowset">[dbo].[MARA_STAGE_UPDATE]</property>
+                  name="OpenRowset">[dbo].[QASR_STAGE_UPDATE]</property>
                 <property
                   dataType="System.String"
                   description="Specifies the variable that contains the name of the database object used to open a rowset."
@@ -1607,7 +1509,7 @@ ORDER BY A01.[MANDT]
               </properties>
               <connections>
                 <connection
-                  refId="Package\MARA\stage changed records.Connections[OleDbConnection]"
+                  refId="Package\QASR\stage changed records.Connections[OleDbConnection]"
                   connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
                   connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
                   description="The OLE DB runtime connection used to access the database."
@@ -1615,146 +1517,135 @@ ORDER BY A01.[MANDT]
               </connections>
               <inputs>
                 <input
-                  refId="Package\MARA\stage changed records.Inputs[OLE DB Destination Input]"
+                  refId="Package\QASR\stage changed records.Inputs[OLE DB Destination Input]"
                   errorOrTruncationOperation="Insert"
                   errorRowDisposition="FailComponent"
                   hasSideEffects="true"
                   name="OLE DB Destination Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\MARA\stage changed records.Inputs[OLE DB Destination Input].Columns[MANDT]"
+                      refId="Package\QASR\stage changed records.Inputs[OLE DB Destination Input].Columns[PRUEFLOS]"
                       cachedDataType="wstr"
-                      cachedLength="3"
-                      cachedName="MANDT"
-                      cachedSortKeyPosition="1"
-                      externalMetadataColumnId="Package\MARA\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
-                      lineageId="Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
-                    <inputColumn
-                      refId="Package\MARA\stage changed records.Inputs[OLE DB Destination Input].Columns[MATNR]"
-                      cachedDataType="wstr"
-                      cachedLength="18"
-                      cachedName="MATNR"
+                      cachedLength="12"
+                      cachedName="PRUEFLOS"
                       cachedSortKeyPosition="2"
-                      externalMetadataColumnId="Package\MARA\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MATNR]"
-                      lineageId="Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[MATNR]" />
+                      externalMetadataColumnId="Package\QASR\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[PRUEFLOS]"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[PRUEFLOS]" />
                     <inputColumn
-                      refId="Package\MARA\stage changed records.Inputs[OLE DB Destination Input].Columns[MATKL]"
-                      cachedDataType="wstr"
-                      cachedLength="9"
-                      cachedName="MATKL"
-                      externalMetadataColumnId="Package\MARA\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MATKL]"
-                      lineageId="Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[MATKL]" />
-                    <inputColumn
-                      refId="Package\MARA\stage changed records.Inputs[OLE DB Destination Input].Columns[MTART]"
-                      cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="MTART"
-                      externalMetadataColumnId="Package\MARA\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MTART]"
-                      lineageId="Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[MTART]" />
-                    <inputColumn
-                      refId="Package\MARA\stage changed records.Inputs[OLE DB Destination Input].Columns[MEINS]"
-                      cachedDataType="wstr"
-                      cachedLength="3"
-                      cachedName="MEINS"
-                      externalMetadataColumnId="Package\MARA\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MEINS]"
-                      lineageId="Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[MEINS]" />
-                    <inputColumn
-                      refId="Package\MARA\stage changed records.Inputs[OLE DB Destination Input].Columns[MSTAV]"
-                      cachedDataType="wstr"
-                      cachedLength="2"
-                      cachedName="MSTAV"
-                      externalMetadataColumnId="Package\MARA\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MSTAV]"
-                      lineageId="Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[MSTAV]" />
-                    <inputColumn
-                      refId="Package\MARA\stage changed records.Inputs[OLE DB Destination Input].Columns[PRDHA]"
-                      cachedDataType="wstr"
-                      cachedLength="18"
-                      cachedName="PRDHA"
-                      externalMetadataColumnId="Package\MARA\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[PRDHA]"
-                      lineageId="Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[PRDHA]" />
-                    <inputColumn
-                      refId="Package\MARA\stage changed records.Inputs[OLE DB Destination Input].Columns[ERSDA]"
+                      refId="Package\QASR\stage changed records.Inputs[OLE DB Destination Input].Columns[VORGLFNR]"
                       cachedDataType="wstr"
                       cachedLength="8"
-                      cachedName="ERSDA"
-                      externalMetadataColumnId="Package\MARA\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[ERSDA]"
-                      lineageId="Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[ERSDA]" />
+                      cachedName="VORGLFNR"
+                      cachedSortKeyPosition="3"
+                      externalMetadataColumnId="Package\QASR\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[VORGLFNR]"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[VORGLFNR]" />
                     <inputColumn
-                      refId="Package\MARA\stage changed records.Inputs[OLE DB Destination Input].Columns[ZEINR]"
+                      refId="Package\QASR\stage changed records.Inputs[OLE DB Destination Input].Columns[PROBENR]"
                       cachedDataType="wstr"
-                      cachedLength="22"
-                      cachedName="ZEINR"
-                      externalMetadataColumnId="Package\MARA\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[ZEINR]"
-                      lineageId="Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[ZEINR]" />
+                      cachedLength="6"
+                      cachedName="PROBENR"
+                      cachedSortKeyPosition="5"
+                      externalMetadataColumnId="Package\QASR\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[PROBENR]"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[PROBENR]" />
+                    <inputColumn
+                      refId="Package\QASR\stage changed records.Inputs[OLE DB Destination Input].Columns[MANDANT]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDANT"
+                      cachedSortKeyPosition="1"
+                      externalMetadataColumnId="Package\QASR\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MANDANT]"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MANDANT]" />
+                    <inputColumn
+                      refId="Package\QASR\stage changed records.Inputs[OLE DB Destination Input].Columns[MERKNR]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="MERKNR"
+                      cachedSortKeyPosition="4"
+                      externalMetadataColumnId="Package\QASR\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MERKNR]"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MERKNR]" />
+                    <inputColumn
+                      refId="Package\QASR\stage changed records.Inputs[OLE DB Destination Input].Columns[MASCHINE]"
+                      cachedDataType="wstr"
+                      cachedLength="18"
+                      cachedName="MASCHINE"
+                      externalMetadataColumnId="Package\QASR\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MASCHINE]"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MASCHINE]" />
+                    <inputColumn
+                      refId="Package\QASR\stage changed records.Inputs[OLE DB Destination Input].Columns[PRUEFBEMKT]"
+                      cachedDataType="wstr"
+                      cachedLength="40"
+                      cachedName="PRUEFBEMKT"
+                      externalMetadataColumnId="Package\QASR\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[PRUEFBEMKT]"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[PRUEFBEMKT]" />
+                    <inputColumn
+                      refId="Package\QASR\stage changed records.Inputs[OLE DB Destination Input].Columns[MITTELWERT]"
+                      cachedDataType="r8"
+                      cachedName="MITTELWERT"
+                      externalMetadataColumnId="Package\QASR\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MITTELWERT]"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MITTELWERT]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
                     <externalMetadataColumn
-                      refId="Package\MARA\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      refId="Package\QASR\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[PRUEFLOS]"
                       dataType="wstr"
-                      length="3"
-                      name="MANDT" />
+                      length="12"
+                      name="PRUEFLOS" />
                     <externalMetadataColumn
-                      refId="Package\MARA\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MATNR]"
-                      dataType="wstr"
-                      length="18"
-                      name="MATNR" />
-                    <externalMetadataColumn
-                      refId="Package\MARA\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MATKL]"
-                      dataType="wstr"
-                      length="9"
-                      name="MATKL" />
-                    <externalMetadataColumn
-                      refId="Package\MARA\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MTART]"
-                      dataType="wstr"
-                      length="4"
-                      name="MTART" />
-                    <externalMetadataColumn
-                      refId="Package\MARA\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MEINS]"
-                      dataType="wstr"
-                      length="3"
-                      name="MEINS" />
-                    <externalMetadataColumn
-                      refId="Package\MARA\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MSTAV]"
-                      dataType="wstr"
-                      length="2"
-                      name="MSTAV" />
-                    <externalMetadataColumn
-                      refId="Package\MARA\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[PRDHA]"
-                      dataType="wstr"
-                      length="18"
-                      name="PRDHA" />
-                    <externalMetadataColumn
-                      refId="Package\MARA\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[ERSDA]"
+                      refId="Package\QASR\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[VORGLFNR]"
                       dataType="wstr"
                       length="8"
-                      name="ERSDA" />
+                      name="VORGLFNR" />
                     <externalMetadataColumn
-                      refId="Package\MARA\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[ZEINR]"
+                      refId="Package\QASR\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[PROBENR]"
                       dataType="wstr"
-                      length="22"
-                      name="ZEINR" />
+                      length="6"
+                      name="PROBENR" />
+                    <externalMetadataColumn
+                      refId="Package\QASR\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MANDANT]"
+                      dataType="wstr"
+                      length="3"
+                      name="MANDANT" />
+                    <externalMetadataColumn
+                      refId="Package\QASR\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MERKNR]"
+                      dataType="wstr"
+                      length="4"
+                      name="MERKNR" />
+                    <externalMetadataColumn
+                      refId="Package\QASR\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MASCHINE]"
+                      dataType="wstr"
+                      length="18"
+                      name="MASCHINE" />
+                    <externalMetadataColumn
+                      refId="Package\QASR\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[PRUEFBEMKT]"
+                      dataType="wstr"
+                      length="40"
+                      name="PRUEFBEMKT" />
+                    <externalMetadataColumn
+                      refId="Package\QASR\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MITTELWERT]"
+                      dataType="r8"
+                      name="MITTELWERT" />
                   </externalMetadataColumns>
                 </input>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\MARA\stage changed records.Outputs[OLE DB Destination Error Output]"
+                  refId="Package\QASR\stage changed records.Outputs[OLE DB Destination Error Output]"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="OLE DB Destination Error Output"
-                  synchronousInputId="Package\MARA\stage changed records.Inputs[OLE DB Destination Input]">
+                  synchronousInputId="Package\QASR\stage changed records.Inputs[OLE DB Destination Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\MARA\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      refId="Package\QASR\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\MARA\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      lineageId="Package\QASR\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\MARA\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      refId="Package\QASR\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\MARA\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\QASR\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -1763,7 +1654,7 @@ ORDER BY A01.[MANDT]
               </outputs>
             </component>
             <component
-              refId="Package\MARA\stage deleted records"
+              refId="Package\QASR\stage deleted records"
               componentClassID="Microsoft.OLEDBDestination"
               contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
               description="OLE DB Destination"
@@ -1778,7 +1669,7 @@ ORDER BY A01.[MANDT]
                 <property
                   dataType="System.String"
                   description="Specifies the name of the database object used to open a rowset."
-                  name="OpenRowset">[dbo].[MARA_STAGE_DELETE]</property>
+                  name="OpenRowset">[dbo].[QASR_STAGE_DELETE]</property>
                 <property
                   dataType="System.String"
                   description="Specifies the variable that contains the name of the database object used to open a rowset."
@@ -1820,7 +1711,7 @@ ORDER BY A01.[MANDT]
               </properties>
               <connections>
                 <connection
-                  refId="Package\MARA\stage deleted records.Connections[OleDbConnection]"
+                  refId="Package\QASR\stage deleted records.Connections[OleDbConnection]"
                   connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
                   connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
                   description="The OLE DB runtime connection used to access the database."
@@ -1828,60 +1719,101 @@ ORDER BY A01.[MANDT]
               </connections>
               <inputs>
                 <input
-                  refId="Package\MARA\stage deleted records.Inputs[OLE DB Destination Input]"
+                  refId="Package\QASR\stage deleted records.Inputs[OLE DB Destination Input]"
                   errorOrTruncationOperation="Insert"
                   errorRowDisposition="FailComponent"
                   hasSideEffects="true"
                   name="OLE DB Destination Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\MARA\stage deleted records.Inputs[OLE DB Destination Input].Columns[MANDT (2)]"
+                      refId="Package\QASR\stage deleted records.Inputs[OLE DB Destination Input].Columns[PRUEFLOS]"
+                      cachedDataType="wstr"
+                      cachedLength="12"
+                      cachedName="PRUEFLOS"
+                      cachedSortKeyPosition="2"
+                      externalMetadataColumnId="Package\QASR\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[PRUEFLOS]"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[PRUEFLOS]" />
+                    <inputColumn
+                      refId="Package\QASR\stage deleted records.Inputs[OLE DB Destination Input].Columns[VORGLFNR]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="VORGLFNR"
+                      cachedSortKeyPosition="3"
+                      externalMetadataColumnId="Package\QASR\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[VORGLFNR]"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[VORGLFNR]" />
+                    <inputColumn
+                      refId="Package\QASR\stage deleted records.Inputs[OLE DB Destination Input].Columns[PROBENR]"
+                      cachedDataType="wstr"
+                      cachedLength="6"
+                      cachedName="PROBENR"
+                      cachedSortKeyPosition="5"
+                      externalMetadataColumnId="Package\QASR\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[PROBENR]"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[PROBENR]" />
+                    <inputColumn
+                      refId="Package\QASR\stage deleted records.Inputs[OLE DB Destination Input].Columns[MANDANT]"
                       cachedDataType="wstr"
                       cachedLength="3"
-                      cachedName="MANDT (2)"
-                      externalMetadataColumnId="Package\MARA\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
-                      lineageId="Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[MANDT (2)]" />
+                      cachedName="MANDANT"
+                      cachedSortKeyPosition="1"
+                      externalMetadataColumnId="Package\QASR\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MANDANT]"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MANDANT]" />
                     <inputColumn
-                      refId="Package\MARA\stage deleted records.Inputs[OLE DB Destination Input].Columns[MATNR (2)]"
+                      refId="Package\QASR\stage deleted records.Inputs[OLE DB Destination Input].Columns[MERKNR]"
                       cachedDataType="wstr"
-                      cachedLength="18"
-                      cachedName="MATNR (2)"
-                      externalMetadataColumnId="Package\MARA\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MATNR]"
-                      lineageId="Package\MARA\Merge Join.Outputs[Merge Join Output].Columns[MATNR (2)]" />
+                      cachedLength="4"
+                      cachedName="MERKNR"
+                      cachedSortKeyPosition="4"
+                      externalMetadataColumnId="Package\QASR\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MERKNR]"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MERKNR]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
                     <externalMetadataColumn
-                      refId="Package\MARA\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      refId="Package\QASR\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[PRUEFLOS]"
+                      dataType="wstr"
+                      length="12"
+                      name="PRUEFLOS" />
+                    <externalMetadataColumn
+                      refId="Package\QASR\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[VORGLFNR]"
+                      dataType="wstr"
+                      length="8"
+                      name="VORGLFNR" />
+                    <externalMetadataColumn
+                      refId="Package\QASR\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MANDANT]"
                       dataType="wstr"
                       length="3"
-                      name="MANDT" />
+                      name="MANDANT" />
                     <externalMetadataColumn
-                      refId="Package\MARA\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MATNR]"
+                      refId="Package\QASR\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MERKNR]"
                       dataType="wstr"
-                      length="18"
-                      name="MATNR" />
+                      length="4"
+                      name="MERKNR" />
+                    <externalMetadataColumn
+                      refId="Package\QASR\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[PROBENR]"
+                      dataType="wstr"
+                      length="6"
+                      name="PROBENR" />
                   </externalMetadataColumns>
                 </input>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\MARA\stage deleted records.Outputs[OLE DB Destination Error Output]"
+                  refId="Package\QASR\stage deleted records.Outputs[OLE DB Destination Error Output]"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="OLE DB Destination Error Output"
-                  synchronousInputId="Package\MARA\stage deleted records.Inputs[OLE DB Destination Input]">
+                  synchronousInputId="Package\QASR\stage deleted records.Inputs[OLE DB Destination Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\MARA\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      refId="Package\QASR\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\MARA\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      lineageId="Package\QASR\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\MARA\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      refId="Package\QASR\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\MARA\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\QASR\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -1892,40 +1824,40 @@ ORDER BY A01.[MANDT]
           </components>
           <paths>
             <path
-              refId="Package\MARA.Paths[delete]"
-              endId="Package\MARA\stage deleted records.Inputs[OLE DB Destination Input]"
+              refId="Package\QASR.Paths[delete]"
+              endId="Package\QASR\stage deleted records.Inputs[OLE DB Destination Input]"
               name="delete"
-              startId="Package\MARA\Identify records.Outputs[delete]" />
+              startId="Package\QASR\Identify records.Outputs[delete]" />
             <path
-              refId="Package\MARA.Paths[insert]"
-              endId="Package\MARA\insert new records.Inputs[OLE DB Destination Input]"
+              refId="Package\QASR.Paths[insert]"
+              endId="Package\QASR\insert new records.Inputs[OLE DB Destination Input]"
               name="insert"
-              startId="Package\MARA\Identify records.Outputs[insert]" />
+              startId="Package\QASR\Identify records.Outputs[insert]" />
             <path
-              refId="Package\MARA.Paths[Merge Join Output]"
-              endId="Package\MARA\Identify records.Inputs[Conditional Split Input]"
+              refId="Package\QASR.Paths[Merge Join Output]"
+              endId="Package\QASR\Identify records.Inputs[Conditional Split Input]"
               name="Merge Join Output"
-              startId="Package\MARA\Merge Join.Outputs[Merge Join Output]" />
+              startId="Package\QASR\Merge Join.Outputs[Merge Join Output]" />
             <path
-              refId="Package\MARA.Paths[OLE DB Source Output]"
-              endId="Package\MARA\Merge Join.Inputs[Merge Join Left Input]"
+              refId="Package\QASR.Paths[OLE DB Source Output]"
+              endId="Package\QASR\Merge Join.Inputs[Merge Join Left Input]"
               name="OLE DB Source Output"
-              startId="Package\MARA\DB SAP MARA.Outputs[OLE DB Source Output]" />
+              startId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output]" />
             <path
-              refId="Package\MARA.Paths[OLE DB Source Output1]"
-              endId="Package\MARA\Merge Join.Inputs[Merge Join Right Input]"
+              refId="Package\QASR.Paths[OLE DB Source Output1]"
+              endId="Package\QASR\Merge Join.Inputs[Merge Join Right Input]"
               name="OLE DB Source Output"
-              startId="Package\MARA\DB PBI MARA.Outputs[OLE DB Source Output]" />
+              startId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output]" />
             <path
-              refId="Package\MARA.Paths[update]"
-              endId="Package\MARA\Find Changed Records.Inputs[Conditional Split Input]"
+              refId="Package\QASR.Paths[update]"
+              endId="Package\QASR\Find Changed Records.Inputs[Conditional Split Input]"
               name="update"
-              startId="Package\MARA\Identify records.Outputs[update]" />
+              startId="Package\QASR\Identify records.Outputs[update]" />
             <path
-              refId="Package\MARA.Paths[update1]"
-              endId="Package\MARA\stage changed records.Inputs[OLE DB Destination Input]"
+              refId="Package\QASR.Paths[update1]"
+              endId="Package\QASR\stage changed records.Inputs[OLE DB Destination Input]"
               name="update"
-              startId="Package\MARA\Find Changed Records.Outputs[update]" />
+              startId="Package\QASR\Find Changed Records.Outputs[update]" />
           </paths>
         </pipeline>
       </DTS:ObjectData>
@@ -1934,7 +1866,7 @@ ORDER BY A01.[MANDT]
       DTS:refId="Package\Sequence Container"
       DTS:CreationName="STOCK:SEQUENCE"
       DTS:Description="Sequence Container"
-      DTS:DTSID="{E398361E-1AE2-42A8-B6A8-8714FBC508D1}"
+      DTS:DTSID="{AF8F0FD0-353D-4A48-9ABF-6FFC0ACB0F3E}"
       DTS:ExecutableType="STOCK:SEQUENCE"
       DTS:LocaleID="-1"
       DTS:ObjectName="Sequence Container">
@@ -1944,7 +1876,7 @@ ORDER BY A01.[MANDT]
           DTS:refId="Package\Sequence Container\delete"
           DTS:CreationName="Microsoft.ExecuteSQLTask"
           DTS:Description="Execute SQL Task"
-          DTS:DTSID="{829630D1-3C5C-4F5B-BF78-FCF8F8A26640}"
+          DTS:DTSID="{500D59A0-05CD-4CCD-9628-E556C34343A8}"
           DTS:ExecutableType="Microsoft.ExecuteSQLTask"
           DTS:LocaleID="-1"
           DTS:ObjectName="delete"
@@ -1954,14 +1886,14 @@ ORDER BY A01.[MANDT]
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
               SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-              SQLTask:SqlStatementSource="DELETE A01&#xA;FROM [MARA] A01 INNER JOIN [MARA_STAGE_DELETE] B01 ON ( A01.[MANDT] = B01.[MANDT]&#xA;                                                    AND A01.[MATNR] = B01.[MATNR] )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+              SQLTask:SqlStatementSource="DELETE A01&#xA;FROM [QASR] A01 INNER JOIN [QASR_STAGE_DELETE] B01 ON ( A01.[MANDANT] = B01.[MANDANT]&#xA;                                                    AND A01.[PRUEFLOS] = B01.[PRUEFLOS]&#xA;                                                    AND A01.[VORGLFNR] = B01.[VORGLFNR]&#xA;                                                    AND A01.[MERKNR] = B01.[MERKNR]&#xA;                                                    AND A01.[PROBENR] = B01.[PROBENR] )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
           </DTS:ObjectData>
         </DTS:Executable>
         <DTS:Executable
           DTS:refId="Package\Sequence Container\update"
           DTS:CreationName="Microsoft.ExecuteSQLTask"
           DTS:Description="Execute SQL Task"
-          DTS:DTSID="{A03D4E86-0195-4574-94BB-87B5982B3ACB}"
+          DTS:DTSID="{1882DFE6-24A2-422C-9A3D-A416F8A38D2B}"
           DTS:ExecutableType="Microsoft.ExecuteSQLTask"
           DTS:LocaleID="-1"
           DTS:ObjectName="update"
@@ -1971,7 +1903,7 @@ ORDER BY A01.[MANDT]
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
               SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-              SQLTask:SqlStatementSource="UPDATE A01&#xA;SET A01.[MTART] = B01.[MTART]&#xA;   ,A01.[MATKL] = B01.[MATKL]&#xA;   ,A01.[MEINS] = B01.[MEINS]&#xA;   ,A01.[MSTAV] = B01.[MSTAV]&#xA;   ,A01.[PRDHA] = B01.[PRDHA]&#xA;   ,A01.[ERSDA] = B01.[ERSDA]&#xA;   ,A01.[ZEINR] = B01.[ZEINR]&#xA;FROM [MARA] A01 INNER JOIN [MARA_STAGE_UPDATE] B01 ON ( A01.[MANDT] = B01.[MANDT]&#xA;                                                    AND A01.[MATNR] = B01.[MATNR] )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+              SQLTask:SqlStatementSource="UPDATE A01&#xA;SET A01.[MASCHINE] = B01.[MASCHINE]&#xA;   ,A01.[MITTELWERT] = B01.[MITTELWERT]&#xA;   ,A01.[PRUEFBEMKT] = B01.[PRUEFBEMKT]&#xA;FROM [QASR] A01 INNER JOIN [QASR_STAGE_UPDATE] B01 ON ( A01.[MANDANT] = B01.[MANDANT]&#xA;                                                    AND A01.[PRUEFLOS] = B01.[PRUEFLOS]&#xA;                                                    AND A01.[VORGLFNR] = B01.[VORGLFNR]&#xA;                                                    AND A01.[MERKNR] = B01.[MERKNR]&#xA;                                                    AND A01.[PROBENR] = B01.[PROBENR] )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
           </DTS:ObjectData>
         </DTS:Executable>
       </DTS:Executables>
@@ -1980,27 +1912,27 @@ ORDER BY A01.[MANDT]
       DTS:refId="Package\Sequence Container 1"
       DTS:CreationName="STOCK:SEQUENCE"
       DTS:Description="Sequence Container"
-      DTS:DTSID="{cf930030-7721-48ea-8448-b590959aaf20}"
+      DTS:DTSID="{04D313BA-A207-4F39-B18B-9122F57BFF02}"
       DTS:ExecutableType="STOCK:SEQUENCE"
       DTS:LocaleID="-1"
       DTS:ObjectName="Sequence Container 1">
       <DTS:Variables />
       <DTS:Executables>
         <DTS:Executable
-          DTS:refId="Package\Sequence Container 1\Insert"
+          DTS:refId="Package\Sequence Container 1\insert"
           DTS:CreationName="Microsoft.ExecuteSQLTask"
           DTS:Description="Execute SQL Task"
-          DTS:DTSID="{7b94a92d-9664-4182-9bea-4add7eb05e32}"
+          DTS:DTSID="{8A8C169B-EED5-41FE-BBD1-4FA4314BA782}"
           DTS:ExecutableType="Microsoft.ExecuteSQLTask"
           DTS:LocaleID="-1"
-          DTS:ObjectName="Insert"
+          DTS:ObjectName="insert"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
           DTS:ThreadHint="0">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
               SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-              SQLTask:SqlStatementSource="INSERT INTO [MARA]&#xA;SELECT * FROM [MARA_STAGE_INSERT]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+              SQLTask:SqlStatementSource="INSERT INTO [QASR]&#xA;SELECT * FROM [QASR_STAGE_INSERT]&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
           </DTS:ObjectData>
         </DTS:Executable>
       </DTS:Executables>
@@ -2010,23 +1942,23 @@ ORDER BY A01.[MANDT]
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint]"
       DTS:CreationName=""
-      DTS:DTSID="{018C1B41-2137-40C3-8E21-6109275BF53A}"
-      DTS:From="Package\clean stage"
+      DTS:DTSID="{1AAA07EA-2109-43D9-B23F-A7F7AF49E22F}"
+      DTS:From="Package\QASR"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint"
-      DTS:To="Package\MARA" />
+      DTS:To="Package\Sequence Container" />
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
       DTS:CreationName=""
-      DTS:DTSID="{17D8D133-80F2-492A-BCA6-BA72360DB239}"
-      DTS:From="Package\MARA"
+      DTS:DTSID="{6EA16A81-8538-45BB-B79E-EBC707DD31C9}"
+      DTS:From="Package\clean stage"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 1"
-      DTS:To="Package\Sequence Container" />
+      DTS:To="Package\QASR" />
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
       DTS:CreationName=""
-      DTS:DTSID="{2E5B834B-02A0-4BF0-B39E-C329BE312F58}"
+      DTS:DTSID="{15679BBC-E9B3-497C-829C-DE94700BB301}"
       DTS:From="Package\Sequence Container"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 2"
@@ -2047,63 +1979,51 @@ ORDER BY A01.[MANDT]
         <NodeLayout
           Size="132,42"
           Id="Package\clean stage"
-          TopLeft="192,51" />
+          TopLeft="116,44.333333333333" />
         <NodeLayout
-          Size="107,42"
-          Id="Package\MARA"
-          TopLeft="404,33" />
+          Size="106,42"
+          Id="Package\QASR"
+          TopLeft="350,43" />
         <NodeLayout
           Size="108,42"
           Id="Package\Sequence Container\delete"
-          TopLeft="215,21" />
+          TopLeft="161,14" />
         <NodeLayout
           Size="112,42"
           Id="Package\Sequence Container\update"
-          TopLeft="33,22" />
+          TopLeft="14,14" />
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="367,117"
-          Size="367,160"
+          PanelSize="305,79"
+          Size="305,122"
           Id="Package\Sequence Container"
-          TopLeft="276,146" />
+          TopLeft="250,153" />
         <NodeLayout
-          Size="107,42"
-          Id="Package\Sequence Container 1\Insert"
-          TopLeft="118,29" />
+          Size="105,42"
+          Id="Package\Sequence Container 1\insert"
+          TopLeft="86.5,28.75" />
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="367,126"
-          Size="367,169"
+          PanelSize="305,126"
+          Size="305,169"
           Id="Package\Sequence Container 1"
-          TopLeft="276,354" />
+          TopLeft="248.75,327.75" />
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint]"
-          TopLeft="324,72">
+          TopLeft="402.75,85">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="80,-18"
+              EndConnector="0,68"
               Start="0,0"
-              End="72.5,-18">
+              End="0,60.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="36,0" />
-                  <mssgle:CubicBezierSegment
-                    Point1="36,0"
-                    Point2="40,0"
-                    Point3="40,-4" />
-                  <mssgle:LineSegment
-                    End="40,-14" />
-                  <mssgle:CubicBezierSegment
-                    Point1="40,-14"
-                    Point2="40,-18"
-                    Point3="44,-18" />
-                  <mssgle:LineSegment
-                    End="72.5,-18" />
+                    End="0,60.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -2114,18 +2034,18 @@ ORDER BY A01.[MANDT]
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 1]"
-          TopLeft="458.5,75">
+          TopLeft="248,64.6666666666665">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,71"
+              EndConnector="102,0"
               Start="0,0"
-              End="0,63.5">
+              End="94.5,0">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,63.5" />
+                    End="94.5,0" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -2136,18 +2056,18 @@ ORDER BY A01.[MANDT]
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 2]"
-          TopLeft="459.5,306">
+          TopLeft="401.875,275">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,48"
+              EndConnector="0,52.75"
               Start="0,0"
-              End="0,40.5">
+              End="0,45.25">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,40.5" />
+                    End="0,45.25" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -2160,116 +2080,188 @@ ORDER BY A01.[MANDT]
     </LayoutInfo>
   </Package>
   <TaskHost
-    design-time-name="Package\MARA">
+    design-time-name="Package\QASR">
     <LayoutInfo>
       <GraphLayout
         Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
           Size="166,42"
-          Id="Package\MARA\insert new records"
-          TopLeft="141,371" />
+          Id="Package\QASR\insert new records"
+          TopLeft="89,302" />
         <NodeLayout
-          Size="130,42"
-          Id="Package\MARA\Merge Join"
-          TopLeft="430,128" />
+          Size="144,42"
+          Id="Package\QASR\DB SAP ADRC"
+          TopLeft="224,40" />
         <NodeLayout
           Size="153,42"
-          Id="Package\MARA\Identify records"
-          TopLeft="425,244" />
+          Id="Package\QASR\Identify records"
+          TopLeft="382,209" />
         <NodeLayout
           Size="186,42"
-          Id="Package\MARA\stage changed records"
-          TopLeft="418,484" />
+          Id="Package\QASR\stage changed records"
+          TopLeft="367,379" />
         <NodeLayout
           Size="184,42"
-          Id="Package\MARA\Find Changed Records"
-          TopLeft="417,371" />
+          Id="Package\QASR\Find Changed Records"
+          TopLeft="371,303" />
         <NodeLayout
           Size="180,42"
-          Id="Package\MARA\stage deleted records"
-          TopLeft="681,373" />
+          Id="Package\QASR\stage deleted records"
+          TopLeft="654,301" />
         <NodeLayout
-          Size="145,42"
-          Id="Package\MARA\DB SAP MARA"
-          TopLeft="216,28" />
+          Size="142,42"
+          Id="Package\QASR\DB PBI ADRC"
+          TopLeft="511,35" />
+        <EdgeLayout
+          Id="Package\QASR.Paths[insert]"
+          TopLeft="422.25,251">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-250.25,51"
+              Start="0,0"
+              End="-250.25,43.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,13.5824411134904" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,13.5824411134904"
+                    Point2="0,17.5824411134904"
+                    Point3="-4,17.5824411134904" />
+                  <mssgle:LineSegment
+                    End="-246.25,17.5824411134904" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-246.25,17.5824411134904"
+                    Point2="-250.25,17.5824411134904"
+                    Point3="-250.25,21.5824411134904" />
+                  <mssgle:LineSegment
+                    End="-250.25,43.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-138.07498046875,22.5824411134904,25.8999609375,9.451171875"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\QASR.Paths[delete]"
+          TopLeft="494.75,251">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="249.25,50"
+              Start="0,0"
+              End="249.25,42.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,13.237687366167" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,13.237687366167"
+                    Point2="0,17.237687366167"
+                    Point3="4,17.237687366167" />
+                  <mssgle:LineSegment
+                    End="245.25,17.237687366167" />
+                  <mssgle:CubicBezierSegment
+                    Point1="245.25,17.237687366167"
+                    Point2="249.25,17.237687366167"
+                    Point3="249.25,21.237687366167" />
+                  <mssgle:LineSegment
+                    End="249.25,42.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="110.42904296875,22.237687366167,28.3919140625,9.7490234375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\QASR.Paths[update1]"
+          TopLeft="461.5,345">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,34"
+              Start="0,0"
+              End="0,26.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,26.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-15.8025,7.4453125,31.605,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\QASR.Paths[update]"
+          TopLeft="460.75,251">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,52"
+              Start="0,0"
+              End="0,44.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,44.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-15.8025,16.4453125,31.605,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
         <NodeLayout
-          Size="143,42"
-          Id="Package\MARA\DB PBI MARA"
-          TopLeft="599,28" />
+          Size="130,42"
+          Id="Package\QASR\Merge Join"
+          TopLeft="395,120" />
         <EdgeLayout
-          Id="Package\MARA.Paths[update1]"
-          TopLeft="510,413">
+          Id="Package\QASR.Paths[OLE DB Source Output]"
+          TopLeft="296,82">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,71"
+              EndConnector="164,38"
               Start="0,0"
-              End="0,63.5">
+              End="164,30.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,63.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-15.8025,25.9453125,31.605,11.609375"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\MARA.Paths[update]"
-          TopLeft="505.25,286">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,85"
-              Start="0,0"
-              End="0,77.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,77.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-15.8025,32.9453125,31.605,11.609375"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\MARA.Paths[OLE DB Source Output1]"
-          TopLeft="670.5,70">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="-155.166666666667,58"
-              Start="0,0"
-              End="-155.166666666667,50.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,30.3768996960486" />
+                    End="0,15" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,30.3768996960486"
-                    Point2="0,34.3768996960486"
-                    Point3="-4,34.3768996960486" />
+                    Point1="0,15"
+                    Point2="0,19"
+                    Point3="4,19" />
                   <mssgle:LineSegment
-                    End="-151.166666666667,34.3768996960486" />
+                    End="160,19" />
                   <mssgle:CubicBezierSegment
-                    Point1="-151.166666666667,34.3768996960486"
-                    Point2="-155.166666666667,34.3768996960486"
-                    Point3="-155.166666666667,38.3768996960486" />
+                    Point1="160,19"
+                    Point2="164,19"
+                    Point3="164,23" />
                   <mssgle:LineSegment
-                    End="-155.166666666667,50.5" />
+                    End="164,30.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -2279,31 +2271,31 @@ ORDER BY A01.[MANDT]
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\MARA.Paths[OLE DB Source Output]"
-          TopLeft="288.5,70">
+          Id="Package\QASR.Paths[OLE DB Source Output1]"
+          TopLeft="582,77">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="186.166666666667,58"
+              EndConnector="-101.666666666667,43"
               Start="0,0"
-              End="186.166666666667,50.5">
+              End="-101.666666666667,35.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,30.3768996960486" />
+                    End="0,21.4863221884498" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,30.3768996960486"
-                    Point2="0,34.3768996960486"
-                    Point3="4,34.3768996960486" />
+                    Point1="0,21.4863221884498"
+                    Point2="0,25.4863221884498"
+                    Point3="-4,25.4863221884498" />
                   <mssgle:LineSegment
-                    End="182.166666666667,34.3768996960486" />
+                    End="-97.6666666666667,25.4863221884498" />
                   <mssgle:CubicBezierSegment
-                    Point1="182.166666666667,34.3768996960486"
-                    Point2="186.166666666667,34.3768996960486"
-                    Point3="186.166666666667,38.3768996960486" />
+                    Point1="-97.6666666666667,25.4863221884498"
+                    Point2="-101.666666666667,25.4863221884498"
+                    Point3="-101.666666666667,29.4863221884498" />
                   <mssgle:LineSegment
-                    End="186.166666666667,50.5" />
+                    End="-101.666666666667,35.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -2313,104 +2305,32 @@ ORDER BY A01.[MANDT]
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\MARA.Paths[Merge Join Output]"
-          TopLeft="498.25,170">
+          Id="Package\QASR.Paths[Merge Join Output]"
+          TopLeft="459.25,162">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,74"
+              EndConnector="0,47"
               Start="0,0"
-              End="0,66.5">
+              End="0,39.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,66.5" />
+                    End="0,39.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\MARA.Paths[insert]"
-          TopLeft="465.25,286">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="-241.25,85"
-              Start="0,0"
-              End="-241.25,77.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,25.3040685224839" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,25.3040685224839"
-                    Point2="0,29.3040685224839"
-                    Point3="-4,29.3040685224839" />
-                  <mssgle:LineSegment
-                    End="-237.25,29.3040685224839" />
-                  <mssgle:CubicBezierSegment
-                    Point1="-237.25,29.3040685224839"
-                    Point2="-241.25,29.3040685224839"
-                    Point3="-241.25,33.3040685224839" />
-                  <mssgle:LineSegment
-                    End="-241.25,77.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-133.57498046875,34.3040685224839,25.8999609375,9.451171875"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\MARA.Paths[delete]"
-          TopLeft="537.75,286">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="233.25,87"
-              Start="0,0"
-              End="233.25,79.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,25.9935760171306" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,25.9935760171306"
-                    Point2="0,29.9935760171306"
-                    Point3="4,29.9935760171306" />
-                  <mssgle:LineSegment
-                    End="229.25,29.9935760171306" />
-                  <mssgle:CubicBezierSegment
-                    Point1="229.25,29.9935760171306"
-                    Point2="233.25,29.9935760171306"
-                    Point3="233.25,33.9935760171306" />
-                  <mssgle:LineSegment
-                    End="233.25,79.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="102.42904296875,34.9935760171306,28.3919140625,9.7490234375"
-              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
     </LayoutInfo>
   </TaskHost>
   <PipelineComponentMetadata
-    design-time-name="Package\MARA\insert new records">
+    design-time-name="Package\QASR\insert new records">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -2423,7 +2343,15 @@ ORDER BY A01.[MANDT]
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\MARA\stage changed records">
+    design-time-name="Package\QASR\DB SAP ADRC">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\QASR\stage changed records">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -2436,7 +2364,7 @@ ORDER BY A01.[MANDT]
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\MARA\stage deleted records">
+    design-time-name="Package\QASR\stage deleted records">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -2449,15 +2377,7 @@ ORDER BY A01.[MANDT]
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\MARA\DB SAP MARA">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
-    design-time-name="Package\MARA\DB PBI MARA">
+    design-time-name="Package\QASR\DB PBI ADRC">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
