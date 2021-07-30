@@ -1,30 +1,47 @@
 ﻿<?xml version="1.0"?>
 <DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
   DTS:refId="Package"
-  DTS:CreationDate="4/19/2021 12:36:45 PM"
+  DTS:CreationDate="2/10/2021 6:49:29 PM"
   DTS:CreationName="Microsoft.Package"
   DTS:CreatorComputerName="ARLPBIDEV"
   DTS:CreatorName="DOMAIN\RPETRELLA"
-  DTS:DTSID="{79FF589B-D1DF-45AE-8325-C9D3A44252E3}"
+  DTS:DTSID="{0C323462-2C5D-4082-954C-E5C0A049969F}"
   DTS:ExecutableType="Microsoft.Package"
   DTS:LastModifiedProductVersion="15.0.2000.152"
   DTS:LocaleID="1033"
-  DTS:ObjectName="AUFK"
+  DTS:ObjectName="PLPO"
   DTS:PackageType="5"
-  DTS:VersionBuild="7"
-  DTS:VersionGUID="{2C3F4799-F1DB-4B44-B24B-93E5B42CE5EF}">
+  DTS:VersionBuild="34"
+  DTS:VersionGUID="{87D34040-809A-425F-A18B-17212F9B4CEA}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:Variables />
   <DTS:Executables>
     <DTS:Executable
-      DTS:refId="Package\AUFK"
+      DTS:refId="Package\clean stage"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{6C2C8932-1BB6-42DC-BF6D-1FBF766DC283}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="clean stage"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="TRUNCATE TABLE [PLPO_STAGE_UPDATE]&#xA;go&#xA;TRUNCATE TABLE [PLPO_STAGE_DELETE]&#xA;go&#xA;TRUNCATE TABLE [PLPO_STAGE_INSERT]&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\PLPO"
       DTS:CreationName="Microsoft.Pipeline"
       DTS:Description="Data Flow Task"
-      DTS:DTSID="{b0d5bc4d-e6d6-43ae-bc7a-39a26c303096}"
+      DTS:DTSID="{6485AA8B-3BFD-45AF-AD06-B8166F293ACE}"
       DTS:ExecutableType="Microsoft.Pipeline"
       DTS:LocaleID="-1"
-      DTS:ObjectName="AUFK"
+      DTS:ObjectName="PLPO"
       DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
       <DTS:Variables />
       <DTS:ObjectData>
@@ -32,11 +49,11 @@
           version="1">
           <components>
             <component
-              refId="Package\AUFK\DB PBI"
+              refId="Package\PLPO\DB PBI ADRC"
               componentClassID="Microsoft.OLEDBSource"
               contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
               description="OLE DB Source"
-              name="DB PBI"
+              name="DB PBI ADRC"
               usesDispositions="true"
               version="7">
               <properties>
@@ -57,15 +74,17 @@
                   description="The SQL command to be executed."
                   name="SqlCommand"
                   UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT A01.[MANDT]
-      ,A01.[AUFNR]
-      ,A01.[AUTYP]
-      ,A01.[WERKS]
-      ,A01.[LOEKZ]
-      ,A01.[OBJNR]
-      ,A01.[AUART]
-FROM [AUFK] A01 (NOLOCK)
+      ,A01.[PLNTY]
+      ,A01.[PLNNR]
+      ,A01.[PLNKN]
+      ,A01.[ZAEHL]
+      ,A01.[AEDAT]
+FROM [PLPO] A01 (NOLOCK)
 ORDER BY A01.[MANDT]
-      ,A01.[AUFNR]</property>
+      ,A01.[PLNTY]
+      ,A01.[PLNNR]
+      ,A01.[PLNKN]
+      ,A01.[ZAEHL]</property>
                 <property
                   dataType="System.String"
                   description="The variable that contains the SQL command to be executed."
@@ -90,7 +109,7 @@ ORDER BY A01.[MANDT]
               </properties>
               <connections>
                 <connection
-                  refId="Package\AUFK\DB PBI.Connections[OleDbConnection]"
+                  refId="Package\PLPO\DB PBI ADRC.Connections[OleDbConnection]"
                   connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
                   connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
                   description="The OLE DB runtime connection used to access the database."
@@ -98,179 +117,161 @@ ORDER BY A01.[MANDT]
               </connections>
               <outputs>
                 <output
-                  refId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output]"
+                  refId="Package\PLPO\DB PBI ADRC.Outputs[OLE DB Source Output]"
                   isSorted="true"
                   name="OLE DB Source Output">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      refId="Package\PLPO\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[MANDT]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      externalMetadataColumnId="Package\PLPO\DB PBI ADRC.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
                       length="3"
-                      lineageId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      lineageId="Package\PLPO\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[MANDT]"
                       name="MANDT"
                       sortKeyPosition="1"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].Columns[AUFNR]"
+                      refId="Package\PLPO\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[PLNTY]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[AUFNR]"
-                      length="12"
-                      lineageId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].Columns[AUFNR]"
-                      name="AUFNR"
+                      externalMetadataColumnId="Package\PLPO\DB PBI ADRC.Outputs[OLE DB Source Output].ExternalColumns[PLNTY]"
+                      length="1"
+                      lineageId="Package\PLPO\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[PLNTY]"
+                      name="PLNTY"
                       sortKeyPosition="2"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].Columns[AUTYP]"
+                      refId="Package\PLPO\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[PLNNR]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[AUTYP]"
-                      length="2"
-                      lineageId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].Columns[AUTYP]"
-                      name="AUTYP"
+                      externalMetadataColumnId="Package\PLPO\DB PBI ADRC.Outputs[OLE DB Source Output].ExternalColumns[PLNNR]"
+                      length="8"
+                      lineageId="Package\PLPO\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[PLNNR]"
+                      name="PLNNR"
+                      sortKeyPosition="3"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].Columns[WERKS]"
+                      refId="Package\PLPO\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[PLNKN]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[WERKS]"
-                      length="4"
-                      lineageId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].Columns[WERKS]"
-                      name="WERKS"
+                      externalMetadataColumnId="Package\PLPO\DB PBI ADRC.Outputs[OLE DB Source Output].ExternalColumns[PLNKN]"
+                      length="8"
+                      lineageId="Package\PLPO\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[PLNKN]"
+                      name="PLNKN"
+                      sortKeyPosition="4"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].Columns[LOEKZ]"
+                      refId="Package\PLPO\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[ZAEHL]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[LOEKZ]"
-                      length="1"
-                      lineageId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].Columns[LOEKZ]"
-                      name="LOEKZ"
+                      externalMetadataColumnId="Package\PLPO\DB PBI ADRC.Outputs[OLE DB Source Output].ExternalColumns[ZAEHL]"
+                      length="8"
+                      lineageId="Package\PLPO\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[ZAEHL]"
+                      name="ZAEHL"
+                      sortKeyPosition="5"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].Columns[OBJNR]"
+                      refId="Package\PLPO\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[AEDAT]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[OBJNR]"
-                      length="22"
-                      lineageId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].Columns[OBJNR]"
-                      name="OBJNR"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].Columns[AUART]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[AUART]"
-                      length="4"
-                      lineageId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].Columns[AUART]"
-                      name="AUART"
+                      externalMetadataColumnId="Package\PLPO\DB PBI ADRC.Outputs[OLE DB Source Output].ExternalColumns[AEDAT]"
+                      length="8"
+                      lineageId="Package\PLPO\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[AEDAT]"
+                      name="AEDAT"
                       truncationRowDisposition="FailComponent" />
                   </outputColumns>
                   <externalMetadataColumns
                     isUsed="True">
                     <externalMetadataColumn
-                      refId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      refId="Package\PLPO\DB PBI ADRC.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
                       dataType="wstr"
                       length="3"
                       name="MANDT" />
                     <externalMetadataColumn
-                      refId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[AUFNR]"
-                      dataType="wstr"
-                      length="12"
-                      name="AUFNR" />
-                    <externalMetadataColumn
-                      refId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[AUTYP]"
-                      dataType="wstr"
-                      length="2"
-                      name="AUTYP" />
-                    <externalMetadataColumn
-                      refId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[WERKS]"
-                      dataType="wstr"
-                      length="4"
-                      name="WERKS" />
-                    <externalMetadataColumn
-                      refId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[LOEKZ]"
+                      refId="Package\PLPO\DB PBI ADRC.Outputs[OLE DB Source Output].ExternalColumns[PLNTY]"
                       dataType="wstr"
                       length="1"
-                      name="LOEKZ" />
+                      name="PLNTY" />
                     <externalMetadataColumn
-                      refId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[OBJNR]"
+                      refId="Package\PLPO\DB PBI ADRC.Outputs[OLE DB Source Output].ExternalColumns[PLNNR]"
                       dataType="wstr"
-                      length="22"
-                      name="OBJNR" />
+                      length="8"
+                      name="PLNNR" />
                     <externalMetadataColumn
-                      refId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[AUART]"
+                      refId="Package\PLPO\DB PBI ADRC.Outputs[OLE DB Source Output].ExternalColumns[PLNKN]"
                       dataType="wstr"
-                      length="4"
-                      name="AUART" />
+                      length="8"
+                      name="PLNKN" />
+                    <externalMetadataColumn
+                      refId="Package\PLPO\DB PBI ADRC.Outputs[OLE DB Source Output].ExternalColumns[ZAEHL]"
+                      dataType="wstr"
+                      length="8"
+                      name="ZAEHL" />
+                    <externalMetadataColumn
+                      refId="Package\PLPO\DB PBI ADRC.Outputs[OLE DB Source Output].ExternalColumns[AEDAT]"
+                      dataType="wstr"
+                      length="8"
+                      name="AEDAT" />
                   </externalMetadataColumns>
                 </output>
                 <output
-                  refId="Package\AUFK\DB PBI.Outputs[OLE DB Source Error Output]"
+                  refId="Package\PLPO\DB PBI ADRC.Outputs[OLE DB Source Error Output]"
                   isErrorOut="true"
                   name="OLE DB Source Error Output">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\AUFK\DB PBI.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      refId="Package\PLPO\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[MANDT]"
                       dataType="wstr"
                       length="3"
-                      lineageId="Package\AUFK\DB PBI.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      lineageId="Package\PLPO\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[MANDT]"
                       name="MANDT" />
                     <outputColumn
-                      refId="Package\AUFK\DB PBI.Outputs[OLE DB Source Error Output].Columns[AUFNR]"
-                      dataType="wstr"
-                      length="12"
-                      lineageId="Package\AUFK\DB PBI.Outputs[OLE DB Source Error Output].Columns[AUFNR]"
-                      name="AUFNR" />
-                    <outputColumn
-                      refId="Package\AUFK\DB PBI.Outputs[OLE DB Source Error Output].Columns[AUTYP]"
-                      dataType="wstr"
-                      length="2"
-                      lineageId="Package\AUFK\DB PBI.Outputs[OLE DB Source Error Output].Columns[AUTYP]"
-                      name="AUTYP" />
-                    <outputColumn
-                      refId="Package\AUFK\DB PBI.Outputs[OLE DB Source Error Output].Columns[WERKS]"
-                      dataType="wstr"
-                      length="4"
-                      lineageId="Package\AUFK\DB PBI.Outputs[OLE DB Source Error Output].Columns[WERKS]"
-                      name="WERKS" />
-                    <outputColumn
-                      refId="Package\AUFK\DB PBI.Outputs[OLE DB Source Error Output].Columns[LOEKZ]"
+                      refId="Package\PLPO\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[PLNTY]"
                       dataType="wstr"
                       length="1"
-                      lineageId="Package\AUFK\DB PBI.Outputs[OLE DB Source Error Output].Columns[LOEKZ]"
-                      name="LOEKZ" />
+                      lineageId="Package\PLPO\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[PLNTY]"
+                      name="PLNTY" />
                     <outputColumn
-                      refId="Package\AUFK\DB PBI.Outputs[OLE DB Source Error Output].Columns[OBJNR]"
+                      refId="Package\PLPO\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[PLNNR]"
                       dataType="wstr"
-                      length="22"
-                      lineageId="Package\AUFK\DB PBI.Outputs[OLE DB Source Error Output].Columns[OBJNR]"
-                      name="OBJNR" />
+                      length="8"
+                      lineageId="Package\PLPO\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[PLNNR]"
+                      name="PLNNR" />
                     <outputColumn
-                      refId="Package\AUFK\DB PBI.Outputs[OLE DB Source Error Output].Columns[AUART]"
+                      refId="Package\PLPO\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[PLNKN]"
                       dataType="wstr"
-                      length="4"
-                      lineageId="Package\AUFK\DB PBI.Outputs[OLE DB Source Error Output].Columns[AUART]"
-                      name="AUART" />
+                      length="8"
+                      lineageId="Package\PLPO\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[PLNKN]"
+                      name="PLNKN" />
                     <outputColumn
-                      refId="Package\AUFK\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      refId="Package\PLPO\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[ZAEHL]"
+                      dataType="wstr"
+                      length="8"
+                      lineageId="Package\PLPO\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[ZAEHL]"
+                      name="ZAEHL" />
+                    <outputColumn
+                      refId="Package\PLPO\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[AEDAT]"
+                      dataType="wstr"
+                      length="8"
+                      lineageId="Package\PLPO\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[AEDAT]"
+                      name="AEDAT" />
+                    <outputColumn
+                      refId="Package\PLPO\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\AUFK\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      lineageId="Package\PLPO\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\AUFK\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      refId="Package\PLPO\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\AUFK\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\PLPO\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -279,11 +280,11 @@ ORDER BY A01.[MANDT]
               </outputs>
             </component>
             <component
-              refId="Package\AUFK\DB SAP"
+              refId="Package\PLPO\DB SAP ADRC"
               componentClassID="Microsoft.OLEDBSource"
               contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
               description="OLE DB Source"
-              name="DB SAP"
+              name="DB SAP ADRC"
               usesDispositions="true"
               version="7">
               <properties>
@@ -304,15 +305,17 @@ ORDER BY A01.[MANDT]
                   description="The SQL command to be executed."
                   name="SqlCommand"
                   UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT A01.[MANDT]
-      ,A01.[AUFNR]
-      ,A01.[AUTYP]
-      ,A01.[WERKS]
-      ,A01.[LOEKZ]
-      ,A01.[OBJNR]
-      ,A01.[AUART]
-FROM [ecp].[AUFK] A01 (NOLOCK)
+      ,A01.[PLNTY]
+      ,A01.[PLNNR]
+      ,A01.[PLNKN]
+      ,A01.[ZAEHL]
+      ,A01.[AEDAT]
+FROM [ecp].[PLPO] A01 (NOLOCK)
 ORDER BY A01.[MANDT]
-      ,A01.[AUFNR]</property>
+      ,A01.[PLNTY]
+      ,A01.[PLNNR]
+      ,A01.[PLNKN]
+      ,A01.[ZAEHL]</property>
                 <property
                   dataType="System.String"
                   description="The variable that contains the SQL command to be executed."
@@ -337,7 +340,7 @@ ORDER BY A01.[MANDT]
               </properties>
               <connections>
                 <connection
-                  refId="Package\AUFK\DB SAP.Connections[OleDbConnection]"
+                  refId="Package\PLPO\DB SAP ADRC.Connections[OleDbConnection]"
                   connectionManagerID="{544CCAD9-2CB1-4D87-98D7-A7C478586195}:external"
                   connectionManagerRefId="Project.ConnectionManagers[SQL_SAP]"
                   description="The OLE DB runtime connection used to access the database."
@@ -345,179 +348,161 @@ ORDER BY A01.[MANDT]
               </connections>
               <outputs>
                 <output
-                  refId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output]"
+                  refId="Package\PLPO\DB SAP ADRC.Outputs[OLE DB Source Output]"
                   isSorted="true"
                   name="OLE DB Source Output">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      refId="Package\PLPO\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[MANDT]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      externalMetadataColumnId="Package\PLPO\DB SAP ADRC.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
                       length="3"
-                      lineageId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      lineageId="Package\PLPO\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[MANDT]"
                       name="MANDT"
                       sortKeyPosition="1"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].Columns[AUFNR]"
+                      refId="Package\PLPO\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[PLNTY]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[AUFNR]"
-                      length="12"
-                      lineageId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].Columns[AUFNR]"
-                      name="AUFNR"
+                      externalMetadataColumnId="Package\PLPO\DB SAP ADRC.Outputs[OLE DB Source Output].ExternalColumns[PLNTY]"
+                      length="1"
+                      lineageId="Package\PLPO\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[PLNTY]"
+                      name="PLNTY"
                       sortKeyPosition="2"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].Columns[AUTYP]"
+                      refId="Package\PLPO\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[PLNNR]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[AUTYP]"
-                      length="2"
-                      lineageId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].Columns[AUTYP]"
-                      name="AUTYP"
+                      externalMetadataColumnId="Package\PLPO\DB SAP ADRC.Outputs[OLE DB Source Output].ExternalColumns[PLNNR]"
+                      length="8"
+                      lineageId="Package\PLPO\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[PLNNR]"
+                      name="PLNNR"
+                      sortKeyPosition="3"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].Columns[WERKS]"
+                      refId="Package\PLPO\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[PLNKN]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[WERKS]"
-                      length="4"
-                      lineageId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].Columns[WERKS]"
-                      name="WERKS"
+                      externalMetadataColumnId="Package\PLPO\DB SAP ADRC.Outputs[OLE DB Source Output].ExternalColumns[PLNKN]"
+                      length="8"
+                      lineageId="Package\PLPO\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[PLNKN]"
+                      name="PLNKN"
+                      sortKeyPosition="4"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].Columns[LOEKZ]"
+                      refId="Package\PLPO\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[ZAEHL]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[LOEKZ]"
-                      length="1"
-                      lineageId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].Columns[LOEKZ]"
-                      name="LOEKZ"
+                      externalMetadataColumnId="Package\PLPO\DB SAP ADRC.Outputs[OLE DB Source Output].ExternalColumns[ZAEHL]"
+                      length="8"
+                      lineageId="Package\PLPO\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[ZAEHL]"
+                      name="ZAEHL"
+                      sortKeyPosition="5"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].Columns[OBJNR]"
+                      refId="Package\PLPO\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[AEDAT]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[OBJNR]"
-                      length="22"
-                      lineageId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].Columns[OBJNR]"
-                      name="OBJNR"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].Columns[AUART]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[AUART]"
-                      length="4"
-                      lineageId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].Columns[AUART]"
-                      name="AUART"
+                      externalMetadataColumnId="Package\PLPO\DB SAP ADRC.Outputs[OLE DB Source Output].ExternalColumns[AEDAT]"
+                      length="8"
+                      lineageId="Package\PLPO\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[AEDAT]"
+                      name="AEDAT"
                       truncationRowDisposition="FailComponent" />
                   </outputColumns>
                   <externalMetadataColumns
                     isUsed="True">
                     <externalMetadataColumn
-                      refId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      refId="Package\PLPO\DB SAP ADRC.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
                       dataType="wstr"
                       length="3"
                       name="MANDT" />
                     <externalMetadataColumn
-                      refId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[AUFNR]"
-                      dataType="wstr"
-                      length="12"
-                      name="AUFNR" />
-                    <externalMetadataColumn
-                      refId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[AUTYP]"
-                      dataType="wstr"
-                      length="2"
-                      name="AUTYP" />
-                    <externalMetadataColumn
-                      refId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[WERKS]"
-                      dataType="wstr"
-                      length="4"
-                      name="WERKS" />
-                    <externalMetadataColumn
-                      refId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[LOEKZ]"
+                      refId="Package\PLPO\DB SAP ADRC.Outputs[OLE DB Source Output].ExternalColumns[PLNTY]"
                       dataType="wstr"
                       length="1"
-                      name="LOEKZ" />
+                      name="PLNTY" />
                     <externalMetadataColumn
-                      refId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[OBJNR]"
+                      refId="Package\PLPO\DB SAP ADRC.Outputs[OLE DB Source Output].ExternalColumns[PLNNR]"
                       dataType="wstr"
-                      length="22"
-                      name="OBJNR" />
+                      length="8"
+                      name="PLNNR" />
                     <externalMetadataColumn
-                      refId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[AUART]"
+                      refId="Package\PLPO\DB SAP ADRC.Outputs[OLE DB Source Output].ExternalColumns[PLNKN]"
                       dataType="wstr"
-                      length="4"
-                      name="AUART" />
+                      length="8"
+                      name="PLNKN" />
+                    <externalMetadataColumn
+                      refId="Package\PLPO\DB SAP ADRC.Outputs[OLE DB Source Output].ExternalColumns[ZAEHL]"
+                      dataType="wstr"
+                      length="8"
+                      name="ZAEHL" />
+                    <externalMetadataColumn
+                      refId="Package\PLPO\DB SAP ADRC.Outputs[OLE DB Source Output].ExternalColumns[AEDAT]"
+                      dataType="wstr"
+                      length="8"
+                      name="AEDAT" />
                   </externalMetadataColumns>
                 </output>
                 <output
-                  refId="Package\AUFK\DB SAP.Outputs[OLE DB Source Error Output]"
+                  refId="Package\PLPO\DB SAP ADRC.Outputs[OLE DB Source Error Output]"
                   isErrorOut="true"
                   name="OLE DB Source Error Output">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\AUFK\DB SAP.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      refId="Package\PLPO\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[MANDT]"
                       dataType="wstr"
                       length="3"
-                      lineageId="Package\AUFK\DB SAP.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      lineageId="Package\PLPO\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[MANDT]"
                       name="MANDT" />
                     <outputColumn
-                      refId="Package\AUFK\DB SAP.Outputs[OLE DB Source Error Output].Columns[AUFNR]"
-                      dataType="wstr"
-                      length="12"
-                      lineageId="Package\AUFK\DB SAP.Outputs[OLE DB Source Error Output].Columns[AUFNR]"
-                      name="AUFNR" />
-                    <outputColumn
-                      refId="Package\AUFK\DB SAP.Outputs[OLE DB Source Error Output].Columns[AUTYP]"
-                      dataType="wstr"
-                      length="2"
-                      lineageId="Package\AUFK\DB SAP.Outputs[OLE DB Source Error Output].Columns[AUTYP]"
-                      name="AUTYP" />
-                    <outputColumn
-                      refId="Package\AUFK\DB SAP.Outputs[OLE DB Source Error Output].Columns[WERKS]"
-                      dataType="wstr"
-                      length="4"
-                      lineageId="Package\AUFK\DB SAP.Outputs[OLE DB Source Error Output].Columns[WERKS]"
-                      name="WERKS" />
-                    <outputColumn
-                      refId="Package\AUFK\DB SAP.Outputs[OLE DB Source Error Output].Columns[LOEKZ]"
+                      refId="Package\PLPO\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[PLNTY]"
                       dataType="wstr"
                       length="1"
-                      lineageId="Package\AUFK\DB SAP.Outputs[OLE DB Source Error Output].Columns[LOEKZ]"
-                      name="LOEKZ" />
+                      lineageId="Package\PLPO\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[PLNTY]"
+                      name="PLNTY" />
                     <outputColumn
-                      refId="Package\AUFK\DB SAP.Outputs[OLE DB Source Error Output].Columns[OBJNR]"
+                      refId="Package\PLPO\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[PLNNR]"
                       dataType="wstr"
-                      length="22"
-                      lineageId="Package\AUFK\DB SAP.Outputs[OLE DB Source Error Output].Columns[OBJNR]"
-                      name="OBJNR" />
+                      length="8"
+                      lineageId="Package\PLPO\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[PLNNR]"
+                      name="PLNNR" />
                     <outputColumn
-                      refId="Package\AUFK\DB SAP.Outputs[OLE DB Source Error Output].Columns[AUART]"
+                      refId="Package\PLPO\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[PLNKN]"
                       dataType="wstr"
-                      length="4"
-                      lineageId="Package\AUFK\DB SAP.Outputs[OLE DB Source Error Output].Columns[AUART]"
-                      name="AUART" />
+                      length="8"
+                      lineageId="Package\PLPO\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[PLNKN]"
+                      name="PLNKN" />
                     <outputColumn
-                      refId="Package\AUFK\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      refId="Package\PLPO\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[ZAEHL]"
+                      dataType="wstr"
+                      length="8"
+                      lineageId="Package\PLPO\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[ZAEHL]"
+                      name="ZAEHL" />
+                    <outputColumn
+                      refId="Package\PLPO\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[AEDAT]"
+                      dataType="wstr"
+                      length="8"
+                      lineageId="Package\PLPO\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[AEDAT]"
+                      name="AEDAT" />
+                    <outputColumn
+                      refId="Package\PLPO\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\AUFK\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      lineageId="Package\PLPO\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\AUFK\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      refId="Package\PLPO\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\AUFK\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\PLPO\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -526,7 +511,7 @@ ORDER BY A01.[MANDT]
               </outputs>
             </component>
             <component
-              refId="Package\AUFK\Find Changed Records"
+              refId="Package\PLPO\Find Changed Records"
               componentClassID="Microsoft.ConditionalSplit"
               contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
               description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
@@ -534,84 +519,48 @@ ORDER BY A01.[MANDT]
               usesDispositions="true">
               <inputs>
                 <input
-                  refId="Package\AUFK\Find Changed Records.Inputs[Conditional Split Input]"
+                  refId="Package\PLPO\Find Changed Records.Inputs[Conditional Split Input]"
                   description="Input to the Conditional Split Transformation"
                   name="Conditional Split Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\AUFK\Find Changed Records.Inputs[Conditional Split Input].Columns[AUTYP]"
+                      refId="Package\PLPO\Find Changed Records.Inputs[Conditional Split Input].Columns[AEDAT]"
                       cachedDataType="wstr"
-                      cachedLength="2"
-                      cachedName="AUTYP"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[AUTYP]" />
+                      cachedLength="8"
+                      cachedName="AEDAT"
+                      lineageId="Package\PLPO\Merge Join.Outputs[Merge Join Output].Columns[AEDAT]" />
                     <inputColumn
-                      refId="Package\AUFK\Find Changed Records.Inputs[Conditional Split Input].Columns[WERKS]"
+                      refId="Package\PLPO\Find Changed Records.Inputs[Conditional Split Input].Columns[AEDAT (1)]"
                       cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="WERKS"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[WERKS]" />
-                    <inputColumn
-                      refId="Package\AUFK\Find Changed Records.Inputs[Conditional Split Input].Columns[LOEKZ]"
-                      cachedDataType="wstr"
-                      cachedLength="1"
-                      cachedName="LOEKZ"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[LOEKZ]" />
-                    <inputColumn
-                      refId="Package\AUFK\Find Changed Records.Inputs[Conditional Split Input].Columns[OBJNR]"
-                      cachedDataType="wstr"
-                      cachedLength="22"
-                      cachedName="OBJNR"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[OBJNR]" />
-                    <inputColumn
-                      refId="Package\AUFK\Find Changed Records.Inputs[Conditional Split Input].Columns[AUTYP (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="2"
-                      cachedName="AUTYP (1)"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[AUTYP (1)]" />
-                    <inputColumn
-                      refId="Package\AUFK\Find Changed Records.Inputs[Conditional Split Input].Columns[WERKS (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="WERKS (1)"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[WERKS (1)]" />
-                    <inputColumn
-                      refId="Package\AUFK\Find Changed Records.Inputs[Conditional Split Input].Columns[LOEKZ (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="1"
-                      cachedName="LOEKZ (1)"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[LOEKZ (1)]" />
-                    <inputColumn
-                      refId="Package\AUFK\Find Changed Records.Inputs[Conditional Split Input].Columns[OBJNR (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="22"
-                      cachedName="OBJNR (1)"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[OBJNR (1)]" />
+                      cachedLength="8"
+                      cachedName="AEDAT (1)"
+                      lineageId="Package\PLPO\Merge Join.Outputs[Merge Join Output].Columns[AEDAT (1)]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\AUFK\Find Changed Records.Outputs[update]"
+                  refId="Package\PLPO\Find Changed Records.Outputs[update]"
                   description="Output 1 of the Conditional Split Transformation"
                   errorOrTruncationOperation="Computation"
                   errorRowDisposition="FailComponent"
                   exclusionGroup="1"
                   name="update"
-                  synchronousInputId="Package\AUFK\Find Changed Records.Inputs[Conditional Split Input]"
+                  synchronousInputId="Package\PLPO\Find Changed Records.Inputs[Conditional Split Input]"
                   truncationRowDisposition="FailComponent">
                   <properties>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
-                      name="Expression">#{Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[AUTYP]} != #{Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[AUTYP (1)]} || #{Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[WERKS]} != #{Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[WERKS (1)]} || #{Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[LOEKZ]} != #{Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[LOEKZ (1)]} || #{Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[OBJNR]} != #{Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[OBJNR (1)]}</property>
+                      name="Expression">#{Package\PLPO\Merge Join.Outputs[Merge Join Output].Columns[AEDAT]} != #{Package\PLPO\Merge Join.Outputs[Merge Join Output].Columns[AEDAT (1)]}</property>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the friendly version of the expression. This expression version uses column names."
                       expressionType="Notify"
-                      name="FriendlyExpression">AUTYP != [AUTYP (1)] || WERKS != [WERKS (1)] || LOEKZ != [LOEKZ (1)] || OBJNR != [OBJNR (1)]</property>
+                      name="FriendlyExpression">AEDAT != [AEDAT (1)]</property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
@@ -620,11 +569,11 @@ ORDER BY A01.[MANDT]
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\AUFK\Find Changed Records.Outputs[Conditional Split Default Output]"
+                  refId="Package\PLPO\Find Changed Records.Outputs[Conditional Split Default Output]"
                   description="Default Output of the Conditional Split Transformation"
                   exclusionGroup="1"
                   name="Conditional Split Default Output"
-                  synchronousInputId="Package\AUFK\Find Changed Records.Inputs[Conditional Split Input]">
+                  synchronousInputId="Package\PLPO\Find Changed Records.Inputs[Conditional Split Input]">
                   <properties>
                     <property
                       dataType="System.Boolean"
@@ -633,23 +582,23 @@ ORDER BY A01.[MANDT]
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\AUFK\Find Changed Records.Outputs[Conditional Split Error Output]"
+                  refId="Package\PLPO\Find Changed Records.Outputs[Conditional Split Error Output]"
                   description="Error Output of the Conditional Split Transformation"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="Conditional Split Error Output"
-                  synchronousInputId="Package\AUFK\Find Changed Records.Inputs[Conditional Split Input]">
+                  synchronousInputId="Package\PLPO\Find Changed Records.Inputs[Conditional Split Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\AUFK\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      refId="Package\PLPO\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\AUFK\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      lineageId="Package\PLPO\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\AUFK\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      refId="Package\PLPO\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\AUFK\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\PLPO\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -658,51 +607,51 @@ ORDER BY A01.[MANDT]
               </outputs>
             </component>
             <component
-              refId="Package\AUFK\Identity records"
+              refId="Package\PLPO\Identify records"
               componentClassID="Microsoft.ConditionalSplit"
               contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
               description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
-              name="Identity records"
+              name="Identify records"
               usesDispositions="true">
               <inputs>
                 <input
-                  refId="Package\AUFK\Identity records.Inputs[Conditional Split Input]"
+                  refId="Package\PLPO\Identify records.Inputs[Conditional Split Input]"
                   description="Input to the Conditional Split Transformation"
                   name="Conditional Split Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\AUFK\Identity records.Inputs[Conditional Split Input].Columns[MANDT]"
+                      refId="Package\PLPO\Identify records.Inputs[Conditional Split Input].Columns[MANDT]"
                       cachedDataType="wstr"
                       cachedLength="3"
                       cachedName="MANDT"
                       cachedSortKeyPosition="1"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
+                      lineageId="Package\PLPO\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
                     <inputColumn
-                      refId="Package\AUFK\Identity records.Inputs[Conditional Split Input].Columns[MANDT (1)]"
+                      refId="Package\PLPO\Identify records.Inputs[Conditional Split Input].Columns[MANDT (1)]"
                       cachedDataType="wstr"
                       cachedLength="3"
                       cachedName="MANDT (1)"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]" />
+                      lineageId="Package\PLPO\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\AUFK\Identity records.Outputs[update]"
+                  refId="Package\PLPO\Identify records.Outputs[update]"
                   description="Output 1 of the Conditional Split Transformation"
                   errorOrTruncationOperation="Computation"
                   errorRowDisposition="FailComponent"
                   exclusionGroup="1"
                   name="update"
-                  synchronousInputId="Package\AUFK\Identity records.Inputs[Conditional Split Input]"
+                  synchronousInputId="Package\PLPO\Identify records.Inputs[Conditional Split Input]"
                   truncationRowDisposition="FailComponent">
                   <properties>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
-                      name="Expression">![ISNULL](#{Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; ![ISNULL](#{Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
+                      name="Expression">![ISNULL](#{Package\PLPO\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; ![ISNULL](#{Package\PLPO\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
                     <property
                       containsID="true"
                       dataType="System.String"
@@ -717,20 +666,20 @@ ORDER BY A01.[MANDT]
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\AUFK\Identity records.Outputs[insert]"
+                  refId="Package\PLPO\Identify records.Outputs[insert]"
                   description="Output 2 of the Conditional Split Transformation"
                   errorOrTruncationOperation="Computation"
                   errorRowDisposition="FailComponent"
                   exclusionGroup="1"
                   name="insert"
-                  synchronousInputId="Package\AUFK\Identity records.Inputs[Conditional Split Input]"
+                  synchronousInputId="Package\PLPO\Identify records.Inputs[Conditional Split Input]"
                   truncationRowDisposition="FailComponent">
                   <properties>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
-                      name="Expression">![ISNULL](#{Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; [ISNULL](#{Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
+                      name="Expression">![ISNULL](#{Package\PLPO\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; [ISNULL](#{Package\PLPO\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
                     <property
                       containsID="true"
                       dataType="System.String"
@@ -745,20 +694,20 @@ ORDER BY A01.[MANDT]
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\AUFK\Identity records.Outputs[delete]"
+                  refId="Package\PLPO\Identify records.Outputs[delete]"
                   description="Output 3 of the Conditional Split Transformation"
                   errorOrTruncationOperation="Computation"
                   errorRowDisposition="FailComponent"
                   exclusionGroup="1"
                   name="delete"
-                  synchronousInputId="Package\AUFK\Identity records.Inputs[Conditional Split Input]"
+                  synchronousInputId="Package\PLPO\Identify records.Inputs[Conditional Split Input]"
                   truncationRowDisposition="FailComponent">
                   <properties>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
-                      name="Expression">[ISNULL](#{Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; ![ISNULL](#{Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
+                      name="Expression">[ISNULL](#{Package\PLPO\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; ![ISNULL](#{Package\PLPO\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
                     <property
                       containsID="true"
                       dataType="System.String"
@@ -773,11 +722,11 @@ ORDER BY A01.[MANDT]
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\AUFK\Identity records.Outputs[Conditional Split Default Output]"
+                  refId="Package\PLPO\Identify records.Outputs[Conditional Split Default Output]"
                   description="Default Output of the Conditional Split Transformation"
                   exclusionGroup="1"
                   name="Conditional Split Default Output"
-                  synchronousInputId="Package\AUFK\Identity records.Inputs[Conditional Split Input]">
+                  synchronousInputId="Package\PLPO\Identify records.Inputs[Conditional Split Input]">
                   <properties>
                     <property
                       dataType="System.Boolean"
@@ -786,23 +735,23 @@ ORDER BY A01.[MANDT]
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\AUFK\Identity records.Outputs[Conditional Split Error Output]"
+                  refId="Package\PLPO\Identify records.Outputs[Conditional Split Error Output]"
                   description="Error Output of the Conditional Split Transformation"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="Conditional Split Error Output"
-                  synchronousInputId="Package\AUFK\Identity records.Inputs[Conditional Split Input]">
+                  synchronousInputId="Package\PLPO\Identify records.Inputs[Conditional Split Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\AUFK\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      refId="Package\PLPO\Identify records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\AUFK\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      lineageId="Package\PLPO\Identify records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\AUFK\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      refId="Package\PLPO\Identify records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\AUFK\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\PLPO\Identify records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -811,7 +760,7 @@ ORDER BY A01.[MANDT]
               </outputs>
             </component>
             <component
-              refId="Package\AUFK\insert new records"
+              refId="Package\PLPO\insert new records"
               componentClassID="Microsoft.OLEDBDestination"
               contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
               description="OLE DB Destination"
@@ -826,7 +775,7 @@ ORDER BY A01.[MANDT]
                 <property
                   dataType="System.String"
                   description="Specifies the name of the database object used to open a rowset."
-                  name="OpenRowset">[dbo].[AUFK_STAGE_INSERT]</property>
+                  name="OpenRowset">[dbo].[PLPO_STAGE_INSERT]</property>
                 <property
                   dataType="System.String"
                   description="Specifies the variable that contains the name of the database object used to open a rowset."
@@ -868,7 +817,7 @@ ORDER BY A01.[MANDT]
               </properties>
               <connections>
                 <connection
-                  refId="Package\AUFK\insert new records.Connections[OleDbConnection]"
+                  refId="Package\PLPO\insert new records.Connections[OleDbConnection]"
                   connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
                   connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
                   description="The OLE DB runtime connection used to access the database."
@@ -876,122 +825,113 @@ ORDER BY A01.[MANDT]
               </connections>
               <inputs>
                 <input
-                  refId="Package\AUFK\insert new records.Inputs[OLE DB Destination Input]"
+                  refId="Package\PLPO\insert new records.Inputs[OLE DB Destination Input]"
                   errorOrTruncationOperation="Insert"
                   errorRowDisposition="FailComponent"
                   hasSideEffects="true"
                   name="OLE DB Destination Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\AUFK\insert new records.Inputs[OLE DB Destination Input].Columns[MANDT]"
+                      refId="Package\PLPO\insert new records.Inputs[OLE DB Destination Input].Columns[MANDT]"
                       cachedDataType="wstr"
                       cachedLength="3"
                       cachedName="MANDT"
                       cachedSortKeyPosition="1"
-                      externalMetadataColumnId="Package\AUFK\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
+                      externalMetadataColumnId="Package\PLPO\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      lineageId="Package\PLPO\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
                     <inputColumn
-                      refId="Package\AUFK\insert new records.Inputs[OLE DB Destination Input].Columns[AUFNR]"
-                      cachedDataType="wstr"
-                      cachedLength="12"
-                      cachedName="AUFNR"
-                      cachedSortKeyPosition="2"
-                      externalMetadataColumnId="Package\AUFK\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[AUFNR]"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[AUFNR]" />
-                    <inputColumn
-                      refId="Package\AUFK\insert new records.Inputs[OLE DB Destination Input].Columns[AUTYP]"
-                      cachedDataType="wstr"
-                      cachedLength="2"
-                      cachedName="AUTYP"
-                      externalMetadataColumnId="Package\AUFK\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[AUTYP]"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[AUTYP]" />
-                    <inputColumn
-                      refId="Package\AUFK\insert new records.Inputs[OLE DB Destination Input].Columns[WERKS]"
-                      cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="WERKS"
-                      externalMetadataColumnId="Package\AUFK\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[WERKS]"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[WERKS]" />
-                    <inputColumn
-                      refId="Package\AUFK\insert new records.Inputs[OLE DB Destination Input].Columns[LOEKZ]"
+                      refId="Package\PLPO\insert new records.Inputs[OLE DB Destination Input].Columns[PLNTY]"
                       cachedDataType="wstr"
                       cachedLength="1"
-                      cachedName="LOEKZ"
-                      externalMetadataColumnId="Package\AUFK\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[LOEKZ]"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[LOEKZ]" />
+                      cachedName="PLNTY"
+                      cachedSortKeyPosition="2"
+                      externalMetadataColumnId="Package\PLPO\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[PLNTY]"
+                      lineageId="Package\PLPO\Merge Join.Outputs[Merge Join Output].Columns[PLNTY]" />
                     <inputColumn
-                      refId="Package\AUFK\insert new records.Inputs[OLE DB Destination Input].Columns[OBJNR]"
+                      refId="Package\PLPO\insert new records.Inputs[OLE DB Destination Input].Columns[PLNNR]"
                       cachedDataType="wstr"
-                      cachedLength="22"
-                      cachedName="OBJNR"
-                      externalMetadataColumnId="Package\AUFK\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[OBJNR]"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[OBJNR]" />
+                      cachedLength="8"
+                      cachedName="PLNNR"
+                      cachedSortKeyPosition="3"
+                      externalMetadataColumnId="Package\PLPO\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[PLNNR]"
+                      lineageId="Package\PLPO\Merge Join.Outputs[Merge Join Output].Columns[PLNNR]" />
                     <inputColumn
-                      refId="Package\AUFK\insert new records.Inputs[OLE DB Destination Input].Columns[AUART]"
+                      refId="Package\PLPO\insert new records.Inputs[OLE DB Destination Input].Columns[PLNKN]"
                       cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="AUART"
-                      externalMetadataColumnId="Package\AUFK\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[AUART]"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[AUART]" />
+                      cachedLength="8"
+                      cachedName="PLNKN"
+                      cachedSortKeyPosition="4"
+                      externalMetadataColumnId="Package\PLPO\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[PLNKN]"
+                      lineageId="Package\PLPO\Merge Join.Outputs[Merge Join Output].Columns[PLNKN]" />
+                    <inputColumn
+                      refId="Package\PLPO\insert new records.Inputs[OLE DB Destination Input].Columns[ZAEHL]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="ZAEHL"
+                      cachedSortKeyPosition="5"
+                      externalMetadataColumnId="Package\PLPO\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[ZAEHL]"
+                      lineageId="Package\PLPO\Merge Join.Outputs[Merge Join Output].Columns[ZAEHL]" />
+                    <inputColumn
+                      refId="Package\PLPO\insert new records.Inputs[OLE DB Destination Input].Columns[AEDAT]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="AEDAT"
+                      externalMetadataColumnId="Package\PLPO\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[AEDAT]"
+                      lineageId="Package\PLPO\Merge Join.Outputs[Merge Join Output].Columns[AEDAT]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
                     <externalMetadataColumn
-                      refId="Package\AUFK\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      refId="Package\PLPO\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
                       dataType="wstr"
                       length="3"
                       name="MANDT" />
                     <externalMetadataColumn
-                      refId="Package\AUFK\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[AUFNR]"
-                      dataType="wstr"
-                      length="12"
-                      name="AUFNR" />
-                    <externalMetadataColumn
-                      refId="Package\AUFK\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[AUTYP]"
-                      dataType="wstr"
-                      length="2"
-                      name="AUTYP" />
-                    <externalMetadataColumn
-                      refId="Package\AUFK\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[WERKS]"
-                      dataType="wstr"
-                      length="4"
-                      name="WERKS" />
-                    <externalMetadataColumn
-                      refId="Package\AUFK\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[LOEKZ]"
+                      refId="Package\PLPO\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[PLNTY]"
                       dataType="wstr"
                       length="1"
-                      name="LOEKZ" />
+                      name="PLNTY" />
                     <externalMetadataColumn
-                      refId="Package\AUFK\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[OBJNR]"
+                      refId="Package\PLPO\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[PLNNR]"
                       dataType="wstr"
-                      length="22"
-                      name="OBJNR" />
+                      length="8"
+                      name="PLNNR" />
                     <externalMetadataColumn
-                      refId="Package\AUFK\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[AUART]"
+                      refId="Package\PLPO\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[PLNKN]"
                       dataType="wstr"
-                      length="4"
-                      name="AUART" />
+                      length="8"
+                      name="PLNKN" />
+                    <externalMetadataColumn
+                      refId="Package\PLPO\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[ZAEHL]"
+                      dataType="wstr"
+                      length="8"
+                      name="ZAEHL" />
+                    <externalMetadataColumn
+                      refId="Package\PLPO\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[AEDAT]"
+                      dataType="wstr"
+                      length="8"
+                      name="AEDAT" />
                   </externalMetadataColumns>
                 </input>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\AUFK\insert new records.Outputs[OLE DB Destination Error Output]"
+                  refId="Package\PLPO\insert new records.Outputs[OLE DB Destination Error Output]"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="OLE DB Destination Error Output"
-                  synchronousInputId="Package\AUFK\insert new records.Inputs[OLE DB Destination Input]">
+                  synchronousInputId="Package\PLPO\insert new records.Inputs[OLE DB Destination Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\AUFK\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      refId="Package\PLPO\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\AUFK\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      lineageId="Package\PLPO\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\AUFK\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      refId="Package\PLPO\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\AUFK\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\PLPO\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -1000,7 +940,7 @@ ORDER BY A01.[MANDT]
               </outputs>
             </component>
             <component
-              refId="Package\AUFK\Merge Join"
+              refId="Package\PLPO\Merge Join"
               componentClassID="Microsoft.MergeJoin"
               contactInfo="Merge Join;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
               description="Combine two sorted data flows into one using the FULL, LEFT, or INNER join. We recommend this transformation when data flows can be sorted at their sources."
@@ -1015,7 +955,7 @@ ORDER BY A01.[MANDT]
                 <property
                   dataType="System.Int32"
                   description="Specifies the number of columns in the ordering key."
-                  name="NumKeyColumns">2</property>
+                  name="NumKeyColumns">5</property>
                 <property
                   dataType="System.Boolean"
                   description="Indicates whether the null values are treated as equal values."
@@ -1027,121 +967,115 @@ ORDER BY A01.[MANDT]
               </properties>
               <inputs>
                 <input
-                  refId="Package\AUFK\Merge Join.Inputs[Merge Join Left Input]"
+                  refId="Package\PLPO\Merge Join.Inputs[Merge Join Left Input]"
                   hasSideEffects="true"
                   name="Merge Join Left Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\AUFK\Merge Join.Inputs[Merge Join Left Input].Columns[MANDT]"
+                      refId="Package\PLPO\Merge Join.Inputs[Merge Join Left Input].Columns[MANDT]"
                       cachedDataType="wstr"
                       cachedLength="3"
                       cachedName="MANDT"
                       cachedSortKeyPosition="1"
-                      lineageId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].Columns[MANDT]" />
+                      lineageId="Package\PLPO\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[MANDT]" />
                     <inputColumn
-                      refId="Package\AUFK\Merge Join.Inputs[Merge Join Left Input].Columns[AUFNR]"
-                      cachedDataType="wstr"
-                      cachedLength="12"
-                      cachedName="AUFNR"
-                      cachedSortKeyPosition="2"
-                      lineageId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].Columns[AUFNR]" />
-                    <inputColumn
-                      refId="Package\AUFK\Merge Join.Inputs[Merge Join Left Input].Columns[AUTYP]"
-                      cachedDataType="wstr"
-                      cachedLength="2"
-                      cachedName="AUTYP"
-                      lineageId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].Columns[AUTYP]" />
-                    <inputColumn
-                      refId="Package\AUFK\Merge Join.Inputs[Merge Join Left Input].Columns[WERKS]"
-                      cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="WERKS"
-                      lineageId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].Columns[WERKS]" />
-                    <inputColumn
-                      refId="Package\AUFK\Merge Join.Inputs[Merge Join Left Input].Columns[LOEKZ]"
+                      refId="Package\PLPO\Merge Join.Inputs[Merge Join Left Input].Columns[PLNTY]"
                       cachedDataType="wstr"
                       cachedLength="1"
-                      cachedName="LOEKZ"
-                      lineageId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].Columns[LOEKZ]" />
+                      cachedName="PLNTY"
+                      cachedSortKeyPosition="2"
+                      lineageId="Package\PLPO\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[PLNTY]" />
                     <inputColumn
-                      refId="Package\AUFK\Merge Join.Inputs[Merge Join Left Input].Columns[OBJNR]"
+                      refId="Package\PLPO\Merge Join.Inputs[Merge Join Left Input].Columns[PLNNR]"
                       cachedDataType="wstr"
-                      cachedLength="22"
-                      cachedName="OBJNR"
-                      lineageId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].Columns[OBJNR]" />
+                      cachedLength="8"
+                      cachedName="PLNNR"
+                      cachedSortKeyPosition="3"
+                      lineageId="Package\PLPO\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[PLNNR]" />
                     <inputColumn
-                      refId="Package\AUFK\Merge Join.Inputs[Merge Join Left Input].Columns[AUART]"
+                      refId="Package\PLPO\Merge Join.Inputs[Merge Join Left Input].Columns[PLNKN]"
                       cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="AUART"
-                      lineageId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].Columns[AUART]" />
+                      cachedLength="8"
+                      cachedName="PLNKN"
+                      cachedSortKeyPosition="4"
+                      lineageId="Package\PLPO\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[PLNKN]" />
+                    <inputColumn
+                      refId="Package\PLPO\Merge Join.Inputs[Merge Join Left Input].Columns[ZAEHL]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="ZAEHL"
+                      cachedSortKeyPosition="5"
+                      lineageId="Package\PLPO\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[ZAEHL]" />
+                    <inputColumn
+                      refId="Package\PLPO\Merge Join.Inputs[Merge Join Left Input].Columns[AEDAT]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="AEDAT"
+                      lineageId="Package\PLPO\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[AEDAT]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
                 <input
-                  refId="Package\AUFK\Merge Join.Inputs[Merge Join Right Input]"
+                  refId="Package\PLPO\Merge Join.Inputs[Merge Join Right Input]"
                   hasSideEffects="true"
                   name="Merge Join Right Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\AUFK\Merge Join.Inputs[Merge Join Right Input].Columns[MANDT]"
+                      refId="Package\PLPO\Merge Join.Inputs[Merge Join Right Input].Columns[MANDT]"
                       cachedDataType="wstr"
                       cachedLength="3"
                       cachedName="MANDT"
                       cachedSortKeyPosition="1"
-                      lineageId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].Columns[MANDT]" />
+                      lineageId="Package\PLPO\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[MANDT]" />
                     <inputColumn
-                      refId="Package\AUFK\Merge Join.Inputs[Merge Join Right Input].Columns[AUFNR]"
-                      cachedDataType="wstr"
-                      cachedLength="12"
-                      cachedName="AUFNR"
-                      cachedSortKeyPosition="2"
-                      lineageId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].Columns[AUFNR]" />
-                    <inputColumn
-                      refId="Package\AUFK\Merge Join.Inputs[Merge Join Right Input].Columns[AUTYP]"
-                      cachedDataType="wstr"
-                      cachedLength="2"
-                      cachedName="AUTYP"
-                      lineageId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].Columns[AUTYP]" />
-                    <inputColumn
-                      refId="Package\AUFK\Merge Join.Inputs[Merge Join Right Input].Columns[WERKS]"
-                      cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="WERKS"
-                      lineageId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].Columns[WERKS]" />
-                    <inputColumn
-                      refId="Package\AUFK\Merge Join.Inputs[Merge Join Right Input].Columns[LOEKZ]"
+                      refId="Package\PLPO\Merge Join.Inputs[Merge Join Right Input].Columns[PLNTY]"
                       cachedDataType="wstr"
                       cachedLength="1"
-                      cachedName="LOEKZ"
-                      lineageId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].Columns[LOEKZ]" />
+                      cachedName="PLNTY"
+                      cachedSortKeyPosition="2"
+                      lineageId="Package\PLPO\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[PLNTY]" />
                     <inputColumn
-                      refId="Package\AUFK\Merge Join.Inputs[Merge Join Right Input].Columns[OBJNR]"
+                      refId="Package\PLPO\Merge Join.Inputs[Merge Join Right Input].Columns[PLNNR]"
                       cachedDataType="wstr"
-                      cachedLength="22"
-                      cachedName="OBJNR"
-                      lineageId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].Columns[OBJNR]" />
+                      cachedLength="8"
+                      cachedName="PLNNR"
+                      cachedSortKeyPosition="3"
+                      lineageId="Package\PLPO\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[PLNNR]" />
                     <inputColumn
-                      refId="Package\AUFK\Merge Join.Inputs[Merge Join Right Input].Columns[AUART]"
+                      refId="Package\PLPO\Merge Join.Inputs[Merge Join Right Input].Columns[PLNKN]"
                       cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="AUART"
-                      lineageId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].Columns[AUART]" />
+                      cachedLength="8"
+                      cachedName="PLNKN"
+                      cachedSortKeyPosition="4"
+                      lineageId="Package\PLPO\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[PLNKN]" />
+                    <inputColumn
+                      refId="Package\PLPO\Merge Join.Inputs[Merge Join Right Input].Columns[ZAEHL]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="ZAEHL"
+                      cachedSortKeyPosition="5"
+                      lineageId="Package\PLPO\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[ZAEHL]" />
+                    <inputColumn
+                      refId="Package\PLPO\Merge Join.Inputs[Merge Join Right Input].Columns[AEDAT]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="AEDAT"
+                      lineageId="Package\PLPO\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[AEDAT]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\AUFK\Merge Join.Outputs[Merge Join Output]"
+                  refId="Package\PLPO\Merge Join.Outputs[Merge Join Output]"
                   isSorted="true"
                   name="Merge Join Output">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[MANDT]"
+                      refId="Package\PLPO\Merge Join.Outputs[Merge Join Output].Columns[MANDT]"
                       dataType="wstr"
                       length="3"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[MANDT]"
+                      lineageId="Package\PLPO\Merge Join.Outputs[Merge Join Output].Columns[MANDT]"
                       name="MANDT"
                       sortKeyPosition="1">
                       <properties>
@@ -1149,190 +1083,165 @@ ORDER BY A01.[MANDT]
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\AUFK\Merge Join.Inputs[Merge Join Left Input].Columns[MANDT]}</property>
+                          name="InputColumnID">#{Package\PLPO\Merge Join.Inputs[Merge Join Left Input].Columns[MANDT]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[AUFNR]"
+                      refId="Package\PLPO\Merge Join.Outputs[Merge Join Output].Columns[PLNTY]"
                       dataType="wstr"
-                      length="12"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[AUFNR]"
-                      name="AUFNR"
+                      length="1"
+                      lineageId="Package\PLPO\Merge Join.Outputs[Merge Join Output].Columns[PLNTY]"
+                      name="PLNTY"
                       sortKeyPosition="2">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\AUFK\Merge Join.Inputs[Merge Join Left Input].Columns[AUFNR]}</property>
+                          name="InputColumnID">#{Package\PLPO\Merge Join.Inputs[Merge Join Left Input].Columns[PLNTY]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[AUTYP]"
+                      refId="Package\PLPO\Merge Join.Outputs[Merge Join Output].Columns[PLNNR]"
                       dataType="wstr"
-                      length="2"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[AUTYP]"
-                      name="AUTYP">
+                      length="8"
+                      lineageId="Package\PLPO\Merge Join.Outputs[Merge Join Output].Columns[PLNNR]"
+                      name="PLNNR"
+                      sortKeyPosition="3">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\AUFK\Merge Join.Inputs[Merge Join Left Input].Columns[AUTYP]}</property>
+                          name="InputColumnID">#{Package\PLPO\Merge Join.Inputs[Merge Join Left Input].Columns[PLNNR]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[WERKS]"
+                      refId="Package\PLPO\Merge Join.Outputs[Merge Join Output].Columns[PLNKN]"
                       dataType="wstr"
-                      length="4"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[WERKS]"
-                      name="WERKS">
+                      length="8"
+                      lineageId="Package\PLPO\Merge Join.Outputs[Merge Join Output].Columns[PLNKN]"
+                      name="PLNKN"
+                      sortKeyPosition="4">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\AUFK\Merge Join.Inputs[Merge Join Left Input].Columns[WERKS]}</property>
+                          name="InputColumnID">#{Package\PLPO\Merge Join.Inputs[Merge Join Left Input].Columns[PLNKN]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[LOEKZ]"
+                      refId="Package\PLPO\Merge Join.Outputs[Merge Join Output].Columns[ZAEHL]"
                       dataType="wstr"
-                      length="1"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[LOEKZ]"
-                      name="LOEKZ">
+                      length="8"
+                      lineageId="Package\PLPO\Merge Join.Outputs[Merge Join Output].Columns[ZAEHL]"
+                      name="ZAEHL"
+                      sortKeyPosition="5">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\AUFK\Merge Join.Inputs[Merge Join Left Input].Columns[LOEKZ]}</property>
+                          name="InputColumnID">#{Package\PLPO\Merge Join.Inputs[Merge Join Left Input].Columns[ZAEHL]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[OBJNR]"
+                      refId="Package\PLPO\Merge Join.Outputs[Merge Join Output].Columns[AEDAT]"
                       dataType="wstr"
-                      length="22"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[OBJNR]"
-                      name="OBJNR">
+                      length="8"
+                      lineageId="Package\PLPO\Merge Join.Outputs[Merge Join Output].Columns[AEDAT]"
+                      name="AEDAT">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\AUFK\Merge Join.Inputs[Merge Join Left Input].Columns[OBJNR]}</property>
+                          name="InputColumnID">#{Package\PLPO\Merge Join.Inputs[Merge Join Left Input].Columns[AEDAT]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]"
+                      refId="Package\PLPO\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]"
                       dataType="wstr"
                       length="3"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]"
+                      lineageId="Package\PLPO\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]"
                       name="MANDT (1)">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\AUFK\Merge Join.Inputs[Merge Join Right Input].Columns[MANDT]}</property>
+                          name="InputColumnID">#{Package\PLPO\Merge Join.Inputs[Merge Join Right Input].Columns[MANDT]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[AUFNR (1)]"
-                      dataType="wstr"
-                      length="12"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[AUFNR (1)]"
-                      name="AUFNR (1)">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\AUFK\Merge Join.Inputs[Merge Join Right Input].Columns[AUFNR]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[AUTYP (1)]"
-                      dataType="wstr"
-                      length="2"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[AUTYP (1)]"
-                      name="AUTYP (1)">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\AUFK\Merge Join.Inputs[Merge Join Right Input].Columns[AUTYP]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[WERKS (1)]"
-                      dataType="wstr"
-                      length="4"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[WERKS (1)]"
-                      name="WERKS (1)">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\AUFK\Merge Join.Inputs[Merge Join Right Input].Columns[WERKS]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[LOEKZ (1)]"
+                      refId="Package\PLPO\Merge Join.Outputs[Merge Join Output].Columns[PLNTY (1)]"
                       dataType="wstr"
                       length="1"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[LOEKZ (1)]"
-                      name="LOEKZ (1)">
+                      lineageId="Package\PLPO\Merge Join.Outputs[Merge Join Output].Columns[PLNTY (1)]"
+                      name="PLNTY (1)">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\AUFK\Merge Join.Inputs[Merge Join Right Input].Columns[LOEKZ]}</property>
+                          name="InputColumnID">#{Package\PLPO\Merge Join.Inputs[Merge Join Right Input].Columns[PLNTY]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[OBJNR (1)]"
+                      refId="Package\PLPO\Merge Join.Outputs[Merge Join Output].Columns[PLNNR (1)]"
                       dataType="wstr"
-                      length="22"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[OBJNR (1)]"
-                      name="OBJNR (1)">
+                      length="8"
+                      lineageId="Package\PLPO\Merge Join.Outputs[Merge Join Output].Columns[PLNNR (1)]"
+                      name="PLNNR (1)">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\AUFK\Merge Join.Inputs[Merge Join Right Input].Columns[OBJNR]}</property>
+                          name="InputColumnID">#{Package\PLPO\Merge Join.Inputs[Merge Join Right Input].Columns[PLNNR]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[AUART]"
+                      refId="Package\PLPO\Merge Join.Outputs[Merge Join Output].Columns[PLNKN (1)]"
                       dataType="wstr"
-                      length="4"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[AUART]"
-                      name="AUART">
+                      length="8"
+                      lineageId="Package\PLPO\Merge Join.Outputs[Merge Join Output].Columns[PLNKN (1)]"
+                      name="PLNKN (1)">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\AUFK\Merge Join.Inputs[Merge Join Left Input].Columns[AUART]}</property>
+                          name="InputColumnID">#{Package\PLPO\Merge Join.Inputs[Merge Join Right Input].Columns[PLNKN]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[AUART (1)]"
+                      refId="Package\PLPO\Merge Join.Outputs[Merge Join Output].Columns[ZAEHL (1)]"
                       dataType="wstr"
-                      length="4"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[AUART (1)]"
-                      name="AUART (1)">
+                      length="8"
+                      lineageId="Package\PLPO\Merge Join.Outputs[Merge Join Output].Columns[ZAEHL (1)]"
+                      name="ZAEHL (1)">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\AUFK\Merge Join.Inputs[Merge Join Right Input].Columns[AUART]}</property>
+                          name="InputColumnID">#{Package\PLPO\Merge Join.Inputs[Merge Join Right Input].Columns[ZAEHL]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\PLPO\Merge Join.Outputs[Merge Join Output].Columns[AEDAT (1)]"
+                      dataType="wstr"
+                      length="8"
+                      lineageId="Package\PLPO\Merge Join.Outputs[Merge Join Output].Columns[AEDAT (1)]"
+                      name="AEDAT (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\PLPO\Merge Join.Inputs[Merge Join Right Input].Columns[AEDAT]}</property>
                       </properties>
                     </outputColumn>
                   </outputColumns>
@@ -1341,7 +1250,7 @@ ORDER BY A01.[MANDT]
               </outputs>
             </component>
             <component
-              refId="Package\AUFK\stage changed records"
+              refId="Package\PLPO\stage changed records"
               componentClassID="Microsoft.OLEDBDestination"
               contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
               description="OLE DB Destination"
@@ -1356,7 +1265,7 @@ ORDER BY A01.[MANDT]
                 <property
                   dataType="System.String"
                   description="Specifies the name of the database object used to open a rowset."
-                  name="OpenRowset">[dbo].[AUFK_STAGE_UPDATE]</property>
+                  name="OpenRowset">[dbo].[PLPO_STAGE_INSERT]</property>
                 <property
                   dataType="System.String"
                   description="Specifies the variable that contains the name of the database object used to open a rowset."
@@ -1398,7 +1307,7 @@ ORDER BY A01.[MANDT]
               </properties>
               <connections>
                 <connection
-                  refId="Package\AUFK\stage changed records.Connections[OleDbConnection]"
+                  refId="Package\PLPO\stage changed records.Connections[OleDbConnection]"
                   connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
                   connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
                   description="The OLE DB runtime connection used to access the database."
@@ -1406,122 +1315,113 @@ ORDER BY A01.[MANDT]
               </connections>
               <inputs>
                 <input
-                  refId="Package\AUFK\stage changed records.Inputs[OLE DB Destination Input]"
+                  refId="Package\PLPO\stage changed records.Inputs[OLE DB Destination Input]"
                   errorOrTruncationOperation="Insert"
                   errorRowDisposition="FailComponent"
                   hasSideEffects="true"
                   name="OLE DB Destination Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\AUFK\stage changed records.Inputs[OLE DB Destination Input].Columns[MANDT]"
+                      refId="Package\PLPO\stage changed records.Inputs[OLE DB Destination Input].Columns[MANDT]"
                       cachedDataType="wstr"
                       cachedLength="3"
                       cachedName="MANDT"
                       cachedSortKeyPosition="1"
-                      externalMetadataColumnId="Package\AUFK\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
+                      externalMetadataColumnId="Package\PLPO\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      lineageId="Package\PLPO\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
                     <inputColumn
-                      refId="Package\AUFK\stage changed records.Inputs[OLE DB Destination Input].Columns[AUFNR]"
-                      cachedDataType="wstr"
-                      cachedLength="12"
-                      cachedName="AUFNR"
-                      cachedSortKeyPosition="2"
-                      externalMetadataColumnId="Package\AUFK\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[AUFNR]"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[AUFNR]" />
-                    <inputColumn
-                      refId="Package\AUFK\stage changed records.Inputs[OLE DB Destination Input].Columns[AUTYP]"
-                      cachedDataType="wstr"
-                      cachedLength="2"
-                      cachedName="AUTYP"
-                      externalMetadataColumnId="Package\AUFK\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[AUTYP]"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[AUTYP]" />
-                    <inputColumn
-                      refId="Package\AUFK\stage changed records.Inputs[OLE DB Destination Input].Columns[WERKS]"
-                      cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="WERKS"
-                      externalMetadataColumnId="Package\AUFK\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[WERKS]"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[WERKS]" />
-                    <inputColumn
-                      refId="Package\AUFK\stage changed records.Inputs[OLE DB Destination Input].Columns[LOEKZ]"
+                      refId="Package\PLPO\stage changed records.Inputs[OLE DB Destination Input].Columns[PLNTY]"
                       cachedDataType="wstr"
                       cachedLength="1"
-                      cachedName="LOEKZ"
-                      externalMetadataColumnId="Package\AUFK\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[LOEKZ]"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[LOEKZ]" />
+                      cachedName="PLNTY"
+                      cachedSortKeyPosition="2"
+                      externalMetadataColumnId="Package\PLPO\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[PLNTY]"
+                      lineageId="Package\PLPO\Merge Join.Outputs[Merge Join Output].Columns[PLNTY]" />
                     <inputColumn
-                      refId="Package\AUFK\stage changed records.Inputs[OLE DB Destination Input].Columns[OBJNR]"
+                      refId="Package\PLPO\stage changed records.Inputs[OLE DB Destination Input].Columns[PLNNR]"
                       cachedDataType="wstr"
-                      cachedLength="22"
-                      cachedName="OBJNR"
-                      externalMetadataColumnId="Package\AUFK\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[OBJNR]"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[OBJNR]" />
+                      cachedLength="8"
+                      cachedName="PLNNR"
+                      cachedSortKeyPosition="3"
+                      externalMetadataColumnId="Package\PLPO\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[PLNNR]"
+                      lineageId="Package\PLPO\Merge Join.Outputs[Merge Join Output].Columns[PLNNR]" />
                     <inputColumn
-                      refId="Package\AUFK\stage changed records.Inputs[OLE DB Destination Input].Columns[AUART]"
+                      refId="Package\PLPO\stage changed records.Inputs[OLE DB Destination Input].Columns[PLNKN]"
                       cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="AUART"
-                      externalMetadataColumnId="Package\AUFK\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[AUART]"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[AUART]" />
+                      cachedLength="8"
+                      cachedName="PLNKN"
+                      cachedSortKeyPosition="4"
+                      externalMetadataColumnId="Package\PLPO\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[PLNKN]"
+                      lineageId="Package\PLPO\Merge Join.Outputs[Merge Join Output].Columns[PLNKN]" />
+                    <inputColumn
+                      refId="Package\PLPO\stage changed records.Inputs[OLE DB Destination Input].Columns[ZAEHL]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="ZAEHL"
+                      cachedSortKeyPosition="5"
+                      externalMetadataColumnId="Package\PLPO\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[ZAEHL]"
+                      lineageId="Package\PLPO\Merge Join.Outputs[Merge Join Output].Columns[ZAEHL]" />
+                    <inputColumn
+                      refId="Package\PLPO\stage changed records.Inputs[OLE DB Destination Input].Columns[AEDAT]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="AEDAT"
+                      externalMetadataColumnId="Package\PLPO\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[AEDAT]"
+                      lineageId="Package\PLPO\Merge Join.Outputs[Merge Join Output].Columns[AEDAT]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
                     <externalMetadataColumn
-                      refId="Package\AUFK\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      refId="Package\PLPO\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
                       dataType="wstr"
                       length="3"
                       name="MANDT" />
                     <externalMetadataColumn
-                      refId="Package\AUFK\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[AUFNR]"
-                      dataType="wstr"
-                      length="12"
-                      name="AUFNR" />
-                    <externalMetadataColumn
-                      refId="Package\AUFK\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[AUTYP]"
-                      dataType="wstr"
-                      length="2"
-                      name="AUTYP" />
-                    <externalMetadataColumn
-                      refId="Package\AUFK\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[WERKS]"
-                      dataType="wstr"
-                      length="4"
-                      name="WERKS" />
-                    <externalMetadataColumn
-                      refId="Package\AUFK\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[LOEKZ]"
+                      refId="Package\PLPO\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[PLNTY]"
                       dataType="wstr"
                       length="1"
-                      name="LOEKZ" />
+                      name="PLNTY" />
                     <externalMetadataColumn
-                      refId="Package\AUFK\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[OBJNR]"
+                      refId="Package\PLPO\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[PLNNR]"
                       dataType="wstr"
-                      length="22"
-                      name="OBJNR" />
+                      length="8"
+                      name="PLNNR" />
                     <externalMetadataColumn
-                      refId="Package\AUFK\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[AUART]"
+                      refId="Package\PLPO\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[PLNKN]"
                       dataType="wstr"
-                      length="4"
-                      name="AUART" />
+                      length="8"
+                      name="PLNKN" />
+                    <externalMetadataColumn
+                      refId="Package\PLPO\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[ZAEHL]"
+                      dataType="wstr"
+                      length="8"
+                      name="ZAEHL" />
+                    <externalMetadataColumn
+                      refId="Package\PLPO\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[AEDAT]"
+                      dataType="wstr"
+                      length="8"
+                      name="AEDAT" />
                   </externalMetadataColumns>
                 </input>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\AUFK\stage changed records.Outputs[OLE DB Destination Error Output]"
+                  refId="Package\PLPO\stage changed records.Outputs[OLE DB Destination Error Output]"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="OLE DB Destination Error Output"
-                  synchronousInputId="Package\AUFK\stage changed records.Inputs[OLE DB Destination Input]">
+                  synchronousInputId="Package\PLPO\stage changed records.Inputs[OLE DB Destination Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\AUFK\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      refId="Package\PLPO\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\AUFK\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      lineageId="Package\PLPO\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\AUFK\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      refId="Package\PLPO\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\AUFK\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\PLPO\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -1530,7 +1430,7 @@ ORDER BY A01.[MANDT]
               </outputs>
             </component>
             <component
-              refId="Package\AUFK\stage deleted records"
+              refId="Package\PLPO\stage deleted records"
               componentClassID="Microsoft.OLEDBDestination"
               contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
               description="OLE DB Destination"
@@ -1545,7 +1445,7 @@ ORDER BY A01.[MANDT]
                 <property
                   dataType="System.String"
                   description="Specifies the name of the database object used to open a rowset."
-                  name="OpenRowset">[dbo].[AUFK_STAGE_DELETE]</property>
+                  name="OpenRowset">[dbo].[PLPO_STAGE_DELETE]</property>
                 <property
                   dataType="System.String"
                   description="Specifies the variable that contains the name of the database object used to open a rowset."
@@ -1587,7 +1487,7 @@ ORDER BY A01.[MANDT]
               </properties>
               <connections>
                 <connection
-                  refId="Package\AUFK\stage deleted records.Connections[OleDbConnection]"
+                  refId="Package\PLPO\stage deleted records.Connections[OleDbConnection]"
                   connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
                   connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
                   description="The OLE DB runtime connection used to access the database."
@@ -1595,60 +1495,101 @@ ORDER BY A01.[MANDT]
               </connections>
               <inputs>
                 <input
-                  refId="Package\AUFK\stage deleted records.Inputs[OLE DB Destination Input]"
+                  refId="Package\PLPO\stage deleted records.Inputs[OLE DB Destination Input]"
                   errorOrTruncationOperation="Insert"
                   errorRowDisposition="FailComponent"
                   hasSideEffects="true"
                   name="OLE DB Destination Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\AUFK\stage deleted records.Inputs[OLE DB Destination Input].Columns[MANDT (1)]"
+                      refId="Package\PLPO\stage deleted records.Inputs[OLE DB Destination Input].Columns[MANDT]"
                       cachedDataType="wstr"
                       cachedLength="3"
-                      cachedName="MANDT (1)"
-                      externalMetadataColumnId="Package\AUFK\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]" />
+                      cachedName="MANDT"
+                      cachedSortKeyPosition="1"
+                      externalMetadataColumnId="Package\PLPO\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      lineageId="Package\PLPO\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
                     <inputColumn
-                      refId="Package\AUFK\stage deleted records.Inputs[OLE DB Destination Input].Columns[AUFNR (1)]"
+                      refId="Package\PLPO\stage deleted records.Inputs[OLE DB Destination Input].Columns[PLNTY]"
                       cachedDataType="wstr"
-                      cachedLength="12"
-                      cachedName="AUFNR (1)"
-                      externalMetadataColumnId="Package\AUFK\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[AUFNR]"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[AUFNR (1)]" />
+                      cachedLength="1"
+                      cachedName="PLNTY"
+                      cachedSortKeyPosition="2"
+                      externalMetadataColumnId="Package\PLPO\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[PLNTY]"
+                      lineageId="Package\PLPO\Merge Join.Outputs[Merge Join Output].Columns[PLNTY]" />
+                    <inputColumn
+                      refId="Package\PLPO\stage deleted records.Inputs[OLE DB Destination Input].Columns[PLNNR]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="PLNNR"
+                      cachedSortKeyPosition="3"
+                      externalMetadataColumnId="Package\PLPO\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[PLNNR]"
+                      lineageId="Package\PLPO\Merge Join.Outputs[Merge Join Output].Columns[PLNNR]" />
+                    <inputColumn
+                      refId="Package\PLPO\stage deleted records.Inputs[OLE DB Destination Input].Columns[PLNKN]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="PLNKN"
+                      cachedSortKeyPosition="4"
+                      externalMetadataColumnId="Package\PLPO\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[PLNKN]"
+                      lineageId="Package\PLPO\Merge Join.Outputs[Merge Join Output].Columns[PLNKN]" />
+                    <inputColumn
+                      refId="Package\PLPO\stage deleted records.Inputs[OLE DB Destination Input].Columns[ZAEHL]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="ZAEHL"
+                      cachedSortKeyPosition="5"
+                      externalMetadataColumnId="Package\PLPO\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[ZAEHL]"
+                      lineageId="Package\PLPO\Merge Join.Outputs[Merge Join Output].Columns[ZAEHL]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
                     <externalMetadataColumn
-                      refId="Package\AUFK\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      refId="Package\PLPO\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
                       dataType="wstr"
                       length="3"
                       name="MANDT" />
                     <externalMetadataColumn
-                      refId="Package\AUFK\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[AUFNR]"
+                      refId="Package\PLPO\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[PLNTY]"
                       dataType="wstr"
-                      length="12"
-                      name="AUFNR" />
+                      length="1"
+                      name="PLNTY" />
+                    <externalMetadataColumn
+                      refId="Package\PLPO\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[PLNNR]"
+                      dataType="wstr"
+                      length="8"
+                      name="PLNNR" />
+                    <externalMetadataColumn
+                      refId="Package\PLPO\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[PLNKN]"
+                      dataType="wstr"
+                      length="8"
+                      name="PLNKN" />
+                    <externalMetadataColumn
+                      refId="Package\PLPO\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[ZAEHL]"
+                      dataType="wstr"
+                      length="8"
+                      name="ZAEHL" />
                   </externalMetadataColumns>
                 </input>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\AUFK\stage deleted records.Outputs[OLE DB Destination Error Output]"
+                  refId="Package\PLPO\stage deleted records.Outputs[OLE DB Destination Error Output]"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="OLE DB Destination Error Output"
-                  synchronousInputId="Package\AUFK\stage deleted records.Inputs[OLE DB Destination Input]">
+                  synchronousInputId="Package\PLPO\stage deleted records.Inputs[OLE DB Destination Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\AUFK\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      refId="Package\PLPO\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\AUFK\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      lineageId="Package\PLPO\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\AUFK\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      refId="Package\PLPO\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\AUFK\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\PLPO\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -1659,66 +1600,49 @@ ORDER BY A01.[MANDT]
           </components>
           <paths>
             <path
-              refId="Package\AUFK.Paths[delete]"
-              endId="Package\AUFK\stage deleted records.Inputs[OLE DB Destination Input]"
+              refId="Package\PLPO.Paths[delete]"
+              endId="Package\PLPO\stage deleted records.Inputs[OLE DB Destination Input]"
               name="delete"
-              startId="Package\AUFK\Identity records.Outputs[delete]" />
+              startId="Package\PLPO\Identify records.Outputs[delete]" />
             <path
-              refId="Package\AUFK.Paths[insert]"
-              endId="Package\AUFK\insert new records.Inputs[OLE DB Destination Input]"
+              refId="Package\PLPO.Paths[insert]"
+              endId="Package\PLPO\insert new records.Inputs[OLE DB Destination Input]"
               name="insert"
-              startId="Package\AUFK\Identity records.Outputs[insert]" />
+              startId="Package\PLPO\Identify records.Outputs[insert]" />
             <path
-              refId="Package\AUFK.Paths[Merge Join Output]"
-              endId="Package\AUFK\Identity records.Inputs[Conditional Split Input]"
+              refId="Package\PLPO.Paths[Merge Join Output]"
+              endId="Package\PLPO\Identify records.Inputs[Conditional Split Input]"
               name="Merge Join Output"
-              startId="Package\AUFK\Merge Join.Outputs[Merge Join Output]" />
+              startId="Package\PLPO\Merge Join.Outputs[Merge Join Output]" />
             <path
-              refId="Package\AUFK.Paths[OLE DB Source Output]"
-              endId="Package\AUFK\Merge Join.Inputs[Merge Join Left Input]"
+              refId="Package\PLPO.Paths[OLE DB Source Output]"
+              endId="Package\PLPO\Merge Join.Inputs[Merge Join Left Input]"
               name="OLE DB Source Output"
-              startId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output]" />
+              startId="Package\PLPO\DB SAP ADRC.Outputs[OLE DB Source Output]" />
             <path
-              refId="Package\AUFK.Paths[OLE DB Source Output1]"
-              endId="Package\AUFK\Merge Join.Inputs[Merge Join Right Input]"
+              refId="Package\PLPO.Paths[OLE DB Source Output1]"
+              endId="Package\PLPO\Merge Join.Inputs[Merge Join Right Input]"
               name="OLE DB Source Output"
-              startId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output]" />
+              startId="Package\PLPO\DB PBI ADRC.Outputs[OLE DB Source Output]" />
             <path
-              refId="Package\AUFK.Paths[update]"
-              endId="Package\AUFK\Find Changed Records.Inputs[Conditional Split Input]"
+              refId="Package\PLPO.Paths[update]"
+              endId="Package\PLPO\Find Changed Records.Inputs[Conditional Split Input]"
               name="update"
-              startId="Package\AUFK\Identity records.Outputs[update]" />
+              startId="Package\PLPO\Identify records.Outputs[update]" />
             <path
-              refId="Package\AUFK.Paths[update1]"
-              endId="Package\AUFK\stage changed records.Inputs[OLE DB Destination Input]"
+              refId="Package\PLPO.Paths[update1]"
+              endId="Package\PLPO\stage changed records.Inputs[OLE DB Destination Input]"
               name="update"
-              startId="Package\AUFK\Find Changed Records.Outputs[update]" />
+              startId="Package\PLPO\Find Changed Records.Outputs[update]" />
           </paths>
         </pipeline>
-      </DTS:ObjectData>
-    </DTS:Executable>
-    <DTS:Executable
-      DTS:refId="Package\clean stage"
-      DTS:CreationName="Microsoft.ExecuteSQLTask"
-      DTS:Description="Execute SQL Task"
-      DTS:DTSID="{9ca89871-4246-43cb-83f9-09a39bb4a628}"
-      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
-      DTS:LocaleID="-1"
-      DTS:ObjectName="clean stage"
-      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-      DTS:ThreadHint="0">
-      <DTS:Variables />
-      <DTS:ObjectData>
-        <SQLTask:SqlTaskData
-          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-          SQLTask:SqlStatementSource="TRUNCATE TABLE [AUFK_STAGE_UPDATE]&#xA;go&#xA;TRUNCATE TABLE [AUFK_STAGE_DELETE]&#xA;go&#xA;TRUNCATE TABLE [AUFK_STAGE_INSERT]&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
       DTS:refId="Package\Sequence Container"
       DTS:CreationName="STOCK:SEQUENCE"
       DTS:Description="Sequence Container"
-      DTS:DTSID="{8c6f991f-7b2c-49b7-a166-d61326dfd8a0}"
+      DTS:DTSID="{7D95769C-CBD6-4505-8891-1D710AD89F7C}"
       DTS:ExecutableType="STOCK:SEQUENCE"
       DTS:LocaleID="-1"
       DTS:ObjectName="Sequence Container">
@@ -1728,7 +1652,7 @@ ORDER BY A01.[MANDT]
           DTS:refId="Package\Sequence Container\delete"
           DTS:CreationName="Microsoft.ExecuteSQLTask"
           DTS:Description="Execute SQL Task"
-          DTS:DTSID="{8b12a205-883b-4eab-89ae-b303a129721a}"
+          DTS:DTSID="{0D17B231-D623-403D-AFE5-1DAD4DAD3BDC}"
           DTS:ExecutableType="Microsoft.ExecuteSQLTask"
           DTS:LocaleID="-1"
           DTS:ObjectName="delete"
@@ -1738,14 +1662,14 @@ ORDER BY A01.[MANDT]
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
               SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-              SQLTask:SqlStatementSource="DELETE A01&#xA;FROM [AUFK] A01 INNER JOIN [AUFK_STAGE_DELETE] B01 ON ( A01.[MANDT] = B01.[MANDT]&#xA;                                                    AND A01.[AUFNR] = B01.[AUFNR] )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+              SQLTask:SqlStatementSource="DELETE A01&#xA;FROM [PLPO] A01 INNER JOIN [PLPO_STAGE_DELETE] B01 ON ( A01.[MANDT] = B01.[MANDT]&#xA;                                                    AND A01.[PLNTY] = B01.[PLNTY]&#xA;                                                    AND A01.[PLNNR] = B01.[PLNNR]&#xA;                                                    AND A01.[PLNKN] = B01.[PLNKN]&#xA;                                                    AND A01.[ZAEHL] = B01.[ZAEHL] )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
           </DTS:ObjectData>
         </DTS:Executable>
         <DTS:Executable
           DTS:refId="Package\Sequence Container\update"
           DTS:CreationName="Microsoft.ExecuteSQLTask"
           DTS:Description="Execute SQL Task"
-          DTS:DTSID="{b9faecf1-398d-46b9-8983-9d7666164b79}"
+          DTS:DTSID="{1644366D-0013-40BE-B04E-BEDD0704EC4F}"
           DTS:ExecutableType="Microsoft.ExecuteSQLTask"
           DTS:LocaleID="-1"
           DTS:ObjectName="update"
@@ -1755,7 +1679,7 @@ ORDER BY A01.[MANDT]
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
               SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-              SQLTask:SqlStatementSource="UPDATE A01&#xA;SET A01.[AUTYP] = B01.[AUTYP]&#xA;   ,A01.[WERKS] = B01.[WERKS]&#xA;   ,A01.[LOEKZ] = B01.[LOEKZ]&#xA;   ,A01.[OBJNR] = B01.[OBJNR]&#xA;   ,A01.[AUART] = B01.[AUART]&#xA;FROM [AUFK] A01 INNER JOIN [AUFK_STAGE_UPDATE] B01 ON ( A01.[MANDT] = B01.[MANDT]&#xA;                                                    AND A01.[AUFNR] = B01.[AUFNR] )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+              SQLTask:SqlStatementSource="UPDATE A01&#xA;SET A01.[AEDAT] = B01.[AEDAT]&#xA;FROM [PLPO] A01 INNER JOIN [PLPO_STAGE_UPDATE] B01 ON ( A01.[MANDT] = B01.[MANDT]&#xA;                                                    AND A01.[PLNTY] = B01.[PLNTY]&#xA;                                                    AND A01.[PLNNR] = B01.[PLNNR]&#xA;                                                    AND A01.[PLNKN] = B01.[PLNKN]&#xA;                                                    AND A01.[ZAEHL] = B01.[ZAEHL] )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
           </DTS:ObjectData>
         </DTS:Executable>
       </DTS:Executables>
@@ -1764,27 +1688,27 @@ ORDER BY A01.[MANDT]
       DTS:refId="Package\Sequence Container 1"
       DTS:CreationName="STOCK:SEQUENCE"
       DTS:Description="Sequence Container"
-      DTS:DTSID="{1fd39a9f-7178-40ad-ba28-0dfc7e6726f2}"
+      DTS:DTSID="{604B324F-6974-406F-BE5F-382818D1CB70}"
       DTS:ExecutableType="STOCK:SEQUENCE"
       DTS:LocaleID="-1"
       DTS:ObjectName="Sequence Container 1">
       <DTS:Variables />
       <DTS:Executables>
         <DTS:Executable
-          DTS:refId="Package\Sequence Container 1\Insert"
+          DTS:refId="Package\Sequence Container 1\insert"
           DTS:CreationName="Microsoft.ExecuteSQLTask"
           DTS:Description="Execute SQL Task"
-          DTS:DTSID="{8cbebeeb-dd70-4aee-8a99-69d600fdef60}"
+          DTS:DTSID="{52805200-34D2-4483-898F-418B15667686}"
           DTS:ExecutableType="Microsoft.ExecuteSQLTask"
           DTS:LocaleID="-1"
-          DTS:ObjectName="Insert"
+          DTS:ObjectName="insert"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
           DTS:ThreadHint="0">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
               SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-              SQLTask:SqlStatementSource="INSERT INTO [AUFK]&#xA;SELECT * FROM [AUFK_STAGE_INSERT]&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+              SQLTask:SqlStatementSource="INSERT INTO [PLPO]&#xA;SELECT * FROM [PLPO_STAGE_INSERT]&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
           </DTS:ObjectData>
         </DTS:Executable>
       </DTS:Executables>
@@ -1794,23 +1718,23 @@ ORDER BY A01.[MANDT]
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint]"
       DTS:CreationName=""
-      DTS:DTSID="{89ce58eb-7512-4cbf-ba35-4f8e44178a10}"
-      DTS:From="Package\AUFK"
+      DTS:DTSID="{B6C98BA8-4201-485C-B4E4-6A08B56A19D7}"
+      DTS:From="Package\PLPO"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint"
       DTS:To="Package\Sequence Container" />
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
       DTS:CreationName=""
-      DTS:DTSID="{DDEBDFDB-BDB7-4F85-B749-ABA884AA5784}"
+      DTS:DTSID="{C2C8DFB4-FED4-4FBD-B477-8718C76D8EAD}"
       DTS:From="Package\clean stage"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 1"
-      DTS:To="Package\AUFK" />
+      DTS:To="Package\PLPO" />
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
       DTS:CreationName=""
-      DTS:DTSID="{7B766DA9-2F55-4359-8020-8999F8D14C10}"
+      DTS:DTSID="{15D95943-6C8B-4236-901A-66CA43D8D08E}"
       DTS:From="Package\Sequence Container"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 2"
@@ -1830,52 +1754,52 @@ ORDER BY A01.[MANDT]
         Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
           Size="104,42"
-          Id="Package\AUFK"
-          TopLeft="200,45" />
+          Id="Package\PLPO"
+          TopLeft="350,43" />
         <NodeLayout
           Size="132,42"
           Id="Package\clean stage"
-          TopLeft="419,27" />
+          TopLeft="116,44.333333333333" />
         <NodeLayout
           Size="108,42"
           Id="Package\Sequence Container\delete"
-          TopLeft="195,39" />
+          TopLeft="161,14" />
         <NodeLayout
           Size="112,42"
           Id="Package\Sequence Container\update"
-          TopLeft="17,42" />
+          TopLeft="14,14" />
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="383,139"
-          Size="383,182"
+          PanelSize="305,79"
+          Size="305,122"
           Id="Package\Sequence Container"
-          TopLeft="60,174" />
+          TopLeft="250,153" />
         <NodeLayout
-          Size="107,42"
-          Id="Package\Sequence Container 1\Insert"
-          TopLeft="139,41" />
+          Size="105,42"
+          Id="Package\Sequence Container 1\insert"
+          TopLeft="86.5,28.75" />
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="383,139"
-          Size="383,182"
+          PanelSize="305,126"
+          Size="305,169"
           Id="Package\Sequence Container 1"
-          TopLeft="60,416" />
+          TopLeft="248.75,327.75" />
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint]"
-          TopLeft="251.75,87">
+          TopLeft="402.25,85">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,87"
+              EndConnector="0,68"
               Start="0,0"
-              End="0,79.5">
+              End="0,60.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,79.5" />
+                    End="0,60.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -1886,30 +1810,18 @@ ORDER BY A01.[MANDT]
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 1]"
-          TopLeft="419,48">
+          TopLeft="248,64.6666666666665">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-115,18"
+              EndConnector="102,0"
               Start="0,0"
-              End="-107.5,18">
+              End="94.5,0">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="-53.5,0" />
-                  <mssgle:CubicBezierSegment
-                    Point1="-53.5,0"
-                    Point2="-57.5,0"
-                    Point3="-57.5,4" />
-                  <mssgle:LineSegment
-                    End="-57.5,14" />
-                  <mssgle:CubicBezierSegment
-                    Point1="-57.5,14"
-                    Point2="-57.5,18"
-                    Point3="-61.5,18" />
-                  <mssgle:LineSegment
-                    End="-107.5,18" />
+                    End="94.5,0" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -1920,18 +1832,18 @@ ORDER BY A01.[MANDT]
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 2]"
-          TopLeft="251.5,356">
+          TopLeft="401.875,275">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,60"
+              EndConnector="0,52.75"
               Start="0,0"
-              End="0,52.5">
+              End="0,45.25">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,52.5" />
+                    End="0,45.25" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -1944,116 +1856,188 @@ ORDER BY A01.[MANDT]
     </LayoutInfo>
   </Package>
   <TaskHost
-    design-time-name="Package\AUFK">
+    design-time-name="Package\PLPO">
     <LayoutInfo>
       <GraphLayout
         Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
+          Size="184,42"
+          Id="Package\PLPO\Find Changed Records"
+          TopLeft="371,303" />
+        <NodeLayout
           Size="166,42"
-          Id="Package\AUFK\insert new records"
-          TopLeft="159,370" />
-        <NodeLayout
-          Size="130,42"
-          Id="Package\AUFK\Merge Join"
-          TopLeft="451,137" />
-        <NodeLayout
-          Size="186,42"
-          Id="Package\AUFK\stage changed records"
-          TopLeft="421,480" />
+          Id="Package\PLPO\insert new records"
+          TopLeft="89,302" />
         <NodeLayout
           Size="153,42"
-          Id="Package\AUFK\Identity records"
-          TopLeft="433,236" />
+          Id="Package\PLPO\Identify records"
+          TopLeft="382,209" />
         <NodeLayout
           Size="180,42"
-          Id="Package\AUFK\stage deleted records"
-          TopLeft="687,371" />
+          Id="Package\PLPO\stage deleted records"
+          TopLeft="654,301" />
         <NodeLayout
-          Size="112,42"
-          Id="Package\AUFK\DB PBI"
-          TopLeft="671,48" />
+          Size="186,42"
+          Id="Package\PLPO\stage changed records"
+          TopLeft="367,379" />
         <NodeLayout
-          Size="114,42"
-          Id="Package\AUFK\DB SAP"
-          TopLeft="199,46" />
+          Size="142,42"
+          Id="Package\PLPO\DB PBI ADRC"
+          TopLeft="511,35" />
         <NodeLayout
-          Size="184,42"
-          Id="Package\AUFK\Find Changed Records"
-          TopLeft="420,366" />
+          Size="144,42"
+          Id="Package\PLPO\DB SAP ADRC"
+          TopLeft="225,40" />
         <EdgeLayout
-          Id="Package\AUFK.Paths[update1]"
-          TopLeft="513,408">
+          Id="Package\PLPO.Paths[update1]"
+          TopLeft="461.5,345">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,72"
+              EndConnector="0,34"
               Start="0,0"
-              End="0,64.5">
+              End="0,26.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,64.5" />
+                    End="0,26.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="-15.8025,26.4453125,31.605,11.609375"
+              BoundingBox="-15.8025,7.4453125,31.605,11.609375"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\AUFK.Paths[update]"
-          TopLeft="510.75,278">
+          Id="Package\PLPO.Paths[update]"
+          TopLeft="460.75,251">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,88"
+              EndConnector="0,52"
               Start="0,0"
-              End="0,80.5">
+              End="0,44.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,80.5" />
+                    End="0,44.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="-15.8025,34.4453125,31.605,11.609375"
+              BoundingBox="-15.8025,16.4453125,31.605,11.609375"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\AUFK.Paths[OLE DB Source Output1]"
-          TopLeft="727,90">
+          Id="Package\PLPO.Paths[insert]"
+          TopLeft="422.25,251">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-190.666666666667,47"
+              EndConnector="-250.25,51"
               Start="0,0"
-              End="-190.666666666667,39.5">
+              End="-250.25,43.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,23.8571428571429" />
+                    End="0,13.5824411134904" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,23.8571428571429"
-                    Point2="0,27.8571428571429"
-                    Point3="-4,27.8571428571429" />
+                    Point1="0,13.5824411134904"
+                    Point2="0,17.5824411134904"
+                    Point3="-4,17.5824411134904" />
                   <mssgle:LineSegment
-                    End="-186.666666666667,27.8571428571429" />
+                    End="-246.25,17.5824411134904" />
                   <mssgle:CubicBezierSegment
-                    Point1="-186.666666666667,27.8571428571429"
-                    Point2="-190.666666666667,27.8571428571429"
-                    Point3="-190.666666666667,31.8571428571429" />
+                    Point1="-246.25,17.5824411134904"
+                    Point2="-250.25,17.5824411134904"
+                    Point3="-250.25,21.5824411134904" />
                   <mssgle:LineSegment
-                    End="-190.666666666667,39.5" />
+                    End="-250.25,43.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-138.07498046875,22.5824411134904,25.8999609375,9.451171875"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\PLPO.Paths[delete]"
+          TopLeft="494.75,251">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="249.25,50"
+              Start="0,0"
+              End="249.25,42.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,13.237687366167" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,13.237687366167"
+                    Point2="0,17.237687366167"
+                    Point3="4,17.237687366167" />
+                  <mssgle:LineSegment
+                    End="245.25,17.237687366167" />
+                  <mssgle:CubicBezierSegment
+                    Point1="245.25,17.237687366167"
+                    Point2="249.25,17.237687366167"
+                    Point3="249.25,21.237687366167" />
+                  <mssgle:LineSegment
+                    End="249.25,42.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="110.42904296875,22.237687366167,28.3919140625,9.7490234375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="130,42"
+          Id="Package\PLPO\Merge Join"
+          TopLeft="397,126" />
+        <EdgeLayout
+          Id="Package\PLPO.Paths[OLE DB Source Output]"
+          TopLeft="297,82">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="165,44"
+              Start="0,0"
+              End="165,36.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,18" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,18"
+                    Point2="0,22"
+                    Point3="4,22" />
+                  <mssgle:LineSegment
+                    End="161,22" />
+                  <mssgle:CubicBezierSegment
+                    Point1="161,22"
+                    Point2="165,22"
+                    Point3="165,26" />
+                  <mssgle:LineSegment
+                    End="165,36.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -2063,31 +2047,31 @@ ORDER BY A01.[MANDT]
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\AUFK.Paths[OLE DB Source Output]"
-          TopLeft="256,88">
+          Id="Package\PLPO.Paths[OLE DB Source Output1]"
+          TopLeft="582,77">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="260,49"
+              EndConnector="-99.6666666666667,49"
               Start="0,0"
-              End="260,41.5">
+              End="-99.6666666666667,41.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,20.5" />
+                    End="0,25.0425531914894" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,20.5"
-                    Point2="0,24.5"
-                    Point3="4,24.5" />
+                    Point1="0,25.0425531914894"
+                    Point2="0,29.0425531914894"
+                    Point3="-4,29.0425531914894" />
                   <mssgle:LineSegment
-                    End="256,24.5" />
+                    End="-95.6666666666667,29.0425531914894" />
                   <mssgle:CubicBezierSegment
-                    Point1="256,24.5"
-                    Point2="260,24.5"
-                    Point3="260,28.5" />
+                    Point1="-95.6666666666667,29.0425531914894"
+                    Point2="-99.6666666666667,29.0425531914894"
+                    Point3="-99.6666666666667,33.0425531914894" />
                   <mssgle:LineSegment
-                    End="260,41.5" />
+                    End="-99.6666666666667,41.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -2097,104 +2081,32 @@ ORDER BY A01.[MANDT]
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\AUFK.Paths[Merge Join Output]"
-          TopLeft="512.75,179">
+          Id="Package\PLPO.Paths[Merge Join Output]"
+          TopLeft="460.25,168">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,57"
+              EndConnector="0,41"
               Start="0,0"
-              End="0,49.5">
+              End="0,33.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,49.5" />
+                    End="0,33.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\AUFK.Paths[insert]"
-          TopLeft="473.25,278">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="-231.25,92"
-              Start="0,0"
-              End="-231.25,84.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,27.7173447537473" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,27.7173447537473"
-                    Point2="0,31.7173447537473"
-                    Point3="-4,31.7173447537473" />
-                  <mssgle:LineSegment
-                    End="-227.25,31.7173447537473" />
-                  <mssgle:CubicBezierSegment
-                    Point1="-227.25,31.7173447537473"
-                    Point2="-231.25,31.7173447537473"
-                    Point3="-231.25,35.7173447537473" />
-                  <mssgle:LineSegment
-                    End="-231.25,84.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-128.57498046875,36.7173447537473,25.8999609375,9.451171875"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\AUFK.Paths[delete]"
-          TopLeft="545.75,278">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="231.25,93"
-              Start="0,0"
-              End="231.25,85.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,28.0620985010707" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,28.0620985010707"
-                    Point2="0,32.0620985010707"
-                    Point3="4,32.0620985010707" />
-                  <mssgle:LineSegment
-                    End="227.25,32.0620985010707" />
-                  <mssgle:CubicBezierSegment
-                    Point1="227.25,32.0620985010707"
-                    Point2="231.25,32.0620985010707"
-                    Point3="231.25,36.0620985010707" />
-                  <mssgle:LineSegment
-                    End="231.25,85.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="101.42904296875,37.0620985010707,28.3919140625,9.7490234375"
-              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
     </LayoutInfo>
   </TaskHost>
   <PipelineComponentMetadata
-    design-time-name="Package\AUFK\insert new records">
+    design-time-name="Package\PLPO\insert new records">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -2207,7 +2119,7 @@ ORDER BY A01.[MANDT]
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\AUFK\stage changed records">
+    design-time-name="Package\PLPO\stage deleted records">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -2220,7 +2132,7 @@ ORDER BY A01.[MANDT]
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\AUFK\stage deleted records">
+    design-time-name="Package\PLPO\stage changed records">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -2233,7 +2145,7 @@ ORDER BY A01.[MANDT]
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\AUFK\DB PBI">
+    design-time-name="Package\PLPO\DB PBI ADRC">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -2241,7 +2153,7 @@ ORDER BY A01.[MANDT]
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\AUFK\DB SAP">
+    design-time-name="Package\PLPO\DB SAP ADRC">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>

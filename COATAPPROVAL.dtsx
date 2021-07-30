@@ -1,30 +1,47 @@
 ﻿<?xml version="1.0"?>
 <DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
   DTS:refId="Package"
-  DTS:CreationDate="4/19/2021 12:36:48 PM"
+  DTS:CreationDate="4/19/2021 12:54:51 PM"
   DTS:CreationName="Microsoft.Package"
   DTS:CreatorComputerName="ARLPBIDEV"
   DTS:CreatorName="DOMAIN\RPETRELLA"
-  DTS:DTSID="{1631F2BD-B710-48EE-85F6-6B3613A47E9D}"
+  DTS:DTSID="{90CF305A-FCA1-466F-A062-540C9119BE0A}"
   DTS:ExecutableType="Microsoft.Package"
-  DTS:LastModifiedProductVersion="15.0.2000.152"
+  DTS:LastModifiedProductVersion="15.0.2000.166"
   DTS:LocaleID="1033"
-  DTS:ObjectName="BKPF"
+  DTS:ObjectName="COATAPPROVAL"
   DTS:PackageType="5"
-  DTS:VersionBuild="7"
-  DTS:VersionGUID="{8F188A41-E57C-45FD-A24D-0F938E8806E8}">
+  DTS:VersionBuild="29"
+  DTS:VersionGUID="{4C5230B7-639B-4737-ACFB-51D3D5249A9C}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:Variables />
   <DTS:Executables>
     <DTS:Executable
-      DTS:refId="Package\BKPF"
+      DTS:refId="Package\clean stage"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{E4ADA34C-E9CC-4EF9-BC76-EEC98E4D2455}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="clean stage"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="TRUNCATE TABLE [COATAPPROVAL_STAGE_UPDATE]&#xA;go&#xA;TRUNCATE TABLE [COATAPPROVAL_STAGE_DELETE]&#xA;go&#xA;TRUNCATE TABLE [COATAPPROVAL_STAGE_INSERT]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\COATAPPROVAL"
       DTS:CreationName="Microsoft.Pipeline"
       DTS:Description="Data Flow Task"
-      DTS:DTSID="{9c73cc4f-9c97-4125-bfcf-993da805ce43}"
+      DTS:DTSID="{7BA03ADF-0227-4F04-BA97-B8A19D951A6F}"
       DTS:ExecutableType="Microsoft.Pipeline"
       DTS:LocaleID="-1"
-      DTS:ObjectName="BKPF"
+      DTS:ObjectName="COATAPPROVAL"
       DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
       <DTS:Variables />
       <DTS:ObjectData>
@@ -32,7 +49,204 @@
           version="1">
           <components>
             <component
-              refId="Package\BKPF\DB PBI"
+              refId="Package\COATAPPROVAL\DB EDOCDB"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="DB EDOCDB"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT [COATAPPSPECNO]
+      ,[COATAPPREV]
+      ,[COATAPPTYPE]
+      ,[COATAPPID]
+      ,[COATAPPROVED]
+FROM [COATAPPROVAL] (NOLOCK)
+ORDER BY [COATAPPSPECNO]
+      ,[COATAPPREV]
+      ,[COATAPPTYPE]</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\COATAPPROVAL\DB EDOCDB.Connections[OleDbConnection]"
+                  connectionManagerID="{5F52B4F9-7589-4D39-8600-167A0E82AE0A}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[ARLSQL01_EDOCDB]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\COATAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Output]"
+                  isSorted="true"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\COATAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Output].Columns[COATAPPSPECNO]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\COATAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Output].ExternalColumns[COATAPPSPECNO]"
+                      length="50"
+                      lineageId="Package\COATAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Output].Columns[COATAPPSPECNO]"
+                      name="COATAPPSPECNO"
+                      sortKeyPosition="1"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\COATAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Output].Columns[COATAPPREV]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\COATAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Output].ExternalColumns[COATAPPREV]"
+                      lineageId="Package\COATAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Output].Columns[COATAPPREV]"
+                      name="COATAPPREV"
+                      sortKeyPosition="2"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\COATAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Output].Columns[COATAPPTYPE]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\COATAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Output].ExternalColumns[COATAPPTYPE]"
+                      lineageId="Package\COATAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Output].Columns[COATAPPTYPE]"
+                      name="COATAPPTYPE"
+                      sortKeyPosition="3"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\COATAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Output].Columns[COATAPPID]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\COATAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Output].ExternalColumns[COATAPPID]"
+                      lineageId="Package\COATAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Output].Columns[COATAPPID]"
+                      name="COATAPPID"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\COATAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Output].Columns[COATAPPROVED]"
+                      dataType="bool"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\COATAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Output].ExternalColumns[COATAPPROVED]"
+                      lineageId="Package\COATAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Output].Columns[COATAPPROVED]"
+                      name="COATAPPROVED"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\COATAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Output].ExternalColumns[COATAPPSPECNO]"
+                      dataType="wstr"
+                      length="50"
+                      name="COATAPPSPECNO" />
+                    <externalMetadataColumn
+                      refId="Package\COATAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Output].ExternalColumns[COATAPPREV]"
+                      dataType="i4"
+                      name="COATAPPREV" />
+                    <externalMetadataColumn
+                      refId="Package\COATAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Output].ExternalColumns[COATAPPTYPE]"
+                      dataType="i4"
+                      name="COATAPPTYPE" />
+                    <externalMetadataColumn
+                      refId="Package\COATAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Output].ExternalColumns[COATAPPID]"
+                      dataType="i4"
+                      name="COATAPPID" />
+                    <externalMetadataColumn
+                      refId="Package\COATAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Output].ExternalColumns[COATAPPROVED]"
+                      dataType="bool"
+                      name="COATAPPROVED" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\COATAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  isSorted="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\COATAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Error Output].Columns[COATAPPSPECNO]"
+                      dataType="wstr"
+                      length="50"
+                      lineageId="Package\COATAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Error Output].Columns[COATAPPSPECNO]"
+                      name="COATAPPSPECNO"
+                      sortKeyPosition="1" />
+                    <outputColumn
+                      refId="Package\COATAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Error Output].Columns[COATAPPREV]"
+                      dataType="i4"
+                      lineageId="Package\COATAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Error Output].Columns[COATAPPREV]"
+                      name="COATAPPREV"
+                      sortKeyPosition="2" />
+                    <outputColumn
+                      refId="Package\COATAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Error Output].Columns[COATAPPTYPE]"
+                      dataType="i4"
+                      lineageId="Package\COATAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Error Output].Columns[COATAPPTYPE]"
+                      name="COATAPPTYPE"
+                      sortKeyPosition="3" />
+                    <outputColumn
+                      refId="Package\COATAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Error Output].Columns[COATAPPID]"
+                      dataType="i4"
+                      lineageId="Package\COATAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Error Output].Columns[COATAPPID]"
+                      name="COATAPPID" />
+                    <outputColumn
+                      refId="Package\COATAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Error Output].Columns[COATAPPROVED]"
+                      dataType="bool"
+                      lineageId="Package\COATAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Error Output].Columns[COATAPPROVED]"
+                      name="COATAPPROVED" />
+                    <outputColumn
+                      refId="Package\COATAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\COATAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\COATAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\COATAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\COATAPPROVAL\DB PBI"
               componentClassID="Microsoft.OLEDBSource"
               contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
               description="OLE DB Source"
@@ -56,17 +270,15 @@
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT A01.[MANDT]
-      ,A01.[BUKRS]
-      ,A01.[BELNR]
-      ,A01.[GJAHR]
-      ,A01.[HWAER]
-      ,A01.[HWAE2]
-FROM [BKPF] A01 (NOLOCK)
-ORDER BY A01.[MANDT]
-      ,A01.[BUKRS]
-      ,A01.[BELNR]
-      ,A01.[GJAHR]</property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT [COATAPPSPECNO]
+      ,[COATAPPREV]
+      ,[COATAPPTYPE]
+      ,[COATAPPID]
+      ,[COATAPPROVED]
+FROM [COATAPPROVAL] (NOLOCK)
+ORDER BY [COATAPPSPECNO]
+      ,[COATAPPREV]
+      ,[COATAPPTYPE]</property>
                 <property
                   dataType="System.String"
                   description="The variable that contains the SQL command to be executed."
@@ -91,7 +303,7 @@ ORDER BY A01.[MANDT]
               </properties>
               <connections>
                 <connection
-                  refId="Package\BKPF\DB PBI.Connections[OleDbConnection]"
+                  refId="Package\COATAPPROVAL\DB PBI.Connections[OleDbConnection]"
                   connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
                   connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
                   description="The OLE DB runtime connection used to access the database."
@@ -99,160 +311,130 @@ ORDER BY A01.[MANDT]
               </connections>
               <outputs>
                 <output
-                  refId="Package\BKPF\DB PBI.Outputs[OLE DB Source Output]"
+                  refId="Package\COATAPPROVAL\DB PBI.Outputs[OLE DB Source Output]"
                   isSorted="true"
                   name="OLE DB Source Output">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\BKPF\DB PBI.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      refId="Package\COATAPPROVAL\DB PBI.Outputs[OLE DB Source Output].Columns[COATAPPSPECNO]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\BKPF\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
-                      length="3"
-                      lineageId="Package\BKPF\DB PBI.Outputs[OLE DB Source Output].Columns[MANDT]"
-                      name="MANDT"
+                      externalMetadataColumnId="Package\COATAPPROVAL\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[COATAPPSPECNO]"
+                      length="50"
+                      lineageId="Package\COATAPPROVAL\DB PBI.Outputs[OLE DB Source Output].Columns[COATAPPSPECNO]"
+                      name="COATAPPSPECNO"
                       sortKeyPosition="1"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\BKPF\DB PBI.Outputs[OLE DB Source Output].Columns[BUKRS]"
-                      dataType="wstr"
+                      refId="Package\COATAPPROVAL\DB PBI.Outputs[OLE DB Source Output].Columns[COATAPPREV]"
+                      dataType="i4"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\BKPF\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[BUKRS]"
-                      length="4"
-                      lineageId="Package\BKPF\DB PBI.Outputs[OLE DB Source Output].Columns[BUKRS]"
-                      name="BUKRS"
+                      externalMetadataColumnId="Package\COATAPPROVAL\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[COATAPPREV]"
+                      lineageId="Package\COATAPPROVAL\DB PBI.Outputs[OLE DB Source Output].Columns[COATAPPREV]"
+                      name="COATAPPREV"
                       sortKeyPosition="2"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\BKPF\DB PBI.Outputs[OLE DB Source Output].Columns[BELNR]"
-                      dataType="wstr"
+                      refId="Package\COATAPPROVAL\DB PBI.Outputs[OLE DB Source Output].Columns[COATAPPTYPE]"
+                      dataType="i4"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\BKPF\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[BELNR]"
-                      length="10"
-                      lineageId="Package\BKPF\DB PBI.Outputs[OLE DB Source Output].Columns[BELNR]"
-                      name="BELNR"
+                      externalMetadataColumnId="Package\COATAPPROVAL\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[COATAPPTYPE]"
+                      lineageId="Package\COATAPPROVAL\DB PBI.Outputs[OLE DB Source Output].Columns[COATAPPTYPE]"
+                      name="COATAPPTYPE"
                       sortKeyPosition="3"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\BKPF\DB PBI.Outputs[OLE DB Source Output].Columns[GJAHR]"
-                      dataType="wstr"
+                      refId="Package\COATAPPROVAL\DB PBI.Outputs[OLE DB Source Output].Columns[COATAPPID]"
+                      dataType="i4"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\BKPF\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[GJAHR]"
-                      length="4"
-                      lineageId="Package\BKPF\DB PBI.Outputs[OLE DB Source Output].Columns[GJAHR]"
-                      name="GJAHR"
-                      sortKeyPosition="4"
+                      externalMetadataColumnId="Package\COATAPPROVAL\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[COATAPPID]"
+                      lineageId="Package\COATAPPROVAL\DB PBI.Outputs[OLE DB Source Output].Columns[COATAPPID]"
+                      name="COATAPPID"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\BKPF\DB PBI.Outputs[OLE DB Source Output].Columns[HWAER]"
-                      dataType="wstr"
+                      refId="Package\COATAPPROVAL\DB PBI.Outputs[OLE DB Source Output].Columns[COATAPPROVED]"
+                      dataType="bool"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\BKPF\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[HWAER]"
-                      length="5"
-                      lineageId="Package\BKPF\DB PBI.Outputs[OLE DB Source Output].Columns[HWAER]"
-                      name="HWAER"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\BKPF\DB PBI.Outputs[OLE DB Source Output].Columns[HWAE2]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\BKPF\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[HWAE2]"
-                      length="5"
-                      lineageId="Package\BKPF\DB PBI.Outputs[OLE DB Source Output].Columns[HWAE2]"
-                      name="HWAE2"
+                      externalMetadataColumnId="Package\COATAPPROVAL\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[COATAPPROVED]"
+                      lineageId="Package\COATAPPROVAL\DB PBI.Outputs[OLE DB Source Output].Columns[COATAPPROVED]"
+                      name="COATAPPROVED"
                       truncationRowDisposition="FailComponent" />
                   </outputColumns>
                   <externalMetadataColumns
                     isUsed="True">
                     <externalMetadataColumn
-                      refId="Package\BKPF\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      refId="Package\COATAPPROVAL\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[COATAPPSPECNO]"
                       dataType="wstr"
-                      length="3"
-                      name="MANDT" />
+                      length="50"
+                      name="COATAPPSPECNO" />
                     <externalMetadataColumn
-                      refId="Package\BKPF\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[BUKRS]"
-                      dataType="wstr"
-                      length="4"
-                      name="BUKRS" />
+                      refId="Package\COATAPPROVAL\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[COATAPPREV]"
+                      dataType="i4"
+                      name="COATAPPREV" />
                     <externalMetadataColumn
-                      refId="Package\BKPF\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[BELNR]"
-                      dataType="wstr"
-                      length="10"
-                      name="BELNR" />
+                      refId="Package\COATAPPROVAL\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[COATAPPTYPE]"
+                      dataType="i4"
+                      name="COATAPPTYPE" />
                     <externalMetadataColumn
-                      refId="Package\BKPF\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[GJAHR]"
-                      dataType="wstr"
-                      length="4"
-                      name="GJAHR" />
+                      refId="Package\COATAPPROVAL\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[COATAPPID]"
+                      dataType="i4"
+                      name="COATAPPID" />
                     <externalMetadataColumn
-                      refId="Package\BKPF\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[HWAER]"
-                      dataType="wstr"
-                      length="5"
-                      name="HWAER" />
-                    <externalMetadataColumn
-                      refId="Package\BKPF\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[HWAE2]"
-                      dataType="wstr"
-                      length="5"
-                      name="HWAE2" />
+                      refId="Package\COATAPPROVAL\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[COATAPPROVED]"
+                      dataType="bool"
+                      name="COATAPPROVED" />
                   </externalMetadataColumns>
                 </output>
                 <output
-                  refId="Package\BKPF\DB PBI.Outputs[OLE DB Source Error Output]"
+                  refId="Package\COATAPPROVAL\DB PBI.Outputs[OLE DB Source Error Output]"
                   isErrorOut="true"
+                  isSorted="true"
                   name="OLE DB Source Error Output">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\BKPF\DB PBI.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      refId="Package\COATAPPROVAL\DB PBI.Outputs[OLE DB Source Error Output].Columns[COATAPPSPECNO]"
                       dataType="wstr"
-                      length="3"
-                      lineageId="Package\BKPF\DB PBI.Outputs[OLE DB Source Error Output].Columns[MANDT]"
-                      name="MANDT" />
+                      length="50"
+                      lineageId="Package\COATAPPROVAL\DB PBI.Outputs[OLE DB Source Error Output].Columns[COATAPPSPECNO]"
+                      name="COATAPPSPECNO"
+                      sortKeyPosition="1" />
                     <outputColumn
-                      refId="Package\BKPF\DB PBI.Outputs[OLE DB Source Error Output].Columns[BUKRS]"
-                      dataType="wstr"
-                      length="4"
-                      lineageId="Package\BKPF\DB PBI.Outputs[OLE DB Source Error Output].Columns[BUKRS]"
-                      name="BUKRS" />
-                    <outputColumn
-                      refId="Package\BKPF\DB PBI.Outputs[OLE DB Source Error Output].Columns[BELNR]"
-                      dataType="wstr"
-                      length="10"
-                      lineageId="Package\BKPF\DB PBI.Outputs[OLE DB Source Error Output].Columns[BELNR]"
-                      name="BELNR" />
-                    <outputColumn
-                      refId="Package\BKPF\DB PBI.Outputs[OLE DB Source Error Output].Columns[GJAHR]"
-                      dataType="wstr"
-                      length="4"
-                      lineageId="Package\BKPF\DB PBI.Outputs[OLE DB Source Error Output].Columns[GJAHR]"
-                      name="GJAHR" />
-                    <outputColumn
-                      refId="Package\BKPF\DB PBI.Outputs[OLE DB Source Error Output].Columns[HWAER]"
-                      dataType="wstr"
-                      length="5"
-                      lineageId="Package\BKPF\DB PBI.Outputs[OLE DB Source Error Output].Columns[HWAER]"
-                      name="HWAER" />
-                    <outputColumn
-                      refId="Package\BKPF\DB PBI.Outputs[OLE DB Source Error Output].Columns[HWAE2]"
-                      dataType="wstr"
-                      length="5"
-                      lineageId="Package\BKPF\DB PBI.Outputs[OLE DB Source Error Output].Columns[HWAE2]"
-                      name="HWAE2" />
-                    <outputColumn
-                      refId="Package\BKPF\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      refId="Package\COATAPPROVAL\DB PBI.Outputs[OLE DB Source Error Output].Columns[COATAPPREV]"
                       dataType="i4"
-                      lineageId="Package\BKPF\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      lineageId="Package\COATAPPROVAL\DB PBI.Outputs[OLE DB Source Error Output].Columns[COATAPPREV]"
+                      name="COATAPPREV"
+                      sortKeyPosition="2" />
+                    <outputColumn
+                      refId="Package\COATAPPROVAL\DB PBI.Outputs[OLE DB Source Error Output].Columns[COATAPPTYPE]"
+                      dataType="i4"
+                      lineageId="Package\COATAPPROVAL\DB PBI.Outputs[OLE DB Source Error Output].Columns[COATAPPTYPE]"
+                      name="COATAPPTYPE"
+                      sortKeyPosition="3" />
+                    <outputColumn
+                      refId="Package\COATAPPROVAL\DB PBI.Outputs[OLE DB Source Error Output].Columns[COATAPPID]"
+                      dataType="i4"
+                      lineageId="Package\COATAPPROVAL\DB PBI.Outputs[OLE DB Source Error Output].Columns[COATAPPID]"
+                      name="COATAPPID" />
+                    <outputColumn
+                      refId="Package\COATAPPROVAL\DB PBI.Outputs[OLE DB Source Error Output].Columns[COATAPPROVED]"
+                      dataType="bool"
+                      lineageId="Package\COATAPPROVAL\DB PBI.Outputs[OLE DB Source Error Output].Columns[COATAPPROVED]"
+                      name="COATAPPROVED" />
+                    <outputColumn
+                      refId="Package\COATAPPROVAL\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\COATAPPROVAL\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\BKPF\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      refId="Package\COATAPPROVAL\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\BKPF\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\COATAPPROVAL\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -261,236 +443,7 @@ ORDER BY A01.[MANDT]
               </outputs>
             </component>
             <component
-              refId="Package\BKPF\DB SAP"
-              componentClassID="Microsoft.OLEDBSource"
-              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
-              description="OLE DB Source"
-              name="DB SAP"
-              usesDispositions="true"
-              version="7">
-              <properties>
-                <property
-                  dataType="System.Int32"
-                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
-                  name="CommandTimeout">0</property>
-                <property
-                  dataType="System.String"
-                  description="Specifies the name of the database object used to open a rowset."
-                  name="OpenRowset"></property>
-                <property
-                  dataType="System.String"
-                  description="Specifies the variable that contains the name of the database object used to open a rowset."
-                  name="OpenRowsetVariable"></property>
-                <property
-                  dataType="System.String"
-                  description="The SQL command to be executed."
-                  name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT A01.[MANDT]
-      ,A01.[BUKRS]
-      ,A01.[BELNR]
-      ,A01.[GJAHR]
-      ,A01.[HWAER]
-      ,A01.[HWAE2]
-FROM [ecp].[BKPF] A01 (NOLOCK)
-ORDER BY A01.[MANDT]
-      ,A01.[BUKRS]
-      ,A01.[BELNR]
-      ,A01.[GJAHR]</property>
-                <property
-                  dataType="System.String"
-                  description="The variable that contains the SQL command to be executed."
-                  name="SqlCommandVariable"></property>
-                <property
-                  dataType="System.Int32"
-                  description="Specifies the column code page to use when code page information is unavailable from the data source."
-                  name="DefaultCodePage">1252</property>
-                <property
-                  dataType="System.Boolean"
-                  description="Forces the use of the DefaultCodePage property value when describing character data."
-                  name="AlwaysUseDefaultCodePage">false</property>
-                <property
-                  dataType="System.Int32"
-                  description="Specifies the mode used to access the database."
-                  name="AccessMode"
-                  typeConverter="AccessMode">2</property>
-                <property
-                  dataType="System.String"
-                  description="The mappings between the parameters in the SQL command and variables."
-                  name="ParameterMapping"></property>
-              </properties>
-              <connections>
-                <connection
-                  refId="Package\BKPF\DB SAP.Connections[OleDbConnection]"
-                  connectionManagerID="{544CCAD9-2CB1-4D87-98D7-A7C478586195}:external"
-                  connectionManagerRefId="Project.ConnectionManagers[SQL_SAP]"
-                  description="The OLE DB runtime connection used to access the database."
-                  name="OleDbConnection" />
-              </connections>
-              <outputs>
-                <output
-                  refId="Package\BKPF\DB SAP.Outputs[OLE DB Source Output]"
-                  isSorted="true"
-                  name="OLE DB Source Output">
-                  <outputColumns>
-                    <outputColumn
-                      refId="Package\BKPF\DB SAP.Outputs[OLE DB Source Output].Columns[MANDT]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\BKPF\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
-                      length="3"
-                      lineageId="Package\BKPF\DB SAP.Outputs[OLE DB Source Output].Columns[MANDT]"
-                      name="MANDT"
-                      sortKeyPosition="1"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\BKPF\DB SAP.Outputs[OLE DB Source Output].Columns[BUKRS]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\BKPF\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[BUKRS]"
-                      length="4"
-                      lineageId="Package\BKPF\DB SAP.Outputs[OLE DB Source Output].Columns[BUKRS]"
-                      name="BUKRS"
-                      sortKeyPosition="2"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\BKPF\DB SAP.Outputs[OLE DB Source Output].Columns[BELNR]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\BKPF\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[BELNR]"
-                      length="10"
-                      lineageId="Package\BKPF\DB SAP.Outputs[OLE DB Source Output].Columns[BELNR]"
-                      name="BELNR"
-                      sortKeyPosition="3"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\BKPF\DB SAP.Outputs[OLE DB Source Output].Columns[GJAHR]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\BKPF\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[GJAHR]"
-                      length="4"
-                      lineageId="Package\BKPF\DB SAP.Outputs[OLE DB Source Output].Columns[GJAHR]"
-                      name="GJAHR"
-                      sortKeyPosition="4"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\BKPF\DB SAP.Outputs[OLE DB Source Output].Columns[HWAER]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\BKPF\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[HWAER]"
-                      length="5"
-                      lineageId="Package\BKPF\DB SAP.Outputs[OLE DB Source Output].Columns[HWAER]"
-                      name="HWAER"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\BKPF\DB SAP.Outputs[OLE DB Source Output].Columns[HWAE2]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\BKPF\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[HWAE2]"
-                      length="5"
-                      lineageId="Package\BKPF\DB SAP.Outputs[OLE DB Source Output].Columns[HWAE2]"
-                      name="HWAE2"
-                      truncationRowDisposition="FailComponent" />
-                  </outputColumns>
-                  <externalMetadataColumns
-                    isUsed="True">
-                    <externalMetadataColumn
-                      refId="Package\BKPF\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
-                      dataType="wstr"
-                      length="3"
-                      name="MANDT" />
-                    <externalMetadataColumn
-                      refId="Package\BKPF\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[BUKRS]"
-                      dataType="wstr"
-                      length="4"
-                      name="BUKRS" />
-                    <externalMetadataColumn
-                      refId="Package\BKPF\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[BELNR]"
-                      dataType="wstr"
-                      length="10"
-                      name="BELNR" />
-                    <externalMetadataColumn
-                      refId="Package\BKPF\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[GJAHR]"
-                      dataType="wstr"
-                      length="4"
-                      name="GJAHR" />
-                    <externalMetadataColumn
-                      refId="Package\BKPF\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[HWAER]"
-                      dataType="wstr"
-                      length="5"
-                      name="HWAER" />
-                    <externalMetadataColumn
-                      refId="Package\BKPF\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[HWAE2]"
-                      dataType="wstr"
-                      length="5"
-                      name="HWAE2" />
-                  </externalMetadataColumns>
-                </output>
-                <output
-                  refId="Package\BKPF\DB SAP.Outputs[OLE DB Source Error Output]"
-                  isErrorOut="true"
-                  name="OLE DB Source Error Output">
-                  <outputColumns>
-                    <outputColumn
-                      refId="Package\BKPF\DB SAP.Outputs[OLE DB Source Error Output].Columns[MANDT]"
-                      dataType="wstr"
-                      length="3"
-                      lineageId="Package\BKPF\DB SAP.Outputs[OLE DB Source Error Output].Columns[MANDT]"
-                      name="MANDT" />
-                    <outputColumn
-                      refId="Package\BKPF\DB SAP.Outputs[OLE DB Source Error Output].Columns[BUKRS]"
-                      dataType="wstr"
-                      length="4"
-                      lineageId="Package\BKPF\DB SAP.Outputs[OLE DB Source Error Output].Columns[BUKRS]"
-                      name="BUKRS" />
-                    <outputColumn
-                      refId="Package\BKPF\DB SAP.Outputs[OLE DB Source Error Output].Columns[BELNR]"
-                      dataType="wstr"
-                      length="10"
-                      lineageId="Package\BKPF\DB SAP.Outputs[OLE DB Source Error Output].Columns[BELNR]"
-                      name="BELNR" />
-                    <outputColumn
-                      refId="Package\BKPF\DB SAP.Outputs[OLE DB Source Error Output].Columns[GJAHR]"
-                      dataType="wstr"
-                      length="4"
-                      lineageId="Package\BKPF\DB SAP.Outputs[OLE DB Source Error Output].Columns[GJAHR]"
-                      name="GJAHR" />
-                    <outputColumn
-                      refId="Package\BKPF\DB SAP.Outputs[OLE DB Source Error Output].Columns[HWAER]"
-                      dataType="wstr"
-                      length="5"
-                      lineageId="Package\BKPF\DB SAP.Outputs[OLE DB Source Error Output].Columns[HWAER]"
-                      name="HWAER" />
-                    <outputColumn
-                      refId="Package\BKPF\DB SAP.Outputs[OLE DB Source Error Output].Columns[HWAE2]"
-                      dataType="wstr"
-                      length="5"
-                      lineageId="Package\BKPF\DB SAP.Outputs[OLE DB Source Error Output].Columns[HWAE2]"
-                      name="HWAE2" />
-                    <outputColumn
-                      refId="Package\BKPF\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
-                      dataType="i4"
-                      lineageId="Package\BKPF\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
-                      name="ErrorCode"
-                      specialFlags="1" />
-                    <outputColumn
-                      refId="Package\BKPF\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
-                      dataType="i4"
-                      lineageId="Package\BKPF\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
-                      name="ErrorColumn"
-                      specialFlags="2" />
-                  </outputColumns>
-                  <externalMetadataColumns />
-                </output>
-              </outputs>
-            </component>
-            <component
-              refId="Package\BKPF\Find Changed Records"
+              refId="Package\COATAPPROVAL\Find Changed Records"
               componentClassID="Microsoft.ConditionalSplit"
               contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
               description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
@@ -498,49 +451,56 @@ ORDER BY A01.[MANDT]
               usesDispositions="true">
               <inputs>
                 <input
-                  refId="Package\BKPF\Find Changed Records.Inputs[Conditional Split Input]"
+                  refId="Package\COATAPPROVAL\Find Changed Records.Inputs[Conditional Split Input]"
                   description="Input to the Conditional Split Transformation"
                   name="Conditional Split Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\BKPF\Find Changed Records.Inputs[Conditional Split Input].Columns[MANDT]"
-                      cachedDataType="wstr"
-                      cachedLength="3"
-                      cachedName="MANDT"
-                      cachedSortKeyPosition="1"
-                      lineageId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
+                      refId="Package\COATAPPROVAL\Find Changed Records.Inputs[Conditional Split Input].Columns[COATAPPID]"
+                      cachedDataType="i4"
+                      cachedName="COATAPPID"
+                      lineageId="Package\COATAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[COATAPPID]" />
                     <inputColumn
-                      refId="Package\BKPF\Find Changed Records.Inputs[Conditional Split Input].Columns[MANDT (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="3"
-                      cachedName="MANDT (1)"
-                      lineageId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]" />
+                      refId="Package\COATAPPROVAL\Find Changed Records.Inputs[Conditional Split Input].Columns[COATAPPROVED]"
+                      cachedDataType="bool"
+                      cachedName="COATAPPROVED"
+                      lineageId="Package\COATAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[COATAPPROVED]" />
+                    <inputColumn
+                      refId="Package\COATAPPROVAL\Find Changed Records.Inputs[Conditional Split Input].Columns[COATAPPID (1)]"
+                      cachedDataType="i4"
+                      cachedName="COATAPPID (1)"
+                      lineageId="Package\COATAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[COATAPPID (1)]" />
+                    <inputColumn
+                      refId="Package\COATAPPROVAL\Find Changed Records.Inputs[Conditional Split Input].Columns[COATAPPROVED (1)]"
+                      cachedDataType="bool"
+                      cachedName="COATAPPROVED (1)"
+                      lineageId="Package\COATAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[COATAPPROVED (1)]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\BKPF\Find Changed Records.Outputs[update]"
+                  refId="Package\COATAPPROVAL\Find Changed Records.Outputs[update]"
                   description="Output 1 of the Conditional Split Transformation"
                   errorOrTruncationOperation="Computation"
                   errorRowDisposition="FailComponent"
                   exclusionGroup="1"
                   name="update"
-                  synchronousInputId="Package\BKPF\Find Changed Records.Inputs[Conditional Split Input]"
+                  synchronousInputId="Package\COATAPPROVAL\Find Changed Records.Inputs[Conditional Split Input]"
                   truncationRowDisposition="FailComponent">
                   <properties>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
-                      name="Expression">#{Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[MANDT]} != #{Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]}</property>
+                      name="Expression">#{Package\COATAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[COATAPPID]} != #{Package\COATAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[COATAPPID (1)]} || #{Package\COATAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[COATAPPROVED]} != #{Package\COATAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[COATAPPROVED (1)]}</property>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the friendly version of the expression. This expression version uses column names."
                       expressionType="Notify"
-                      name="FriendlyExpression">MANDT != [MANDT (1)]</property>
+                      name="FriendlyExpression">COATAPPID != [COATAPPID (1)] || COATAPPROVED != [COATAPPROVED (1)]</property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
@@ -549,11 +509,11 @@ ORDER BY A01.[MANDT]
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\BKPF\Find Changed Records.Outputs[Conditional Split Default Output]"
+                  refId="Package\COATAPPROVAL\Find Changed Records.Outputs[Conditional Split Default Output]"
                   description="Default Output of the Conditional Split Transformation"
                   exclusionGroup="1"
                   name="Conditional Split Default Output"
-                  synchronousInputId="Package\BKPF\Find Changed Records.Inputs[Conditional Split Input]">
+                  synchronousInputId="Package\COATAPPROVAL\Find Changed Records.Inputs[Conditional Split Input]">
                   <properties>
                     <property
                       dataType="System.Boolean"
@@ -562,23 +522,23 @@ ORDER BY A01.[MANDT]
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\BKPF\Find Changed Records.Outputs[Conditional Split Error Output]"
+                  refId="Package\COATAPPROVAL\Find Changed Records.Outputs[Conditional Split Error Output]"
                   description="Error Output of the Conditional Split Transformation"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="Conditional Split Error Output"
-                  synchronousInputId="Package\BKPF\Find Changed Records.Inputs[Conditional Split Input]">
+                  synchronousInputId="Package\COATAPPROVAL\Find Changed Records.Inputs[Conditional Split Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\BKPF\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      refId="Package\COATAPPROVAL\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\BKPF\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      lineageId="Package\COATAPPROVAL\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\BKPF\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      refId="Package\COATAPPROVAL\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\BKPF\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\COATAPPROVAL\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -587,7 +547,7 @@ ORDER BY A01.[MANDT]
               </outputs>
             </component>
             <component
-              refId="Package\BKPF\Identity records"
+              refId="Package\COATAPPROVAL\Identity records"
               componentClassID="Microsoft.ConditionalSplit"
               contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
               description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
@@ -595,49 +555,49 @@ ORDER BY A01.[MANDT]
               usesDispositions="true">
               <inputs>
                 <input
-                  refId="Package\BKPF\Identity records.Inputs[Conditional Split Input]"
+                  refId="Package\COATAPPROVAL\Identity records.Inputs[Conditional Split Input]"
                   description="Input to the Conditional Split Transformation"
                   name="Conditional Split Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\BKPF\Identity records.Inputs[Conditional Split Input].Columns[MANDT]"
+                      refId="Package\COATAPPROVAL\Identity records.Inputs[Conditional Split Input].Columns[COATAPPSPECNO]"
                       cachedDataType="wstr"
-                      cachedLength="3"
-                      cachedName="MANDT"
+                      cachedLength="50"
+                      cachedName="COATAPPSPECNO"
                       cachedSortKeyPosition="1"
-                      lineageId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
+                      lineageId="Package\COATAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[COATAPPSPECNO]" />
                     <inputColumn
-                      refId="Package\BKPF\Identity records.Inputs[Conditional Split Input].Columns[MANDT (1)]"
+                      refId="Package\COATAPPROVAL\Identity records.Inputs[Conditional Split Input].Columns[COATAPPSPECNO (1)]"
                       cachedDataType="wstr"
-                      cachedLength="3"
-                      cachedName="MANDT (1)"
-                      lineageId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]" />
+                      cachedLength="50"
+                      cachedName="COATAPPSPECNO (1)"
+                      lineageId="Package\COATAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[COATAPPSPECNO (1)]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\BKPF\Identity records.Outputs[update]"
+                  refId="Package\COATAPPROVAL\Identity records.Outputs[update]"
                   description="Output 1 of the Conditional Split Transformation"
                   errorOrTruncationOperation="Computation"
                   errorRowDisposition="FailComponent"
                   exclusionGroup="1"
                   name="update"
-                  synchronousInputId="Package\BKPF\Identity records.Inputs[Conditional Split Input]"
+                  synchronousInputId="Package\COATAPPROVAL\Identity records.Inputs[Conditional Split Input]"
                   truncationRowDisposition="FailComponent">
                   <properties>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
-                      name="Expression">![ISNULL](#{Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; ![ISNULL](#{Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
+                      name="Expression">![ISNULL](#{Package\COATAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[COATAPPSPECNO]}) &amp;&amp; ![ISNULL](#{Package\COATAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[COATAPPSPECNO (1)]})</property>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the friendly version of the expression. This expression version uses column names."
                       expressionType="Notify"
-                      name="FriendlyExpression">!ISNULL(MANDT) &amp;&amp; !ISNULL([MANDT (1)])</property>
+                      name="FriendlyExpression">!ISNULL(COATAPPSPECNO) &amp;&amp; !ISNULL([COATAPPSPECNO (1)])</property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
@@ -646,26 +606,26 @@ ORDER BY A01.[MANDT]
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\BKPF\Identity records.Outputs[insert]"
+                  refId="Package\COATAPPROVAL\Identity records.Outputs[insert]"
                   description="Output 2 of the Conditional Split Transformation"
                   errorOrTruncationOperation="Computation"
                   errorRowDisposition="FailComponent"
                   exclusionGroup="1"
                   name="insert"
-                  synchronousInputId="Package\BKPF\Identity records.Inputs[Conditional Split Input]"
+                  synchronousInputId="Package\COATAPPROVAL\Identity records.Inputs[Conditional Split Input]"
                   truncationRowDisposition="FailComponent">
                   <properties>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
-                      name="Expression">![ISNULL](#{Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; [ISNULL](#{Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
+                      name="Expression">![ISNULL](#{Package\COATAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[COATAPPSPECNO]}) &amp;&amp; [ISNULL](#{Package\COATAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[COATAPPSPECNO (1)]})</property>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the friendly version of the expression. This expression version uses column names."
                       expressionType="Notify"
-                      name="FriendlyExpression">!ISNULL(MANDT) &amp;&amp; ISNULL([MANDT (1)])</property>
+                      name="FriendlyExpression">!ISNULL(COATAPPSPECNO) &amp;&amp; ISNULL([COATAPPSPECNO (1)])</property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
@@ -674,26 +634,26 @@ ORDER BY A01.[MANDT]
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\BKPF\Identity records.Outputs[delete]"
+                  refId="Package\COATAPPROVAL\Identity records.Outputs[delete]"
                   description="Output 3 of the Conditional Split Transformation"
                   errorOrTruncationOperation="Computation"
                   errorRowDisposition="FailComponent"
                   exclusionGroup="1"
                   name="delete"
-                  synchronousInputId="Package\BKPF\Identity records.Inputs[Conditional Split Input]"
+                  synchronousInputId="Package\COATAPPROVAL\Identity records.Inputs[Conditional Split Input]"
                   truncationRowDisposition="FailComponent">
                   <properties>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
-                      name="Expression">[ISNULL](#{Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; ![ISNULL](#{Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
+                      name="Expression">[ISNULL](#{Package\COATAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[COATAPPSPECNO]}) &amp;&amp; ![ISNULL](#{Package\COATAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[COATAPPSPECNO (1)]})</property>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the friendly version of the expression. This expression version uses column names."
                       expressionType="Notify"
-                      name="FriendlyExpression">ISNULL(MANDT) &amp;&amp; !ISNULL([MANDT (1)])</property>
+                      name="FriendlyExpression">ISNULL(COATAPPSPECNO) &amp;&amp; !ISNULL([COATAPPSPECNO (1)])</property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
@@ -702,11 +662,11 @@ ORDER BY A01.[MANDT]
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\BKPF\Identity records.Outputs[Conditional Split Default Output]"
+                  refId="Package\COATAPPROVAL\Identity records.Outputs[Conditional Split Default Output]"
                   description="Default Output of the Conditional Split Transformation"
                   exclusionGroup="1"
                   name="Conditional Split Default Output"
-                  synchronousInputId="Package\BKPF\Identity records.Inputs[Conditional Split Input]">
+                  synchronousInputId="Package\COATAPPROVAL\Identity records.Inputs[Conditional Split Input]">
                   <properties>
                     <property
                       dataType="System.Boolean"
@@ -715,23 +675,23 @@ ORDER BY A01.[MANDT]
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\BKPF\Identity records.Outputs[Conditional Split Error Output]"
+                  refId="Package\COATAPPROVAL\Identity records.Outputs[Conditional Split Error Output]"
                   description="Error Output of the Conditional Split Transformation"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="Conditional Split Error Output"
-                  synchronousInputId="Package\BKPF\Identity records.Inputs[Conditional Split Input]">
+                  synchronousInputId="Package\COATAPPROVAL\Identity records.Inputs[Conditional Split Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\BKPF\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      refId="Package\COATAPPROVAL\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\BKPF\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      lineageId="Package\COATAPPROVAL\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\BKPF\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      refId="Package\COATAPPROVAL\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\BKPF\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\COATAPPROVAL\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -740,7 +700,7 @@ ORDER BY A01.[MANDT]
               </outputs>
             </component>
             <component
-              refId="Package\BKPF\insert new records"
+              refId="Package\COATAPPROVAL\insert new records"
               componentClassID="Microsoft.OLEDBDestination"
               contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
               description="OLE DB Destination"
@@ -755,7 +715,7 @@ ORDER BY A01.[MANDT]
                 <property
                   dataType="System.String"
                   description="Specifies the name of the database object used to open a rowset."
-                  name="OpenRowset">[dbo].[BKPF_STAGE_INSERT]</property>
+                  name="OpenRowset">[dbo].[COATAPPROVAL_STAGE_INSERT]</property>
                 <property
                   dataType="System.String"
                   description="Specifies the variable that contains the name of the database object used to open a rowset."
@@ -797,7 +757,7 @@ ORDER BY A01.[MANDT]
               </properties>
               <connections>
                 <connection
-                  refId="Package\BKPF\insert new records.Connections[OleDbConnection]"
+                  refId="Package\COATAPPROVAL\insert new records.Connections[OleDbConnection]"
                   connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
                   connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
                   description="The OLE DB runtime connection used to access the database."
@@ -805,112 +765,91 @@ ORDER BY A01.[MANDT]
               </connections>
               <inputs>
                 <input
-                  refId="Package\BKPF\insert new records.Inputs[OLE DB Destination Input]"
+                  refId="Package\COATAPPROVAL\insert new records.Inputs[OLE DB Destination Input]"
                   errorOrTruncationOperation="Insert"
                   errorRowDisposition="FailComponent"
                   hasSideEffects="true"
                   name="OLE DB Destination Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\BKPF\insert new records.Inputs[OLE DB Destination Input].Columns[MANDT]"
+                      refId="Package\COATAPPROVAL\insert new records.Inputs[OLE DB Destination Input].Columns[COATAPPSPECNO]"
                       cachedDataType="wstr"
-                      cachedLength="3"
-                      cachedName="MANDT"
+                      cachedLength="50"
+                      cachedName="COATAPPSPECNO"
                       cachedSortKeyPosition="1"
-                      externalMetadataColumnId="Package\BKPF\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
-                      lineageId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
+                      externalMetadataColumnId="Package\COATAPPROVAL\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[COATAPPSPECNO]"
+                      lineageId="Package\COATAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[COATAPPSPECNO]" />
                     <inputColumn
-                      refId="Package\BKPF\insert new records.Inputs[OLE DB Destination Input].Columns[BUKRS]"
-                      cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="BUKRS"
+                      refId="Package\COATAPPROVAL\insert new records.Inputs[OLE DB Destination Input].Columns[COATAPPREV]"
+                      cachedDataType="i4"
+                      cachedName="COATAPPREV"
                       cachedSortKeyPosition="2"
-                      externalMetadataColumnId="Package\BKPF\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[BUKRS]"
-                      lineageId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[BUKRS]" />
+                      externalMetadataColumnId="Package\COATAPPROVAL\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[COATAPPREV]"
+                      lineageId="Package\COATAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[COATAPPREV]" />
                     <inputColumn
-                      refId="Package\BKPF\insert new records.Inputs[OLE DB Destination Input].Columns[BELNR]"
-                      cachedDataType="wstr"
-                      cachedLength="10"
-                      cachedName="BELNR"
+                      refId="Package\COATAPPROVAL\insert new records.Inputs[OLE DB Destination Input].Columns[COATAPPID]"
+                      cachedDataType="i4"
+                      cachedName="COATAPPID"
+                      externalMetadataColumnId="Package\COATAPPROVAL\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[COATAPPID]"
+                      lineageId="Package\COATAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[COATAPPID]" />
+                    <inputColumn
+                      refId="Package\COATAPPROVAL\insert new records.Inputs[OLE DB Destination Input].Columns[COATAPPROVED]"
+                      cachedDataType="bool"
+                      cachedName="COATAPPROVED"
+                      externalMetadataColumnId="Package\COATAPPROVAL\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[COATAPPROVED]"
+                      lineageId="Package\COATAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[COATAPPROVED]" />
+                    <inputColumn
+                      refId="Package\COATAPPROVAL\insert new records.Inputs[OLE DB Destination Input].Columns[COATAPPTYPE]"
+                      cachedDataType="i4"
+                      cachedName="COATAPPTYPE"
                       cachedSortKeyPosition="3"
-                      externalMetadataColumnId="Package\BKPF\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[BELNR]"
-                      lineageId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[BELNR]" />
-                    <inputColumn
-                      refId="Package\BKPF\insert new records.Inputs[OLE DB Destination Input].Columns[GJAHR]"
-                      cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="GJAHR"
-                      cachedSortKeyPosition="4"
-                      externalMetadataColumnId="Package\BKPF\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[GJAHR]"
-                      lineageId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[GJAHR]" />
-                    <inputColumn
-                      refId="Package\BKPF\insert new records.Inputs[OLE DB Destination Input].Columns[HWAER]"
-                      cachedDataType="wstr"
-                      cachedLength="5"
-                      cachedName="HWAER"
-                      externalMetadataColumnId="Package\BKPF\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[HWAER]"
-                      lineageId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[HWAER]" />
-                    <inputColumn
-                      refId="Package\BKPF\insert new records.Inputs[OLE DB Destination Input].Columns[HWAE2]"
-                      cachedDataType="wstr"
-                      cachedLength="5"
-                      cachedName="HWAE2"
-                      externalMetadataColumnId="Package\BKPF\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[HWAE2]"
-                      lineageId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[HWAE2]" />
+                      externalMetadataColumnId="Package\COATAPPROVAL\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[COATAPPTYPE]"
+                      lineageId="Package\COATAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[COATAPPTYPE]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
                     <externalMetadataColumn
-                      refId="Package\BKPF\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      refId="Package\COATAPPROVAL\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[COATAPPSPECNO]"
                       dataType="wstr"
-                      length="3"
-                      name="MANDT" />
+                      length="50"
+                      name="COATAPPSPECNO" />
                     <externalMetadataColumn
-                      refId="Package\BKPF\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[BUKRS]"
-                      dataType="wstr"
-                      length="4"
-                      name="BUKRS" />
+                      refId="Package\COATAPPROVAL\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[COATAPPREV]"
+                      dataType="i4"
+                      name="COATAPPREV" />
                     <externalMetadataColumn
-                      refId="Package\BKPF\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[BELNR]"
-                      dataType="wstr"
-                      length="10"
-                      name="BELNR" />
+                      refId="Package\COATAPPROVAL\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[COATAPPID]"
+                      dataType="i4"
+                      name="COATAPPID" />
                     <externalMetadataColumn
-                      refId="Package\BKPF\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[GJAHR]"
-                      dataType="wstr"
-                      length="4"
-                      name="GJAHR" />
+                      refId="Package\COATAPPROVAL\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[COATAPPROVED]"
+                      dataType="bool"
+                      name="COATAPPROVED" />
                     <externalMetadataColumn
-                      refId="Package\BKPF\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[HWAER]"
-                      dataType="wstr"
-                      length="5"
-                      name="HWAER" />
-                    <externalMetadataColumn
-                      refId="Package\BKPF\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[HWAE2]"
-                      dataType="wstr"
-                      length="5"
-                      name="HWAE2" />
+                      refId="Package\COATAPPROVAL\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[COATAPPTYPE]"
+                      dataType="i4"
+                      name="COATAPPTYPE" />
                   </externalMetadataColumns>
                 </input>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\BKPF\insert new records.Outputs[OLE DB Destination Error Output]"
+                  refId="Package\COATAPPROVAL\insert new records.Outputs[OLE DB Destination Error Output]"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="OLE DB Destination Error Output"
-                  synchronousInputId="Package\BKPF\insert new records.Inputs[OLE DB Destination Input]">
+                  synchronousInputId="Package\COATAPPROVAL\insert new records.Inputs[OLE DB Destination Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\BKPF\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      refId="Package\COATAPPROVAL\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\BKPF\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      lineageId="Package\COATAPPROVAL\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\BKPF\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      refId="Package\COATAPPROVAL\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\BKPF\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\COATAPPROVAL\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -919,7 +858,7 @@ ORDER BY A01.[MANDT]
               </outputs>
             </component>
             <component
-              refId="Package\BKPF\Merge Join"
+              refId="Package\COATAPPROVAL\Merge Join"
               componentClassID="Microsoft.MergeJoin"
               contactInfo="Merge Join;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
               description="Combine two sorted data flows into one using the FULL, LEFT, or INNER join. We recommend this transformation when data flows can be sorted at their sources."
@@ -934,7 +873,7 @@ ORDER BY A01.[MANDT]
                 <property
                   dataType="System.Int32"
                   description="Specifies the number of columns in the ordering key."
-                  name="NumKeyColumns">4</property>
+                  name="NumKeyColumns">3</property>
                 <property
                   dataType="System.Boolean"
                   description="Indicates whether the null values are treated as equal values."
@@ -946,278 +885,219 @@ ORDER BY A01.[MANDT]
               </properties>
               <inputs>
                 <input
-                  refId="Package\BKPF\Merge Join.Inputs[Merge Join Left Input]"
+                  refId="Package\COATAPPROVAL\Merge Join.Inputs[Merge Join Left Input]"
                   hasSideEffects="true"
                   name="Merge Join Left Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\BKPF\Merge Join.Inputs[Merge Join Left Input].Columns[MANDT]"
+                      refId="Package\COATAPPROVAL\Merge Join.Inputs[Merge Join Left Input].Columns[COATAPPSPECNO]"
                       cachedDataType="wstr"
-                      cachedLength="3"
-                      cachedName="MANDT"
+                      cachedLength="50"
+                      cachedName="COATAPPSPECNO"
                       cachedSortKeyPosition="1"
-                      lineageId="Package\BKPF\DB SAP.Outputs[OLE DB Source Output].Columns[MANDT]" />
+                      lineageId="Package\COATAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Output].Columns[COATAPPSPECNO]" />
                     <inputColumn
-                      refId="Package\BKPF\Merge Join.Inputs[Merge Join Left Input].Columns[BUKRS]"
-                      cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="BUKRS"
+                      refId="Package\COATAPPROVAL\Merge Join.Inputs[Merge Join Left Input].Columns[COATAPPREV]"
+                      cachedDataType="i4"
+                      cachedName="COATAPPREV"
                       cachedSortKeyPosition="2"
-                      lineageId="Package\BKPF\DB SAP.Outputs[OLE DB Source Output].Columns[BUKRS]" />
+                      lineageId="Package\COATAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Output].Columns[COATAPPREV]" />
                     <inputColumn
-                      refId="Package\BKPF\Merge Join.Inputs[Merge Join Left Input].Columns[BELNR]"
-                      cachedDataType="wstr"
-                      cachedLength="10"
-                      cachedName="BELNR"
+                      refId="Package\COATAPPROVAL\Merge Join.Inputs[Merge Join Left Input].Columns[COATAPPTYPE]"
+                      cachedDataType="i4"
+                      cachedName="COATAPPTYPE"
                       cachedSortKeyPosition="3"
-                      lineageId="Package\BKPF\DB SAP.Outputs[OLE DB Source Output].Columns[BELNR]" />
+                      lineageId="Package\COATAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Output].Columns[COATAPPTYPE]" />
                     <inputColumn
-                      refId="Package\BKPF\Merge Join.Inputs[Merge Join Left Input].Columns[GJAHR]"
-                      cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="GJAHR"
-                      cachedSortKeyPosition="4"
-                      lineageId="Package\BKPF\DB SAP.Outputs[OLE DB Source Output].Columns[GJAHR]" />
+                      refId="Package\COATAPPROVAL\Merge Join.Inputs[Merge Join Left Input].Columns[COATAPPID]"
+                      cachedDataType="i4"
+                      cachedName="COATAPPID"
+                      lineageId="Package\COATAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Output].Columns[COATAPPID]" />
                     <inputColumn
-                      refId="Package\BKPF\Merge Join.Inputs[Merge Join Left Input].Columns[HWAER]"
-                      cachedDataType="wstr"
-                      cachedLength="5"
-                      cachedName="HWAER"
-                      lineageId="Package\BKPF\DB SAP.Outputs[OLE DB Source Output].Columns[HWAER]" />
-                    <inputColumn
-                      refId="Package\BKPF\Merge Join.Inputs[Merge Join Left Input].Columns[HWAE2]"
-                      cachedDataType="wstr"
-                      cachedLength="5"
-                      cachedName="HWAE2"
-                      lineageId="Package\BKPF\DB SAP.Outputs[OLE DB Source Output].Columns[HWAE2]" />
+                      refId="Package\COATAPPROVAL\Merge Join.Inputs[Merge Join Left Input].Columns[COATAPPROVED]"
+                      cachedDataType="bool"
+                      cachedName="COATAPPROVED"
+                      lineageId="Package\COATAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Output].Columns[COATAPPROVED]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
                 <input
-                  refId="Package\BKPF\Merge Join.Inputs[Merge Join Right Input]"
+                  refId="Package\COATAPPROVAL\Merge Join.Inputs[Merge Join Right Input]"
                   hasSideEffects="true"
                   name="Merge Join Right Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\BKPF\Merge Join.Inputs[Merge Join Right Input].Columns[MANDT]"
+                      refId="Package\COATAPPROVAL\Merge Join.Inputs[Merge Join Right Input].Columns[COATAPPSPECNO]"
                       cachedDataType="wstr"
-                      cachedLength="3"
-                      cachedName="MANDT"
+                      cachedLength="50"
+                      cachedName="COATAPPSPECNO"
                       cachedSortKeyPosition="1"
-                      lineageId="Package\BKPF\DB PBI.Outputs[OLE DB Source Output].Columns[MANDT]" />
+                      lineageId="Package\COATAPPROVAL\DB PBI.Outputs[OLE DB Source Output].Columns[COATAPPSPECNO]" />
                     <inputColumn
-                      refId="Package\BKPF\Merge Join.Inputs[Merge Join Right Input].Columns[BUKRS]"
-                      cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="BUKRS"
+                      refId="Package\COATAPPROVAL\Merge Join.Inputs[Merge Join Right Input].Columns[COATAPPREV]"
+                      cachedDataType="i4"
+                      cachedName="COATAPPREV"
                       cachedSortKeyPosition="2"
-                      lineageId="Package\BKPF\DB PBI.Outputs[OLE DB Source Output].Columns[BUKRS]" />
+                      lineageId="Package\COATAPPROVAL\DB PBI.Outputs[OLE DB Source Output].Columns[COATAPPREV]" />
                     <inputColumn
-                      refId="Package\BKPF\Merge Join.Inputs[Merge Join Right Input].Columns[BELNR]"
-                      cachedDataType="wstr"
-                      cachedLength="10"
-                      cachedName="BELNR"
+                      refId="Package\COATAPPROVAL\Merge Join.Inputs[Merge Join Right Input].Columns[COATAPPTYPE]"
+                      cachedDataType="i4"
+                      cachedName="COATAPPTYPE"
                       cachedSortKeyPosition="3"
-                      lineageId="Package\BKPF\DB PBI.Outputs[OLE DB Source Output].Columns[BELNR]" />
+                      lineageId="Package\COATAPPROVAL\DB PBI.Outputs[OLE DB Source Output].Columns[COATAPPTYPE]" />
                     <inputColumn
-                      refId="Package\BKPF\Merge Join.Inputs[Merge Join Right Input].Columns[GJAHR]"
-                      cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="GJAHR"
-                      cachedSortKeyPosition="4"
-                      lineageId="Package\BKPF\DB PBI.Outputs[OLE DB Source Output].Columns[GJAHR]" />
+                      refId="Package\COATAPPROVAL\Merge Join.Inputs[Merge Join Right Input].Columns[COATAPPID]"
+                      cachedDataType="i4"
+                      cachedName="COATAPPID"
+                      lineageId="Package\COATAPPROVAL\DB PBI.Outputs[OLE DB Source Output].Columns[COATAPPID]" />
                     <inputColumn
-                      refId="Package\BKPF\Merge Join.Inputs[Merge Join Right Input].Columns[HWAER]"
-                      cachedDataType="wstr"
-                      cachedLength="5"
-                      cachedName="HWAER"
-                      lineageId="Package\BKPF\DB PBI.Outputs[OLE DB Source Output].Columns[HWAER]" />
-                    <inputColumn
-                      refId="Package\BKPF\Merge Join.Inputs[Merge Join Right Input].Columns[HWAE2]"
-                      cachedDataType="wstr"
-                      cachedLength="5"
-                      cachedName="HWAE2"
-                      lineageId="Package\BKPF\DB PBI.Outputs[OLE DB Source Output].Columns[HWAE2]" />
+                      refId="Package\COATAPPROVAL\Merge Join.Inputs[Merge Join Right Input].Columns[COATAPPROVED]"
+                      cachedDataType="bool"
+                      cachedName="COATAPPROVED"
+                      lineageId="Package\COATAPPROVAL\DB PBI.Outputs[OLE DB Source Output].Columns[COATAPPROVED]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\BKPF\Merge Join.Outputs[Merge Join Output]"
+                  refId="Package\COATAPPROVAL\Merge Join.Outputs[Merge Join Output]"
                   isSorted="true"
                   name="Merge Join Output">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[MANDT]"
+                      refId="Package\COATAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[COATAPPSPECNO]"
                       dataType="wstr"
-                      length="3"
-                      lineageId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[MANDT]"
-                      name="MANDT"
+                      length="50"
+                      lineageId="Package\COATAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[COATAPPSPECNO]"
+                      name="COATAPPSPECNO"
                       sortKeyPosition="1">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\BKPF\Merge Join.Inputs[Merge Join Left Input].Columns[MANDT]}</property>
+                          name="InputColumnID">#{Package\COATAPPROVAL\Merge Join.Inputs[Merge Join Left Input].Columns[COATAPPSPECNO]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[BUKRS]"
-                      dataType="wstr"
-                      length="4"
-                      lineageId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[BUKRS]"
-                      name="BUKRS"
+                      refId="Package\COATAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[COATAPPREV]"
+                      dataType="i4"
+                      lineageId="Package\COATAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[COATAPPREV]"
+                      name="COATAPPREV"
                       sortKeyPosition="2">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\BKPF\Merge Join.Inputs[Merge Join Left Input].Columns[BUKRS]}</property>
+                          name="InputColumnID">#{Package\COATAPPROVAL\Merge Join.Inputs[Merge Join Left Input].Columns[COATAPPREV]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[BELNR]"
-                      dataType="wstr"
-                      length="10"
-                      lineageId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[BELNR]"
-                      name="BELNR"
+                      refId="Package\COATAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[COATAPPTYPE]"
+                      dataType="i4"
+                      lineageId="Package\COATAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[COATAPPTYPE]"
+                      name="COATAPPTYPE"
                       sortKeyPosition="3">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\BKPF\Merge Join.Inputs[Merge Join Left Input].Columns[BELNR]}</property>
+                          name="InputColumnID">#{Package\COATAPPROVAL\Merge Join.Inputs[Merge Join Left Input].Columns[COATAPPTYPE]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[GJAHR]"
-                      dataType="wstr"
-                      length="4"
-                      lineageId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[GJAHR]"
-                      name="GJAHR"
-                      sortKeyPosition="4">
+                      refId="Package\COATAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[COATAPPID]"
+                      dataType="i4"
+                      lineageId="Package\COATAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[COATAPPID]"
+                      name="COATAPPID">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\BKPF\Merge Join.Inputs[Merge Join Left Input].Columns[GJAHR]}</property>
+                          name="InputColumnID">#{Package\COATAPPROVAL\Merge Join.Inputs[Merge Join Left Input].Columns[COATAPPID]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]"
-                      dataType="wstr"
-                      length="3"
-                      lineageId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]"
-                      name="MANDT (1)">
+                      refId="Package\COATAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[COATAPPROVED]"
+                      dataType="bool"
+                      lineageId="Package\COATAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[COATAPPROVED]"
+                      name="COATAPPROVED">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\BKPF\Merge Join.Inputs[Merge Join Right Input].Columns[MANDT]}</property>
+                          name="InputColumnID">#{Package\COATAPPROVAL\Merge Join.Inputs[Merge Join Left Input].Columns[COATAPPROVED]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[BUKRS (1)]"
+                      refId="Package\COATAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[COATAPPSPECNO (1)]"
                       dataType="wstr"
-                      length="4"
-                      lineageId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[BUKRS (1)]"
-                      name="BUKRS (1)">
+                      length="50"
+                      lineageId="Package\COATAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[COATAPPSPECNO (1)]"
+                      name="COATAPPSPECNO (1)">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\BKPF\Merge Join.Inputs[Merge Join Right Input].Columns[BUKRS]}</property>
+                          name="InputColumnID">#{Package\COATAPPROVAL\Merge Join.Inputs[Merge Join Right Input].Columns[COATAPPSPECNO]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[BELNR (1)]"
-                      dataType="wstr"
-                      length="10"
-                      lineageId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[BELNR (1)]"
-                      name="BELNR (1)">
+                      refId="Package\COATAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[COATAPPREV (1)]"
+                      dataType="i4"
+                      lineageId="Package\COATAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[COATAPPREV (1)]"
+                      name="COATAPPREV (1)">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\BKPF\Merge Join.Inputs[Merge Join Right Input].Columns[BELNR]}</property>
+                          name="InputColumnID">#{Package\COATAPPROVAL\Merge Join.Inputs[Merge Join Right Input].Columns[COATAPPREV]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[GJAHR (1)]"
-                      dataType="wstr"
-                      length="4"
-                      lineageId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[GJAHR (1)]"
-                      name="GJAHR (1)">
+                      refId="Package\COATAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[COATAPPTYPE (1)]"
+                      dataType="i4"
+                      lineageId="Package\COATAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[COATAPPTYPE (1)]"
+                      name="COATAPPTYPE (1)">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\BKPF\Merge Join.Inputs[Merge Join Right Input].Columns[GJAHR]}</property>
+                          name="InputColumnID">#{Package\COATAPPROVAL\Merge Join.Inputs[Merge Join Right Input].Columns[COATAPPTYPE]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[HWAER]"
-                      dataType="wstr"
-                      length="5"
-                      lineageId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[HWAER]"
-                      name="HWAER">
+                      refId="Package\COATAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[COATAPPID (1)]"
+                      dataType="i4"
+                      lineageId="Package\COATAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[COATAPPID (1)]"
+                      name="COATAPPID (1)">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\BKPF\Merge Join.Inputs[Merge Join Left Input].Columns[HWAER]}</property>
+                          name="InputColumnID">#{Package\COATAPPROVAL\Merge Join.Inputs[Merge Join Right Input].Columns[COATAPPID]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[HWAE2]"
-                      dataType="wstr"
-                      length="5"
-                      lineageId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[HWAE2]"
-                      name="HWAE2">
+                      refId="Package\COATAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[COATAPPROVED (1)]"
+                      dataType="bool"
+                      lineageId="Package\COATAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[COATAPPROVED (1)]"
+                      name="COATAPPROVED (1)">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\BKPF\Merge Join.Inputs[Merge Join Left Input].Columns[HWAE2]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[HWAER (1)]"
-                      dataType="wstr"
-                      length="5"
-                      lineageId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[HWAER (1)]"
-                      name="HWAER (1)">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\BKPF\Merge Join.Inputs[Merge Join Right Input].Columns[HWAER]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[HWAE2 (1)]"
-                      dataType="wstr"
-                      length="5"
-                      lineageId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[HWAE2 (1)]"
-                      name="HWAE2 (1)">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\BKPF\Merge Join.Inputs[Merge Join Right Input].Columns[HWAE2]}</property>
+                          name="InputColumnID">#{Package\COATAPPROVAL\Merge Join.Inputs[Merge Join Right Input].Columns[COATAPPROVED]}</property>
                       </properties>
                     </outputColumn>
                   </outputColumns>
@@ -1226,7 +1106,7 @@ ORDER BY A01.[MANDT]
               </outputs>
             </component>
             <component
-              refId="Package\BKPF\stage changed records"
+              refId="Package\COATAPPROVAL\stage changed records"
               componentClassID="Microsoft.OLEDBDestination"
               contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
               description="OLE DB Destination"
@@ -1241,7 +1121,7 @@ ORDER BY A01.[MANDT]
                 <property
                   dataType="System.String"
                   description="Specifies the name of the database object used to open a rowset."
-                  name="OpenRowset">[dbo].[BKPF_STAGE_UPDATE]</property>
+                  name="OpenRowset">[dbo].[COATAPPROVAL_STAGE_UPDATE]</property>
                 <property
                   dataType="System.String"
                   description="Specifies the variable that contains the name of the database object used to open a rowset."
@@ -1283,7 +1163,7 @@ ORDER BY A01.[MANDT]
               </properties>
               <connections>
                 <connection
-                  refId="Package\BKPF\stage changed records.Connections[OleDbConnection]"
+                  refId="Package\COATAPPROVAL\stage changed records.Connections[OleDbConnection]"
                   connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
                   connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
                   description="The OLE DB runtime connection used to access the database."
@@ -1291,112 +1171,91 @@ ORDER BY A01.[MANDT]
               </connections>
               <inputs>
                 <input
-                  refId="Package\BKPF\stage changed records.Inputs[OLE DB Destination Input]"
+                  refId="Package\COATAPPROVAL\stage changed records.Inputs[OLE DB Destination Input]"
                   errorOrTruncationOperation="Insert"
                   errorRowDisposition="FailComponent"
                   hasSideEffects="true"
                   name="OLE DB Destination Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\BKPF\stage changed records.Inputs[OLE DB Destination Input].Columns[MANDT]"
+                      refId="Package\COATAPPROVAL\stage changed records.Inputs[OLE DB Destination Input].Columns[COATAPPSPECNO]"
                       cachedDataType="wstr"
-                      cachedLength="3"
-                      cachedName="MANDT"
+                      cachedLength="50"
+                      cachedName="COATAPPSPECNO"
                       cachedSortKeyPosition="1"
-                      externalMetadataColumnId="Package\BKPF\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
-                      lineageId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
+                      externalMetadataColumnId="Package\COATAPPROVAL\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[COATAPPSPECNO]"
+                      lineageId="Package\COATAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[COATAPPSPECNO]" />
                     <inputColumn
-                      refId="Package\BKPF\stage changed records.Inputs[OLE DB Destination Input].Columns[BUKRS]"
-                      cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="BUKRS"
+                      refId="Package\COATAPPROVAL\stage changed records.Inputs[OLE DB Destination Input].Columns[COATAPPREV]"
+                      cachedDataType="i4"
+                      cachedName="COATAPPREV"
                       cachedSortKeyPosition="2"
-                      externalMetadataColumnId="Package\BKPF\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[BUKRS]"
-                      lineageId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[BUKRS]" />
+                      externalMetadataColumnId="Package\COATAPPROVAL\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[COATAPPREV]"
+                      lineageId="Package\COATAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[COATAPPREV]" />
                     <inputColumn
-                      refId="Package\BKPF\stage changed records.Inputs[OLE DB Destination Input].Columns[BELNR]"
-                      cachedDataType="wstr"
-                      cachedLength="10"
-                      cachedName="BELNR"
+                      refId="Package\COATAPPROVAL\stage changed records.Inputs[OLE DB Destination Input].Columns[COATAPPTYPE]"
+                      cachedDataType="i4"
+                      cachedName="COATAPPTYPE"
                       cachedSortKeyPosition="3"
-                      externalMetadataColumnId="Package\BKPF\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[BELNR]"
-                      lineageId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[BELNR]" />
+                      externalMetadataColumnId="Package\COATAPPROVAL\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[COATAPPTYPE]"
+                      lineageId="Package\COATAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[COATAPPTYPE]" />
                     <inputColumn
-                      refId="Package\BKPF\stage changed records.Inputs[OLE DB Destination Input].Columns[GJAHR]"
-                      cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="GJAHR"
-                      cachedSortKeyPosition="4"
-                      externalMetadataColumnId="Package\BKPF\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[GJAHR]"
-                      lineageId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[GJAHR]" />
+                      refId="Package\COATAPPROVAL\stage changed records.Inputs[OLE DB Destination Input].Columns[COATAPPID]"
+                      cachedDataType="i4"
+                      cachedName="COATAPPID"
+                      externalMetadataColumnId="Package\COATAPPROVAL\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[COATAPPID]"
+                      lineageId="Package\COATAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[COATAPPID]" />
                     <inputColumn
-                      refId="Package\BKPF\stage changed records.Inputs[OLE DB Destination Input].Columns[HWAER]"
-                      cachedDataType="wstr"
-                      cachedLength="5"
-                      cachedName="HWAER"
-                      externalMetadataColumnId="Package\BKPF\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[HWAER]"
-                      lineageId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[HWAER]" />
-                    <inputColumn
-                      refId="Package\BKPF\stage changed records.Inputs[OLE DB Destination Input].Columns[HWAE2]"
-                      cachedDataType="wstr"
-                      cachedLength="5"
-                      cachedName="HWAE2"
-                      externalMetadataColumnId="Package\BKPF\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[HWAE2]"
-                      lineageId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[HWAE2]" />
+                      refId="Package\COATAPPROVAL\stage changed records.Inputs[OLE DB Destination Input].Columns[COATAPPROVED]"
+                      cachedDataType="bool"
+                      cachedName="COATAPPROVED"
+                      externalMetadataColumnId="Package\COATAPPROVAL\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[COATAPPROVED]"
+                      lineageId="Package\COATAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[COATAPPROVED]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
                     <externalMetadataColumn
-                      refId="Package\BKPF\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      refId="Package\COATAPPROVAL\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[COATAPPSPECNO]"
                       dataType="wstr"
-                      length="3"
-                      name="MANDT" />
+                      length="50"
+                      name="COATAPPSPECNO" />
                     <externalMetadataColumn
-                      refId="Package\BKPF\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[BUKRS]"
-                      dataType="wstr"
-                      length="4"
-                      name="BUKRS" />
+                      refId="Package\COATAPPROVAL\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[COATAPPREV]"
+                      dataType="i4"
+                      name="COATAPPREV" />
                     <externalMetadataColumn
-                      refId="Package\BKPF\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[BELNR]"
-                      dataType="wstr"
-                      length="10"
-                      name="BELNR" />
+                      refId="Package\COATAPPROVAL\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[COATAPPTYPE]"
+                      dataType="i4"
+                      name="COATAPPTYPE" />
                     <externalMetadataColumn
-                      refId="Package\BKPF\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[GJAHR]"
-                      dataType="wstr"
-                      length="4"
-                      name="GJAHR" />
+                      refId="Package\COATAPPROVAL\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[COATAPPID]"
+                      dataType="i4"
+                      name="COATAPPID" />
                     <externalMetadataColumn
-                      refId="Package\BKPF\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[HWAER]"
-                      dataType="wstr"
-                      length="5"
-                      name="HWAER" />
-                    <externalMetadataColumn
-                      refId="Package\BKPF\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[HWAE2]"
-                      dataType="wstr"
-                      length="5"
-                      name="HWAE2" />
+                      refId="Package\COATAPPROVAL\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[COATAPPROVED]"
+                      dataType="bool"
+                      name="COATAPPROVED" />
                   </externalMetadataColumns>
                 </input>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\BKPF\stage changed records.Outputs[OLE DB Destination Error Output]"
+                  refId="Package\COATAPPROVAL\stage changed records.Outputs[OLE DB Destination Error Output]"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="OLE DB Destination Error Output"
-                  synchronousInputId="Package\BKPF\stage changed records.Inputs[OLE DB Destination Input]">
+                  synchronousInputId="Package\COATAPPROVAL\stage changed records.Inputs[OLE DB Destination Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\BKPF\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      refId="Package\COATAPPROVAL\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\BKPF\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      lineageId="Package\COATAPPROVAL\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\BKPF\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      refId="Package\COATAPPROVAL\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\BKPF\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\COATAPPROVAL\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -1405,7 +1264,7 @@ ORDER BY A01.[MANDT]
               </outputs>
             </component>
             <component
-              refId="Package\BKPF\stage deleted records"
+              refId="Package\COATAPPROVAL\stage deleted records"
               componentClassID="Microsoft.OLEDBDestination"
               contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
               description="OLE DB Destination"
@@ -1420,7 +1279,7 @@ ORDER BY A01.[MANDT]
                 <property
                   dataType="System.String"
                   description="Specifies the name of the database object used to open a rowset."
-                  name="OpenRowset">[dbo].[BKPF_STAGE_DELETE]</property>
+                  name="OpenRowset">[dbo].[COATAPPROVAL_STAGE_DELETE]</property>
                 <property
                   dataType="System.String"
                   description="Specifies the variable that contains the name of the database object used to open a rowset."
@@ -1462,7 +1321,7 @@ ORDER BY A01.[MANDT]
               </properties>
               <connections>
                 <connection
-                  refId="Package\BKPF\stage deleted records.Connections[OleDbConnection]"
+                  refId="Package\COATAPPROVAL\stage deleted records.Connections[OleDbConnection]"
                   connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
                   connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
                   description="The OLE DB runtime connection used to access the database."
@@ -1470,84 +1329,68 @@ ORDER BY A01.[MANDT]
               </connections>
               <inputs>
                 <input
-                  refId="Package\BKPF\stage deleted records.Inputs[OLE DB Destination Input]"
+                  refId="Package\COATAPPROVAL\stage deleted records.Inputs[OLE DB Destination Input]"
                   errorOrTruncationOperation="Insert"
                   errorRowDisposition="FailComponent"
                   hasSideEffects="true"
                   name="OLE DB Destination Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\BKPF\stage deleted records.Inputs[OLE DB Destination Input].Columns[MANDT (1)]"
+                      refId="Package\COATAPPROVAL\stage deleted records.Inputs[OLE DB Destination Input].Columns[COATAPPSPECNO (1)]"
                       cachedDataType="wstr"
-                      cachedLength="3"
-                      cachedName="MANDT (1)"
-                      externalMetadataColumnId="Package\BKPF\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
-                      lineageId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]" />
+                      cachedLength="50"
+                      cachedName="COATAPPSPECNO (1)"
+                      externalMetadataColumnId="Package\COATAPPROVAL\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[COATAPPSPECNO]"
+                      lineageId="Package\COATAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[COATAPPSPECNO (1)]" />
                     <inputColumn
-                      refId="Package\BKPF\stage deleted records.Inputs[OLE DB Destination Input].Columns[BUKRS (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="BUKRS (1)"
-                      externalMetadataColumnId="Package\BKPF\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[BUKRS]"
-                      lineageId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[BUKRS (1)]" />
+                      refId="Package\COATAPPROVAL\stage deleted records.Inputs[OLE DB Destination Input].Columns[COATAPPREV (1)]"
+                      cachedDataType="i4"
+                      cachedName="COATAPPREV (1)"
+                      externalMetadataColumnId="Package\COATAPPROVAL\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[COATAPPREV]"
+                      lineageId="Package\COATAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[COATAPPREV (1)]" />
                     <inputColumn
-                      refId="Package\BKPF\stage deleted records.Inputs[OLE DB Destination Input].Columns[BELNR (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="10"
-                      cachedName="BELNR (1)"
-                      externalMetadataColumnId="Package\BKPF\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[BELNR]"
-                      lineageId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[BELNR (1)]" />
-                    <inputColumn
-                      refId="Package\BKPF\stage deleted records.Inputs[OLE DB Destination Input].Columns[GJAHR (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="GJAHR (1)"
-                      externalMetadataColumnId="Package\BKPF\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[GJAHR]"
-                      lineageId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[GJAHR (1)]" />
+                      refId="Package\COATAPPROVAL\stage deleted records.Inputs[OLE DB Destination Input].Columns[COATAPPTYPE (1)]"
+                      cachedDataType="i4"
+                      cachedName="COATAPPTYPE (1)"
+                      externalMetadataColumnId="Package\COATAPPROVAL\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[COATAPPTYPE]"
+                      lineageId="Package\COATAPPROVAL\Merge Join.Outputs[Merge Join Output].Columns[COATAPPTYPE (1)]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
                     <externalMetadataColumn
-                      refId="Package\BKPF\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      refId="Package\COATAPPROVAL\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[COATAPPSPECNO]"
                       dataType="wstr"
-                      length="3"
-                      name="MANDT" />
+                      length="50"
+                      name="COATAPPSPECNO" />
                     <externalMetadataColumn
-                      refId="Package\BKPF\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[BUKRS]"
-                      dataType="wstr"
-                      length="4"
-                      name="BUKRS" />
+                      refId="Package\COATAPPROVAL\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[COATAPPREV]"
+                      dataType="i4"
+                      name="COATAPPREV" />
                     <externalMetadataColumn
-                      refId="Package\BKPF\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[BELNR]"
-                      dataType="wstr"
-                      length="10"
-                      name="BELNR" />
-                    <externalMetadataColumn
-                      refId="Package\BKPF\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[GJAHR]"
-                      dataType="wstr"
-                      length="4"
-                      name="GJAHR" />
+                      refId="Package\COATAPPROVAL\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[COATAPPTYPE]"
+                      dataType="i4"
+                      name="COATAPPTYPE" />
                   </externalMetadataColumns>
                 </input>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\BKPF\stage deleted records.Outputs[OLE DB Destination Error Output]"
+                  refId="Package\COATAPPROVAL\stage deleted records.Outputs[OLE DB Destination Error Output]"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="OLE DB Destination Error Output"
-                  synchronousInputId="Package\BKPF\stage deleted records.Inputs[OLE DB Destination Input]">
+                  synchronousInputId="Package\COATAPPROVAL\stage deleted records.Inputs[OLE DB Destination Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\BKPF\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      refId="Package\COATAPPROVAL\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\BKPF\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      lineageId="Package\COATAPPROVAL\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\BKPF\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      refId="Package\COATAPPROVAL\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\BKPF\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\COATAPPROVAL\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -1558,66 +1401,49 @@ ORDER BY A01.[MANDT]
           </components>
           <paths>
             <path
-              refId="Package\BKPF.Paths[delete]"
-              endId="Package\BKPF\stage deleted records.Inputs[OLE DB Destination Input]"
+              refId="Package\COATAPPROVAL.Paths[delete]"
+              endId="Package\COATAPPROVAL\stage deleted records.Inputs[OLE DB Destination Input]"
               name="delete"
-              startId="Package\BKPF\Identity records.Outputs[delete]" />
+              startId="Package\COATAPPROVAL\Identity records.Outputs[delete]" />
             <path
-              refId="Package\BKPF.Paths[insert]"
-              endId="Package\BKPF\insert new records.Inputs[OLE DB Destination Input]"
+              refId="Package\COATAPPROVAL.Paths[insert]"
+              endId="Package\COATAPPROVAL\insert new records.Inputs[OLE DB Destination Input]"
               name="insert"
-              startId="Package\BKPF\Identity records.Outputs[insert]" />
+              startId="Package\COATAPPROVAL\Identity records.Outputs[insert]" />
             <path
-              refId="Package\BKPF.Paths[Merge Join Output]"
-              endId="Package\BKPF\Identity records.Inputs[Conditional Split Input]"
+              refId="Package\COATAPPROVAL.Paths[Merge Join Output]"
+              endId="Package\COATAPPROVAL\Identity records.Inputs[Conditional Split Input]"
               name="Merge Join Output"
-              startId="Package\BKPF\Merge Join.Outputs[Merge Join Output]" />
+              startId="Package\COATAPPROVAL\Merge Join.Outputs[Merge Join Output]" />
             <path
-              refId="Package\BKPF.Paths[OLE DB Source Output]"
-              endId="Package\BKPF\Merge Join.Inputs[Merge Join Left Input]"
+              refId="Package\COATAPPROVAL.Paths[OLE DB Source Output]"
+              endId="Package\COATAPPROVAL\Merge Join.Inputs[Merge Join Left Input]"
               name="OLE DB Source Output"
-              startId="Package\BKPF\DB SAP.Outputs[OLE DB Source Output]" />
+              startId="Package\COATAPPROVAL\DB EDOCDB.Outputs[OLE DB Source Output]" />
             <path
-              refId="Package\BKPF.Paths[OLE DB Source Output1]"
-              endId="Package\BKPF\Merge Join.Inputs[Merge Join Right Input]"
+              refId="Package\COATAPPROVAL.Paths[OLE DB Source Output1]"
+              endId="Package\COATAPPROVAL\Merge Join.Inputs[Merge Join Right Input]"
               name="OLE DB Source Output"
-              startId="Package\BKPF\DB PBI.Outputs[OLE DB Source Output]" />
+              startId="Package\COATAPPROVAL\DB PBI.Outputs[OLE DB Source Output]" />
             <path
-              refId="Package\BKPF.Paths[update]"
-              endId="Package\BKPF\Find Changed Records.Inputs[Conditional Split Input]"
+              refId="Package\COATAPPROVAL.Paths[update]"
+              endId="Package\COATAPPROVAL\Find Changed Records.Inputs[Conditional Split Input]"
               name="update"
-              startId="Package\BKPF\Identity records.Outputs[update]" />
+              startId="Package\COATAPPROVAL\Identity records.Outputs[update]" />
             <path
-              refId="Package\BKPF.Paths[update1]"
-              endId="Package\BKPF\stage changed records.Inputs[OLE DB Destination Input]"
+              refId="Package\COATAPPROVAL.Paths[update1]"
+              endId="Package\COATAPPROVAL\stage changed records.Inputs[OLE DB Destination Input]"
               name="update"
-              startId="Package\BKPF\Find Changed Records.Outputs[update]" />
+              startId="Package\COATAPPROVAL\Find Changed Records.Outputs[update]" />
           </paths>
         </pipeline>
-      </DTS:ObjectData>
-    </DTS:Executable>
-    <DTS:Executable
-      DTS:refId="Package\clean stage"
-      DTS:CreationName="Microsoft.ExecuteSQLTask"
-      DTS:Description="Execute SQL Task"
-      DTS:DTSID="{68fa9f9b-9d7e-4a9c-b5a5-096fd5c32c30}"
-      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
-      DTS:LocaleID="-1"
-      DTS:ObjectName="clean stage"
-      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-      DTS:ThreadHint="0">
-      <DTS:Variables />
-      <DTS:ObjectData>
-        <SQLTask:SqlTaskData
-          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-          SQLTask:SqlStatementSource="TRUNCATE TABLE [BKPF_STAGE_UPDATE]&#xA;go&#xA;TRUNCATE TABLE [BKPF_STAGE_DELETE]&#xA;go&#xA;TRUNCATE TABLE [BKPF_STAGE_INSERT]&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
       DTS:refId="Package\Sequence Container"
       DTS:CreationName="STOCK:SEQUENCE"
       DTS:Description="Sequence Container"
-      DTS:DTSID="{d3780d83-acc4-41b5-bc5d-494c7c49f9fb}"
+      DTS:DTSID="{589EC3F9-3A0D-422B-BC62-F78AB4A8746E}"
       DTS:ExecutableType="STOCK:SEQUENCE"
       DTS:LocaleID="-1"
       DTS:ObjectName="Sequence Container">
@@ -1627,7 +1453,7 @@ ORDER BY A01.[MANDT]
           DTS:refId="Package\Sequence Container\delete"
           DTS:CreationName="Microsoft.ExecuteSQLTask"
           DTS:Description="Execute SQL Task"
-          DTS:DTSID="{44cba25b-b6b6-49b8-83a8-a2558cae1c0d}"
+          DTS:DTSID="{73078ADA-F693-47F1-BB04-0110123ED716}"
           DTS:ExecutableType="Microsoft.ExecuteSQLTask"
           DTS:LocaleID="-1"
           DTS:ObjectName="delete"
@@ -1637,14 +1463,14 @@ ORDER BY A01.[MANDT]
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
               SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-              SQLTask:SqlStatementSource="DELETE A01&#xA;FROM [BKPF] A01 INNER JOIN [BKPF_STAGE_DELETE] B01 ON ( A01.[MANDT] = B01.[MANDT]&#xA;                                                    AND A01.[BUKRS] = B01.[BUKRS]&#xA;                                                    AND A01.[BELNR] = B01.[BELNR]&#xA;                                                    AND A01.[GJAHR] = B01.[GJAHR] )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+              SQLTask:SqlStatementSource="DELETE A01&#xA;FROM [COATAPPROVAL] A01 &#xA;INNER JOIN [COATAPPROVAL_STAGE_DELETE] B01 &#xA;ON (A01.[COATAPPSPECNO] = B01.[COATAPPSPECNO]&#xA;      AND A01.[COATAPPREV] = B01.[COATAPPREV]&#xA;      AND A01.[COATAPPTYPE] = B01.[COATAPPTYPE])&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
           </DTS:ObjectData>
         </DTS:Executable>
         <DTS:Executable
           DTS:refId="Package\Sequence Container\update"
           DTS:CreationName="Microsoft.ExecuteSQLTask"
           DTS:Description="Execute SQL Task"
-          DTS:DTSID="{1edadae2-6c8e-4231-a003-94c604f0a443}"
+          DTS:DTSID="{5B1483BF-ACC9-470F-B3FB-FFE9C72FD7F5}"
           DTS:ExecutableType="Microsoft.ExecuteSQLTask"
           DTS:LocaleID="-1"
           DTS:ObjectName="update"
@@ -1654,7 +1480,7 @@ ORDER BY A01.[MANDT]
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
               SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-              SQLTask:SqlStatementSource="UPDATE A01&#xA;SET A01.[HWAER] = B01.[HWAER]&#xA;   ,A01.[HWAE2] = B01.[HWAE2]&#xA;FROM [BKPF] A01 INNER JOIN [BKPF_STAGE_UPDATE] B01 ON ( A01.[MANDT] = B01.[MANDT]&#xA;                                                    AND A01.[BUKRS] = B01.[BUKRS]&#xA;                                                    AND A01.[BELNR] = B01.[BELNR]&#xA;                                                    AND A01.[GJAHR] = B01.[GJAHR] )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+              SQLTask:SqlStatementSource="UPDATE A01&#xA;SET A01.[COATAPPSPECNO] = B01.[COATAPPSPECNO]&#xA;      ,A01.[COATAPPREV] = B01.[COATAPPREV]&#xA;      ,A01.[COATAPPTYPE] = B01.[COATAPPTYPE]&#xA;      ,A01.[COATAPPID] = B01.[COATAPPID]&#xA;      ,A01.[COATAPPROVED] = B01.[COATAPPROVED]&#xA;FROM [COATAPPROVAL] A01 &#xA;INNER JOIN [COATAPPROVAL_STAGE_UPDATE] B01 &#xA;ON (A01.[COATAPPSPECNO] = B01.[COATAPPSPECNO]&#xA;      AND A01.[COATAPPREV] = B01.[COATAPPREV]&#xA;      AND A01.[COATAPPTYPE] = B01.[COATAPPTYPE])&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
           </DTS:ObjectData>
         </DTS:Executable>
       </DTS:Executables>
@@ -1663,7 +1489,7 @@ ORDER BY A01.[MANDT]
       DTS:refId="Package\Sequence Container 1"
       DTS:CreationName="STOCK:SEQUENCE"
       DTS:Description="Sequence Container"
-      DTS:DTSID="{33f8d021-355d-412d-9a26-e147a426c992}"
+      DTS:DTSID="{EEDED5A3-7CA1-450F-9DF8-646B85CC5B36}"
       DTS:ExecutableType="STOCK:SEQUENCE"
       DTS:LocaleID="-1"
       DTS:ObjectName="Sequence Container 1">
@@ -1673,7 +1499,7 @@ ORDER BY A01.[MANDT]
           DTS:refId="Package\Sequence Container 1\Insert"
           DTS:CreationName="Microsoft.ExecuteSQLTask"
           DTS:Description="Execute SQL Task"
-          DTS:DTSID="{8528a62b-0110-467e-9a7b-3781224dd12d}"
+          DTS:DTSID="{274CA114-5248-4AE6-98BD-99C667199E2A}"
           DTS:ExecutableType="Microsoft.ExecuteSQLTask"
           DTS:LocaleID="-1"
           DTS:ObjectName="Insert"
@@ -1683,7 +1509,7 @@ ORDER BY A01.[MANDT]
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
               SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-              SQLTask:SqlStatementSource="INSERT INTO [BKPF]&#xA;SELECT * FROM [BKPF_STAGE_INSERT]&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+              SQLTask:SqlStatementSource="INSERT INTO [COATAPPROVAL]&#xA;SELECT * FROM [COATAPPROVAL_STAGE_INSERT]&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
           </DTS:ObjectData>
         </DTS:Executable>
       </DTS:Executables>
@@ -1693,23 +1519,23 @@ ORDER BY A01.[MANDT]
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint]"
       DTS:CreationName=""
-      DTS:DTSID="{cf9973f9-114e-42ed-bc7b-3a26b06a2ba8}"
-      DTS:From="Package\BKPF"
+      DTS:DTSID="{75744139-E2D2-4C9C-9B97-ECEBCC3B0D78}"
+      DTS:From="Package\COATAPPROVAL"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint"
       DTS:To="Package\Sequence Container" />
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
       DTS:CreationName=""
-      DTS:DTSID="{8191EA38-EBF1-4FDF-82F5-952C06E59066}"
+      DTS:DTSID="{9806C9D5-FFDB-458F-A14B-8B5B10186640}"
       DTS:From="Package\clean stage"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 1"
-      DTS:To="Package\BKPF" />
+      DTS:To="Package\COATAPPROVAL" />
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
       DTS:CreationName=""
-      DTS:DTSID="{510DA9CC-316D-4636-BD9B-BBF956E8AE39}"
+      DTS:DTSID="{804EA69C-E9A2-4BD2-AED0-D74911489ECA}"
       DTS:From="Package\Sequence Container"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 2"
@@ -1728,17 +1554,17 @@ ORDER BY A01.[MANDT]
       <GraphLayout
         Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
-          Size="103,42"
-          Id="Package\BKPF"
-          TopLeft="202,51" />
-        <NodeLayout
           Size="132,42"
           Id="Package\clean stage"
-          TopLeft="404,40" />
+          TopLeft="359,34" />
+        <NodeLayout
+          Size="156,42"
+          Id="Package\COATAPPROVAL"
+          TopLeft="199,58" />
         <NodeLayout
           Size="108,42"
           Id="Package\Sequence Container\delete"
-          TopLeft="195,39" />
+          TopLeft="196,39" />
         <NodeLayout
           Size="112,42"
           Id="Package\Sequence Container\update"
@@ -1753,7 +1579,7 @@ ORDER BY A01.[MANDT]
         <NodeLayout
           Size="107,42"
           Id="Package\Sequence Container 1\Insert"
-          TopLeft="137,44" />
+          TopLeft="128,41" />
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
@@ -1763,18 +1589,30 @@ ORDER BY A01.[MANDT]
           TopLeft="60,416" />
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint]"
-          TopLeft="252.5,93">
+          TopLeft="277,100">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,81"
+              EndConnector="-25.5,74"
               Start="0,0"
-              End="0,73.5">
+              End="-25.5,66.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,73.5" />
+                    End="0,33" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,33"
+                    Point2="0,37"
+                    Point3="-4,37" />
+                  <mssgle:LineSegment
+                    End="-21.5,37" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-21.5,37"
+                    Point2="-25.5,37"
+                    Point3="-25.5,41" />
+                  <mssgle:LineSegment
+                    End="-25.5,66.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -1785,30 +1623,24 @@ ORDER BY A01.[MANDT]
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 1]"
-          TopLeft="404,61">
+          TopLeft="359,35.5">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-99,11"
+              EndConnector="-82,22.5"
               Start="0,0"
-              End="-91.5,11">
+              End="-82,15">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="-45.5,0" />
+                    End="-78,0" />
                   <mssgle:CubicBezierSegment
-                    Point1="-45.5,0"
-                    Point2="-49.5,0"
-                    Point3="-49.5,4" />
+                    Point1="-78,0"
+                    Point2="-82,0"
+                    Point3="-82,4" />
                   <mssgle:LineSegment
-                    End="-49.5,7" />
-                  <mssgle:CubicBezierSegment
-                    Point1="-49.5,7"
-                    Point2="-49.5,11"
-                    Point3="-53.5,11" />
-                  <mssgle:LineSegment
-                    End="-91.5,11" />
+                    End="-82,15" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -1843,99 +1675,99 @@ ORDER BY A01.[MANDT]
     </LayoutInfo>
   </Package>
   <TaskHost
-    design-time-name="Package\BKPF">
+    design-time-name="Package\COATAPPROVAL">
     <LayoutInfo>
       <GraphLayout
         Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
-          Size="180,42"
-          Id="Package\BKPF\stage deleted records"
-          TopLeft="687,371" />
-        <NodeLayout
-          Size="130,42"
-          Id="Package\BKPF\Merge Join"
-          TopLeft="451,137" />
-        <NodeLayout
-          Size="114,42"
-          Id="Package\BKPF\DB SAP"
-          TopLeft="199,46" />
-        <NodeLayout
-          Size="186,42"
-          Id="Package\BKPF\stage changed records"
-          TopLeft="422,483" />
+          Size="112,42"
+          Id="Package\COATAPPROVAL\DB PBI"
+          TopLeft="671,48" />
         <NodeLayout
           Size="166,42"
-          Id="Package\BKPF\insert new records"
+          Id="Package\COATAPPROVAL\insert new records"
           TopLeft="159,370" />
         <NodeLayout
           Size="184,42"
-          Id="Package\BKPF\Find Changed Records"
+          Id="Package\COATAPPROVAL\Find Changed Records"
           TopLeft="420,366" />
         <NodeLayout
-          Size="112,42"
-          Id="Package\BKPF\DB PBI"
-          TopLeft="671,48" />
+          Size="186,42"
+          Id="Package\COATAPPROVAL\stage changed records"
+          TopLeft="417,479" />
         <NodeLayout
           Size="153,42"
-          Id="Package\BKPF\Identity records"
-          TopLeft="440,232" />
+          Id="Package\COATAPPROVAL\Identity records"
+          TopLeft="435,233" />
+        <NodeLayout
+          Size="130,42"
+          Id="Package\COATAPPROVAL\Merge Join"
+          TopLeft="450,137" />
+        <NodeLayout
+          Size="180,42"
+          Id="Package\COATAPPROVAL\stage deleted records"
+          TopLeft="687,371" />
+        <NodeLayout
+          Size="137,42"
+          Id="Package\COATAPPROVAL\DB EDOCDB"
+          TopLeft="199,46" />
         <EdgeLayout
-          Id="Package\BKPF.Paths[update1]"
-          TopLeft="513.5,408">
+          Id="Package\COATAPPROVAL.Paths[update1]"
+          TopLeft="511,408">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,75"
+              EndConnector="0,71"
               Start="0,0"
-              End="0,67.5">
+              End="0,63.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,67.5" />
+                    End="0,63.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="-15.8025,27.9453125,31.605,11.609375"
+              BoundingBox="-15.8025,25.9453125,31.605,11.609375"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\BKPF.Paths[update]"
-          TopLeft="514.25,274">
+          Id="Package\COATAPPROVAL.Paths[update]"
+          TopLeft="511.75,275">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,92"
+              EndConnector="0,91"
               Start="0,0"
-              End="0,84.5">
+              End="0,83.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,84.5" />
+                    End="0,83.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="-15.8025,36.4453125,31.605,11.609375"
+              BoundingBox="-15.8025,35.9453125,31.605,11.609375"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\BKPF.Paths[OLE DB Source Output1]"
+          Id="Package\COATAPPROVAL.Paths[OLE DB Source Output1]"
           TopLeft="727,90">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-190.666666666667,47"
+              EndConnector="-191.666666666667,47"
               Start="0,0"
-              End="-190.666666666667,39.5">
+              End="-191.666666666667,39.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
@@ -1946,13 +1778,13 @@ ORDER BY A01.[MANDT]
                     Point2="0,27.8571428571429"
                     Point3="-4,27.8571428571429" />
                   <mssgle:LineSegment
-                    End="-186.666666666667,27.8571428571429" />
+                    End="-187.666666666667,27.8571428571429" />
                   <mssgle:CubicBezierSegment
-                    Point1="-186.666666666667,27.8571428571429"
-                    Point2="-190.666666666667,27.8571428571429"
-                    Point3="-190.666666666667,31.8571428571429" />
+                    Point1="-187.666666666667,27.8571428571429"
+                    Point2="-191.666666666667,27.8571428571429"
+                    Point3="-191.666666666667,31.8571428571429" />
                   <mssgle:LineSegment
-                    End="-190.666666666667,39.5" />
+                    End="-191.666666666667,39.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -1962,31 +1794,31 @@ ORDER BY A01.[MANDT]
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\BKPF.Paths[OLE DB Source Output]"
-          TopLeft="256,88">
+          Id="Package\COATAPPROVAL.Paths[OLE DB Source Output]"
+          TopLeft="267.5,88">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="260,49"
+              EndConnector="227.166666666667,49"
               Start="0,0"
-              End="260,41.5">
+              End="227.166666666667,41.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,20.5" />
+                    End="0,25.0425531914894" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,20.5"
-                    Point2="0,24.5"
-                    Point3="4,24.5" />
+                    Point1="0,25.0425531914894"
+                    Point2="0,29.0425531914894"
+                    Point3="4,29.0425531914894" />
                   <mssgle:LineSegment
-                    End="256,24.5" />
+                    End="223.166666666667,29.0425531914894" />
                   <mssgle:CubicBezierSegment
-                    Point1="256,24.5"
-                    Point2="260,24.5"
-                    Point3="260,28.5" />
+                    Point1="223.166666666667,29.0425531914894"
+                    Point2="227.166666666667,29.0425531914894"
+                    Point3="227.166666666667,33.0425531914894" />
                   <mssgle:LineSegment
-                    End="260,41.5" />
+                    End="227.166666666667,41.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -1996,19 +1828,19 @@ ORDER BY A01.[MANDT]
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\BKPF.Paths[Merge Join Output]"
-          TopLeft="516.25,179">
+          Id="Package\COATAPPROVAL.Paths[Merge Join Output]"
+          TopLeft="513.25,179">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,53"
+              EndConnector="0,54"
               Start="0,0"
-              End="0,45.5">
+              End="0,46.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,45.5" />
+                    End="0,46.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -2018,14 +1850,50 @@ ORDER BY A01.[MANDT]
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\BKPF.Paths[insert]"
-          TopLeft="480.25,274">
+          Id="Package\COATAPPROVAL.Paths[insert]"
+          TopLeft="475.25,275">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-238.25,96"
+              EndConnector="-233.25,95"
               Start="0,0"
-              End="-238.25,88.5">
+              End="-233.25,87.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,28.7516059957173" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,28.7516059957173"
+                    Point2="0,32.7516059957173"
+                    Point3="-4,32.7516059957173" />
+                  <mssgle:LineSegment
+                    End="-229.25,32.7516059957173" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-229.25,32.7516059957173"
+                    Point2="-233.25,32.7516059957173"
+                    Point3="-233.25,36.7516059957173" />
+                  <mssgle:LineSegment
+                    End="-233.25,87.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-129.57498046875,37.7516059957173,25.8999609375,9.451171875"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\COATAPPROVAL.Paths[delete]"
+          TopLeft="547.75,275">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="229.25,96"
+              Start="0,0"
+              End="229.25,88.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
@@ -2034,58 +1902,22 @@ ORDER BY A01.[MANDT]
                   <mssgle:CubicBezierSegment
                     Point1="0,29.0963597430407"
                     Point2="0,33.0963597430407"
-                    Point3="-4,33.0963597430407" />
+                    Point3="4,33.0963597430407" />
                   <mssgle:LineSegment
-                    End="-234.25,33.0963597430407" />
+                    End="225.25,33.0963597430407" />
                   <mssgle:CubicBezierSegment
-                    Point1="-234.25,33.0963597430407"
-                    Point2="-238.25,33.0963597430407"
-                    Point3="-238.25,37.0963597430407" />
+                    Point1="225.25,33.0963597430407"
+                    Point2="229.25,33.0963597430407"
+                    Point3="229.25,37.0963597430407" />
                   <mssgle:LineSegment
-                    End="-238.25,88.5" />
+                    End="229.25,88.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="-132.07498046875,38.0963597430407,25.8999609375,9.451171875"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\BKPF.Paths[delete]"
-          TopLeft="552.75,274">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="224.25,97"
-              Start="0,0"
-              End="224.25,89.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,29.441113490364" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,29.441113490364"
-                    Point2="0,33.441113490364"
-                    Point3="4,33.441113490364" />
-                  <mssgle:LineSegment
-                    End="220.25,33.441113490364" />
-                  <mssgle:CubicBezierSegment
-                    Point1="220.25,33.441113490364"
-                    Point2="224.25,33.441113490364"
-                    Point3="224.25,37.441113490364" />
-                  <mssgle:LineSegment
-                    End="224.25,89.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="97.92904296875,38.441113490364,28.3919140625,9.7490234375"
+              BoundingBox="100.42904296875,38.0963597430407,28.3919140625,9.7490234375"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
@@ -2093,7 +1925,15 @@ ORDER BY A01.[MANDT]
     </LayoutInfo>
   </TaskHost>
   <PipelineComponentMetadata
-    design-time-name="Package\BKPF\stage deleted records">
+    design-time-name="Package\COATAPPROVAL\DB PBI">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\COATAPPROVAL\insert new records">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -2106,15 +1946,7 @@ ORDER BY A01.[MANDT]
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\BKPF\DB SAP">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
-    design-time-name="Package\BKPF\stage changed records">
+    design-time-name="Package\COATAPPROVAL\stage changed records">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -2127,7 +1959,7 @@ ORDER BY A01.[MANDT]
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\BKPF\insert new records">
+    design-time-name="Package\COATAPPROVAL\stage deleted records">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -2140,7 +1972,7 @@ ORDER BY A01.[MANDT]
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\BKPF\DB PBI">
+    design-time-name="Package\COATAPPROVAL\DB EDOCDB">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>

@@ -1,30 +1,47 @@
 ﻿<?xml version="1.0"?>
 <DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
   DTS:refId="Package"
-  DTS:CreationDate="4/19/2021 12:36:45 PM"
+  DTS:CreationDate="4/19/2021 12:54:51 PM"
   DTS:CreationName="Microsoft.Package"
   DTS:CreatorComputerName="ARLPBIDEV"
   DTS:CreatorName="DOMAIN\RPETRELLA"
-  DTS:DTSID="{79FF589B-D1DF-45AE-8325-C9D3A44252E3}"
+  DTS:DTSID="{9844BDF6-0BE3-43AB-8B66-D71EB96E5A16}"
   DTS:ExecutableType="Microsoft.Package"
-  DTS:LastModifiedProductVersion="15.0.2000.152"
+  DTS:LastModifiedProductVersion="15.0.2000.166"
   DTS:LocaleID="1033"
-  DTS:ObjectName="AUFK"
+  DTS:ObjectName="COATMASTER"
   DTS:PackageType="5"
-  DTS:VersionBuild="7"
-  DTS:VersionGUID="{2C3F4799-F1DB-4B44-B24B-93E5B42CE5EF}">
+  DTS:VersionBuild="16"
+  DTS:VersionGUID="{74ED8279-F116-46F7-8849-902A097E9FE2}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:Variables />
   <DTS:Executables>
     <DTS:Executable
-      DTS:refId="Package\AUFK"
+      DTS:refId="Package\clean stage"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{9B95FE4A-46A2-4053-93F2-9557449B3399}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="clean stage"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="TRUNCATE TABLE [COATMASTER_STAGE_UPDATE]&#xA;go&#xA;TRUNCATE TABLE [COATMASTER_STAGE_DELETE]&#xA;go&#xA;TRUNCATE TABLE [COATMASTER_STAGE_INSERT]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\COATMASTER"
       DTS:CreationName="Microsoft.Pipeline"
       DTS:Description="Data Flow Task"
-      DTS:DTSID="{b0d5bc4d-e6d6-43ae-bc7a-39a26c303096}"
+      DTS:DTSID="{54FCA8B7-0619-4259-A9D7-66108F315E74}"
       DTS:ExecutableType="Microsoft.Pipeline"
       DTS:LocaleID="-1"
-      DTS:ObjectName="AUFK"
+      DTS:ObjectName="COATMASTER"
       DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
       <DTS:Variables />
       <DTS:ObjectData>
@@ -32,7 +49,220 @@
           version="1">
           <components>
             <component
-              refId="Package\AUFK\DB PBI"
+              refId="Package\COATMASTER\DB EDOCDB"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="DB EDOCDB"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT [COATSPECNO]
+      ,[COATREV]
+      ,[COATPUBLISH]
+      ,[COATINACTIVE]
+      ,[COATDECLINED]
+      ,[COATCURRSUBMIT]
+FROM [COATMASTER] (NOLOCK)
+ORDER BY [COATSPECNO]
+      ,[COATREV]</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\COATMASTER\DB EDOCDB.Connections[OleDbConnection]"
+                  connectionManagerID="{5F52B4F9-7589-4D39-8600-167A0E82AE0A}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[ARLSQL01_EDOCDB]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\COATMASTER\DB EDOCDB.Outputs[OLE DB Source Output]"
+                  isSorted="true"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\COATMASTER\DB EDOCDB.Outputs[OLE DB Source Output].Columns[COATSPECNO]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\COATMASTER\DB EDOCDB.Outputs[OLE DB Source Output].ExternalColumns[COATSPECNO]"
+                      length="50"
+                      lineageId="Package\COATMASTER\DB EDOCDB.Outputs[OLE DB Source Output].Columns[COATSPECNO]"
+                      name="COATSPECNO"
+                      sortKeyPosition="1"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\COATMASTER\DB EDOCDB.Outputs[OLE DB Source Output].Columns[COATREV]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\COATMASTER\DB EDOCDB.Outputs[OLE DB Source Output].ExternalColumns[COATREV]"
+                      lineageId="Package\COATMASTER\DB EDOCDB.Outputs[OLE DB Source Output].Columns[COATREV]"
+                      name="COATREV"
+                      sortKeyPosition="2"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\COATMASTER\DB EDOCDB.Outputs[OLE DB Source Output].Columns[COATPUBLISH]"
+                      dataType="bool"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\COATMASTER\DB EDOCDB.Outputs[OLE DB Source Output].ExternalColumns[COATPUBLISH]"
+                      lineageId="Package\COATMASTER\DB EDOCDB.Outputs[OLE DB Source Output].Columns[COATPUBLISH]"
+                      name="COATPUBLISH"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\COATMASTER\DB EDOCDB.Outputs[OLE DB Source Output].Columns[COATINACTIVE]"
+                      dataType="bool"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\COATMASTER\DB EDOCDB.Outputs[OLE DB Source Output].ExternalColumns[COATINACTIVE]"
+                      lineageId="Package\COATMASTER\DB EDOCDB.Outputs[OLE DB Source Output].Columns[COATINACTIVE]"
+                      name="COATINACTIVE"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\COATMASTER\DB EDOCDB.Outputs[OLE DB Source Output].Columns[COATDECLINED]"
+                      dataType="bool"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\COATMASTER\DB EDOCDB.Outputs[OLE DB Source Output].ExternalColumns[COATDECLINED]"
+                      lineageId="Package\COATMASTER\DB EDOCDB.Outputs[OLE DB Source Output].Columns[COATDECLINED]"
+                      name="COATDECLINED"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\COATMASTER\DB EDOCDB.Outputs[OLE DB Source Output].Columns[COATCURRSUBMIT]"
+                      dataType="bool"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\COATMASTER\DB EDOCDB.Outputs[OLE DB Source Output].ExternalColumns[COATCURRSUBMIT]"
+                      lineageId="Package\COATMASTER\DB EDOCDB.Outputs[OLE DB Source Output].Columns[COATCURRSUBMIT]"
+                      name="COATCURRSUBMIT"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\COATMASTER\DB EDOCDB.Outputs[OLE DB Source Output].ExternalColumns[COATSPECNO]"
+                      dataType="wstr"
+                      length="50"
+                      name="COATSPECNO" />
+                    <externalMetadataColumn
+                      refId="Package\COATMASTER\DB EDOCDB.Outputs[OLE DB Source Output].ExternalColumns[COATREV]"
+                      dataType="i4"
+                      name="COATREV" />
+                    <externalMetadataColumn
+                      refId="Package\COATMASTER\DB EDOCDB.Outputs[OLE DB Source Output].ExternalColumns[COATPUBLISH]"
+                      dataType="bool"
+                      name="COATPUBLISH" />
+                    <externalMetadataColumn
+                      refId="Package\COATMASTER\DB EDOCDB.Outputs[OLE DB Source Output].ExternalColumns[COATINACTIVE]"
+                      dataType="bool"
+                      name="COATINACTIVE" />
+                    <externalMetadataColumn
+                      refId="Package\COATMASTER\DB EDOCDB.Outputs[OLE DB Source Output].ExternalColumns[COATDECLINED]"
+                      dataType="bool"
+                      name="COATDECLINED" />
+                    <externalMetadataColumn
+                      refId="Package\COATMASTER\DB EDOCDB.Outputs[OLE DB Source Output].ExternalColumns[COATCURRSUBMIT]"
+                      dataType="bool"
+                      name="COATCURRSUBMIT" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\COATMASTER\DB EDOCDB.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  isSorted="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\COATMASTER\DB EDOCDB.Outputs[OLE DB Source Error Output].Columns[COATSPECNO]"
+                      dataType="wstr"
+                      length="50"
+                      lineageId="Package\COATMASTER\DB EDOCDB.Outputs[OLE DB Source Error Output].Columns[COATSPECNO]"
+                      name="COATSPECNO"
+                      sortKeyPosition="1" />
+                    <outputColumn
+                      refId="Package\COATMASTER\DB EDOCDB.Outputs[OLE DB Source Error Output].Columns[COATREV]"
+                      dataType="i4"
+                      lineageId="Package\COATMASTER\DB EDOCDB.Outputs[OLE DB Source Error Output].Columns[COATREV]"
+                      name="COATREV"
+                      sortKeyPosition="2" />
+                    <outputColumn
+                      refId="Package\COATMASTER\DB EDOCDB.Outputs[OLE DB Source Error Output].Columns[COATPUBLISH]"
+                      dataType="bool"
+                      lineageId="Package\COATMASTER\DB EDOCDB.Outputs[OLE DB Source Error Output].Columns[COATPUBLISH]"
+                      name="COATPUBLISH" />
+                    <outputColumn
+                      refId="Package\COATMASTER\DB EDOCDB.Outputs[OLE DB Source Error Output].Columns[COATINACTIVE]"
+                      dataType="bool"
+                      lineageId="Package\COATMASTER\DB EDOCDB.Outputs[OLE DB Source Error Output].Columns[COATINACTIVE]"
+                      name="COATINACTIVE" />
+                    <outputColumn
+                      refId="Package\COATMASTER\DB EDOCDB.Outputs[OLE DB Source Error Output].Columns[COATDECLINED]"
+                      dataType="bool"
+                      lineageId="Package\COATMASTER\DB EDOCDB.Outputs[OLE DB Source Error Output].Columns[COATDECLINED]"
+                      name="COATDECLINED" />
+                    <outputColumn
+                      refId="Package\COATMASTER\DB EDOCDB.Outputs[OLE DB Source Error Output].Columns[COATCURRSUBMIT]"
+                      dataType="bool"
+                      lineageId="Package\COATMASTER\DB EDOCDB.Outputs[OLE DB Source Error Output].Columns[COATCURRSUBMIT]"
+                      name="COATCURRSUBMIT" />
+                    <outputColumn
+                      refId="Package\COATMASTER\DB EDOCDB.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\COATMASTER\DB EDOCDB.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\COATMASTER\DB EDOCDB.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\COATMASTER\DB EDOCDB.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\COATMASTER\DB PBI"
               componentClassID="Microsoft.OLEDBSource"
               contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
               description="OLE DB Source"
@@ -56,16 +286,15 @@
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT A01.[MANDT]
-      ,A01.[AUFNR]
-      ,A01.[AUTYP]
-      ,A01.[WERKS]
-      ,A01.[LOEKZ]
-      ,A01.[OBJNR]
-      ,A01.[AUART]
-FROM [AUFK] A01 (NOLOCK)
-ORDER BY A01.[MANDT]
-      ,A01.[AUFNR]</property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT [COATSPECNO]
+      ,[COATREV]
+      ,[COATPUBLISH]
+      ,[COATINACTIVE]
+      ,[COATDECLINED]
+      ,[COATCURRSUBMIT]
+FROM [COATMASTER] (NOLOCK)
+ORDER BY [COATSPECNO]
+      ,[COATREV]</property>
                 <property
                   dataType="System.String"
                   description="The variable that contains the SQL command to be executed."
@@ -90,7 +319,7 @@ ORDER BY A01.[MANDT]
               </properties>
               <connections>
                 <connection
-                  refId="Package\AUFK\DB PBI.Connections[OleDbConnection]"
+                  refId="Package\COATMASTER\DB PBI.Connections[OleDbConnection]"
                   connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
                   connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
                   description="The OLE DB runtime connection used to access the database."
@@ -98,179 +327,146 @@ ORDER BY A01.[MANDT]
               </connections>
               <outputs>
                 <output
-                  refId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output]"
+                  refId="Package\COATMASTER\DB PBI.Outputs[OLE DB Source Output]"
                   isSorted="true"
                   name="OLE DB Source Output">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      refId="Package\COATMASTER\DB PBI.Outputs[OLE DB Source Output].Columns[COATSPECNO]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
-                      length="3"
-                      lineageId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].Columns[MANDT]"
-                      name="MANDT"
+                      externalMetadataColumnId="Package\COATMASTER\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[COATSPECNO]"
+                      length="50"
+                      lineageId="Package\COATMASTER\DB PBI.Outputs[OLE DB Source Output].Columns[COATSPECNO]"
+                      name="COATSPECNO"
                       sortKeyPosition="1"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].Columns[AUFNR]"
-                      dataType="wstr"
+                      refId="Package\COATMASTER\DB PBI.Outputs[OLE DB Source Output].Columns[COATREV]"
+                      dataType="i4"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[AUFNR]"
-                      length="12"
-                      lineageId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].Columns[AUFNR]"
-                      name="AUFNR"
+                      externalMetadataColumnId="Package\COATMASTER\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[COATREV]"
+                      lineageId="Package\COATMASTER\DB PBI.Outputs[OLE DB Source Output].Columns[COATREV]"
+                      name="COATREV"
                       sortKeyPosition="2"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].Columns[AUTYP]"
-                      dataType="wstr"
+                      refId="Package\COATMASTER\DB PBI.Outputs[OLE DB Source Output].Columns[COATPUBLISH]"
+                      dataType="bool"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[AUTYP]"
-                      length="2"
-                      lineageId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].Columns[AUTYP]"
-                      name="AUTYP"
+                      externalMetadataColumnId="Package\COATMASTER\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[COATPUBLISH]"
+                      lineageId="Package\COATMASTER\DB PBI.Outputs[OLE DB Source Output].Columns[COATPUBLISH]"
+                      name="COATPUBLISH"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].Columns[WERKS]"
-                      dataType="wstr"
+                      refId="Package\COATMASTER\DB PBI.Outputs[OLE DB Source Output].Columns[COATINACTIVE]"
+                      dataType="bool"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[WERKS]"
-                      length="4"
-                      lineageId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].Columns[WERKS]"
-                      name="WERKS"
+                      externalMetadataColumnId="Package\COATMASTER\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[COATINACTIVE]"
+                      lineageId="Package\COATMASTER\DB PBI.Outputs[OLE DB Source Output].Columns[COATINACTIVE]"
+                      name="COATINACTIVE"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].Columns[LOEKZ]"
-                      dataType="wstr"
+                      refId="Package\COATMASTER\DB PBI.Outputs[OLE DB Source Output].Columns[COATDECLINED]"
+                      dataType="bool"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[LOEKZ]"
-                      length="1"
-                      lineageId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].Columns[LOEKZ]"
-                      name="LOEKZ"
+                      externalMetadataColumnId="Package\COATMASTER\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[COATDECLINED]"
+                      lineageId="Package\COATMASTER\DB PBI.Outputs[OLE DB Source Output].Columns[COATDECLINED]"
+                      name="COATDECLINED"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].Columns[OBJNR]"
-                      dataType="wstr"
+                      refId="Package\COATMASTER\DB PBI.Outputs[OLE DB Source Output].Columns[COATCURRSUBMIT]"
+                      dataType="bool"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[OBJNR]"
-                      length="22"
-                      lineageId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].Columns[OBJNR]"
-                      name="OBJNR"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].Columns[AUART]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[AUART]"
-                      length="4"
-                      lineageId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].Columns[AUART]"
-                      name="AUART"
+                      externalMetadataColumnId="Package\COATMASTER\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[COATCURRSUBMIT]"
+                      lineageId="Package\COATMASTER\DB PBI.Outputs[OLE DB Source Output].Columns[COATCURRSUBMIT]"
+                      name="COATCURRSUBMIT"
                       truncationRowDisposition="FailComponent" />
                   </outputColumns>
                   <externalMetadataColumns
                     isUsed="True">
                     <externalMetadataColumn
-                      refId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      refId="Package\COATMASTER\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[COATSPECNO]"
                       dataType="wstr"
-                      length="3"
-                      name="MANDT" />
+                      length="50"
+                      name="COATSPECNO" />
                     <externalMetadataColumn
-                      refId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[AUFNR]"
-                      dataType="wstr"
-                      length="12"
-                      name="AUFNR" />
+                      refId="Package\COATMASTER\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[COATREV]"
+                      dataType="i4"
+                      name="COATREV" />
                     <externalMetadataColumn
-                      refId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[AUTYP]"
-                      dataType="wstr"
-                      length="2"
-                      name="AUTYP" />
+                      refId="Package\COATMASTER\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[COATPUBLISH]"
+                      dataType="bool"
+                      name="COATPUBLISH" />
                     <externalMetadataColumn
-                      refId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[WERKS]"
-                      dataType="wstr"
-                      length="4"
-                      name="WERKS" />
+                      refId="Package\COATMASTER\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[COATINACTIVE]"
+                      dataType="bool"
+                      name="COATINACTIVE" />
                     <externalMetadataColumn
-                      refId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[LOEKZ]"
-                      dataType="wstr"
-                      length="1"
-                      name="LOEKZ" />
+                      refId="Package\COATMASTER\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[COATDECLINED]"
+                      dataType="bool"
+                      name="COATDECLINED" />
                     <externalMetadataColumn
-                      refId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[OBJNR]"
-                      dataType="wstr"
-                      length="22"
-                      name="OBJNR" />
-                    <externalMetadataColumn
-                      refId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[AUART]"
-                      dataType="wstr"
-                      length="4"
-                      name="AUART" />
+                      refId="Package\COATMASTER\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[COATCURRSUBMIT]"
+                      dataType="bool"
+                      name="COATCURRSUBMIT" />
                   </externalMetadataColumns>
                 </output>
                 <output
-                  refId="Package\AUFK\DB PBI.Outputs[OLE DB Source Error Output]"
+                  refId="Package\COATMASTER\DB PBI.Outputs[OLE DB Source Error Output]"
                   isErrorOut="true"
+                  isSorted="true"
                   name="OLE DB Source Error Output">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\AUFK\DB PBI.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      refId="Package\COATMASTER\DB PBI.Outputs[OLE DB Source Error Output].Columns[COATSPECNO]"
                       dataType="wstr"
-                      length="3"
-                      lineageId="Package\AUFK\DB PBI.Outputs[OLE DB Source Error Output].Columns[MANDT]"
-                      name="MANDT" />
+                      length="50"
+                      lineageId="Package\COATMASTER\DB PBI.Outputs[OLE DB Source Error Output].Columns[COATSPECNO]"
+                      name="COATSPECNO"
+                      sortKeyPosition="1" />
                     <outputColumn
-                      refId="Package\AUFK\DB PBI.Outputs[OLE DB Source Error Output].Columns[AUFNR]"
-                      dataType="wstr"
-                      length="12"
-                      lineageId="Package\AUFK\DB PBI.Outputs[OLE DB Source Error Output].Columns[AUFNR]"
-                      name="AUFNR" />
-                    <outputColumn
-                      refId="Package\AUFK\DB PBI.Outputs[OLE DB Source Error Output].Columns[AUTYP]"
-                      dataType="wstr"
-                      length="2"
-                      lineageId="Package\AUFK\DB PBI.Outputs[OLE DB Source Error Output].Columns[AUTYP]"
-                      name="AUTYP" />
-                    <outputColumn
-                      refId="Package\AUFK\DB PBI.Outputs[OLE DB Source Error Output].Columns[WERKS]"
-                      dataType="wstr"
-                      length="4"
-                      lineageId="Package\AUFK\DB PBI.Outputs[OLE DB Source Error Output].Columns[WERKS]"
-                      name="WERKS" />
-                    <outputColumn
-                      refId="Package\AUFK\DB PBI.Outputs[OLE DB Source Error Output].Columns[LOEKZ]"
-                      dataType="wstr"
-                      length="1"
-                      lineageId="Package\AUFK\DB PBI.Outputs[OLE DB Source Error Output].Columns[LOEKZ]"
-                      name="LOEKZ" />
-                    <outputColumn
-                      refId="Package\AUFK\DB PBI.Outputs[OLE DB Source Error Output].Columns[OBJNR]"
-                      dataType="wstr"
-                      length="22"
-                      lineageId="Package\AUFK\DB PBI.Outputs[OLE DB Source Error Output].Columns[OBJNR]"
-                      name="OBJNR" />
-                    <outputColumn
-                      refId="Package\AUFK\DB PBI.Outputs[OLE DB Source Error Output].Columns[AUART]"
-                      dataType="wstr"
-                      length="4"
-                      lineageId="Package\AUFK\DB PBI.Outputs[OLE DB Source Error Output].Columns[AUART]"
-                      name="AUART" />
-                    <outputColumn
-                      refId="Package\AUFK\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      refId="Package\COATMASTER\DB PBI.Outputs[OLE DB Source Error Output].Columns[COATREV]"
                       dataType="i4"
-                      lineageId="Package\AUFK\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      lineageId="Package\COATMASTER\DB PBI.Outputs[OLE DB Source Error Output].Columns[COATREV]"
+                      name="COATREV"
+                      sortKeyPosition="2" />
+                    <outputColumn
+                      refId="Package\COATMASTER\DB PBI.Outputs[OLE DB Source Error Output].Columns[COATPUBLISH]"
+                      dataType="bool"
+                      lineageId="Package\COATMASTER\DB PBI.Outputs[OLE DB Source Error Output].Columns[COATPUBLISH]"
+                      name="COATPUBLISH" />
+                    <outputColumn
+                      refId="Package\COATMASTER\DB PBI.Outputs[OLE DB Source Error Output].Columns[COATINACTIVE]"
+                      dataType="bool"
+                      lineageId="Package\COATMASTER\DB PBI.Outputs[OLE DB Source Error Output].Columns[COATINACTIVE]"
+                      name="COATINACTIVE" />
+                    <outputColumn
+                      refId="Package\COATMASTER\DB PBI.Outputs[OLE DB Source Error Output].Columns[COATDECLINED]"
+                      dataType="bool"
+                      lineageId="Package\COATMASTER\DB PBI.Outputs[OLE DB Source Error Output].Columns[COATDECLINED]"
+                      name="COATDECLINED" />
+                    <outputColumn
+                      refId="Package\COATMASTER\DB PBI.Outputs[OLE DB Source Error Output].Columns[COATCURRSUBMIT]"
+                      dataType="bool"
+                      lineageId="Package\COATMASTER\DB PBI.Outputs[OLE DB Source Error Output].Columns[COATCURRSUBMIT]"
+                      name="COATCURRSUBMIT" />
+                    <outputColumn
+                      refId="Package\COATMASTER\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\COATMASTER\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\AUFK\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      refId="Package\COATMASTER\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\AUFK\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\COATMASTER\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -279,254 +475,7 @@ ORDER BY A01.[MANDT]
               </outputs>
             </component>
             <component
-              refId="Package\AUFK\DB SAP"
-              componentClassID="Microsoft.OLEDBSource"
-              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
-              description="OLE DB Source"
-              name="DB SAP"
-              usesDispositions="true"
-              version="7">
-              <properties>
-                <property
-                  dataType="System.Int32"
-                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
-                  name="CommandTimeout">0</property>
-                <property
-                  dataType="System.String"
-                  description="Specifies the name of the database object used to open a rowset."
-                  name="OpenRowset"></property>
-                <property
-                  dataType="System.String"
-                  description="Specifies the variable that contains the name of the database object used to open a rowset."
-                  name="OpenRowsetVariable"></property>
-                <property
-                  dataType="System.String"
-                  description="The SQL command to be executed."
-                  name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT A01.[MANDT]
-      ,A01.[AUFNR]
-      ,A01.[AUTYP]
-      ,A01.[WERKS]
-      ,A01.[LOEKZ]
-      ,A01.[OBJNR]
-      ,A01.[AUART]
-FROM [ecp].[AUFK] A01 (NOLOCK)
-ORDER BY A01.[MANDT]
-      ,A01.[AUFNR]</property>
-                <property
-                  dataType="System.String"
-                  description="The variable that contains the SQL command to be executed."
-                  name="SqlCommandVariable"></property>
-                <property
-                  dataType="System.Int32"
-                  description="Specifies the column code page to use when code page information is unavailable from the data source."
-                  name="DefaultCodePage">1252</property>
-                <property
-                  dataType="System.Boolean"
-                  description="Forces the use of the DefaultCodePage property value when describing character data."
-                  name="AlwaysUseDefaultCodePage">false</property>
-                <property
-                  dataType="System.Int32"
-                  description="Specifies the mode used to access the database."
-                  name="AccessMode"
-                  typeConverter="AccessMode">2</property>
-                <property
-                  dataType="System.String"
-                  description="The mappings between the parameters in the SQL command and variables."
-                  name="ParameterMapping"></property>
-              </properties>
-              <connections>
-                <connection
-                  refId="Package\AUFK\DB SAP.Connections[OleDbConnection]"
-                  connectionManagerID="{544CCAD9-2CB1-4D87-98D7-A7C478586195}:external"
-                  connectionManagerRefId="Project.ConnectionManagers[SQL_SAP]"
-                  description="The OLE DB runtime connection used to access the database."
-                  name="OleDbConnection" />
-              </connections>
-              <outputs>
-                <output
-                  refId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output]"
-                  isSorted="true"
-                  name="OLE DB Source Output">
-                  <outputColumns>
-                    <outputColumn
-                      refId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].Columns[MANDT]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
-                      length="3"
-                      lineageId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].Columns[MANDT]"
-                      name="MANDT"
-                      sortKeyPosition="1"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].Columns[AUFNR]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[AUFNR]"
-                      length="12"
-                      lineageId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].Columns[AUFNR]"
-                      name="AUFNR"
-                      sortKeyPosition="2"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].Columns[AUTYP]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[AUTYP]"
-                      length="2"
-                      lineageId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].Columns[AUTYP]"
-                      name="AUTYP"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].Columns[WERKS]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[WERKS]"
-                      length="4"
-                      lineageId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].Columns[WERKS]"
-                      name="WERKS"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].Columns[LOEKZ]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[LOEKZ]"
-                      length="1"
-                      lineageId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].Columns[LOEKZ]"
-                      name="LOEKZ"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].Columns[OBJNR]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[OBJNR]"
-                      length="22"
-                      lineageId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].Columns[OBJNR]"
-                      name="OBJNR"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].Columns[AUART]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[AUART]"
-                      length="4"
-                      lineageId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].Columns[AUART]"
-                      name="AUART"
-                      truncationRowDisposition="FailComponent" />
-                  </outputColumns>
-                  <externalMetadataColumns
-                    isUsed="True">
-                    <externalMetadataColumn
-                      refId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
-                      dataType="wstr"
-                      length="3"
-                      name="MANDT" />
-                    <externalMetadataColumn
-                      refId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[AUFNR]"
-                      dataType="wstr"
-                      length="12"
-                      name="AUFNR" />
-                    <externalMetadataColumn
-                      refId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[AUTYP]"
-                      dataType="wstr"
-                      length="2"
-                      name="AUTYP" />
-                    <externalMetadataColumn
-                      refId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[WERKS]"
-                      dataType="wstr"
-                      length="4"
-                      name="WERKS" />
-                    <externalMetadataColumn
-                      refId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[LOEKZ]"
-                      dataType="wstr"
-                      length="1"
-                      name="LOEKZ" />
-                    <externalMetadataColumn
-                      refId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[OBJNR]"
-                      dataType="wstr"
-                      length="22"
-                      name="OBJNR" />
-                    <externalMetadataColumn
-                      refId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[AUART]"
-                      dataType="wstr"
-                      length="4"
-                      name="AUART" />
-                  </externalMetadataColumns>
-                </output>
-                <output
-                  refId="Package\AUFK\DB SAP.Outputs[OLE DB Source Error Output]"
-                  isErrorOut="true"
-                  name="OLE DB Source Error Output">
-                  <outputColumns>
-                    <outputColumn
-                      refId="Package\AUFK\DB SAP.Outputs[OLE DB Source Error Output].Columns[MANDT]"
-                      dataType="wstr"
-                      length="3"
-                      lineageId="Package\AUFK\DB SAP.Outputs[OLE DB Source Error Output].Columns[MANDT]"
-                      name="MANDT" />
-                    <outputColumn
-                      refId="Package\AUFK\DB SAP.Outputs[OLE DB Source Error Output].Columns[AUFNR]"
-                      dataType="wstr"
-                      length="12"
-                      lineageId="Package\AUFK\DB SAP.Outputs[OLE DB Source Error Output].Columns[AUFNR]"
-                      name="AUFNR" />
-                    <outputColumn
-                      refId="Package\AUFK\DB SAP.Outputs[OLE DB Source Error Output].Columns[AUTYP]"
-                      dataType="wstr"
-                      length="2"
-                      lineageId="Package\AUFK\DB SAP.Outputs[OLE DB Source Error Output].Columns[AUTYP]"
-                      name="AUTYP" />
-                    <outputColumn
-                      refId="Package\AUFK\DB SAP.Outputs[OLE DB Source Error Output].Columns[WERKS]"
-                      dataType="wstr"
-                      length="4"
-                      lineageId="Package\AUFK\DB SAP.Outputs[OLE DB Source Error Output].Columns[WERKS]"
-                      name="WERKS" />
-                    <outputColumn
-                      refId="Package\AUFK\DB SAP.Outputs[OLE DB Source Error Output].Columns[LOEKZ]"
-                      dataType="wstr"
-                      length="1"
-                      lineageId="Package\AUFK\DB SAP.Outputs[OLE DB Source Error Output].Columns[LOEKZ]"
-                      name="LOEKZ" />
-                    <outputColumn
-                      refId="Package\AUFK\DB SAP.Outputs[OLE DB Source Error Output].Columns[OBJNR]"
-                      dataType="wstr"
-                      length="22"
-                      lineageId="Package\AUFK\DB SAP.Outputs[OLE DB Source Error Output].Columns[OBJNR]"
-                      name="OBJNR" />
-                    <outputColumn
-                      refId="Package\AUFK\DB SAP.Outputs[OLE DB Source Error Output].Columns[AUART]"
-                      dataType="wstr"
-                      length="4"
-                      lineageId="Package\AUFK\DB SAP.Outputs[OLE DB Source Error Output].Columns[AUART]"
-                      name="AUART" />
-                    <outputColumn
-                      refId="Package\AUFK\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
-                      dataType="i4"
-                      lineageId="Package\AUFK\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
-                      name="ErrorCode"
-                      specialFlags="1" />
-                    <outputColumn
-                      refId="Package\AUFK\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
-                      dataType="i4"
-                      lineageId="Package\AUFK\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
-                      name="ErrorColumn"
-                      specialFlags="2" />
-                  </outputColumns>
-                  <externalMetadataColumns />
-                </output>
-              </outputs>
-            </component>
-            <component
-              refId="Package\AUFK\Find Changed Records"
+              refId="Package\COATMASTER\Find Changed Records"
               componentClassID="Microsoft.ConditionalSplit"
               contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
               description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
@@ -534,84 +483,76 @@ ORDER BY A01.[MANDT]
               usesDispositions="true">
               <inputs>
                 <input
-                  refId="Package\AUFK\Find Changed Records.Inputs[Conditional Split Input]"
+                  refId="Package\COATMASTER\Find Changed Records.Inputs[Conditional Split Input]"
                   description="Input to the Conditional Split Transformation"
                   name="Conditional Split Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\AUFK\Find Changed Records.Inputs[Conditional Split Input].Columns[AUTYP]"
-                      cachedDataType="wstr"
-                      cachedLength="2"
-                      cachedName="AUTYP"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[AUTYP]" />
+                      refId="Package\COATMASTER\Find Changed Records.Inputs[Conditional Split Input].Columns[COATPUBLISH]"
+                      cachedDataType="bool"
+                      cachedName="COATPUBLISH"
+                      lineageId="Package\COATMASTER\Merge Join.Outputs[Merge Join Output].Columns[COATPUBLISH]" />
                     <inputColumn
-                      refId="Package\AUFK\Find Changed Records.Inputs[Conditional Split Input].Columns[WERKS]"
-                      cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="WERKS"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[WERKS]" />
+                      refId="Package\COATMASTER\Find Changed Records.Inputs[Conditional Split Input].Columns[COATINACTIVE]"
+                      cachedDataType="bool"
+                      cachedName="COATINACTIVE"
+                      lineageId="Package\COATMASTER\Merge Join.Outputs[Merge Join Output].Columns[COATINACTIVE]" />
                     <inputColumn
-                      refId="Package\AUFK\Find Changed Records.Inputs[Conditional Split Input].Columns[LOEKZ]"
-                      cachedDataType="wstr"
-                      cachedLength="1"
-                      cachedName="LOEKZ"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[LOEKZ]" />
+                      refId="Package\COATMASTER\Find Changed Records.Inputs[Conditional Split Input].Columns[COATDECLINED]"
+                      cachedDataType="bool"
+                      cachedName="COATDECLINED"
+                      lineageId="Package\COATMASTER\Merge Join.Outputs[Merge Join Output].Columns[COATDECLINED]" />
                     <inputColumn
-                      refId="Package\AUFK\Find Changed Records.Inputs[Conditional Split Input].Columns[OBJNR]"
-                      cachedDataType="wstr"
-                      cachedLength="22"
-                      cachedName="OBJNR"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[OBJNR]" />
+                      refId="Package\COATMASTER\Find Changed Records.Inputs[Conditional Split Input].Columns[COATCURRSUBMIT]"
+                      cachedDataType="bool"
+                      cachedName="COATCURRSUBMIT"
+                      lineageId="Package\COATMASTER\Merge Join.Outputs[Merge Join Output].Columns[COATCURRSUBMIT]" />
                     <inputColumn
-                      refId="Package\AUFK\Find Changed Records.Inputs[Conditional Split Input].Columns[AUTYP (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="2"
-                      cachedName="AUTYP (1)"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[AUTYP (1)]" />
+                      refId="Package\COATMASTER\Find Changed Records.Inputs[Conditional Split Input].Columns[COATPUBLISH (1)]"
+                      cachedDataType="bool"
+                      cachedName="COATPUBLISH (1)"
+                      lineageId="Package\COATMASTER\Merge Join.Outputs[Merge Join Output].Columns[COATPUBLISH (1)]" />
                     <inputColumn
-                      refId="Package\AUFK\Find Changed Records.Inputs[Conditional Split Input].Columns[WERKS (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="WERKS (1)"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[WERKS (1)]" />
+                      refId="Package\COATMASTER\Find Changed Records.Inputs[Conditional Split Input].Columns[COATINACTIVE (1)]"
+                      cachedDataType="bool"
+                      cachedName="COATINACTIVE (1)"
+                      lineageId="Package\COATMASTER\Merge Join.Outputs[Merge Join Output].Columns[COATINACTIVE (1)]" />
                     <inputColumn
-                      refId="Package\AUFK\Find Changed Records.Inputs[Conditional Split Input].Columns[LOEKZ (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="1"
-                      cachedName="LOEKZ (1)"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[LOEKZ (1)]" />
+                      refId="Package\COATMASTER\Find Changed Records.Inputs[Conditional Split Input].Columns[COATDECLINED (1)]"
+                      cachedDataType="bool"
+                      cachedName="COATDECLINED (1)"
+                      lineageId="Package\COATMASTER\Merge Join.Outputs[Merge Join Output].Columns[COATDECLINED (1)]" />
                     <inputColumn
-                      refId="Package\AUFK\Find Changed Records.Inputs[Conditional Split Input].Columns[OBJNR (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="22"
-                      cachedName="OBJNR (1)"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[OBJNR (1)]" />
+                      refId="Package\COATMASTER\Find Changed Records.Inputs[Conditional Split Input].Columns[COATCURRSUBMIT (1)]"
+                      cachedDataType="bool"
+                      cachedName="COATCURRSUBMIT (1)"
+                      lineageId="Package\COATMASTER\Merge Join.Outputs[Merge Join Output].Columns[COATCURRSUBMIT (1)]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\AUFK\Find Changed Records.Outputs[update]"
+                  refId="Package\COATMASTER\Find Changed Records.Outputs[update]"
                   description="Output 1 of the Conditional Split Transformation"
                   errorOrTruncationOperation="Computation"
                   errorRowDisposition="FailComponent"
                   exclusionGroup="1"
                   name="update"
-                  synchronousInputId="Package\AUFK\Find Changed Records.Inputs[Conditional Split Input]"
+                  synchronousInputId="Package\COATMASTER\Find Changed Records.Inputs[Conditional Split Input]"
                   truncationRowDisposition="FailComponent">
                   <properties>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
-                      name="Expression">#{Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[AUTYP]} != #{Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[AUTYP (1)]} || #{Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[WERKS]} != #{Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[WERKS (1)]} || #{Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[LOEKZ]} != #{Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[LOEKZ (1)]} || #{Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[OBJNR]} != #{Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[OBJNR (1)]}</property>
+                      name="Expression">#{Package\COATMASTER\Merge Join.Outputs[Merge Join Output].Columns[COATPUBLISH]} != #{Package\COATMASTER\Merge Join.Outputs[Merge Join Output].Columns[COATPUBLISH (1)]} || #{Package\COATMASTER\Merge Join.Outputs[Merge Join Output].Columns[COATINACTIVE]} != #{Package\COATMASTER\Merge Join.Outputs[Merge Join Output].Columns[COATINACTIVE (1)]} || #{Package\COATMASTER\Merge Join.Outputs[Merge Join Output].Columns[COATDECLINED]} != #{Package\COATMASTER\Merge Join.Outputs[Merge Join Output].Columns[COATDECLINED (1)]} || #{Package\COATMASTER\Merge Join.Outputs[Merge Join Output].Columns[COATCURRSUBMIT]} != #{Package\COATMASTER\Merge Join.Outputs[Merge Join Output].Columns[COATCURRSUBMIT (1)]}</property>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the friendly version of the expression. This expression version uses column names."
                       expressionType="Notify"
-                      name="FriendlyExpression">AUTYP != [AUTYP (1)] || WERKS != [WERKS (1)] || LOEKZ != [LOEKZ (1)] || OBJNR != [OBJNR (1)]</property>
+                      name="FriendlyExpression">COATPUBLISH != [COATPUBLISH (1)] || COATINACTIVE != [COATINACTIVE (1)] || COATDECLINED != [COATDECLINED (1)] || COATCURRSUBMIT != [COATCURRSUBMIT (1)]</property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
@@ -620,11 +561,11 @@ ORDER BY A01.[MANDT]
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\AUFK\Find Changed Records.Outputs[Conditional Split Default Output]"
+                  refId="Package\COATMASTER\Find Changed Records.Outputs[Conditional Split Default Output]"
                   description="Default Output of the Conditional Split Transformation"
                   exclusionGroup="1"
                   name="Conditional Split Default Output"
-                  synchronousInputId="Package\AUFK\Find Changed Records.Inputs[Conditional Split Input]">
+                  synchronousInputId="Package\COATMASTER\Find Changed Records.Inputs[Conditional Split Input]">
                   <properties>
                     <property
                       dataType="System.Boolean"
@@ -633,23 +574,23 @@ ORDER BY A01.[MANDT]
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\AUFK\Find Changed Records.Outputs[Conditional Split Error Output]"
+                  refId="Package\COATMASTER\Find Changed Records.Outputs[Conditional Split Error Output]"
                   description="Error Output of the Conditional Split Transformation"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="Conditional Split Error Output"
-                  synchronousInputId="Package\AUFK\Find Changed Records.Inputs[Conditional Split Input]">
+                  synchronousInputId="Package\COATMASTER\Find Changed Records.Inputs[Conditional Split Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\AUFK\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      refId="Package\COATMASTER\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\AUFK\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      lineageId="Package\COATMASTER\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\AUFK\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      refId="Package\COATMASTER\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\AUFK\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\COATMASTER\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -658,7 +599,7 @@ ORDER BY A01.[MANDT]
               </outputs>
             </component>
             <component
-              refId="Package\AUFK\Identity records"
+              refId="Package\COATMASTER\Identity records"
               componentClassID="Microsoft.ConditionalSplit"
               contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
               description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
@@ -666,49 +607,49 @@ ORDER BY A01.[MANDT]
               usesDispositions="true">
               <inputs>
                 <input
-                  refId="Package\AUFK\Identity records.Inputs[Conditional Split Input]"
+                  refId="Package\COATMASTER\Identity records.Inputs[Conditional Split Input]"
                   description="Input to the Conditional Split Transformation"
                   name="Conditional Split Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\AUFK\Identity records.Inputs[Conditional Split Input].Columns[MANDT]"
+                      refId="Package\COATMASTER\Identity records.Inputs[Conditional Split Input].Columns[COATSPECNO]"
                       cachedDataType="wstr"
-                      cachedLength="3"
-                      cachedName="MANDT"
+                      cachedLength="50"
+                      cachedName="COATSPECNO"
                       cachedSortKeyPosition="1"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
+                      lineageId="Package\COATMASTER\Merge Join.Outputs[Merge Join Output].Columns[COATSPECNO]" />
                     <inputColumn
-                      refId="Package\AUFK\Identity records.Inputs[Conditional Split Input].Columns[MANDT (1)]"
+                      refId="Package\COATMASTER\Identity records.Inputs[Conditional Split Input].Columns[COATSPECNO (1)]"
                       cachedDataType="wstr"
-                      cachedLength="3"
-                      cachedName="MANDT (1)"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]" />
+                      cachedLength="50"
+                      cachedName="COATSPECNO (1)"
+                      lineageId="Package\COATMASTER\Merge Join.Outputs[Merge Join Output].Columns[COATSPECNO (1)]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\AUFK\Identity records.Outputs[update]"
+                  refId="Package\COATMASTER\Identity records.Outputs[update]"
                   description="Output 1 of the Conditional Split Transformation"
                   errorOrTruncationOperation="Computation"
                   errorRowDisposition="FailComponent"
                   exclusionGroup="1"
                   name="update"
-                  synchronousInputId="Package\AUFK\Identity records.Inputs[Conditional Split Input]"
+                  synchronousInputId="Package\COATMASTER\Identity records.Inputs[Conditional Split Input]"
                   truncationRowDisposition="FailComponent">
                   <properties>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
-                      name="Expression">![ISNULL](#{Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; ![ISNULL](#{Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
+                      name="Expression">![ISNULL](#{Package\COATMASTER\Merge Join.Outputs[Merge Join Output].Columns[COATSPECNO]}) &amp;&amp; ![ISNULL](#{Package\COATMASTER\Merge Join.Outputs[Merge Join Output].Columns[COATSPECNO (1)]})</property>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the friendly version of the expression. This expression version uses column names."
                       expressionType="Notify"
-                      name="FriendlyExpression">!ISNULL(MANDT) &amp;&amp; !ISNULL([MANDT (1)])</property>
+                      name="FriendlyExpression">!ISNULL(COATSPECNO) &amp;&amp; !ISNULL([COATSPECNO (1)])</property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
@@ -717,26 +658,26 @@ ORDER BY A01.[MANDT]
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\AUFK\Identity records.Outputs[insert]"
+                  refId="Package\COATMASTER\Identity records.Outputs[insert]"
                   description="Output 2 of the Conditional Split Transformation"
                   errorOrTruncationOperation="Computation"
                   errorRowDisposition="FailComponent"
                   exclusionGroup="1"
                   name="insert"
-                  synchronousInputId="Package\AUFK\Identity records.Inputs[Conditional Split Input]"
+                  synchronousInputId="Package\COATMASTER\Identity records.Inputs[Conditional Split Input]"
                   truncationRowDisposition="FailComponent">
                   <properties>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
-                      name="Expression">![ISNULL](#{Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; [ISNULL](#{Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
+                      name="Expression">![ISNULL](#{Package\COATMASTER\Merge Join.Outputs[Merge Join Output].Columns[COATSPECNO]}) &amp;&amp; [ISNULL](#{Package\COATMASTER\Merge Join.Outputs[Merge Join Output].Columns[COATSPECNO (1)]})</property>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the friendly version of the expression. This expression version uses column names."
                       expressionType="Notify"
-                      name="FriendlyExpression">!ISNULL(MANDT) &amp;&amp; ISNULL([MANDT (1)])</property>
+                      name="FriendlyExpression">!ISNULL(COATSPECNO) &amp;&amp; ISNULL([COATSPECNO (1)])</property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
@@ -745,26 +686,26 @@ ORDER BY A01.[MANDT]
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\AUFK\Identity records.Outputs[delete]"
+                  refId="Package\COATMASTER\Identity records.Outputs[delete]"
                   description="Output 3 of the Conditional Split Transformation"
                   errorOrTruncationOperation="Computation"
                   errorRowDisposition="FailComponent"
                   exclusionGroup="1"
                   name="delete"
-                  synchronousInputId="Package\AUFK\Identity records.Inputs[Conditional Split Input]"
+                  synchronousInputId="Package\COATMASTER\Identity records.Inputs[Conditional Split Input]"
                   truncationRowDisposition="FailComponent">
                   <properties>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
-                      name="Expression">[ISNULL](#{Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; ![ISNULL](#{Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
+                      name="Expression">[ISNULL](#{Package\COATMASTER\Merge Join.Outputs[Merge Join Output].Columns[COATSPECNO]}) &amp;&amp; ![ISNULL](#{Package\COATMASTER\Merge Join.Outputs[Merge Join Output].Columns[COATSPECNO (1)]})</property>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the friendly version of the expression. This expression version uses column names."
                       expressionType="Notify"
-                      name="FriendlyExpression">ISNULL(MANDT) &amp;&amp; !ISNULL([MANDT (1)])</property>
+                      name="FriendlyExpression">ISNULL(COATSPECNO) &amp;&amp; !ISNULL([COATSPECNO (1)])</property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
@@ -773,11 +714,11 @@ ORDER BY A01.[MANDT]
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\AUFK\Identity records.Outputs[Conditional Split Default Output]"
+                  refId="Package\COATMASTER\Identity records.Outputs[Conditional Split Default Output]"
                   description="Default Output of the Conditional Split Transformation"
                   exclusionGroup="1"
                   name="Conditional Split Default Output"
-                  synchronousInputId="Package\AUFK\Identity records.Inputs[Conditional Split Input]">
+                  synchronousInputId="Package\COATMASTER\Identity records.Inputs[Conditional Split Input]">
                   <properties>
                     <property
                       dataType="System.Boolean"
@@ -786,23 +727,23 @@ ORDER BY A01.[MANDT]
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\AUFK\Identity records.Outputs[Conditional Split Error Output]"
+                  refId="Package\COATMASTER\Identity records.Outputs[Conditional Split Error Output]"
                   description="Error Output of the Conditional Split Transformation"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="Conditional Split Error Output"
-                  synchronousInputId="Package\AUFK\Identity records.Inputs[Conditional Split Input]">
+                  synchronousInputId="Package\COATMASTER\Identity records.Inputs[Conditional Split Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\AUFK\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      refId="Package\COATMASTER\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\AUFK\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      lineageId="Package\COATMASTER\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\AUFK\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      refId="Package\COATMASTER\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\AUFK\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\COATMASTER\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -811,7 +752,7 @@ ORDER BY A01.[MANDT]
               </outputs>
             </component>
             <component
-              refId="Package\AUFK\insert new records"
+              refId="Package\COATMASTER\insert new records"
               componentClassID="Microsoft.OLEDBDestination"
               contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
               description="OLE DB Destination"
@@ -826,7 +767,7 @@ ORDER BY A01.[MANDT]
                 <property
                   dataType="System.String"
                   description="Specifies the name of the database object used to open a rowset."
-                  name="OpenRowset">[dbo].[AUFK_STAGE_INSERT]</property>
+                  name="OpenRowset">[dbo].[COATMASTER_STAGE_INSERT]</property>
                 <property
                   dataType="System.String"
                   description="Specifies the variable that contains the name of the database object used to open a rowset."
@@ -868,7 +809,7 @@ ORDER BY A01.[MANDT]
               </properties>
               <connections>
                 <connection
-                  refId="Package\AUFK\insert new records.Connections[OleDbConnection]"
+                  refId="Package\COATMASTER\insert new records.Connections[OleDbConnection]"
                   connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
                   connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
                   description="The OLE DB runtime connection used to access the database."
@@ -876,122 +817,100 @@ ORDER BY A01.[MANDT]
               </connections>
               <inputs>
                 <input
-                  refId="Package\AUFK\insert new records.Inputs[OLE DB Destination Input]"
+                  refId="Package\COATMASTER\insert new records.Inputs[OLE DB Destination Input]"
                   errorOrTruncationOperation="Insert"
                   errorRowDisposition="FailComponent"
                   hasSideEffects="true"
                   name="OLE DB Destination Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\AUFK\insert new records.Inputs[OLE DB Destination Input].Columns[MANDT]"
+                      refId="Package\COATMASTER\insert new records.Inputs[OLE DB Destination Input].Columns[COATSPECNO]"
                       cachedDataType="wstr"
-                      cachedLength="3"
-                      cachedName="MANDT"
+                      cachedLength="50"
+                      cachedName="COATSPECNO"
                       cachedSortKeyPosition="1"
-                      externalMetadataColumnId="Package\AUFK\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
+                      externalMetadataColumnId="Package\COATMASTER\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[COATSPECNO]"
+                      lineageId="Package\COATMASTER\Merge Join.Outputs[Merge Join Output].Columns[COATSPECNO]" />
                     <inputColumn
-                      refId="Package\AUFK\insert new records.Inputs[OLE DB Destination Input].Columns[AUFNR]"
-                      cachedDataType="wstr"
-                      cachedLength="12"
-                      cachedName="AUFNR"
+                      refId="Package\COATMASTER\insert new records.Inputs[OLE DB Destination Input].Columns[COATREV]"
+                      cachedDataType="i4"
+                      cachedName="COATREV"
                       cachedSortKeyPosition="2"
-                      externalMetadataColumnId="Package\AUFK\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[AUFNR]"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[AUFNR]" />
+                      externalMetadataColumnId="Package\COATMASTER\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[COATREV]"
+                      lineageId="Package\COATMASTER\Merge Join.Outputs[Merge Join Output].Columns[COATREV]" />
                     <inputColumn
-                      refId="Package\AUFK\insert new records.Inputs[OLE DB Destination Input].Columns[AUTYP]"
-                      cachedDataType="wstr"
-                      cachedLength="2"
-                      cachedName="AUTYP"
-                      externalMetadataColumnId="Package\AUFK\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[AUTYP]"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[AUTYP]" />
+                      refId="Package\COATMASTER\insert new records.Inputs[OLE DB Destination Input].Columns[COATPUBLISH]"
+                      cachedDataType="bool"
+                      cachedName="COATPUBLISH"
+                      externalMetadataColumnId="Package\COATMASTER\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[COATPUBLISH]"
+                      lineageId="Package\COATMASTER\Merge Join.Outputs[Merge Join Output].Columns[COATPUBLISH]" />
                     <inputColumn
-                      refId="Package\AUFK\insert new records.Inputs[OLE DB Destination Input].Columns[WERKS]"
-                      cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="WERKS"
-                      externalMetadataColumnId="Package\AUFK\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[WERKS]"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[WERKS]" />
+                      refId="Package\COATMASTER\insert new records.Inputs[OLE DB Destination Input].Columns[COATINACTIVE]"
+                      cachedDataType="bool"
+                      cachedName="COATINACTIVE"
+                      externalMetadataColumnId="Package\COATMASTER\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[COATINACTIVE]"
+                      lineageId="Package\COATMASTER\Merge Join.Outputs[Merge Join Output].Columns[COATINACTIVE]" />
                     <inputColumn
-                      refId="Package\AUFK\insert new records.Inputs[OLE DB Destination Input].Columns[LOEKZ]"
-                      cachedDataType="wstr"
-                      cachedLength="1"
-                      cachedName="LOEKZ"
-                      externalMetadataColumnId="Package\AUFK\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[LOEKZ]"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[LOEKZ]" />
+                      refId="Package\COATMASTER\insert new records.Inputs[OLE DB Destination Input].Columns[COATDECLINED]"
+                      cachedDataType="bool"
+                      cachedName="COATDECLINED"
+                      externalMetadataColumnId="Package\COATMASTER\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[COATDECLINED]"
+                      lineageId="Package\COATMASTER\Merge Join.Outputs[Merge Join Output].Columns[COATDECLINED]" />
                     <inputColumn
-                      refId="Package\AUFK\insert new records.Inputs[OLE DB Destination Input].Columns[OBJNR]"
-                      cachedDataType="wstr"
-                      cachedLength="22"
-                      cachedName="OBJNR"
-                      externalMetadataColumnId="Package\AUFK\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[OBJNR]"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[OBJNR]" />
-                    <inputColumn
-                      refId="Package\AUFK\insert new records.Inputs[OLE DB Destination Input].Columns[AUART]"
-                      cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="AUART"
-                      externalMetadataColumnId="Package\AUFK\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[AUART]"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[AUART]" />
+                      refId="Package\COATMASTER\insert new records.Inputs[OLE DB Destination Input].Columns[COATCURRSUBMIT]"
+                      cachedDataType="bool"
+                      cachedName="COATCURRSUBMIT"
+                      externalMetadataColumnId="Package\COATMASTER\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[COATCURRSUBMIT]"
+                      lineageId="Package\COATMASTER\Merge Join.Outputs[Merge Join Output].Columns[COATCURRSUBMIT]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
                     <externalMetadataColumn
-                      refId="Package\AUFK\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      refId="Package\COATMASTER\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[COATSPECNO]"
                       dataType="wstr"
-                      length="3"
-                      name="MANDT" />
+                      length="50"
+                      name="COATSPECNO" />
                     <externalMetadataColumn
-                      refId="Package\AUFK\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[AUFNR]"
-                      dataType="wstr"
-                      length="12"
-                      name="AUFNR" />
+                      refId="Package\COATMASTER\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[COATREV]"
+                      dataType="i4"
+                      name="COATREV" />
                     <externalMetadataColumn
-                      refId="Package\AUFK\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[AUTYP]"
-                      dataType="wstr"
-                      length="2"
-                      name="AUTYP" />
+                      refId="Package\COATMASTER\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[COATPUBLISH]"
+                      dataType="bool"
+                      name="COATPUBLISH" />
                     <externalMetadataColumn
-                      refId="Package\AUFK\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[WERKS]"
-                      dataType="wstr"
-                      length="4"
-                      name="WERKS" />
+                      refId="Package\COATMASTER\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[COATINACTIVE]"
+                      dataType="bool"
+                      name="COATINACTIVE" />
                     <externalMetadataColumn
-                      refId="Package\AUFK\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[LOEKZ]"
-                      dataType="wstr"
-                      length="1"
-                      name="LOEKZ" />
+                      refId="Package\COATMASTER\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[COATDECLINED]"
+                      dataType="bool"
+                      name="COATDECLINED" />
                     <externalMetadataColumn
-                      refId="Package\AUFK\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[OBJNR]"
-                      dataType="wstr"
-                      length="22"
-                      name="OBJNR" />
-                    <externalMetadataColumn
-                      refId="Package\AUFK\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[AUART]"
-                      dataType="wstr"
-                      length="4"
-                      name="AUART" />
+                      refId="Package\COATMASTER\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[COATCURRSUBMIT]"
+                      dataType="bool"
+                      name="COATCURRSUBMIT" />
                   </externalMetadataColumns>
                 </input>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\AUFK\insert new records.Outputs[OLE DB Destination Error Output]"
+                  refId="Package\COATMASTER\insert new records.Outputs[OLE DB Destination Error Output]"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="OLE DB Destination Error Output"
-                  synchronousInputId="Package\AUFK\insert new records.Inputs[OLE DB Destination Input]">
+                  synchronousInputId="Package\COATMASTER\insert new records.Inputs[OLE DB Destination Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\AUFK\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      refId="Package\COATMASTER\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\AUFK\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      lineageId="Package\COATMASTER\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\AUFK\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      refId="Package\COATMASTER\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\AUFK\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\COATMASTER\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -1000,7 +919,7 @@ ORDER BY A01.[MANDT]
               </outputs>
             </component>
             <component
-              refId="Package\AUFK\Merge Join"
+              refId="Package\COATMASTER\Merge Join"
               componentClassID="Microsoft.MergeJoin"
               contactInfo="Merge Join;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
               description="Combine two sorted data flows into one using the FULL, LEFT, or INNER join. We recommend this transformation when data flows can be sorted at their sources."
@@ -1027,312 +946,252 @@ ORDER BY A01.[MANDT]
               </properties>
               <inputs>
                 <input
-                  refId="Package\AUFK\Merge Join.Inputs[Merge Join Left Input]"
+                  refId="Package\COATMASTER\Merge Join.Inputs[Merge Join Left Input]"
                   hasSideEffects="true"
                   name="Merge Join Left Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\AUFK\Merge Join.Inputs[Merge Join Left Input].Columns[MANDT]"
+                      refId="Package\COATMASTER\Merge Join.Inputs[Merge Join Left Input].Columns[COATSPECNO]"
                       cachedDataType="wstr"
-                      cachedLength="3"
-                      cachedName="MANDT"
+                      cachedLength="50"
+                      cachedName="COATSPECNO"
                       cachedSortKeyPosition="1"
-                      lineageId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].Columns[MANDT]" />
+                      lineageId="Package\COATMASTER\DB EDOCDB.Outputs[OLE DB Source Output].Columns[COATSPECNO]" />
                     <inputColumn
-                      refId="Package\AUFK\Merge Join.Inputs[Merge Join Left Input].Columns[AUFNR]"
-                      cachedDataType="wstr"
-                      cachedLength="12"
-                      cachedName="AUFNR"
+                      refId="Package\COATMASTER\Merge Join.Inputs[Merge Join Left Input].Columns[COATREV]"
+                      cachedDataType="i4"
+                      cachedName="COATREV"
                       cachedSortKeyPosition="2"
-                      lineageId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].Columns[AUFNR]" />
+                      lineageId="Package\COATMASTER\DB EDOCDB.Outputs[OLE DB Source Output].Columns[COATREV]" />
                     <inputColumn
-                      refId="Package\AUFK\Merge Join.Inputs[Merge Join Left Input].Columns[AUTYP]"
-                      cachedDataType="wstr"
-                      cachedLength="2"
-                      cachedName="AUTYP"
-                      lineageId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].Columns[AUTYP]" />
+                      refId="Package\COATMASTER\Merge Join.Inputs[Merge Join Left Input].Columns[COATPUBLISH]"
+                      cachedDataType="bool"
+                      cachedName="COATPUBLISH"
+                      lineageId="Package\COATMASTER\DB EDOCDB.Outputs[OLE DB Source Output].Columns[COATPUBLISH]" />
                     <inputColumn
-                      refId="Package\AUFK\Merge Join.Inputs[Merge Join Left Input].Columns[WERKS]"
-                      cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="WERKS"
-                      lineageId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].Columns[WERKS]" />
+                      refId="Package\COATMASTER\Merge Join.Inputs[Merge Join Left Input].Columns[COATINACTIVE]"
+                      cachedDataType="bool"
+                      cachedName="COATINACTIVE"
+                      lineageId="Package\COATMASTER\DB EDOCDB.Outputs[OLE DB Source Output].Columns[COATINACTIVE]" />
                     <inputColumn
-                      refId="Package\AUFK\Merge Join.Inputs[Merge Join Left Input].Columns[LOEKZ]"
-                      cachedDataType="wstr"
-                      cachedLength="1"
-                      cachedName="LOEKZ"
-                      lineageId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].Columns[LOEKZ]" />
+                      refId="Package\COATMASTER\Merge Join.Inputs[Merge Join Left Input].Columns[COATDECLINED]"
+                      cachedDataType="bool"
+                      cachedName="COATDECLINED"
+                      lineageId="Package\COATMASTER\DB EDOCDB.Outputs[OLE DB Source Output].Columns[COATDECLINED]" />
                     <inputColumn
-                      refId="Package\AUFK\Merge Join.Inputs[Merge Join Left Input].Columns[OBJNR]"
-                      cachedDataType="wstr"
-                      cachedLength="22"
-                      cachedName="OBJNR"
-                      lineageId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].Columns[OBJNR]" />
-                    <inputColumn
-                      refId="Package\AUFK\Merge Join.Inputs[Merge Join Left Input].Columns[AUART]"
-                      cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="AUART"
-                      lineageId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output].Columns[AUART]" />
+                      refId="Package\COATMASTER\Merge Join.Inputs[Merge Join Left Input].Columns[COATCURRSUBMIT]"
+                      cachedDataType="bool"
+                      cachedName="COATCURRSUBMIT"
+                      lineageId="Package\COATMASTER\DB EDOCDB.Outputs[OLE DB Source Output].Columns[COATCURRSUBMIT]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
                 <input
-                  refId="Package\AUFK\Merge Join.Inputs[Merge Join Right Input]"
+                  refId="Package\COATMASTER\Merge Join.Inputs[Merge Join Right Input]"
                   hasSideEffects="true"
                   name="Merge Join Right Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\AUFK\Merge Join.Inputs[Merge Join Right Input].Columns[MANDT]"
+                      refId="Package\COATMASTER\Merge Join.Inputs[Merge Join Right Input].Columns[COATSPECNO]"
                       cachedDataType="wstr"
-                      cachedLength="3"
-                      cachedName="MANDT"
+                      cachedLength="50"
+                      cachedName="COATSPECNO"
                       cachedSortKeyPosition="1"
-                      lineageId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].Columns[MANDT]" />
+                      lineageId="Package\COATMASTER\DB PBI.Outputs[OLE DB Source Output].Columns[COATSPECNO]" />
                     <inputColumn
-                      refId="Package\AUFK\Merge Join.Inputs[Merge Join Right Input].Columns[AUFNR]"
-                      cachedDataType="wstr"
-                      cachedLength="12"
-                      cachedName="AUFNR"
+                      refId="Package\COATMASTER\Merge Join.Inputs[Merge Join Right Input].Columns[COATREV]"
+                      cachedDataType="i4"
+                      cachedName="COATREV"
                       cachedSortKeyPosition="2"
-                      lineageId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].Columns[AUFNR]" />
+                      lineageId="Package\COATMASTER\DB PBI.Outputs[OLE DB Source Output].Columns[COATREV]" />
                     <inputColumn
-                      refId="Package\AUFK\Merge Join.Inputs[Merge Join Right Input].Columns[AUTYP]"
-                      cachedDataType="wstr"
-                      cachedLength="2"
-                      cachedName="AUTYP"
-                      lineageId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].Columns[AUTYP]" />
+                      refId="Package\COATMASTER\Merge Join.Inputs[Merge Join Right Input].Columns[COATPUBLISH]"
+                      cachedDataType="bool"
+                      cachedName="COATPUBLISH"
+                      lineageId="Package\COATMASTER\DB PBI.Outputs[OLE DB Source Output].Columns[COATPUBLISH]" />
                     <inputColumn
-                      refId="Package\AUFK\Merge Join.Inputs[Merge Join Right Input].Columns[WERKS]"
-                      cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="WERKS"
-                      lineageId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].Columns[WERKS]" />
+                      refId="Package\COATMASTER\Merge Join.Inputs[Merge Join Right Input].Columns[COATINACTIVE]"
+                      cachedDataType="bool"
+                      cachedName="COATINACTIVE"
+                      lineageId="Package\COATMASTER\DB PBI.Outputs[OLE DB Source Output].Columns[COATINACTIVE]" />
                     <inputColumn
-                      refId="Package\AUFK\Merge Join.Inputs[Merge Join Right Input].Columns[LOEKZ]"
-                      cachedDataType="wstr"
-                      cachedLength="1"
-                      cachedName="LOEKZ"
-                      lineageId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].Columns[LOEKZ]" />
+                      refId="Package\COATMASTER\Merge Join.Inputs[Merge Join Right Input].Columns[COATDECLINED]"
+                      cachedDataType="bool"
+                      cachedName="COATDECLINED"
+                      lineageId="Package\COATMASTER\DB PBI.Outputs[OLE DB Source Output].Columns[COATDECLINED]" />
                     <inputColumn
-                      refId="Package\AUFK\Merge Join.Inputs[Merge Join Right Input].Columns[OBJNR]"
-                      cachedDataType="wstr"
-                      cachedLength="22"
-                      cachedName="OBJNR"
-                      lineageId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].Columns[OBJNR]" />
-                    <inputColumn
-                      refId="Package\AUFK\Merge Join.Inputs[Merge Join Right Input].Columns[AUART]"
-                      cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="AUART"
-                      lineageId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output].Columns[AUART]" />
+                      refId="Package\COATMASTER\Merge Join.Inputs[Merge Join Right Input].Columns[COATCURRSUBMIT]"
+                      cachedDataType="bool"
+                      cachedName="COATCURRSUBMIT"
+                      lineageId="Package\COATMASTER\DB PBI.Outputs[OLE DB Source Output].Columns[COATCURRSUBMIT]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\AUFK\Merge Join.Outputs[Merge Join Output]"
+                  refId="Package\COATMASTER\Merge Join.Outputs[Merge Join Output]"
                   isSorted="true"
                   name="Merge Join Output">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[MANDT]"
+                      refId="Package\COATMASTER\Merge Join.Outputs[Merge Join Output].Columns[COATSPECNO]"
                       dataType="wstr"
-                      length="3"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[MANDT]"
-                      name="MANDT"
+                      length="50"
+                      lineageId="Package\COATMASTER\Merge Join.Outputs[Merge Join Output].Columns[COATSPECNO]"
+                      name="COATSPECNO"
                       sortKeyPosition="1">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\AUFK\Merge Join.Inputs[Merge Join Left Input].Columns[MANDT]}</property>
+                          name="InputColumnID">#{Package\COATMASTER\Merge Join.Inputs[Merge Join Left Input].Columns[COATSPECNO]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[AUFNR]"
-                      dataType="wstr"
-                      length="12"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[AUFNR]"
-                      name="AUFNR"
+                      refId="Package\COATMASTER\Merge Join.Outputs[Merge Join Output].Columns[COATREV]"
+                      dataType="i4"
+                      lineageId="Package\COATMASTER\Merge Join.Outputs[Merge Join Output].Columns[COATREV]"
+                      name="COATREV"
                       sortKeyPosition="2">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\AUFK\Merge Join.Inputs[Merge Join Left Input].Columns[AUFNR]}</property>
+                          name="InputColumnID">#{Package\COATMASTER\Merge Join.Inputs[Merge Join Left Input].Columns[COATREV]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[AUTYP]"
-                      dataType="wstr"
-                      length="2"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[AUTYP]"
-                      name="AUTYP">
+                      refId="Package\COATMASTER\Merge Join.Outputs[Merge Join Output].Columns[COATPUBLISH]"
+                      dataType="bool"
+                      lineageId="Package\COATMASTER\Merge Join.Outputs[Merge Join Output].Columns[COATPUBLISH]"
+                      name="COATPUBLISH">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\AUFK\Merge Join.Inputs[Merge Join Left Input].Columns[AUTYP]}</property>
+                          name="InputColumnID">#{Package\COATMASTER\Merge Join.Inputs[Merge Join Left Input].Columns[COATPUBLISH]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[WERKS]"
-                      dataType="wstr"
-                      length="4"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[WERKS]"
-                      name="WERKS">
+                      refId="Package\COATMASTER\Merge Join.Outputs[Merge Join Output].Columns[COATINACTIVE]"
+                      dataType="bool"
+                      lineageId="Package\COATMASTER\Merge Join.Outputs[Merge Join Output].Columns[COATINACTIVE]"
+                      name="COATINACTIVE">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\AUFK\Merge Join.Inputs[Merge Join Left Input].Columns[WERKS]}</property>
+                          name="InputColumnID">#{Package\COATMASTER\Merge Join.Inputs[Merge Join Left Input].Columns[COATINACTIVE]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[LOEKZ]"
-                      dataType="wstr"
-                      length="1"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[LOEKZ]"
-                      name="LOEKZ">
+                      refId="Package\COATMASTER\Merge Join.Outputs[Merge Join Output].Columns[COATDECLINED]"
+                      dataType="bool"
+                      lineageId="Package\COATMASTER\Merge Join.Outputs[Merge Join Output].Columns[COATDECLINED]"
+                      name="COATDECLINED">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\AUFK\Merge Join.Inputs[Merge Join Left Input].Columns[LOEKZ]}</property>
+                          name="InputColumnID">#{Package\COATMASTER\Merge Join.Inputs[Merge Join Left Input].Columns[COATDECLINED]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[OBJNR]"
-                      dataType="wstr"
-                      length="22"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[OBJNR]"
-                      name="OBJNR">
+                      refId="Package\COATMASTER\Merge Join.Outputs[Merge Join Output].Columns[COATCURRSUBMIT]"
+                      dataType="bool"
+                      lineageId="Package\COATMASTER\Merge Join.Outputs[Merge Join Output].Columns[COATCURRSUBMIT]"
+                      name="COATCURRSUBMIT">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\AUFK\Merge Join.Inputs[Merge Join Left Input].Columns[OBJNR]}</property>
+                          name="InputColumnID">#{Package\COATMASTER\Merge Join.Inputs[Merge Join Left Input].Columns[COATCURRSUBMIT]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]"
+                      refId="Package\COATMASTER\Merge Join.Outputs[Merge Join Output].Columns[COATSPECNO (1)]"
                       dataType="wstr"
-                      length="3"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]"
-                      name="MANDT (1)">
+                      length="50"
+                      lineageId="Package\COATMASTER\Merge Join.Outputs[Merge Join Output].Columns[COATSPECNO (1)]"
+                      name="COATSPECNO (1)">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\AUFK\Merge Join.Inputs[Merge Join Right Input].Columns[MANDT]}</property>
+                          name="InputColumnID">#{Package\COATMASTER\Merge Join.Inputs[Merge Join Right Input].Columns[COATSPECNO]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[AUFNR (1)]"
-                      dataType="wstr"
-                      length="12"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[AUFNR (1)]"
-                      name="AUFNR (1)">
+                      refId="Package\COATMASTER\Merge Join.Outputs[Merge Join Output].Columns[COATREV (1)]"
+                      dataType="i4"
+                      lineageId="Package\COATMASTER\Merge Join.Outputs[Merge Join Output].Columns[COATREV (1)]"
+                      name="COATREV (1)">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\AUFK\Merge Join.Inputs[Merge Join Right Input].Columns[AUFNR]}</property>
+                          name="InputColumnID">#{Package\COATMASTER\Merge Join.Inputs[Merge Join Right Input].Columns[COATREV]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[AUTYP (1)]"
-                      dataType="wstr"
-                      length="2"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[AUTYP (1)]"
-                      name="AUTYP (1)">
+                      refId="Package\COATMASTER\Merge Join.Outputs[Merge Join Output].Columns[COATPUBLISH (1)]"
+                      dataType="bool"
+                      lineageId="Package\COATMASTER\Merge Join.Outputs[Merge Join Output].Columns[COATPUBLISH (1)]"
+                      name="COATPUBLISH (1)">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\AUFK\Merge Join.Inputs[Merge Join Right Input].Columns[AUTYP]}</property>
+                          name="InputColumnID">#{Package\COATMASTER\Merge Join.Inputs[Merge Join Right Input].Columns[COATPUBLISH]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[WERKS (1)]"
-                      dataType="wstr"
-                      length="4"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[WERKS (1)]"
-                      name="WERKS (1)">
+                      refId="Package\COATMASTER\Merge Join.Outputs[Merge Join Output].Columns[COATINACTIVE (1)]"
+                      dataType="bool"
+                      lineageId="Package\COATMASTER\Merge Join.Outputs[Merge Join Output].Columns[COATINACTIVE (1)]"
+                      name="COATINACTIVE (1)">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\AUFK\Merge Join.Inputs[Merge Join Right Input].Columns[WERKS]}</property>
+                          name="InputColumnID">#{Package\COATMASTER\Merge Join.Inputs[Merge Join Right Input].Columns[COATINACTIVE]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[LOEKZ (1)]"
-                      dataType="wstr"
-                      length="1"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[LOEKZ (1)]"
-                      name="LOEKZ (1)">
+                      refId="Package\COATMASTER\Merge Join.Outputs[Merge Join Output].Columns[COATDECLINED (1)]"
+                      dataType="bool"
+                      lineageId="Package\COATMASTER\Merge Join.Outputs[Merge Join Output].Columns[COATDECLINED (1)]"
+                      name="COATDECLINED (1)">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\AUFK\Merge Join.Inputs[Merge Join Right Input].Columns[LOEKZ]}</property>
+                          name="InputColumnID">#{Package\COATMASTER\Merge Join.Inputs[Merge Join Right Input].Columns[COATDECLINED]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[OBJNR (1)]"
-                      dataType="wstr"
-                      length="22"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[OBJNR (1)]"
-                      name="OBJNR (1)">
+                      refId="Package\COATMASTER\Merge Join.Outputs[Merge Join Output].Columns[COATCURRSUBMIT (1)]"
+                      dataType="bool"
+                      lineageId="Package\COATMASTER\Merge Join.Outputs[Merge Join Output].Columns[COATCURRSUBMIT (1)]"
+                      name="COATCURRSUBMIT (1)">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\AUFK\Merge Join.Inputs[Merge Join Right Input].Columns[OBJNR]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[AUART]"
-                      dataType="wstr"
-                      length="4"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[AUART]"
-                      name="AUART">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\AUFK\Merge Join.Inputs[Merge Join Left Input].Columns[AUART]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[AUART (1)]"
-                      dataType="wstr"
-                      length="4"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[AUART (1)]"
-                      name="AUART (1)">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\AUFK\Merge Join.Inputs[Merge Join Right Input].Columns[AUART]}</property>
+                          name="InputColumnID">#{Package\COATMASTER\Merge Join.Inputs[Merge Join Right Input].Columns[COATCURRSUBMIT]}</property>
                       </properties>
                     </outputColumn>
                   </outputColumns>
@@ -1341,7 +1200,7 @@ ORDER BY A01.[MANDT]
               </outputs>
             </component>
             <component
-              refId="Package\AUFK\stage changed records"
+              refId="Package\COATMASTER\stage changed records"
               componentClassID="Microsoft.OLEDBDestination"
               contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
               description="OLE DB Destination"
@@ -1356,7 +1215,7 @@ ORDER BY A01.[MANDT]
                 <property
                   dataType="System.String"
                   description="Specifies the name of the database object used to open a rowset."
-                  name="OpenRowset">[dbo].[AUFK_STAGE_UPDATE]</property>
+                  name="OpenRowset">[dbo].[COATMASTER_STAGE_UPDATE]</property>
                 <property
                   dataType="System.String"
                   description="Specifies the variable that contains the name of the database object used to open a rowset."
@@ -1398,7 +1257,7 @@ ORDER BY A01.[MANDT]
               </properties>
               <connections>
                 <connection
-                  refId="Package\AUFK\stage changed records.Connections[OleDbConnection]"
+                  refId="Package\COATMASTER\stage changed records.Connections[OleDbConnection]"
                   connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
                   connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
                   description="The OLE DB runtime connection used to access the database."
@@ -1406,122 +1265,100 @@ ORDER BY A01.[MANDT]
               </connections>
               <inputs>
                 <input
-                  refId="Package\AUFK\stage changed records.Inputs[OLE DB Destination Input]"
+                  refId="Package\COATMASTER\stage changed records.Inputs[OLE DB Destination Input]"
                   errorOrTruncationOperation="Insert"
                   errorRowDisposition="FailComponent"
                   hasSideEffects="true"
                   name="OLE DB Destination Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\AUFK\stage changed records.Inputs[OLE DB Destination Input].Columns[MANDT]"
+                      refId="Package\COATMASTER\stage changed records.Inputs[OLE DB Destination Input].Columns[COATSPECNO]"
                       cachedDataType="wstr"
-                      cachedLength="3"
-                      cachedName="MANDT"
+                      cachedLength="50"
+                      cachedName="COATSPECNO"
                       cachedSortKeyPosition="1"
-                      externalMetadataColumnId="Package\AUFK\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
+                      externalMetadataColumnId="Package\COATMASTER\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[COATSPECNO]"
+                      lineageId="Package\COATMASTER\Merge Join.Outputs[Merge Join Output].Columns[COATSPECNO]" />
                     <inputColumn
-                      refId="Package\AUFK\stage changed records.Inputs[OLE DB Destination Input].Columns[AUFNR]"
-                      cachedDataType="wstr"
-                      cachedLength="12"
-                      cachedName="AUFNR"
+                      refId="Package\COATMASTER\stage changed records.Inputs[OLE DB Destination Input].Columns[COATREV]"
+                      cachedDataType="i4"
+                      cachedName="COATREV"
                       cachedSortKeyPosition="2"
-                      externalMetadataColumnId="Package\AUFK\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[AUFNR]"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[AUFNR]" />
+                      externalMetadataColumnId="Package\COATMASTER\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[COATREV]"
+                      lineageId="Package\COATMASTER\Merge Join.Outputs[Merge Join Output].Columns[COATREV]" />
                     <inputColumn
-                      refId="Package\AUFK\stage changed records.Inputs[OLE DB Destination Input].Columns[AUTYP]"
-                      cachedDataType="wstr"
-                      cachedLength="2"
-                      cachedName="AUTYP"
-                      externalMetadataColumnId="Package\AUFK\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[AUTYP]"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[AUTYP]" />
+                      refId="Package\COATMASTER\stage changed records.Inputs[OLE DB Destination Input].Columns[COATPUBLISH]"
+                      cachedDataType="bool"
+                      cachedName="COATPUBLISH"
+                      externalMetadataColumnId="Package\COATMASTER\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[COATPUBLISH]"
+                      lineageId="Package\COATMASTER\Merge Join.Outputs[Merge Join Output].Columns[COATPUBLISH]" />
                     <inputColumn
-                      refId="Package\AUFK\stage changed records.Inputs[OLE DB Destination Input].Columns[WERKS]"
-                      cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="WERKS"
-                      externalMetadataColumnId="Package\AUFK\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[WERKS]"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[WERKS]" />
+                      refId="Package\COATMASTER\stage changed records.Inputs[OLE DB Destination Input].Columns[COATINACTIVE]"
+                      cachedDataType="bool"
+                      cachedName="COATINACTIVE"
+                      externalMetadataColumnId="Package\COATMASTER\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[COATINACTIVE]"
+                      lineageId="Package\COATMASTER\Merge Join.Outputs[Merge Join Output].Columns[COATINACTIVE]" />
                     <inputColumn
-                      refId="Package\AUFK\stage changed records.Inputs[OLE DB Destination Input].Columns[LOEKZ]"
-                      cachedDataType="wstr"
-                      cachedLength="1"
-                      cachedName="LOEKZ"
-                      externalMetadataColumnId="Package\AUFK\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[LOEKZ]"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[LOEKZ]" />
+                      refId="Package\COATMASTER\stage changed records.Inputs[OLE DB Destination Input].Columns[COATDECLINED]"
+                      cachedDataType="bool"
+                      cachedName="COATDECLINED"
+                      externalMetadataColumnId="Package\COATMASTER\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[COATDECLINED]"
+                      lineageId="Package\COATMASTER\Merge Join.Outputs[Merge Join Output].Columns[COATDECLINED]" />
                     <inputColumn
-                      refId="Package\AUFK\stage changed records.Inputs[OLE DB Destination Input].Columns[OBJNR]"
-                      cachedDataType="wstr"
-                      cachedLength="22"
-                      cachedName="OBJNR"
-                      externalMetadataColumnId="Package\AUFK\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[OBJNR]"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[OBJNR]" />
-                    <inputColumn
-                      refId="Package\AUFK\stage changed records.Inputs[OLE DB Destination Input].Columns[AUART]"
-                      cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="AUART"
-                      externalMetadataColumnId="Package\AUFK\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[AUART]"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[AUART]" />
+                      refId="Package\COATMASTER\stage changed records.Inputs[OLE DB Destination Input].Columns[COATCURRSUBMIT]"
+                      cachedDataType="bool"
+                      cachedName="COATCURRSUBMIT"
+                      externalMetadataColumnId="Package\COATMASTER\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[COATCURRSUBMIT]"
+                      lineageId="Package\COATMASTER\Merge Join.Outputs[Merge Join Output].Columns[COATCURRSUBMIT]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
                     <externalMetadataColumn
-                      refId="Package\AUFK\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      refId="Package\COATMASTER\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[COATSPECNO]"
                       dataType="wstr"
-                      length="3"
-                      name="MANDT" />
+                      length="50"
+                      name="COATSPECNO" />
                     <externalMetadataColumn
-                      refId="Package\AUFK\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[AUFNR]"
-                      dataType="wstr"
-                      length="12"
-                      name="AUFNR" />
+                      refId="Package\COATMASTER\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[COATREV]"
+                      dataType="i4"
+                      name="COATREV" />
                     <externalMetadataColumn
-                      refId="Package\AUFK\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[AUTYP]"
-                      dataType="wstr"
-                      length="2"
-                      name="AUTYP" />
+                      refId="Package\COATMASTER\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[COATPUBLISH]"
+                      dataType="bool"
+                      name="COATPUBLISH" />
                     <externalMetadataColumn
-                      refId="Package\AUFK\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[WERKS]"
-                      dataType="wstr"
-                      length="4"
-                      name="WERKS" />
+                      refId="Package\COATMASTER\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[COATINACTIVE]"
+                      dataType="bool"
+                      name="COATINACTIVE" />
                     <externalMetadataColumn
-                      refId="Package\AUFK\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[LOEKZ]"
-                      dataType="wstr"
-                      length="1"
-                      name="LOEKZ" />
+                      refId="Package\COATMASTER\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[COATDECLINED]"
+                      dataType="bool"
+                      name="COATDECLINED" />
                     <externalMetadataColumn
-                      refId="Package\AUFK\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[OBJNR]"
-                      dataType="wstr"
-                      length="22"
-                      name="OBJNR" />
-                    <externalMetadataColumn
-                      refId="Package\AUFK\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[AUART]"
-                      dataType="wstr"
-                      length="4"
-                      name="AUART" />
+                      refId="Package\COATMASTER\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[COATCURRSUBMIT]"
+                      dataType="bool"
+                      name="COATCURRSUBMIT" />
                   </externalMetadataColumns>
                 </input>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\AUFK\stage changed records.Outputs[OLE DB Destination Error Output]"
+                  refId="Package\COATMASTER\stage changed records.Outputs[OLE DB Destination Error Output]"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="OLE DB Destination Error Output"
-                  synchronousInputId="Package\AUFK\stage changed records.Inputs[OLE DB Destination Input]">
+                  synchronousInputId="Package\COATMASTER\stage changed records.Inputs[OLE DB Destination Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\AUFK\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      refId="Package\COATMASTER\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\AUFK\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      lineageId="Package\COATMASTER\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\AUFK\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      refId="Package\COATMASTER\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\AUFK\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\COATMASTER\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -1530,7 +1367,7 @@ ORDER BY A01.[MANDT]
               </outputs>
             </component>
             <component
-              refId="Package\AUFK\stage deleted records"
+              refId="Package\COATMASTER\stage deleted records"
               componentClassID="Microsoft.OLEDBDestination"
               contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
               description="OLE DB Destination"
@@ -1545,7 +1382,7 @@ ORDER BY A01.[MANDT]
                 <property
                   dataType="System.String"
                   description="Specifies the name of the database object used to open a rowset."
-                  name="OpenRowset">[dbo].[AUFK_STAGE_DELETE]</property>
+                  name="OpenRowset">[dbo].[COATMASTER_STAGE_DELETE]</property>
                 <property
                   dataType="System.String"
                   description="Specifies the variable that contains the name of the database object used to open a rowset."
@@ -1587,7 +1424,7 @@ ORDER BY A01.[MANDT]
               </properties>
               <connections>
                 <connection
-                  refId="Package\AUFK\stage deleted records.Connections[OleDbConnection]"
+                  refId="Package\COATMASTER\stage deleted records.Connections[OleDbConnection]"
                   connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
                   connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
                   description="The OLE DB runtime connection used to access the database."
@@ -1595,60 +1432,58 @@ ORDER BY A01.[MANDT]
               </connections>
               <inputs>
                 <input
-                  refId="Package\AUFK\stage deleted records.Inputs[OLE DB Destination Input]"
+                  refId="Package\COATMASTER\stage deleted records.Inputs[OLE DB Destination Input]"
                   errorOrTruncationOperation="Insert"
                   errorRowDisposition="FailComponent"
                   hasSideEffects="true"
                   name="OLE DB Destination Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\AUFK\stage deleted records.Inputs[OLE DB Destination Input].Columns[MANDT (1)]"
+                      refId="Package\COATMASTER\stage deleted records.Inputs[OLE DB Destination Input].Columns[COATSPECNO (1)]"
                       cachedDataType="wstr"
-                      cachedLength="3"
-                      cachedName="MANDT (1)"
-                      externalMetadataColumnId="Package\AUFK\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]" />
+                      cachedLength="50"
+                      cachedName="COATSPECNO (1)"
+                      externalMetadataColumnId="Package\COATMASTER\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[COATSPECNO]"
+                      lineageId="Package\COATMASTER\Merge Join.Outputs[Merge Join Output].Columns[COATSPECNO (1)]" />
                     <inputColumn
-                      refId="Package\AUFK\stage deleted records.Inputs[OLE DB Destination Input].Columns[AUFNR (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="12"
-                      cachedName="AUFNR (1)"
-                      externalMetadataColumnId="Package\AUFK\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[AUFNR]"
-                      lineageId="Package\AUFK\Merge Join.Outputs[Merge Join Output].Columns[AUFNR (1)]" />
+                      refId="Package\COATMASTER\stage deleted records.Inputs[OLE DB Destination Input].Columns[COATREV (1)]"
+                      cachedDataType="i4"
+                      cachedName="COATREV (1)"
+                      externalMetadataColumnId="Package\COATMASTER\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[COATREV]"
+                      lineageId="Package\COATMASTER\Merge Join.Outputs[Merge Join Output].Columns[COATREV (1)]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
                     <externalMetadataColumn
-                      refId="Package\AUFK\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      refId="Package\COATMASTER\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[COATSPECNO]"
                       dataType="wstr"
-                      length="3"
-                      name="MANDT" />
+                      length="50"
+                      name="COATSPECNO" />
                     <externalMetadataColumn
-                      refId="Package\AUFK\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[AUFNR]"
-                      dataType="wstr"
-                      length="12"
-                      name="AUFNR" />
+                      refId="Package\COATMASTER\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[COATREV]"
+                      dataType="i4"
+                      name="COATREV" />
                   </externalMetadataColumns>
                 </input>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\AUFK\stage deleted records.Outputs[OLE DB Destination Error Output]"
+                  refId="Package\COATMASTER\stage deleted records.Outputs[OLE DB Destination Error Output]"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="OLE DB Destination Error Output"
-                  synchronousInputId="Package\AUFK\stage deleted records.Inputs[OLE DB Destination Input]">
+                  synchronousInputId="Package\COATMASTER\stage deleted records.Inputs[OLE DB Destination Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\AUFK\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      refId="Package\COATMASTER\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\AUFK\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      lineageId="Package\COATMASTER\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\AUFK\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      refId="Package\COATMASTER\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\AUFK\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\COATMASTER\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -1659,66 +1494,49 @@ ORDER BY A01.[MANDT]
           </components>
           <paths>
             <path
-              refId="Package\AUFK.Paths[delete]"
-              endId="Package\AUFK\stage deleted records.Inputs[OLE DB Destination Input]"
+              refId="Package\COATMASTER.Paths[delete]"
+              endId="Package\COATMASTER\stage deleted records.Inputs[OLE DB Destination Input]"
               name="delete"
-              startId="Package\AUFK\Identity records.Outputs[delete]" />
+              startId="Package\COATMASTER\Identity records.Outputs[delete]" />
             <path
-              refId="Package\AUFK.Paths[insert]"
-              endId="Package\AUFK\insert new records.Inputs[OLE DB Destination Input]"
+              refId="Package\COATMASTER.Paths[insert]"
+              endId="Package\COATMASTER\insert new records.Inputs[OLE DB Destination Input]"
               name="insert"
-              startId="Package\AUFK\Identity records.Outputs[insert]" />
+              startId="Package\COATMASTER\Identity records.Outputs[insert]" />
             <path
-              refId="Package\AUFK.Paths[Merge Join Output]"
-              endId="Package\AUFK\Identity records.Inputs[Conditional Split Input]"
+              refId="Package\COATMASTER.Paths[Merge Join Output]"
+              endId="Package\COATMASTER\Identity records.Inputs[Conditional Split Input]"
               name="Merge Join Output"
-              startId="Package\AUFK\Merge Join.Outputs[Merge Join Output]" />
+              startId="Package\COATMASTER\Merge Join.Outputs[Merge Join Output]" />
             <path
-              refId="Package\AUFK.Paths[OLE DB Source Output]"
-              endId="Package\AUFK\Merge Join.Inputs[Merge Join Left Input]"
+              refId="Package\COATMASTER.Paths[OLE DB Source Output]"
+              endId="Package\COATMASTER\Merge Join.Inputs[Merge Join Left Input]"
               name="OLE DB Source Output"
-              startId="Package\AUFK\DB SAP.Outputs[OLE DB Source Output]" />
+              startId="Package\COATMASTER\DB EDOCDB.Outputs[OLE DB Source Output]" />
             <path
-              refId="Package\AUFK.Paths[OLE DB Source Output1]"
-              endId="Package\AUFK\Merge Join.Inputs[Merge Join Right Input]"
+              refId="Package\COATMASTER.Paths[OLE DB Source Output1]"
+              endId="Package\COATMASTER\Merge Join.Inputs[Merge Join Right Input]"
               name="OLE DB Source Output"
-              startId="Package\AUFK\DB PBI.Outputs[OLE DB Source Output]" />
+              startId="Package\COATMASTER\DB PBI.Outputs[OLE DB Source Output]" />
             <path
-              refId="Package\AUFK.Paths[update]"
-              endId="Package\AUFK\Find Changed Records.Inputs[Conditional Split Input]"
+              refId="Package\COATMASTER.Paths[update]"
+              endId="Package\COATMASTER\Find Changed Records.Inputs[Conditional Split Input]"
               name="update"
-              startId="Package\AUFK\Identity records.Outputs[update]" />
+              startId="Package\COATMASTER\Identity records.Outputs[update]" />
             <path
-              refId="Package\AUFK.Paths[update1]"
-              endId="Package\AUFK\stage changed records.Inputs[OLE DB Destination Input]"
+              refId="Package\COATMASTER.Paths[update1]"
+              endId="Package\COATMASTER\stage changed records.Inputs[OLE DB Destination Input]"
               name="update"
-              startId="Package\AUFK\Find Changed Records.Outputs[update]" />
+              startId="Package\COATMASTER\Find Changed Records.Outputs[update]" />
           </paths>
         </pipeline>
-      </DTS:ObjectData>
-    </DTS:Executable>
-    <DTS:Executable
-      DTS:refId="Package\clean stage"
-      DTS:CreationName="Microsoft.ExecuteSQLTask"
-      DTS:Description="Execute SQL Task"
-      DTS:DTSID="{9ca89871-4246-43cb-83f9-09a39bb4a628}"
-      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
-      DTS:LocaleID="-1"
-      DTS:ObjectName="clean stage"
-      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-      DTS:ThreadHint="0">
-      <DTS:Variables />
-      <DTS:ObjectData>
-        <SQLTask:SqlTaskData
-          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-          SQLTask:SqlStatementSource="TRUNCATE TABLE [AUFK_STAGE_UPDATE]&#xA;go&#xA;TRUNCATE TABLE [AUFK_STAGE_DELETE]&#xA;go&#xA;TRUNCATE TABLE [AUFK_STAGE_INSERT]&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
       DTS:refId="Package\Sequence Container"
       DTS:CreationName="STOCK:SEQUENCE"
       DTS:Description="Sequence Container"
-      DTS:DTSID="{8c6f991f-7b2c-49b7-a166-d61326dfd8a0}"
+      DTS:DTSID="{90C3B882-A739-4060-A2C4-CC181451B9E5}"
       DTS:ExecutableType="STOCK:SEQUENCE"
       DTS:LocaleID="-1"
       DTS:ObjectName="Sequence Container">
@@ -1728,7 +1546,7 @@ ORDER BY A01.[MANDT]
           DTS:refId="Package\Sequence Container\delete"
           DTS:CreationName="Microsoft.ExecuteSQLTask"
           DTS:Description="Execute SQL Task"
-          DTS:DTSID="{8b12a205-883b-4eab-89ae-b303a129721a}"
+          DTS:DTSID="{59A5815A-4995-4711-B879-64F57003D24A}"
           DTS:ExecutableType="Microsoft.ExecuteSQLTask"
           DTS:LocaleID="-1"
           DTS:ObjectName="delete"
@@ -1738,14 +1556,14 @@ ORDER BY A01.[MANDT]
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
               SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-              SQLTask:SqlStatementSource="DELETE A01&#xA;FROM [AUFK] A01 INNER JOIN [AUFK_STAGE_DELETE] B01 ON ( A01.[MANDT] = B01.[MANDT]&#xA;                                                    AND A01.[AUFNR] = B01.[AUFNR] )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+              SQLTask:SqlStatementSource="DELETE A01&#xA;FROM [COATMASTER] A01 &#xA;INNER JOIN [COATMASTER_STAGE_DELETE] B01 &#xA;ON (A01.[COATSPECNO] = B01.[COATSPECNO]&#xA;      AND A01.[COATREV] = B01.[COATREV])&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
           </DTS:ObjectData>
         </DTS:Executable>
         <DTS:Executable
           DTS:refId="Package\Sequence Container\update"
           DTS:CreationName="Microsoft.ExecuteSQLTask"
           DTS:Description="Execute SQL Task"
-          DTS:DTSID="{b9faecf1-398d-46b9-8983-9d7666164b79}"
+          DTS:DTSID="{7C7E4F9F-F25C-4FBA-A7A0-2DEF1CC131FC}"
           DTS:ExecutableType="Microsoft.ExecuteSQLTask"
           DTS:LocaleID="-1"
           DTS:ObjectName="update"
@@ -1755,7 +1573,7 @@ ORDER BY A01.[MANDT]
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
               SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-              SQLTask:SqlStatementSource="UPDATE A01&#xA;SET A01.[AUTYP] = B01.[AUTYP]&#xA;   ,A01.[WERKS] = B01.[WERKS]&#xA;   ,A01.[LOEKZ] = B01.[LOEKZ]&#xA;   ,A01.[OBJNR] = B01.[OBJNR]&#xA;   ,A01.[AUART] = B01.[AUART]&#xA;FROM [AUFK] A01 INNER JOIN [AUFK_STAGE_UPDATE] B01 ON ( A01.[MANDT] = B01.[MANDT]&#xA;                                                    AND A01.[AUFNR] = B01.[AUFNR] )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+              SQLTask:SqlStatementSource="UPDATE A01&#xA;SET A01.[COATSPECNO] = B01.[COATSPECNO]&#xA;      ,A01.[COATREV] = B01.[COATREV]&#xA;      ,A01.[COATPUBLISH] = B01.[COATPUBLISH]&#xA;      ,A01.[COATINACTIVE] = B01.[COATINACTIVE]&#xA;      ,A01.[COATDECLINED] = B01.[COATDECLINED]&#xA;      ,A01.[COATCURRSUBMIT] = B01.[COATCURRSUBMIT]&#xA;FROM [COATMASTER] A01 &#xA;INNER JOIN [COATMASTER_STAGE_UPDATE] B01 &#xA;ON (A01.[COATSPECNO] = B01.[COATSPECNO]&#xA;      AND A01.[COATREV] = B01.[COATREV])&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
           </DTS:ObjectData>
         </DTS:Executable>
       </DTS:Executables>
@@ -1764,7 +1582,7 @@ ORDER BY A01.[MANDT]
       DTS:refId="Package\Sequence Container 1"
       DTS:CreationName="STOCK:SEQUENCE"
       DTS:Description="Sequence Container"
-      DTS:DTSID="{1fd39a9f-7178-40ad-ba28-0dfc7e6726f2}"
+      DTS:DTSID="{9087D49F-DB8F-411B-A697-272CB56E5A51}"
       DTS:ExecutableType="STOCK:SEQUENCE"
       DTS:LocaleID="-1"
       DTS:ObjectName="Sequence Container 1">
@@ -1774,7 +1592,7 @@ ORDER BY A01.[MANDT]
           DTS:refId="Package\Sequence Container 1\Insert"
           DTS:CreationName="Microsoft.ExecuteSQLTask"
           DTS:Description="Execute SQL Task"
-          DTS:DTSID="{8cbebeeb-dd70-4aee-8a99-69d600fdef60}"
+          DTS:DTSID="{993711AE-BF88-4287-95D9-9465DFF83FC8}"
           DTS:ExecutableType="Microsoft.ExecuteSQLTask"
           DTS:LocaleID="-1"
           DTS:ObjectName="Insert"
@@ -1784,7 +1602,7 @@ ORDER BY A01.[MANDT]
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
               SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-              SQLTask:SqlStatementSource="INSERT INTO [AUFK]&#xA;SELECT * FROM [AUFK_STAGE_INSERT]&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+              SQLTask:SqlStatementSource="INSERT INTO [COATMASTER]&#xA;SELECT * FROM [COATMASTER_STAGE_INSERT]&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
           </DTS:ObjectData>
         </DTS:Executable>
       </DTS:Executables>
@@ -1794,23 +1612,23 @@ ORDER BY A01.[MANDT]
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint]"
       DTS:CreationName=""
-      DTS:DTSID="{89ce58eb-7512-4cbf-ba35-4f8e44178a10}"
-      DTS:From="Package\AUFK"
+      DTS:DTSID="{240ACDE6-F01E-4229-BE6F-00F4E983F2CA}"
+      DTS:From="Package\COATMASTER"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint"
       DTS:To="Package\Sequence Container" />
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
       DTS:CreationName=""
-      DTS:DTSID="{DDEBDFDB-BDB7-4F85-B749-ABA884AA5784}"
+      DTS:DTSID="{F3C84049-2444-41F2-A499-ACB9F323AD10}"
       DTS:From="Package\clean stage"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 1"
-      DTS:To="Package\AUFK" />
+      DTS:To="Package\COATMASTER" />
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
       DTS:CreationName=""
-      DTS:DTSID="{7B766DA9-2F55-4359-8020-8999F8D14C10}"
+      DTS:DTSID="{83BBC956-A78B-444F-AC5E-A061E9C6FB78}"
       DTS:From="Package\Sequence Container"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 2"
@@ -1829,13 +1647,13 @@ ORDER BY A01.[MANDT]
       <GraphLayout
         Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
-          Size="104,42"
-          Id="Package\AUFK"
-          TopLeft="200,45" />
-        <NodeLayout
           Size="132,42"
           Id="Package\clean stage"
-          TopLeft="419,27" />
+          TopLeft="359,34" />
+        <NodeLayout
+          Size="145,42"
+          Id="Package\COATMASTER"
+          TopLeft="199,58" />
         <NodeLayout
           Size="108,42"
           Id="Package\Sequence Container\delete"
@@ -1854,7 +1672,7 @@ ORDER BY A01.[MANDT]
         <NodeLayout
           Size="107,42"
           Id="Package\Sequence Container 1\Insert"
-          TopLeft="139,41" />
+          TopLeft="128,41" />
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
@@ -1864,18 +1682,30 @@ ORDER BY A01.[MANDT]
           TopLeft="60,416" />
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint]"
-          TopLeft="251.75,87">
+          TopLeft="271.5,100">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,87"
+              EndConnector="-20,74"
               Start="0,0"
-              End="0,79.5">
+              End="-20,66.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,79.5" />
+                    End="0,33" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,33"
+                    Point2="0,37"
+                    Point3="-4,37" />
+                  <mssgle:LineSegment
+                    End="-16,37" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-16,37"
+                    Point2="-20,37"
+                    Point3="-20,41" />
+                  <mssgle:LineSegment
+                    End="-20,66.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -1886,30 +1716,24 @@ ORDER BY A01.[MANDT]
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 1]"
-          TopLeft="419,48">
+          TopLeft="359,35.5">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-115,18"
+              EndConnector="-87.5,22.5"
               Start="0,0"
-              End="-107.5,18">
+              End="-87.5,15">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="-53.5,0" />
+                    End="-83.5,0" />
                   <mssgle:CubicBezierSegment
-                    Point1="-53.5,0"
-                    Point2="-57.5,0"
-                    Point3="-57.5,4" />
+                    Point1="-83.5,0"
+                    Point2="-87.5,0"
+                    Point3="-87.5,4" />
                   <mssgle:LineSegment
-                    End="-57.5,14" />
-                  <mssgle:CubicBezierSegment
-                    Point1="-57.5,14"
-                    Point2="-57.5,18"
-                    Point3="-61.5,18" />
-                  <mssgle:LineSegment
-                    End="-107.5,18" />
+                    End="-87.5,15" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -1944,99 +1768,99 @@ ORDER BY A01.[MANDT]
     </LayoutInfo>
   </Package>
   <TaskHost
-    design-time-name="Package\AUFK">
+    design-time-name="Package\COATMASTER">
     <LayoutInfo>
       <GraphLayout
         Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
           Size="166,42"
-          Id="Package\AUFK\insert new records"
+          Id="Package\COATMASTER\insert new records"
           TopLeft="159,370" />
         <NodeLayout
           Size="130,42"
-          Id="Package\AUFK\Merge Join"
-          TopLeft="451,137" />
+          Id="Package\COATMASTER\Merge Join"
+          TopLeft="450,137" />
         <NodeLayout
           Size="186,42"
-          Id="Package\AUFK\stage changed records"
-          TopLeft="421,480" />
+          Id="Package\COATMASTER\stage changed records"
+          TopLeft="417,479" />
         <NodeLayout
           Size="153,42"
-          Id="Package\AUFK\Identity records"
-          TopLeft="433,236" />
+          Id="Package\COATMASTER\Identity records"
+          TopLeft="435,233" />
         <NodeLayout
           Size="180,42"
-          Id="Package\AUFK\stage deleted records"
+          Id="Package\COATMASTER\stage deleted records"
           TopLeft="687,371" />
         <NodeLayout
-          Size="112,42"
-          Id="Package\AUFK\DB PBI"
-          TopLeft="671,48" />
-        <NodeLayout
-          Size="114,42"
-          Id="Package\AUFK\DB SAP"
+          Size="131,42"
+          Id="Package\COATMASTER\DB EDOCDB"
           TopLeft="199,46" />
         <NodeLayout
+          Size="112,42"
+          Id="Package\COATMASTER\DB PBI"
+          TopLeft="671,48" />
+        <NodeLayout
           Size="184,42"
-          Id="Package\AUFK\Find Changed Records"
+          Id="Package\COATMASTER\Find Changed Records"
           TopLeft="420,366" />
         <EdgeLayout
-          Id="Package\AUFK.Paths[update1]"
-          TopLeft="513,408">
+          Id="Package\COATMASTER.Paths[update1]"
+          TopLeft="511,408">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,72"
+              EndConnector="0,71"
               Start="0,0"
-              End="0,64.5">
+              End="0,63.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,64.5" />
+                    End="0,63.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="-15.8025,26.4453125,31.605,11.609375"
+              BoundingBox="-15.8025,25.9453125,31.605,11.609375"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\AUFK.Paths[update]"
-          TopLeft="510.75,278">
+          Id="Package\COATMASTER.Paths[update]"
+          TopLeft="511.75,275">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,88"
+              EndConnector="0,91"
               Start="0,0"
-              End="0,80.5">
+              End="0,83.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,80.5" />
+                    End="0,83.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="-15.8025,34.4453125,31.605,11.609375"
+              BoundingBox="-15.8025,35.9453125,31.605,11.609375"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\AUFK.Paths[OLE DB Source Output1]"
+          Id="Package\COATMASTER.Paths[OLE DB Source Output1]"
           TopLeft="727,90">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-190.666666666667,47"
+              EndConnector="-191.666666666667,47"
               Start="0,0"
-              End="-190.666666666667,39.5">
+              End="-191.666666666667,39.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
@@ -2047,13 +1871,13 @@ ORDER BY A01.[MANDT]
                     Point2="0,27.8571428571429"
                     Point3="-4,27.8571428571429" />
                   <mssgle:LineSegment
-                    End="-186.666666666667,27.8571428571429" />
+                    End="-187.666666666667,27.8571428571429" />
                   <mssgle:CubicBezierSegment
-                    Point1="-186.666666666667,27.8571428571429"
-                    Point2="-190.666666666667,27.8571428571429"
-                    Point3="-190.666666666667,31.8571428571429" />
+                    Point1="-187.666666666667,27.8571428571429"
+                    Point2="-191.666666666667,27.8571428571429"
+                    Point3="-191.666666666667,31.8571428571429" />
                   <mssgle:LineSegment
-                    End="-190.666666666667,39.5" />
+                    End="-191.666666666667,39.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -2063,31 +1887,31 @@ ORDER BY A01.[MANDT]
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\AUFK.Paths[OLE DB Source Output]"
-          TopLeft="256,88">
+          Id="Package\COATMASTER.Paths[OLE DB Source Output]"
+          TopLeft="264.5,88">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="260,49"
+              EndConnector="230.166666666667,49"
               Start="0,0"
-              End="260,41.5">
+              End="230.166666666667,41.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,20.5" />
+                    End="0,25.0425531914894" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,20.5"
-                    Point2="0,24.5"
-                    Point3="4,24.5" />
+                    Point1="0,25.0425531914894"
+                    Point2="0,29.0425531914894"
+                    Point3="4,29.0425531914894" />
                   <mssgle:LineSegment
-                    End="256,24.5" />
+                    End="226.166666666667,29.0425531914894" />
                   <mssgle:CubicBezierSegment
-                    Point1="256,24.5"
-                    Point2="260,24.5"
-                    Point3="260,28.5" />
+                    Point1="226.166666666667,29.0425531914894"
+                    Point2="230.166666666667,29.0425531914894"
+                    Point3="230.166666666667,33.0425531914894" />
                   <mssgle:LineSegment
-                    End="260,41.5" />
+                    End="230.166666666667,41.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -2097,19 +1921,19 @@ ORDER BY A01.[MANDT]
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\AUFK.Paths[Merge Join Output]"
-          TopLeft="512.75,179">
+          Id="Package\COATMASTER.Paths[Merge Join Output]"
+          TopLeft="513.25,179">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,57"
+              EndConnector="0,54"
               Start="0,0"
-              End="0,49.5">
+              End="0,46.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,49.5" />
+                    End="0,46.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -2119,74 +1943,74 @@ ORDER BY A01.[MANDT]
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\AUFK.Paths[insert]"
-          TopLeft="473.25,278">
+          Id="Package\COATMASTER.Paths[insert]"
+          TopLeft="475.25,275">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-231.25,92"
+              EndConnector="-233.25,95"
               Start="0,0"
-              End="-231.25,84.5">
+              End="-233.25,87.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,27.7173447537473" />
+                    End="0,28.7516059957173" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,27.7173447537473"
-                    Point2="0,31.7173447537473"
-                    Point3="-4,31.7173447537473" />
+                    Point1="0,28.7516059957173"
+                    Point2="0,32.7516059957173"
+                    Point3="-4,32.7516059957173" />
                   <mssgle:LineSegment
-                    End="-227.25,31.7173447537473" />
+                    End="-229.25,32.7516059957173" />
                   <mssgle:CubicBezierSegment
-                    Point1="-227.25,31.7173447537473"
-                    Point2="-231.25,31.7173447537473"
-                    Point3="-231.25,35.7173447537473" />
+                    Point1="-229.25,32.7516059957173"
+                    Point2="-233.25,32.7516059957173"
+                    Point3="-233.25,36.7516059957173" />
                   <mssgle:LineSegment
-                    End="-231.25,84.5" />
+                    End="-233.25,87.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="-128.57498046875,36.7173447537473,25.8999609375,9.451171875"
+              BoundingBox="-129.57498046875,37.7516059957173,25.8999609375,9.451171875"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\AUFK.Paths[delete]"
-          TopLeft="545.75,278">
+          Id="Package\COATMASTER.Paths[delete]"
+          TopLeft="547.75,275">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="231.25,93"
+              EndConnector="229.25,96"
               Start="0,0"
-              End="231.25,85.5">
+              End="229.25,88.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,28.0620985010707" />
+                    End="0,29.0963597430407" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,28.0620985010707"
-                    Point2="0,32.0620985010707"
-                    Point3="4,32.0620985010707" />
+                    Point1="0,29.0963597430407"
+                    Point2="0,33.0963597430407"
+                    Point3="4,33.0963597430407" />
                   <mssgle:LineSegment
-                    End="227.25,32.0620985010707" />
+                    End="225.25,33.0963597430407" />
                   <mssgle:CubicBezierSegment
-                    Point1="227.25,32.0620985010707"
-                    Point2="231.25,32.0620985010707"
-                    Point3="231.25,36.0620985010707" />
+                    Point1="225.25,33.0963597430407"
+                    Point2="229.25,33.0963597430407"
+                    Point3="229.25,37.0963597430407" />
                   <mssgle:LineSegment
-                    End="231.25,85.5" />
+                    End="229.25,88.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="101.42904296875,37.0620985010707,28.3919140625,9.7490234375"
+              BoundingBox="100.42904296875,38.0963597430407,28.3919140625,9.7490234375"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
@@ -2194,7 +2018,7 @@ ORDER BY A01.[MANDT]
     </LayoutInfo>
   </TaskHost>
   <PipelineComponentMetadata
-    design-time-name="Package\AUFK\insert new records">
+    design-time-name="Package\COATMASTER\insert new records">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -2207,7 +2031,7 @@ ORDER BY A01.[MANDT]
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\AUFK\stage changed records">
+    design-time-name="Package\COATMASTER\stage changed records">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -2220,7 +2044,7 @@ ORDER BY A01.[MANDT]
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\AUFK\stage deleted records">
+    design-time-name="Package\COATMASTER\stage deleted records">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -2233,7 +2057,7 @@ ORDER BY A01.[MANDT]
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\AUFK\DB PBI">
+    design-time-name="Package\COATMASTER\DB EDOCDB">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -2241,7 +2065,7 @@ ORDER BY A01.[MANDT]
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\AUFK\DB SAP">
+    design-time-name="Package\COATMASTER\DB PBI">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>

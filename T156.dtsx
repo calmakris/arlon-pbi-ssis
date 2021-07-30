@@ -1,30 +1,122 @@
 ﻿<?xml version="1.0"?>
 <DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
   DTS:refId="Package"
-  DTS:CreationDate="4/19/2021 12:36:48 PM"
+  DTS:CreationDate="4/19/2021 1:21:35 PM"
   DTS:CreationName="Microsoft.Package"
   DTS:CreatorComputerName="ARLPBIDEV"
   DTS:CreatorName="DOMAIN\RPETRELLA"
-  DTS:DTSID="{1631F2BD-B710-48EE-85F6-6B3613A47E9D}"
+  DTS:DTSID="{C3C6EE76-1846-4D43-ABE1-FC1E0B26F88D}"
   DTS:ExecutableType="Microsoft.Package"
   DTS:LastModifiedProductVersion="15.0.2000.152"
   DTS:LocaleID="1033"
-  DTS:ObjectName="BKPF"
+  DTS:ObjectName="T156"
   DTS:PackageType="5"
   DTS:VersionBuild="7"
-  DTS:VersionGUID="{8F188A41-E57C-45FD-A24D-0F938E8806E8}">
+  DTS:VersionGUID="{725DD5CB-0476-4CE9-A7ED-3196078C183E}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:Variables />
   <DTS:Executables>
     <DTS:Executable
-      DTS:refId="Package\BKPF"
+      DTS:refId="Package\clean stage"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{EE6F2043-DDCA-4F14-8039-5C68EB732E87}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="clean stage"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="TRUNCATE TABLE [T156_STAGE_UPDATE]&#xA;go&#xA;TRUNCATE TABLE [T156_STAGE_DELETE]&#xA;go&#xA;TRUNCATE TABLE [T156_STAGE_INSERT]&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Sequence Container"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Sequence Container"
+      DTS:DTSID="{41CCB420-0AF9-44F6-A4B4-54A3A408749B}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Sequence Container">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\Sequence Container\delete"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{40BD1345-8259-419C-BEE9-908FD6B27A12}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="delete"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+              SQLTask:SqlStatementSource="DELETE A01&#xA;FROM [T156] A01 INNER JOIN [T156_STAGE_DELETE] B01 ON ( A01.[MANDT] = B01.[MANDT]&#xA;                                                    AND A01.[BWART] = B01.[BWART] )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Sequence Container\update"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{6C50EC04-14F9-412C-AF4D-051C90D8DB84}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="update"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+              SQLTask:SqlStatementSource="UPDATE A01&#xA;SET A01.[KZVBU] = B01.[KZVBU]&#xA;FROM [T156] A01 INNER JOIN [T156_STAGE_UPDATE] B01 ON ( A01.[MANDT] = B01.[MANDT]&#xA;                                                    AND A01.[BWART] = B01.[BWART] )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Sequence Container 1"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Sequence Container"
+      DTS:DTSID="{7D9E7D23-3A6A-45D1-AC14-A9AC84265640}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Sequence Container 1">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\Sequence Container 1\Insert"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{A68CA6C7-A64A-4A19-B50F-E1C7F3975B4A}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Insert"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+              SQLTask:SqlStatementSource="INSERT INTO [T156]&#xA;SELECT * FROM [T156_STAGE_INSERT]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\T156"
       DTS:CreationName="Microsoft.Pipeline"
       DTS:Description="Data Flow Task"
-      DTS:DTSID="{9c73cc4f-9c97-4125-bfcf-993da805ce43}"
+      DTS:DTSID="{AB97F2E7-47AE-4F43-B191-A21B778C802D}"
       DTS:ExecutableType="Microsoft.Pipeline"
       DTS:LocaleID="-1"
-      DTS:ObjectName="BKPF"
+      DTS:ObjectName="T156"
       DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
       <DTS:Variables />
       <DTS:ObjectData>
@@ -32,7 +124,7 @@
           version="1">
           <components>
             <component
-              refId="Package\BKPF\DB PBI"
+              refId="Package\T156\DB PBI"
               componentClassID="Microsoft.OLEDBSource"
               contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
               description="OLE DB Source"
@@ -57,16 +149,11 @@
                   description="The SQL command to be executed."
                   name="SqlCommand"
                   UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT A01.[MANDT]
-      ,A01.[BUKRS]
-      ,A01.[BELNR]
-      ,A01.[GJAHR]
-      ,A01.[HWAER]
-      ,A01.[HWAE2]
-FROM [BKPF] A01 (NOLOCK)
+      ,A01.[BWART]
+      ,A01.[KZVBU]
+FROM [T156] A01 (NOLOCK)
 ORDER BY A01.[MANDT]
-      ,A01.[BUKRS]
-      ,A01.[BELNR]
-      ,A01.[GJAHR]</property>
+      ,A01.[BWART]</property>
                 <property
                   dataType="System.String"
                   description="The variable that contains the SQL command to be executed."
@@ -91,7 +178,7 @@ ORDER BY A01.[MANDT]
               </properties>
               <connections>
                 <connection
-                  refId="Package\BKPF\DB PBI.Connections[OleDbConnection]"
+                  refId="Package\T156\DB PBI.Connections[OleDbConnection]"
                   connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
                   connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
                   description="The OLE DB runtime connection used to access the database."
@@ -99,160 +186,95 @@ ORDER BY A01.[MANDT]
               </connections>
               <outputs>
                 <output
-                  refId="Package\BKPF\DB PBI.Outputs[OLE DB Source Output]"
+                  refId="Package\T156\DB PBI.Outputs[OLE DB Source Output]"
                   isSorted="true"
                   name="OLE DB Source Output">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\BKPF\DB PBI.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      refId="Package\T156\DB PBI.Outputs[OLE DB Source Output].Columns[MANDT]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\BKPF\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      externalMetadataColumnId="Package\T156\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
                       length="3"
-                      lineageId="Package\BKPF\DB PBI.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      lineageId="Package\T156\DB PBI.Outputs[OLE DB Source Output].Columns[MANDT]"
                       name="MANDT"
                       sortKeyPosition="1"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\BKPF\DB PBI.Outputs[OLE DB Source Output].Columns[BUKRS]"
+                      refId="Package\T156\DB PBI.Outputs[OLE DB Source Output].Columns[BWART]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\BKPF\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[BUKRS]"
-                      length="4"
-                      lineageId="Package\BKPF\DB PBI.Outputs[OLE DB Source Output].Columns[BUKRS]"
-                      name="BUKRS"
+                      externalMetadataColumnId="Package\T156\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[BWART]"
+                      length="3"
+                      lineageId="Package\T156\DB PBI.Outputs[OLE DB Source Output].Columns[BWART]"
+                      name="BWART"
                       sortKeyPosition="2"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\BKPF\DB PBI.Outputs[OLE DB Source Output].Columns[BELNR]"
+                      refId="Package\T156\DB PBI.Outputs[OLE DB Source Output].Columns[KZVBU]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\BKPF\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[BELNR]"
-                      length="10"
-                      lineageId="Package\BKPF\DB PBI.Outputs[OLE DB Source Output].Columns[BELNR]"
-                      name="BELNR"
-                      sortKeyPosition="3"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\BKPF\DB PBI.Outputs[OLE DB Source Output].Columns[GJAHR]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\BKPF\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[GJAHR]"
-                      length="4"
-                      lineageId="Package\BKPF\DB PBI.Outputs[OLE DB Source Output].Columns[GJAHR]"
-                      name="GJAHR"
-                      sortKeyPosition="4"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\BKPF\DB PBI.Outputs[OLE DB Source Output].Columns[HWAER]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\BKPF\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[HWAER]"
-                      length="5"
-                      lineageId="Package\BKPF\DB PBI.Outputs[OLE DB Source Output].Columns[HWAER]"
-                      name="HWAER"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\BKPF\DB PBI.Outputs[OLE DB Source Output].Columns[HWAE2]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\BKPF\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[HWAE2]"
-                      length="5"
-                      lineageId="Package\BKPF\DB PBI.Outputs[OLE DB Source Output].Columns[HWAE2]"
-                      name="HWAE2"
+                      externalMetadataColumnId="Package\T156\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[KZVBU]"
+                      length="1"
+                      lineageId="Package\T156\DB PBI.Outputs[OLE DB Source Output].Columns[KZVBU]"
+                      name="KZVBU"
                       truncationRowDisposition="FailComponent" />
                   </outputColumns>
                   <externalMetadataColumns
                     isUsed="True">
                     <externalMetadataColumn
-                      refId="Package\BKPF\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      refId="Package\T156\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
                       dataType="wstr"
                       length="3"
                       name="MANDT" />
                     <externalMetadataColumn
-                      refId="Package\BKPF\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[BUKRS]"
+                      refId="Package\T156\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[BWART]"
                       dataType="wstr"
-                      length="4"
-                      name="BUKRS" />
+                      length="3"
+                      name="BWART" />
                     <externalMetadataColumn
-                      refId="Package\BKPF\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[BELNR]"
+                      refId="Package\T156\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[KZVBU]"
                       dataType="wstr"
-                      length="10"
-                      name="BELNR" />
-                    <externalMetadataColumn
-                      refId="Package\BKPF\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[GJAHR]"
-                      dataType="wstr"
-                      length="4"
-                      name="GJAHR" />
-                    <externalMetadataColumn
-                      refId="Package\BKPF\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[HWAER]"
-                      dataType="wstr"
-                      length="5"
-                      name="HWAER" />
-                    <externalMetadataColumn
-                      refId="Package\BKPF\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[HWAE2]"
-                      dataType="wstr"
-                      length="5"
-                      name="HWAE2" />
+                      length="1"
+                      name="KZVBU" />
                   </externalMetadataColumns>
                 </output>
                 <output
-                  refId="Package\BKPF\DB PBI.Outputs[OLE DB Source Error Output]"
+                  refId="Package\T156\DB PBI.Outputs[OLE DB Source Error Output]"
                   isErrorOut="true"
                   name="OLE DB Source Error Output">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\BKPF\DB PBI.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      refId="Package\T156\DB PBI.Outputs[OLE DB Source Error Output].Columns[MANDT]"
                       dataType="wstr"
                       length="3"
-                      lineageId="Package\BKPF\DB PBI.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      lineageId="Package\T156\DB PBI.Outputs[OLE DB Source Error Output].Columns[MANDT]"
                       name="MANDT" />
                     <outputColumn
-                      refId="Package\BKPF\DB PBI.Outputs[OLE DB Source Error Output].Columns[BUKRS]"
+                      refId="Package\T156\DB PBI.Outputs[OLE DB Source Error Output].Columns[BWART]"
                       dataType="wstr"
-                      length="4"
-                      lineageId="Package\BKPF\DB PBI.Outputs[OLE DB Source Error Output].Columns[BUKRS]"
-                      name="BUKRS" />
+                      length="3"
+                      lineageId="Package\T156\DB PBI.Outputs[OLE DB Source Error Output].Columns[BWART]"
+                      name="BWART" />
                     <outputColumn
-                      refId="Package\BKPF\DB PBI.Outputs[OLE DB Source Error Output].Columns[BELNR]"
+                      refId="Package\T156\DB PBI.Outputs[OLE DB Source Error Output].Columns[KZVBU]"
                       dataType="wstr"
-                      length="10"
-                      lineageId="Package\BKPF\DB PBI.Outputs[OLE DB Source Error Output].Columns[BELNR]"
-                      name="BELNR" />
+                      length="1"
+                      lineageId="Package\T156\DB PBI.Outputs[OLE DB Source Error Output].Columns[KZVBU]"
+                      name="KZVBU" />
                     <outputColumn
-                      refId="Package\BKPF\DB PBI.Outputs[OLE DB Source Error Output].Columns[GJAHR]"
-                      dataType="wstr"
-                      length="4"
-                      lineageId="Package\BKPF\DB PBI.Outputs[OLE DB Source Error Output].Columns[GJAHR]"
-                      name="GJAHR" />
-                    <outputColumn
-                      refId="Package\BKPF\DB PBI.Outputs[OLE DB Source Error Output].Columns[HWAER]"
-                      dataType="wstr"
-                      length="5"
-                      lineageId="Package\BKPF\DB PBI.Outputs[OLE DB Source Error Output].Columns[HWAER]"
-                      name="HWAER" />
-                    <outputColumn
-                      refId="Package\BKPF\DB PBI.Outputs[OLE DB Source Error Output].Columns[HWAE2]"
-                      dataType="wstr"
-                      length="5"
-                      lineageId="Package\BKPF\DB PBI.Outputs[OLE DB Source Error Output].Columns[HWAE2]"
-                      name="HWAE2" />
-                    <outputColumn
-                      refId="Package\BKPF\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      refId="Package\T156\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\BKPF\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      lineageId="Package\T156\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\BKPF\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      refId="Package\T156\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\BKPF\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\T156\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -261,7 +283,7 @@ ORDER BY A01.[MANDT]
               </outputs>
             </component>
             <component
-              refId="Package\BKPF\DB SAP"
+              refId="Package\T156\DB SAP"
               componentClassID="Microsoft.OLEDBSource"
               contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
               description="OLE DB Source"
@@ -286,16 +308,11 @@ ORDER BY A01.[MANDT]
                   description="The SQL command to be executed."
                   name="SqlCommand"
                   UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT A01.[MANDT]
-      ,A01.[BUKRS]
-      ,A01.[BELNR]
-      ,A01.[GJAHR]
-      ,A01.[HWAER]
-      ,A01.[HWAE2]
-FROM [ecp].[BKPF] A01 (NOLOCK)
+      ,A01.[BWART]
+      ,A01.[KZVBU]
+FROM [ecp].[T156] A01 (NOLOCK)
 ORDER BY A01.[MANDT]
-      ,A01.[BUKRS]
-      ,A01.[BELNR]
-      ,A01.[GJAHR]</property>
+      ,A01.[BWART]</property>
                 <property
                   dataType="System.String"
                   description="The variable that contains the SQL command to be executed."
@@ -320,7 +337,7 @@ ORDER BY A01.[MANDT]
               </properties>
               <connections>
                 <connection
-                  refId="Package\BKPF\DB SAP.Connections[OleDbConnection]"
+                  refId="Package\T156\DB SAP.Connections[OleDbConnection]"
                   connectionManagerID="{544CCAD9-2CB1-4D87-98D7-A7C478586195}:external"
                   connectionManagerRefId="Project.ConnectionManagers[SQL_SAP]"
                   description="The OLE DB runtime connection used to access the database."
@@ -328,160 +345,95 @@ ORDER BY A01.[MANDT]
               </connections>
               <outputs>
                 <output
-                  refId="Package\BKPF\DB SAP.Outputs[OLE DB Source Output]"
+                  refId="Package\T156\DB SAP.Outputs[OLE DB Source Output]"
                   isSorted="true"
                   name="OLE DB Source Output">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\BKPF\DB SAP.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      refId="Package\T156\DB SAP.Outputs[OLE DB Source Output].Columns[MANDT]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\BKPF\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      externalMetadataColumnId="Package\T156\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
                       length="3"
-                      lineageId="Package\BKPF\DB SAP.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      lineageId="Package\T156\DB SAP.Outputs[OLE DB Source Output].Columns[MANDT]"
                       name="MANDT"
                       sortKeyPosition="1"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\BKPF\DB SAP.Outputs[OLE DB Source Output].Columns[BUKRS]"
+                      refId="Package\T156\DB SAP.Outputs[OLE DB Source Output].Columns[BWART]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\BKPF\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[BUKRS]"
-                      length="4"
-                      lineageId="Package\BKPF\DB SAP.Outputs[OLE DB Source Output].Columns[BUKRS]"
-                      name="BUKRS"
+                      externalMetadataColumnId="Package\T156\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[BWART]"
+                      length="3"
+                      lineageId="Package\T156\DB SAP.Outputs[OLE DB Source Output].Columns[BWART]"
+                      name="BWART"
                       sortKeyPosition="2"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\BKPF\DB SAP.Outputs[OLE DB Source Output].Columns[BELNR]"
+                      refId="Package\T156\DB SAP.Outputs[OLE DB Source Output].Columns[KZVBU]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\BKPF\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[BELNR]"
-                      length="10"
-                      lineageId="Package\BKPF\DB SAP.Outputs[OLE DB Source Output].Columns[BELNR]"
-                      name="BELNR"
-                      sortKeyPosition="3"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\BKPF\DB SAP.Outputs[OLE DB Source Output].Columns[GJAHR]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\BKPF\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[GJAHR]"
-                      length="4"
-                      lineageId="Package\BKPF\DB SAP.Outputs[OLE DB Source Output].Columns[GJAHR]"
-                      name="GJAHR"
-                      sortKeyPosition="4"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\BKPF\DB SAP.Outputs[OLE DB Source Output].Columns[HWAER]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\BKPF\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[HWAER]"
-                      length="5"
-                      lineageId="Package\BKPF\DB SAP.Outputs[OLE DB Source Output].Columns[HWAER]"
-                      name="HWAER"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\BKPF\DB SAP.Outputs[OLE DB Source Output].Columns[HWAE2]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\BKPF\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[HWAE2]"
-                      length="5"
-                      lineageId="Package\BKPF\DB SAP.Outputs[OLE DB Source Output].Columns[HWAE2]"
-                      name="HWAE2"
+                      externalMetadataColumnId="Package\T156\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[KZVBU]"
+                      length="1"
+                      lineageId="Package\T156\DB SAP.Outputs[OLE DB Source Output].Columns[KZVBU]"
+                      name="KZVBU"
                       truncationRowDisposition="FailComponent" />
                   </outputColumns>
                   <externalMetadataColumns
                     isUsed="True">
                     <externalMetadataColumn
-                      refId="Package\BKPF\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      refId="Package\T156\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
                       dataType="wstr"
                       length="3"
                       name="MANDT" />
                     <externalMetadataColumn
-                      refId="Package\BKPF\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[BUKRS]"
+                      refId="Package\T156\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[BWART]"
                       dataType="wstr"
-                      length="4"
-                      name="BUKRS" />
+                      length="3"
+                      name="BWART" />
                     <externalMetadataColumn
-                      refId="Package\BKPF\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[BELNR]"
+                      refId="Package\T156\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[KZVBU]"
                       dataType="wstr"
-                      length="10"
-                      name="BELNR" />
-                    <externalMetadataColumn
-                      refId="Package\BKPF\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[GJAHR]"
-                      dataType="wstr"
-                      length="4"
-                      name="GJAHR" />
-                    <externalMetadataColumn
-                      refId="Package\BKPF\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[HWAER]"
-                      dataType="wstr"
-                      length="5"
-                      name="HWAER" />
-                    <externalMetadataColumn
-                      refId="Package\BKPF\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[HWAE2]"
-                      dataType="wstr"
-                      length="5"
-                      name="HWAE2" />
+                      length="1"
+                      name="KZVBU" />
                   </externalMetadataColumns>
                 </output>
                 <output
-                  refId="Package\BKPF\DB SAP.Outputs[OLE DB Source Error Output]"
+                  refId="Package\T156\DB SAP.Outputs[OLE DB Source Error Output]"
                   isErrorOut="true"
                   name="OLE DB Source Error Output">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\BKPF\DB SAP.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      refId="Package\T156\DB SAP.Outputs[OLE DB Source Error Output].Columns[MANDT]"
                       dataType="wstr"
                       length="3"
-                      lineageId="Package\BKPF\DB SAP.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      lineageId="Package\T156\DB SAP.Outputs[OLE DB Source Error Output].Columns[MANDT]"
                       name="MANDT" />
                     <outputColumn
-                      refId="Package\BKPF\DB SAP.Outputs[OLE DB Source Error Output].Columns[BUKRS]"
+                      refId="Package\T156\DB SAP.Outputs[OLE DB Source Error Output].Columns[BWART]"
                       dataType="wstr"
-                      length="4"
-                      lineageId="Package\BKPF\DB SAP.Outputs[OLE DB Source Error Output].Columns[BUKRS]"
-                      name="BUKRS" />
+                      length="3"
+                      lineageId="Package\T156\DB SAP.Outputs[OLE DB Source Error Output].Columns[BWART]"
+                      name="BWART" />
                     <outputColumn
-                      refId="Package\BKPF\DB SAP.Outputs[OLE DB Source Error Output].Columns[BELNR]"
+                      refId="Package\T156\DB SAP.Outputs[OLE DB Source Error Output].Columns[KZVBU]"
                       dataType="wstr"
-                      length="10"
-                      lineageId="Package\BKPF\DB SAP.Outputs[OLE DB Source Error Output].Columns[BELNR]"
-                      name="BELNR" />
+                      length="1"
+                      lineageId="Package\T156\DB SAP.Outputs[OLE DB Source Error Output].Columns[KZVBU]"
+                      name="KZVBU" />
                     <outputColumn
-                      refId="Package\BKPF\DB SAP.Outputs[OLE DB Source Error Output].Columns[GJAHR]"
-                      dataType="wstr"
-                      length="4"
-                      lineageId="Package\BKPF\DB SAP.Outputs[OLE DB Source Error Output].Columns[GJAHR]"
-                      name="GJAHR" />
-                    <outputColumn
-                      refId="Package\BKPF\DB SAP.Outputs[OLE DB Source Error Output].Columns[HWAER]"
-                      dataType="wstr"
-                      length="5"
-                      lineageId="Package\BKPF\DB SAP.Outputs[OLE DB Source Error Output].Columns[HWAER]"
-                      name="HWAER" />
-                    <outputColumn
-                      refId="Package\BKPF\DB SAP.Outputs[OLE DB Source Error Output].Columns[HWAE2]"
-                      dataType="wstr"
-                      length="5"
-                      lineageId="Package\BKPF\DB SAP.Outputs[OLE DB Source Error Output].Columns[HWAE2]"
-                      name="HWAE2" />
-                    <outputColumn
-                      refId="Package\BKPF\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      refId="Package\T156\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\BKPF\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      lineageId="Package\T156\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\BKPF\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      refId="Package\T156\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\BKPF\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\T156\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -490,7 +442,7 @@ ORDER BY A01.[MANDT]
               </outputs>
             </component>
             <component
-              refId="Package\BKPF\Find Changed Records"
+              refId="Package\T156\Find Changed Records"
               componentClassID="Microsoft.ConditionalSplit"
               contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
               description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
@@ -498,49 +450,48 @@ ORDER BY A01.[MANDT]
               usesDispositions="true">
               <inputs>
                 <input
-                  refId="Package\BKPF\Find Changed Records.Inputs[Conditional Split Input]"
+                  refId="Package\T156\Find Changed Records.Inputs[Conditional Split Input]"
                   description="Input to the Conditional Split Transformation"
                   name="Conditional Split Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\BKPF\Find Changed Records.Inputs[Conditional Split Input].Columns[MANDT]"
+                      refId="Package\T156\Find Changed Records.Inputs[Conditional Split Input].Columns[KZVBU]"
                       cachedDataType="wstr"
-                      cachedLength="3"
-                      cachedName="MANDT"
-                      cachedSortKeyPosition="1"
-                      lineageId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
+                      cachedLength="1"
+                      cachedName="KZVBU"
+                      lineageId="Package\T156\Merge Join.Outputs[Merge Join Output].Columns[KZVBU]" />
                     <inputColumn
-                      refId="Package\BKPF\Find Changed Records.Inputs[Conditional Split Input].Columns[MANDT (1)]"
+                      refId="Package\T156\Find Changed Records.Inputs[Conditional Split Input].Columns[KZVBU (1)]"
                       cachedDataType="wstr"
-                      cachedLength="3"
-                      cachedName="MANDT (1)"
-                      lineageId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]" />
+                      cachedLength="1"
+                      cachedName="KZVBU (1)"
+                      lineageId="Package\T156\Merge Join.Outputs[Merge Join Output].Columns[KZVBU (1)]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\BKPF\Find Changed Records.Outputs[update]"
+                  refId="Package\T156\Find Changed Records.Outputs[update]"
                   description="Output 1 of the Conditional Split Transformation"
                   errorOrTruncationOperation="Computation"
                   errorRowDisposition="FailComponent"
                   exclusionGroup="1"
                   name="update"
-                  synchronousInputId="Package\BKPF\Find Changed Records.Inputs[Conditional Split Input]"
+                  synchronousInputId="Package\T156\Find Changed Records.Inputs[Conditional Split Input]"
                   truncationRowDisposition="FailComponent">
                   <properties>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
-                      name="Expression">#{Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[MANDT]} != #{Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]}</property>
+                      name="Expression">#{Package\T156\Merge Join.Outputs[Merge Join Output].Columns[KZVBU]} != #{Package\T156\Merge Join.Outputs[Merge Join Output].Columns[KZVBU (1)]}</property>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the friendly version of the expression. This expression version uses column names."
                       expressionType="Notify"
-                      name="FriendlyExpression">MANDT != [MANDT (1)]</property>
+                      name="FriendlyExpression">KZVBU != [KZVBU (1)]</property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
@@ -549,11 +500,11 @@ ORDER BY A01.[MANDT]
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\BKPF\Find Changed Records.Outputs[Conditional Split Default Output]"
+                  refId="Package\T156\Find Changed Records.Outputs[Conditional Split Default Output]"
                   description="Default Output of the Conditional Split Transformation"
                   exclusionGroup="1"
                   name="Conditional Split Default Output"
-                  synchronousInputId="Package\BKPF\Find Changed Records.Inputs[Conditional Split Input]">
+                  synchronousInputId="Package\T156\Find Changed Records.Inputs[Conditional Split Input]">
                   <properties>
                     <property
                       dataType="System.Boolean"
@@ -562,23 +513,23 @@ ORDER BY A01.[MANDT]
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\BKPF\Find Changed Records.Outputs[Conditional Split Error Output]"
+                  refId="Package\T156\Find Changed Records.Outputs[Conditional Split Error Output]"
                   description="Error Output of the Conditional Split Transformation"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="Conditional Split Error Output"
-                  synchronousInputId="Package\BKPF\Find Changed Records.Inputs[Conditional Split Input]">
+                  synchronousInputId="Package\T156\Find Changed Records.Inputs[Conditional Split Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\BKPF\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      refId="Package\T156\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\BKPF\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      lineageId="Package\T156\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\BKPF\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      refId="Package\T156\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\BKPF\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\T156\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -587,7 +538,7 @@ ORDER BY A01.[MANDT]
               </outputs>
             </component>
             <component
-              refId="Package\BKPF\Identity records"
+              refId="Package\T156\Identity records"
               componentClassID="Microsoft.ConditionalSplit"
               contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
               description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
@@ -595,43 +546,43 @@ ORDER BY A01.[MANDT]
               usesDispositions="true">
               <inputs>
                 <input
-                  refId="Package\BKPF\Identity records.Inputs[Conditional Split Input]"
+                  refId="Package\T156\Identity records.Inputs[Conditional Split Input]"
                   description="Input to the Conditional Split Transformation"
                   name="Conditional Split Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\BKPF\Identity records.Inputs[Conditional Split Input].Columns[MANDT]"
+                      refId="Package\T156\Identity records.Inputs[Conditional Split Input].Columns[MANDT]"
                       cachedDataType="wstr"
                       cachedLength="3"
                       cachedName="MANDT"
                       cachedSortKeyPosition="1"
-                      lineageId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
+                      lineageId="Package\T156\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
                     <inputColumn
-                      refId="Package\BKPF\Identity records.Inputs[Conditional Split Input].Columns[MANDT (1)]"
+                      refId="Package\T156\Identity records.Inputs[Conditional Split Input].Columns[MANDT (1)]"
                       cachedDataType="wstr"
                       cachedLength="3"
                       cachedName="MANDT (1)"
-                      lineageId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]" />
+                      lineageId="Package\T156\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\BKPF\Identity records.Outputs[update]"
+                  refId="Package\T156\Identity records.Outputs[update]"
                   description="Output 1 of the Conditional Split Transformation"
                   errorOrTruncationOperation="Computation"
                   errorRowDisposition="FailComponent"
                   exclusionGroup="1"
                   name="update"
-                  synchronousInputId="Package\BKPF\Identity records.Inputs[Conditional Split Input]"
+                  synchronousInputId="Package\T156\Identity records.Inputs[Conditional Split Input]"
                   truncationRowDisposition="FailComponent">
                   <properties>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
-                      name="Expression">![ISNULL](#{Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; ![ISNULL](#{Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
+                      name="Expression">![ISNULL](#{Package\T156\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; ![ISNULL](#{Package\T156\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
                     <property
                       containsID="true"
                       dataType="System.String"
@@ -646,20 +597,20 @@ ORDER BY A01.[MANDT]
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\BKPF\Identity records.Outputs[insert]"
+                  refId="Package\T156\Identity records.Outputs[insert]"
                   description="Output 2 of the Conditional Split Transformation"
                   errorOrTruncationOperation="Computation"
                   errorRowDisposition="FailComponent"
                   exclusionGroup="1"
                   name="insert"
-                  synchronousInputId="Package\BKPF\Identity records.Inputs[Conditional Split Input]"
+                  synchronousInputId="Package\T156\Identity records.Inputs[Conditional Split Input]"
                   truncationRowDisposition="FailComponent">
                   <properties>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
-                      name="Expression">![ISNULL](#{Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; [ISNULL](#{Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
+                      name="Expression">![ISNULL](#{Package\T156\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; [ISNULL](#{Package\T156\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
                     <property
                       containsID="true"
                       dataType="System.String"
@@ -674,20 +625,20 @@ ORDER BY A01.[MANDT]
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\BKPF\Identity records.Outputs[delete]"
+                  refId="Package\T156\Identity records.Outputs[delete]"
                   description="Output 3 of the Conditional Split Transformation"
                   errorOrTruncationOperation="Computation"
                   errorRowDisposition="FailComponent"
                   exclusionGroup="1"
                   name="delete"
-                  synchronousInputId="Package\BKPF\Identity records.Inputs[Conditional Split Input]"
+                  synchronousInputId="Package\T156\Identity records.Inputs[Conditional Split Input]"
                   truncationRowDisposition="FailComponent">
                   <properties>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
-                      name="Expression">[ISNULL](#{Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; ![ISNULL](#{Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
+                      name="Expression">[ISNULL](#{Package\T156\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; ![ISNULL](#{Package\T156\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
                     <property
                       containsID="true"
                       dataType="System.String"
@@ -702,11 +653,11 @@ ORDER BY A01.[MANDT]
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\BKPF\Identity records.Outputs[Conditional Split Default Output]"
+                  refId="Package\T156\Identity records.Outputs[Conditional Split Default Output]"
                   description="Default Output of the Conditional Split Transformation"
                   exclusionGroup="1"
                   name="Conditional Split Default Output"
-                  synchronousInputId="Package\BKPF\Identity records.Inputs[Conditional Split Input]">
+                  synchronousInputId="Package\T156\Identity records.Inputs[Conditional Split Input]">
                   <properties>
                     <property
                       dataType="System.Boolean"
@@ -715,23 +666,23 @@ ORDER BY A01.[MANDT]
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\BKPF\Identity records.Outputs[Conditional Split Error Output]"
+                  refId="Package\T156\Identity records.Outputs[Conditional Split Error Output]"
                   description="Error Output of the Conditional Split Transformation"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="Conditional Split Error Output"
-                  synchronousInputId="Package\BKPF\Identity records.Inputs[Conditional Split Input]">
+                  synchronousInputId="Package\T156\Identity records.Inputs[Conditional Split Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\BKPF\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      refId="Package\T156\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\BKPF\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      lineageId="Package\T156\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\BKPF\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      refId="Package\T156\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\BKPF\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\T156\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -740,7 +691,7 @@ ORDER BY A01.[MANDT]
               </outputs>
             </component>
             <component
-              refId="Package\BKPF\insert new records"
+              refId="Package\T156\insert new records"
               componentClassID="Microsoft.OLEDBDestination"
               contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
               description="OLE DB Destination"
@@ -755,7 +706,7 @@ ORDER BY A01.[MANDT]
                 <property
                   dataType="System.String"
                   description="Specifies the name of the database object used to open a rowset."
-                  name="OpenRowset">[dbo].[BKPF_STAGE_INSERT]</property>
+                  name="OpenRowset">[dbo].[T156_STAGE_INSERT]</property>
                 <property
                   dataType="System.String"
                   description="Specifies the variable that contains the name of the database object used to open a rowset."
@@ -797,7 +748,7 @@ ORDER BY A01.[MANDT]
               </properties>
               <connections>
                 <connection
-                  refId="Package\BKPF\insert new records.Connections[OleDbConnection]"
+                  refId="Package\T156\insert new records.Connections[OleDbConnection]"
                   connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
                   connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
                   description="The OLE DB runtime connection used to access the database."
@@ -805,112 +756,74 @@ ORDER BY A01.[MANDT]
               </connections>
               <inputs>
                 <input
-                  refId="Package\BKPF\insert new records.Inputs[OLE DB Destination Input]"
+                  refId="Package\T156\insert new records.Inputs[OLE DB Destination Input]"
                   errorOrTruncationOperation="Insert"
                   errorRowDisposition="FailComponent"
                   hasSideEffects="true"
                   name="OLE DB Destination Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\BKPF\insert new records.Inputs[OLE DB Destination Input].Columns[MANDT]"
+                      refId="Package\T156\insert new records.Inputs[OLE DB Destination Input].Columns[MANDT]"
                       cachedDataType="wstr"
                       cachedLength="3"
                       cachedName="MANDT"
                       cachedSortKeyPosition="1"
-                      externalMetadataColumnId="Package\BKPF\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
-                      lineageId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
+                      externalMetadataColumnId="Package\T156\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      lineageId="Package\T156\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
                     <inputColumn
-                      refId="Package\BKPF\insert new records.Inputs[OLE DB Destination Input].Columns[BUKRS]"
+                      refId="Package\T156\insert new records.Inputs[OLE DB Destination Input].Columns[BWART]"
                       cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="BUKRS"
+                      cachedLength="3"
+                      cachedName="BWART"
                       cachedSortKeyPosition="2"
-                      externalMetadataColumnId="Package\BKPF\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[BUKRS]"
-                      lineageId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[BUKRS]" />
+                      externalMetadataColumnId="Package\T156\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[BWART]"
+                      lineageId="Package\T156\Merge Join.Outputs[Merge Join Output].Columns[BWART]" />
                     <inputColumn
-                      refId="Package\BKPF\insert new records.Inputs[OLE DB Destination Input].Columns[BELNR]"
+                      refId="Package\T156\insert new records.Inputs[OLE DB Destination Input].Columns[KZVBU]"
                       cachedDataType="wstr"
-                      cachedLength="10"
-                      cachedName="BELNR"
-                      cachedSortKeyPosition="3"
-                      externalMetadataColumnId="Package\BKPF\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[BELNR]"
-                      lineageId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[BELNR]" />
-                    <inputColumn
-                      refId="Package\BKPF\insert new records.Inputs[OLE DB Destination Input].Columns[GJAHR]"
-                      cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="GJAHR"
-                      cachedSortKeyPosition="4"
-                      externalMetadataColumnId="Package\BKPF\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[GJAHR]"
-                      lineageId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[GJAHR]" />
-                    <inputColumn
-                      refId="Package\BKPF\insert new records.Inputs[OLE DB Destination Input].Columns[HWAER]"
-                      cachedDataType="wstr"
-                      cachedLength="5"
-                      cachedName="HWAER"
-                      externalMetadataColumnId="Package\BKPF\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[HWAER]"
-                      lineageId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[HWAER]" />
-                    <inputColumn
-                      refId="Package\BKPF\insert new records.Inputs[OLE DB Destination Input].Columns[HWAE2]"
-                      cachedDataType="wstr"
-                      cachedLength="5"
-                      cachedName="HWAE2"
-                      externalMetadataColumnId="Package\BKPF\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[HWAE2]"
-                      lineageId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[HWAE2]" />
+                      cachedLength="1"
+                      cachedName="KZVBU"
+                      externalMetadataColumnId="Package\T156\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[KZVBU]"
+                      lineageId="Package\T156\Merge Join.Outputs[Merge Join Output].Columns[KZVBU]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
                     <externalMetadataColumn
-                      refId="Package\BKPF\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      refId="Package\T156\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
                       dataType="wstr"
                       length="3"
                       name="MANDT" />
                     <externalMetadataColumn
-                      refId="Package\BKPF\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[BUKRS]"
+                      refId="Package\T156\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[BWART]"
                       dataType="wstr"
-                      length="4"
-                      name="BUKRS" />
+                      length="3"
+                      name="BWART" />
                     <externalMetadataColumn
-                      refId="Package\BKPF\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[BELNR]"
+                      refId="Package\T156\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[KZVBU]"
                       dataType="wstr"
-                      length="10"
-                      name="BELNR" />
-                    <externalMetadataColumn
-                      refId="Package\BKPF\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[GJAHR]"
-                      dataType="wstr"
-                      length="4"
-                      name="GJAHR" />
-                    <externalMetadataColumn
-                      refId="Package\BKPF\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[HWAER]"
-                      dataType="wstr"
-                      length="5"
-                      name="HWAER" />
-                    <externalMetadataColumn
-                      refId="Package\BKPF\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[HWAE2]"
-                      dataType="wstr"
-                      length="5"
-                      name="HWAE2" />
+                      length="1"
+                      name="KZVBU" />
                   </externalMetadataColumns>
                 </input>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\BKPF\insert new records.Outputs[OLE DB Destination Error Output]"
+                  refId="Package\T156\insert new records.Outputs[OLE DB Destination Error Output]"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="OLE DB Destination Error Output"
-                  synchronousInputId="Package\BKPF\insert new records.Inputs[OLE DB Destination Input]">
+                  synchronousInputId="Package\T156\insert new records.Inputs[OLE DB Destination Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\BKPF\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      refId="Package\T156\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\BKPF\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      lineageId="Package\T156\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\BKPF\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      refId="Package\T156\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\BKPF\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\T156\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -919,7 +832,7 @@ ORDER BY A01.[MANDT]
               </outputs>
             </component>
             <component
-              refId="Package\BKPF\Merge Join"
+              refId="Package\T156\Merge Join"
               componentClassID="Microsoft.MergeJoin"
               contactInfo="Merge Join;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
               description="Combine two sorted data flows into one using the FULL, LEFT, or INNER join. We recommend this transformation when data flows can be sorted at their sources."
@@ -934,7 +847,7 @@ ORDER BY A01.[MANDT]
                 <property
                   dataType="System.Int32"
                   description="Specifies the number of columns in the ordering key."
-                  name="NumKeyColumns">4</property>
+                  name="NumKeyColumns">2</property>
                 <property
                   dataType="System.Boolean"
                   description="Indicates whether the null values are treated as equal values."
@@ -946,113 +859,73 @@ ORDER BY A01.[MANDT]
               </properties>
               <inputs>
                 <input
-                  refId="Package\BKPF\Merge Join.Inputs[Merge Join Left Input]"
+                  refId="Package\T156\Merge Join.Inputs[Merge Join Left Input]"
                   hasSideEffects="true"
                   name="Merge Join Left Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\BKPF\Merge Join.Inputs[Merge Join Left Input].Columns[MANDT]"
+                      refId="Package\T156\Merge Join.Inputs[Merge Join Left Input].Columns[MANDT]"
                       cachedDataType="wstr"
                       cachedLength="3"
                       cachedName="MANDT"
                       cachedSortKeyPosition="1"
-                      lineageId="Package\BKPF\DB SAP.Outputs[OLE DB Source Output].Columns[MANDT]" />
+                      lineageId="Package\T156\DB SAP.Outputs[OLE DB Source Output].Columns[MANDT]" />
                     <inputColumn
-                      refId="Package\BKPF\Merge Join.Inputs[Merge Join Left Input].Columns[BUKRS]"
+                      refId="Package\T156\Merge Join.Inputs[Merge Join Left Input].Columns[BWART]"
                       cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="BUKRS"
+                      cachedLength="3"
+                      cachedName="BWART"
                       cachedSortKeyPosition="2"
-                      lineageId="Package\BKPF\DB SAP.Outputs[OLE DB Source Output].Columns[BUKRS]" />
+                      lineageId="Package\T156\DB SAP.Outputs[OLE DB Source Output].Columns[BWART]" />
                     <inputColumn
-                      refId="Package\BKPF\Merge Join.Inputs[Merge Join Left Input].Columns[BELNR]"
+                      refId="Package\T156\Merge Join.Inputs[Merge Join Left Input].Columns[KZVBU]"
                       cachedDataType="wstr"
-                      cachedLength="10"
-                      cachedName="BELNR"
-                      cachedSortKeyPosition="3"
-                      lineageId="Package\BKPF\DB SAP.Outputs[OLE DB Source Output].Columns[BELNR]" />
-                    <inputColumn
-                      refId="Package\BKPF\Merge Join.Inputs[Merge Join Left Input].Columns[GJAHR]"
-                      cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="GJAHR"
-                      cachedSortKeyPosition="4"
-                      lineageId="Package\BKPF\DB SAP.Outputs[OLE DB Source Output].Columns[GJAHR]" />
-                    <inputColumn
-                      refId="Package\BKPF\Merge Join.Inputs[Merge Join Left Input].Columns[HWAER]"
-                      cachedDataType="wstr"
-                      cachedLength="5"
-                      cachedName="HWAER"
-                      lineageId="Package\BKPF\DB SAP.Outputs[OLE DB Source Output].Columns[HWAER]" />
-                    <inputColumn
-                      refId="Package\BKPF\Merge Join.Inputs[Merge Join Left Input].Columns[HWAE2]"
-                      cachedDataType="wstr"
-                      cachedLength="5"
-                      cachedName="HWAE2"
-                      lineageId="Package\BKPF\DB SAP.Outputs[OLE DB Source Output].Columns[HWAE2]" />
+                      cachedLength="1"
+                      cachedName="KZVBU"
+                      lineageId="Package\T156\DB SAP.Outputs[OLE DB Source Output].Columns[KZVBU]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
                 <input
-                  refId="Package\BKPF\Merge Join.Inputs[Merge Join Right Input]"
+                  refId="Package\T156\Merge Join.Inputs[Merge Join Right Input]"
                   hasSideEffects="true"
                   name="Merge Join Right Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\BKPF\Merge Join.Inputs[Merge Join Right Input].Columns[MANDT]"
+                      refId="Package\T156\Merge Join.Inputs[Merge Join Right Input].Columns[MANDT]"
                       cachedDataType="wstr"
                       cachedLength="3"
                       cachedName="MANDT"
                       cachedSortKeyPosition="1"
-                      lineageId="Package\BKPF\DB PBI.Outputs[OLE DB Source Output].Columns[MANDT]" />
+                      lineageId="Package\T156\DB PBI.Outputs[OLE DB Source Output].Columns[MANDT]" />
                     <inputColumn
-                      refId="Package\BKPF\Merge Join.Inputs[Merge Join Right Input].Columns[BUKRS]"
+                      refId="Package\T156\Merge Join.Inputs[Merge Join Right Input].Columns[BWART]"
                       cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="BUKRS"
+                      cachedLength="3"
+                      cachedName="BWART"
                       cachedSortKeyPosition="2"
-                      lineageId="Package\BKPF\DB PBI.Outputs[OLE DB Source Output].Columns[BUKRS]" />
+                      lineageId="Package\T156\DB PBI.Outputs[OLE DB Source Output].Columns[BWART]" />
                     <inputColumn
-                      refId="Package\BKPF\Merge Join.Inputs[Merge Join Right Input].Columns[BELNR]"
+                      refId="Package\T156\Merge Join.Inputs[Merge Join Right Input].Columns[KZVBU]"
                       cachedDataType="wstr"
-                      cachedLength="10"
-                      cachedName="BELNR"
-                      cachedSortKeyPosition="3"
-                      lineageId="Package\BKPF\DB PBI.Outputs[OLE DB Source Output].Columns[BELNR]" />
-                    <inputColumn
-                      refId="Package\BKPF\Merge Join.Inputs[Merge Join Right Input].Columns[GJAHR]"
-                      cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="GJAHR"
-                      cachedSortKeyPosition="4"
-                      lineageId="Package\BKPF\DB PBI.Outputs[OLE DB Source Output].Columns[GJAHR]" />
-                    <inputColumn
-                      refId="Package\BKPF\Merge Join.Inputs[Merge Join Right Input].Columns[HWAER]"
-                      cachedDataType="wstr"
-                      cachedLength="5"
-                      cachedName="HWAER"
-                      lineageId="Package\BKPF\DB PBI.Outputs[OLE DB Source Output].Columns[HWAER]" />
-                    <inputColumn
-                      refId="Package\BKPF\Merge Join.Inputs[Merge Join Right Input].Columns[HWAE2]"
-                      cachedDataType="wstr"
-                      cachedLength="5"
-                      cachedName="HWAE2"
-                      lineageId="Package\BKPF\DB PBI.Outputs[OLE DB Source Output].Columns[HWAE2]" />
+                      cachedLength="1"
+                      cachedName="KZVBU"
+                      lineageId="Package\T156\DB PBI.Outputs[OLE DB Source Output].Columns[KZVBU]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\BKPF\Merge Join.Outputs[Merge Join Output]"
+                  refId="Package\T156\Merge Join.Outputs[Merge Join Output]"
                   isSorted="true"
                   name="Merge Join Output">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[MANDT]"
+                      refId="Package\T156\Merge Join.Outputs[Merge Join Output].Columns[MANDT]"
                       dataType="wstr"
                       length="3"
-                      lineageId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[MANDT]"
+                      lineageId="Package\T156\Merge Join.Outputs[Merge Join Output].Columns[MANDT]"
                       name="MANDT"
                       sortKeyPosition="1">
                       <properties>
@@ -1060,164 +933,78 @@ ORDER BY A01.[MANDT]
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\BKPF\Merge Join.Inputs[Merge Join Left Input].Columns[MANDT]}</property>
+                          name="InputColumnID">#{Package\T156\Merge Join.Inputs[Merge Join Left Input].Columns[MANDT]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[BUKRS]"
+                      refId="Package\T156\Merge Join.Outputs[Merge Join Output].Columns[BWART]"
                       dataType="wstr"
-                      length="4"
-                      lineageId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[BUKRS]"
-                      name="BUKRS"
+                      length="3"
+                      lineageId="Package\T156\Merge Join.Outputs[Merge Join Output].Columns[BWART]"
+                      name="BWART"
                       sortKeyPosition="2">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\BKPF\Merge Join.Inputs[Merge Join Left Input].Columns[BUKRS]}</property>
+                          name="InputColumnID">#{Package\T156\Merge Join.Inputs[Merge Join Left Input].Columns[BWART]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[BELNR]"
+                      refId="Package\T156\Merge Join.Outputs[Merge Join Output].Columns[KZVBU]"
                       dataType="wstr"
-                      length="10"
-                      lineageId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[BELNR]"
-                      name="BELNR"
-                      sortKeyPosition="3">
+                      length="1"
+                      lineageId="Package\T156\Merge Join.Outputs[Merge Join Output].Columns[KZVBU]"
+                      name="KZVBU">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\BKPF\Merge Join.Inputs[Merge Join Left Input].Columns[BELNR]}</property>
+                          name="InputColumnID">#{Package\T156\Merge Join.Inputs[Merge Join Left Input].Columns[KZVBU]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[GJAHR]"
-                      dataType="wstr"
-                      length="4"
-                      lineageId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[GJAHR]"
-                      name="GJAHR"
-                      sortKeyPosition="4">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\BKPF\Merge Join.Inputs[Merge Join Left Input].Columns[GJAHR]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]"
+                      refId="Package\T156\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]"
                       dataType="wstr"
                       length="3"
-                      lineageId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]"
+                      lineageId="Package\T156\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]"
                       name="MANDT (1)">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\BKPF\Merge Join.Inputs[Merge Join Right Input].Columns[MANDT]}</property>
+                          name="InputColumnID">#{Package\T156\Merge Join.Inputs[Merge Join Right Input].Columns[MANDT]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[BUKRS (1)]"
+                      refId="Package\T156\Merge Join.Outputs[Merge Join Output].Columns[BWART (1)]"
                       dataType="wstr"
-                      length="4"
-                      lineageId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[BUKRS (1)]"
-                      name="BUKRS (1)">
+                      length="3"
+                      lineageId="Package\T156\Merge Join.Outputs[Merge Join Output].Columns[BWART (1)]"
+                      name="BWART (1)">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\BKPF\Merge Join.Inputs[Merge Join Right Input].Columns[BUKRS]}</property>
+                          name="InputColumnID">#{Package\T156\Merge Join.Inputs[Merge Join Right Input].Columns[BWART]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[BELNR (1)]"
+                      refId="Package\T156\Merge Join.Outputs[Merge Join Output].Columns[KZVBU (1)]"
                       dataType="wstr"
-                      length="10"
-                      lineageId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[BELNR (1)]"
-                      name="BELNR (1)">
+                      length="1"
+                      lineageId="Package\T156\Merge Join.Outputs[Merge Join Output].Columns[KZVBU (1)]"
+                      name="KZVBU (1)">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\BKPF\Merge Join.Inputs[Merge Join Right Input].Columns[BELNR]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[GJAHR (1)]"
-                      dataType="wstr"
-                      length="4"
-                      lineageId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[GJAHR (1)]"
-                      name="GJAHR (1)">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\BKPF\Merge Join.Inputs[Merge Join Right Input].Columns[GJAHR]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[HWAER]"
-                      dataType="wstr"
-                      length="5"
-                      lineageId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[HWAER]"
-                      name="HWAER">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\BKPF\Merge Join.Inputs[Merge Join Left Input].Columns[HWAER]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[HWAE2]"
-                      dataType="wstr"
-                      length="5"
-                      lineageId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[HWAE2]"
-                      name="HWAE2">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\BKPF\Merge Join.Inputs[Merge Join Left Input].Columns[HWAE2]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[HWAER (1)]"
-                      dataType="wstr"
-                      length="5"
-                      lineageId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[HWAER (1)]"
-                      name="HWAER (1)">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\BKPF\Merge Join.Inputs[Merge Join Right Input].Columns[HWAER]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[HWAE2 (1)]"
-                      dataType="wstr"
-                      length="5"
-                      lineageId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[HWAE2 (1)]"
-                      name="HWAE2 (1)">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\BKPF\Merge Join.Inputs[Merge Join Right Input].Columns[HWAE2]}</property>
+                          name="InputColumnID">#{Package\T156\Merge Join.Inputs[Merge Join Right Input].Columns[KZVBU]}</property>
                       </properties>
                     </outputColumn>
                   </outputColumns>
@@ -1226,7 +1013,7 @@ ORDER BY A01.[MANDT]
               </outputs>
             </component>
             <component
-              refId="Package\BKPF\stage changed records"
+              refId="Package\T156\stage changed records"
               componentClassID="Microsoft.OLEDBDestination"
               contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
               description="OLE DB Destination"
@@ -1241,7 +1028,7 @@ ORDER BY A01.[MANDT]
                 <property
                   dataType="System.String"
                   description="Specifies the name of the database object used to open a rowset."
-                  name="OpenRowset">[dbo].[BKPF_STAGE_UPDATE]</property>
+                  name="OpenRowset">[dbo].[T156_STAGE_UPDATE]</property>
                 <property
                   dataType="System.String"
                   description="Specifies the variable that contains the name of the database object used to open a rowset."
@@ -1283,7 +1070,7 @@ ORDER BY A01.[MANDT]
               </properties>
               <connections>
                 <connection
-                  refId="Package\BKPF\stage changed records.Connections[OleDbConnection]"
+                  refId="Package\T156\stage changed records.Connections[OleDbConnection]"
                   connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
                   connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
                   description="The OLE DB runtime connection used to access the database."
@@ -1291,112 +1078,74 @@ ORDER BY A01.[MANDT]
               </connections>
               <inputs>
                 <input
-                  refId="Package\BKPF\stage changed records.Inputs[OLE DB Destination Input]"
+                  refId="Package\T156\stage changed records.Inputs[OLE DB Destination Input]"
                   errorOrTruncationOperation="Insert"
                   errorRowDisposition="FailComponent"
                   hasSideEffects="true"
                   name="OLE DB Destination Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\BKPF\stage changed records.Inputs[OLE DB Destination Input].Columns[MANDT]"
+                      refId="Package\T156\stage changed records.Inputs[OLE DB Destination Input].Columns[MANDT]"
                       cachedDataType="wstr"
                       cachedLength="3"
                       cachedName="MANDT"
                       cachedSortKeyPosition="1"
-                      externalMetadataColumnId="Package\BKPF\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
-                      lineageId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
+                      externalMetadataColumnId="Package\T156\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      lineageId="Package\T156\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
                     <inputColumn
-                      refId="Package\BKPF\stage changed records.Inputs[OLE DB Destination Input].Columns[BUKRS]"
+                      refId="Package\T156\stage changed records.Inputs[OLE DB Destination Input].Columns[BWART]"
                       cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="BUKRS"
+                      cachedLength="3"
+                      cachedName="BWART"
                       cachedSortKeyPosition="2"
-                      externalMetadataColumnId="Package\BKPF\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[BUKRS]"
-                      lineageId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[BUKRS]" />
+                      externalMetadataColumnId="Package\T156\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[BWART]"
+                      lineageId="Package\T156\Merge Join.Outputs[Merge Join Output].Columns[BWART]" />
                     <inputColumn
-                      refId="Package\BKPF\stage changed records.Inputs[OLE DB Destination Input].Columns[BELNR]"
+                      refId="Package\T156\stage changed records.Inputs[OLE DB Destination Input].Columns[KZVBU]"
                       cachedDataType="wstr"
-                      cachedLength="10"
-                      cachedName="BELNR"
-                      cachedSortKeyPosition="3"
-                      externalMetadataColumnId="Package\BKPF\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[BELNR]"
-                      lineageId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[BELNR]" />
-                    <inputColumn
-                      refId="Package\BKPF\stage changed records.Inputs[OLE DB Destination Input].Columns[GJAHR]"
-                      cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="GJAHR"
-                      cachedSortKeyPosition="4"
-                      externalMetadataColumnId="Package\BKPF\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[GJAHR]"
-                      lineageId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[GJAHR]" />
-                    <inputColumn
-                      refId="Package\BKPF\stage changed records.Inputs[OLE DB Destination Input].Columns[HWAER]"
-                      cachedDataType="wstr"
-                      cachedLength="5"
-                      cachedName="HWAER"
-                      externalMetadataColumnId="Package\BKPF\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[HWAER]"
-                      lineageId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[HWAER]" />
-                    <inputColumn
-                      refId="Package\BKPF\stage changed records.Inputs[OLE DB Destination Input].Columns[HWAE2]"
-                      cachedDataType="wstr"
-                      cachedLength="5"
-                      cachedName="HWAE2"
-                      externalMetadataColumnId="Package\BKPF\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[HWAE2]"
-                      lineageId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[HWAE2]" />
+                      cachedLength="1"
+                      cachedName="KZVBU"
+                      externalMetadataColumnId="Package\T156\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[KZVBU]"
+                      lineageId="Package\T156\Merge Join.Outputs[Merge Join Output].Columns[KZVBU]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
                     <externalMetadataColumn
-                      refId="Package\BKPF\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      refId="Package\T156\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
                       dataType="wstr"
                       length="3"
                       name="MANDT" />
                     <externalMetadataColumn
-                      refId="Package\BKPF\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[BUKRS]"
+                      refId="Package\T156\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[BWART]"
                       dataType="wstr"
-                      length="4"
-                      name="BUKRS" />
+                      length="3"
+                      name="BWART" />
                     <externalMetadataColumn
-                      refId="Package\BKPF\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[BELNR]"
+                      refId="Package\T156\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[KZVBU]"
                       dataType="wstr"
-                      length="10"
-                      name="BELNR" />
-                    <externalMetadataColumn
-                      refId="Package\BKPF\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[GJAHR]"
-                      dataType="wstr"
-                      length="4"
-                      name="GJAHR" />
-                    <externalMetadataColumn
-                      refId="Package\BKPF\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[HWAER]"
-                      dataType="wstr"
-                      length="5"
-                      name="HWAER" />
-                    <externalMetadataColumn
-                      refId="Package\BKPF\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[HWAE2]"
-                      dataType="wstr"
-                      length="5"
-                      name="HWAE2" />
+                      length="1"
+                      name="KZVBU" />
                   </externalMetadataColumns>
                 </input>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\BKPF\stage changed records.Outputs[OLE DB Destination Error Output]"
+                  refId="Package\T156\stage changed records.Outputs[OLE DB Destination Error Output]"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="OLE DB Destination Error Output"
-                  synchronousInputId="Package\BKPF\stage changed records.Inputs[OLE DB Destination Input]">
+                  synchronousInputId="Package\T156\stage changed records.Inputs[OLE DB Destination Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\BKPF\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      refId="Package\T156\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\BKPF\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      lineageId="Package\T156\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\BKPF\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      refId="Package\T156\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\BKPF\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\T156\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -1405,7 +1154,7 @@ ORDER BY A01.[MANDT]
               </outputs>
             </component>
             <component
-              refId="Package\BKPF\stage deleted records"
+              refId="Package\T156\stage deleted records"
               componentClassID="Microsoft.OLEDBDestination"
               contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
               description="OLE DB Destination"
@@ -1420,7 +1169,7 @@ ORDER BY A01.[MANDT]
                 <property
                   dataType="System.String"
                   description="Specifies the name of the database object used to open a rowset."
-                  name="OpenRowset">[dbo].[BKPF_STAGE_DELETE]</property>
+                  name="OpenRowset">[dbo].[T156_STAGE_DELETE]</property>
                 <property
                   dataType="System.String"
                   description="Specifies the variable that contains the name of the database object used to open a rowset."
@@ -1462,7 +1211,7 @@ ORDER BY A01.[MANDT]
               </properties>
               <connections>
                 <connection
-                  refId="Package\BKPF\stage deleted records.Connections[OleDbConnection]"
+                  refId="Package\T156\stage deleted records.Connections[OleDbConnection]"
                   connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
                   connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
                   description="The OLE DB runtime connection used to access the database."
@@ -1470,84 +1219,60 @@ ORDER BY A01.[MANDT]
               </connections>
               <inputs>
                 <input
-                  refId="Package\BKPF\stage deleted records.Inputs[OLE DB Destination Input]"
+                  refId="Package\T156\stage deleted records.Inputs[OLE DB Destination Input]"
                   errorOrTruncationOperation="Insert"
                   errorRowDisposition="FailComponent"
                   hasSideEffects="true"
                   name="OLE DB Destination Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\BKPF\stage deleted records.Inputs[OLE DB Destination Input].Columns[MANDT (1)]"
+                      refId="Package\T156\stage deleted records.Inputs[OLE DB Destination Input].Columns[MANDT (1)]"
                       cachedDataType="wstr"
                       cachedLength="3"
                       cachedName="MANDT (1)"
-                      externalMetadataColumnId="Package\BKPF\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
-                      lineageId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]" />
+                      externalMetadataColumnId="Package\T156\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      lineageId="Package\T156\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]" />
                     <inputColumn
-                      refId="Package\BKPF\stage deleted records.Inputs[OLE DB Destination Input].Columns[BUKRS (1)]"
+                      refId="Package\T156\stage deleted records.Inputs[OLE DB Destination Input].Columns[BWART (1)]"
                       cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="BUKRS (1)"
-                      externalMetadataColumnId="Package\BKPF\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[BUKRS]"
-                      lineageId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[BUKRS (1)]" />
-                    <inputColumn
-                      refId="Package\BKPF\stage deleted records.Inputs[OLE DB Destination Input].Columns[BELNR (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="10"
-                      cachedName="BELNR (1)"
-                      externalMetadataColumnId="Package\BKPF\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[BELNR]"
-                      lineageId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[BELNR (1)]" />
-                    <inputColumn
-                      refId="Package\BKPF\stage deleted records.Inputs[OLE DB Destination Input].Columns[GJAHR (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="GJAHR (1)"
-                      externalMetadataColumnId="Package\BKPF\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[GJAHR]"
-                      lineageId="Package\BKPF\Merge Join.Outputs[Merge Join Output].Columns[GJAHR (1)]" />
+                      cachedLength="3"
+                      cachedName="BWART (1)"
+                      externalMetadataColumnId="Package\T156\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[BWART]"
+                      lineageId="Package\T156\Merge Join.Outputs[Merge Join Output].Columns[BWART (1)]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
                     <externalMetadataColumn
-                      refId="Package\BKPF\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      refId="Package\T156\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
                       dataType="wstr"
                       length="3"
                       name="MANDT" />
                     <externalMetadataColumn
-                      refId="Package\BKPF\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[BUKRS]"
+                      refId="Package\T156\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[BWART]"
                       dataType="wstr"
-                      length="4"
-                      name="BUKRS" />
-                    <externalMetadataColumn
-                      refId="Package\BKPF\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[BELNR]"
-                      dataType="wstr"
-                      length="10"
-                      name="BELNR" />
-                    <externalMetadataColumn
-                      refId="Package\BKPF\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[GJAHR]"
-                      dataType="wstr"
-                      length="4"
-                      name="GJAHR" />
+                      length="3"
+                      name="BWART" />
                   </externalMetadataColumns>
                 </input>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\BKPF\stage deleted records.Outputs[OLE DB Destination Error Output]"
+                  refId="Package\T156\stage deleted records.Outputs[OLE DB Destination Error Output]"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="OLE DB Destination Error Output"
-                  synchronousInputId="Package\BKPF\stage deleted records.Inputs[OLE DB Destination Input]">
+                  synchronousInputId="Package\T156\stage deleted records.Inputs[OLE DB Destination Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\BKPF\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      refId="Package\T156\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\BKPF\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      lineageId="Package\T156\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\BKPF\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      refId="Package\T156\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\BKPF\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\T156\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -1558,158 +1283,66 @@ ORDER BY A01.[MANDT]
           </components>
           <paths>
             <path
-              refId="Package\BKPF.Paths[delete]"
-              endId="Package\BKPF\stage deleted records.Inputs[OLE DB Destination Input]"
+              refId="Package\T156.Paths[delete]"
+              endId="Package\T156\stage deleted records.Inputs[OLE DB Destination Input]"
               name="delete"
-              startId="Package\BKPF\Identity records.Outputs[delete]" />
+              startId="Package\T156\Identity records.Outputs[delete]" />
             <path
-              refId="Package\BKPF.Paths[insert]"
-              endId="Package\BKPF\insert new records.Inputs[OLE DB Destination Input]"
+              refId="Package\T156.Paths[insert]"
+              endId="Package\T156\insert new records.Inputs[OLE DB Destination Input]"
               name="insert"
-              startId="Package\BKPF\Identity records.Outputs[insert]" />
+              startId="Package\T156\Identity records.Outputs[insert]" />
             <path
-              refId="Package\BKPF.Paths[Merge Join Output]"
-              endId="Package\BKPF\Identity records.Inputs[Conditional Split Input]"
+              refId="Package\T156.Paths[Merge Join Output]"
+              endId="Package\T156\Identity records.Inputs[Conditional Split Input]"
               name="Merge Join Output"
-              startId="Package\BKPF\Merge Join.Outputs[Merge Join Output]" />
+              startId="Package\T156\Merge Join.Outputs[Merge Join Output]" />
             <path
-              refId="Package\BKPF.Paths[OLE DB Source Output]"
-              endId="Package\BKPF\Merge Join.Inputs[Merge Join Left Input]"
+              refId="Package\T156.Paths[OLE DB Source Output]"
+              endId="Package\T156\Merge Join.Inputs[Merge Join Left Input]"
               name="OLE DB Source Output"
-              startId="Package\BKPF\DB SAP.Outputs[OLE DB Source Output]" />
+              startId="Package\T156\DB SAP.Outputs[OLE DB Source Output]" />
             <path
-              refId="Package\BKPF.Paths[OLE DB Source Output1]"
-              endId="Package\BKPF\Merge Join.Inputs[Merge Join Right Input]"
+              refId="Package\T156.Paths[OLE DB Source Output1]"
+              endId="Package\T156\Merge Join.Inputs[Merge Join Right Input]"
               name="OLE DB Source Output"
-              startId="Package\BKPF\DB PBI.Outputs[OLE DB Source Output]" />
+              startId="Package\T156\DB PBI.Outputs[OLE DB Source Output]" />
             <path
-              refId="Package\BKPF.Paths[update]"
-              endId="Package\BKPF\Find Changed Records.Inputs[Conditional Split Input]"
+              refId="Package\T156.Paths[update]"
+              endId="Package\T156\Find Changed Records.Inputs[Conditional Split Input]"
               name="update"
-              startId="Package\BKPF\Identity records.Outputs[update]" />
+              startId="Package\T156\Identity records.Outputs[update]" />
             <path
-              refId="Package\BKPF.Paths[update1]"
-              endId="Package\BKPF\stage changed records.Inputs[OLE DB Destination Input]"
+              refId="Package\T156.Paths[update1]"
+              endId="Package\T156\stage changed records.Inputs[OLE DB Destination Input]"
               name="update"
-              startId="Package\BKPF\Find Changed Records.Outputs[update]" />
+              startId="Package\T156\Find Changed Records.Outputs[update]" />
           </paths>
         </pipeline>
       </DTS:ObjectData>
-    </DTS:Executable>
-    <DTS:Executable
-      DTS:refId="Package\clean stage"
-      DTS:CreationName="Microsoft.ExecuteSQLTask"
-      DTS:Description="Execute SQL Task"
-      DTS:DTSID="{68fa9f9b-9d7e-4a9c-b5a5-096fd5c32c30}"
-      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
-      DTS:LocaleID="-1"
-      DTS:ObjectName="clean stage"
-      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-      DTS:ThreadHint="0">
-      <DTS:Variables />
-      <DTS:ObjectData>
-        <SQLTask:SqlTaskData
-          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-          SQLTask:SqlStatementSource="TRUNCATE TABLE [BKPF_STAGE_UPDATE]&#xA;go&#xA;TRUNCATE TABLE [BKPF_STAGE_DELETE]&#xA;go&#xA;TRUNCATE TABLE [BKPF_STAGE_INSERT]&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
-      </DTS:ObjectData>
-    </DTS:Executable>
-    <DTS:Executable
-      DTS:refId="Package\Sequence Container"
-      DTS:CreationName="STOCK:SEQUENCE"
-      DTS:Description="Sequence Container"
-      DTS:DTSID="{d3780d83-acc4-41b5-bc5d-494c7c49f9fb}"
-      DTS:ExecutableType="STOCK:SEQUENCE"
-      DTS:LocaleID="-1"
-      DTS:ObjectName="Sequence Container">
-      <DTS:Variables />
-      <DTS:Executables>
-        <DTS:Executable
-          DTS:refId="Package\Sequence Container\delete"
-          DTS:CreationName="Microsoft.ExecuteSQLTask"
-          DTS:Description="Execute SQL Task"
-          DTS:DTSID="{44cba25b-b6b6-49b8-83a8-a2558cae1c0d}"
-          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
-          DTS:LocaleID="-1"
-          DTS:ObjectName="delete"
-          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="0">
-          <DTS:Variables />
-          <DTS:ObjectData>
-            <SQLTask:SqlTaskData
-              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-              SQLTask:SqlStatementSource="DELETE A01&#xA;FROM [BKPF] A01 INNER JOIN [BKPF_STAGE_DELETE] B01 ON ( A01.[MANDT] = B01.[MANDT]&#xA;                                                    AND A01.[BUKRS] = B01.[BUKRS]&#xA;                                                    AND A01.[BELNR] = B01.[BELNR]&#xA;                                                    AND A01.[GJAHR] = B01.[GJAHR] )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
-          </DTS:ObjectData>
-        </DTS:Executable>
-        <DTS:Executable
-          DTS:refId="Package\Sequence Container\update"
-          DTS:CreationName="Microsoft.ExecuteSQLTask"
-          DTS:Description="Execute SQL Task"
-          DTS:DTSID="{1edadae2-6c8e-4231-a003-94c604f0a443}"
-          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
-          DTS:LocaleID="-1"
-          DTS:ObjectName="update"
-          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="1">
-          <DTS:Variables />
-          <DTS:ObjectData>
-            <SQLTask:SqlTaskData
-              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-              SQLTask:SqlStatementSource="UPDATE A01&#xA;SET A01.[HWAER] = B01.[HWAER]&#xA;   ,A01.[HWAE2] = B01.[HWAE2]&#xA;FROM [BKPF] A01 INNER JOIN [BKPF_STAGE_UPDATE] B01 ON ( A01.[MANDT] = B01.[MANDT]&#xA;                                                    AND A01.[BUKRS] = B01.[BUKRS]&#xA;                                                    AND A01.[BELNR] = B01.[BELNR]&#xA;                                                    AND A01.[GJAHR] = B01.[GJAHR] )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
-          </DTS:ObjectData>
-        </DTS:Executable>
-      </DTS:Executables>
-    </DTS:Executable>
-    <DTS:Executable
-      DTS:refId="Package\Sequence Container 1"
-      DTS:CreationName="STOCK:SEQUENCE"
-      DTS:Description="Sequence Container"
-      DTS:DTSID="{33f8d021-355d-412d-9a26-e147a426c992}"
-      DTS:ExecutableType="STOCK:SEQUENCE"
-      DTS:LocaleID="-1"
-      DTS:ObjectName="Sequence Container 1">
-      <DTS:Variables />
-      <DTS:Executables>
-        <DTS:Executable
-          DTS:refId="Package\Sequence Container 1\Insert"
-          DTS:CreationName="Microsoft.ExecuteSQLTask"
-          DTS:Description="Execute SQL Task"
-          DTS:DTSID="{8528a62b-0110-467e-9a7b-3781224dd12d}"
-          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
-          DTS:LocaleID="-1"
-          DTS:ObjectName="Insert"
-          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="0">
-          <DTS:Variables />
-          <DTS:ObjectData>
-            <SQLTask:SqlTaskData
-              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-              SQLTask:SqlStatementSource="INSERT INTO [BKPF]&#xA;SELECT * FROM [BKPF_STAGE_INSERT]&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
-          </DTS:ObjectData>
-        </DTS:Executable>
-      </DTS:Executables>
     </DTS:Executable>
   </DTS:Executables>
   <DTS:PrecedenceConstraints>
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint]"
       DTS:CreationName=""
-      DTS:DTSID="{cf9973f9-114e-42ed-bc7b-3a26b06a2ba8}"
-      DTS:From="Package\BKPF"
+      DTS:DTSID="{AFFB0E94-924B-4CD7-B8F6-0E170219A253}"
+      DTS:From="Package\T156"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint"
       DTS:To="Package\Sequence Container" />
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
       DTS:CreationName=""
-      DTS:DTSID="{8191EA38-EBF1-4FDF-82F5-952C06E59066}"
+      DTS:DTSID="{B00E6228-6F6E-4CFA-A7E1-0E5240344671}"
       DTS:From="Package\clean stage"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 1"
-      DTS:To="Package\BKPF" />
+      DTS:To="Package\T156" />
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
       DTS:CreationName=""
-      DTS:DTSID="{510DA9CC-316D-4636-BD9B-BBF956E8AE39}"
+      DTS:DTSID="{197A1BA7-C92C-4ACE-8909-E01021FA5762}"
       DTS:From="Package\Sequence Container"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 2"
@@ -1728,13 +1361,9 @@ ORDER BY A01.[MANDT]
       <GraphLayout
         Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
-          Size="103,42"
-          Id="Package\BKPF"
-          TopLeft="202,51" />
-        <NodeLayout
           Size="132,42"
           Id="Package\clean stage"
-          TopLeft="404,40" />
+          TopLeft="377,7" />
         <NodeLayout
           Size="108,42"
           Id="Package\Sequence Container\delete"
@@ -1753,7 +1382,7 @@ ORDER BY A01.[MANDT]
         <NodeLayout
           Size="107,42"
           Id="Package\Sequence Container 1\Insert"
-          TopLeft="137,44" />
+          TopLeft="128,42" />
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
@@ -1761,20 +1390,24 @@ ORDER BY A01.[MANDT]
           Size="383,182"
           Id="Package\Sequence Container 1"
           TopLeft="60,416" />
+        <NodeLayout
+          Size="103,42"
+          Id="Package\T156"
+          TopLeft="199,57" />
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint]"
-          TopLeft="252.5,93">
+          TopLeft="251,99">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,81"
+              EndConnector="0,75"
               Start="0,0"
-              End="0,73.5">
+              End="0,67.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,73.5" />
+                    End="0,67.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -1785,30 +1418,30 @@ ORDER BY A01.[MANDT]
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 1]"
-          TopLeft="404,61">
+          TopLeft="377,28">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-99,11"
+              EndConnector="-75,50"
               Start="0,0"
-              End="-91.5,11">
+              End="-67.5,50">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="-45.5,0" />
+                    End="-33.5,0" />
                   <mssgle:CubicBezierSegment
-                    Point1="-45.5,0"
-                    Point2="-49.5,0"
-                    Point3="-49.5,4" />
+                    Point1="-33.5,0"
+                    Point2="-37.5,0"
+                    Point3="-37.5,4" />
                   <mssgle:LineSegment
-                    End="-49.5,7" />
+                    End="-37.5,46" />
                   <mssgle:CubicBezierSegment
-                    Point1="-49.5,7"
-                    Point2="-49.5,11"
-                    Point3="-53.5,11" />
+                    Point1="-37.5,46"
+                    Point2="-37.5,50"
+                    Point3="-41.5,50" />
                   <mssgle:LineSegment
-                    End="-91.5,11" />
+                    End="-67.5,50" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -1843,150 +1476,188 @@ ORDER BY A01.[MANDT]
     </LayoutInfo>
   </Package>
   <TaskHost
-    design-time-name="Package\BKPF">
+    design-time-name="Package\T156">
     <LayoutInfo>
       <GraphLayout
         Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
-          Size="180,42"
-          Id="Package\BKPF\stage deleted records"
-          TopLeft="687,371" />
-        <NodeLayout
-          Size="130,42"
-          Id="Package\BKPF\Merge Join"
-          TopLeft="451,137" />
-        <NodeLayout
-          Size="114,42"
-          Id="Package\BKPF\DB SAP"
-          TopLeft="199,46" />
+          Size="184,42"
+          Id="Package\T156\Find Changed Records"
+          TopLeft="427,367" />
         <NodeLayout
           Size="186,42"
-          Id="Package\BKPF\stage changed records"
-          TopLeft="422,483" />
-        <NodeLayout
-          Size="166,42"
-          Id="Package\BKPF\insert new records"
-          TopLeft="159,370" />
-        <NodeLayout
-          Size="184,42"
-          Id="Package\BKPF\Find Changed Records"
-          TopLeft="420,366" />
-        <NodeLayout
-          Size="112,42"
-          Id="Package\BKPF\DB PBI"
-          TopLeft="671,48" />
+          Id="Package\T156\stage changed records"
+          TopLeft="428,479" />
         <NodeLayout
           Size="153,42"
-          Id="Package\BKPF\Identity records"
-          TopLeft="440,232" />
+          Id="Package\T156\Identity records"
+          TopLeft="446,235" />
+        <NodeLayout
+          Size="114,42"
+          Id="Package\T156\DB SAP"
+          TopLeft="199,46" />
+        <NodeLayout
+          Size="166,42"
+          Id="Package\T156\insert new records"
+          TopLeft="159,370" />
+        <NodeLayout
+          Size="180,42"
+          Id="Package\T156\stage deleted records"
+          TopLeft="687,371" />
+        <NodeLayout
+          Size="112,42"
+          Id="Package\T156\DB PBI"
+          TopLeft="671,48" />
         <EdgeLayout
-          Id="Package\BKPF.Paths[update1]"
-          TopLeft="513.5,408">
+          Id="Package\T156.Paths[update1]"
+          TopLeft="520,409">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,75"
+              EndConnector="0,70"
               Start="0,0"
-              End="0,67.5">
+              End="0,62.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,67.5" />
+                    End="0,62.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="-15.8025,27.9453125,31.605,11.609375"
+              BoundingBox="-15.8025,25.4453125,31.605,11.609375"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\BKPF.Paths[update]"
-          TopLeft="514.25,274">
+          Id="Package\T156.Paths[update]"
+          TopLeft="520.75,277">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,92"
+              EndConnector="0,90"
               Start="0,0"
-              End="0,84.5">
+              End="0,82.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,84.5" />
+                    End="0,82.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="-15.8025,36.4453125,31.605,11.609375"
+              BoundingBox="-15.8025,35.4453125,31.605,11.609375"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\BKPF.Paths[OLE DB Source Output1]"
-          TopLeft="727,90">
+          Id="Package\T156.Paths[insert]"
+          TopLeft="486.25,277">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-190.666666666667,47"
+              EndConnector="-244.25,93"
               Start="0,0"
-              End="-190.666666666667,39.5">
+              End="-244.25,85.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,23.8571428571429" />
+                    End="0,28.0620985010707" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,23.8571428571429"
-                    Point2="0,27.8571428571429"
-                    Point3="-4,27.8571428571429" />
+                    Point1="0,28.0620985010707"
+                    Point2="0,32.0620985010707"
+                    Point3="-4,32.0620985010707" />
                   <mssgle:LineSegment
-                    End="-186.666666666667,27.8571428571429" />
+                    End="-240.25,32.0620985010707" />
                   <mssgle:CubicBezierSegment
-                    Point1="-186.666666666667,27.8571428571429"
-                    Point2="-190.666666666667,27.8571428571429"
-                    Point3="-190.666666666667,31.8571428571429" />
+                    Point1="-240.25,32.0620985010707"
+                    Point2="-244.25,32.0620985010707"
+                    Point3="-244.25,36.0620985010707" />
                   <mssgle:LineSegment
-                    End="-190.666666666667,39.5" />
+                    End="-244.25,85.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="-135.07498046875,37.0620985010707,25.8999609375,9.451171875"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\BKPF.Paths[OLE DB Source Output]"
+          Id="Package\T156.Paths[delete]"
+          TopLeft="558.75,277">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="218.25,94"
+              Start="0,0"
+              End="218.25,86.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,28.406852248394" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,28.406852248394"
+                    Point2="0,32.406852248394"
+                    Point3="4,32.406852248394" />
+                  <mssgle:LineSegment
+                    End="214.25,32.406852248394" />
+                  <mssgle:CubicBezierSegment
+                    Point1="214.25,32.406852248394"
+                    Point2="218.25,32.406852248394"
+                    Point3="218.25,36.406852248394" />
+                  <mssgle:LineSegment
+                    End="218.25,86.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="94.92904296875,37.406852248394,28.3919140625,9.7490234375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="130,42"
+          Id="Package\T156\Merge Join"
+          TopLeft="463,130" />
+        <EdgeLayout
+          Id="Package\T156.Paths[OLE DB Source Output]"
           TopLeft="256,88">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="260,49"
+              EndConnector="272,42"
               Start="0,0"
-              End="260,41.5">
+              End="272,34.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,20.5" />
+                    End="0,17" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,20.5"
-                    Point2="0,24.5"
-                    Point3="4,24.5" />
+                    Point1="0,17"
+                    Point2="0,21"
+                    Point3="4,21" />
                   <mssgle:LineSegment
-                    End="256,24.5" />
+                    End="268,21" />
                   <mssgle:CubicBezierSegment
-                    Point1="256,24.5"
-                    Point2="260,24.5"
-                    Point3="260,28.5" />
+                    Point1="268,21"
+                    Point2="272,21"
+                    Point3="272,25" />
                   <mssgle:LineSegment
-                    End="260,41.5" />
+                    End="272,34.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -1996,19 +1667,31 @@ ORDER BY A01.[MANDT]
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\BKPF.Paths[Merge Join Output]"
-          TopLeft="516.25,179">
+          Id="Package\T156.Paths[OLE DB Source Output1]"
+          TopLeft="727,90">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,53"
+              EndConnector="-178.666666666667,40"
               Start="0,0"
-              End="0,45.5">
+              End="-178.666666666667,32.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,45.5" />
+                    End="0,19.7082066869301" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,19.7082066869301"
+                    Point2="0,23.7082066869301"
+                    Point3="-4,23.7082066869301" />
+                  <mssgle:LineSegment
+                    End="-174.666666666667,23.7082066869301" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-174.666666666667,23.7082066869301"
+                    Point2="-178.666666666667,23.7082066869301"
+                    Point3="-178.666666666667,27.7082066869301" />
+                  <mssgle:LineSegment
+                    End="-178.666666666667,32.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -2018,82 +1701,32 @@ ORDER BY A01.[MANDT]
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\BKPF.Paths[insert]"
-          TopLeft="480.25,274">
+          Id="Package\T156.Paths[Merge Join Output]"
+          TopLeft="525.25,172">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-238.25,96"
+              EndConnector="0,63"
               Start="0,0"
-              End="-238.25,88.5">
+              End="0,55.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,29.0963597430407" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,29.0963597430407"
-                    Point2="0,33.0963597430407"
-                    Point3="-4,33.0963597430407" />
-                  <mssgle:LineSegment
-                    End="-234.25,33.0963597430407" />
-                  <mssgle:CubicBezierSegment
-                    Point1="-234.25,33.0963597430407"
-                    Point2="-238.25,33.0963597430407"
-                    Point3="-238.25,37.0963597430407" />
-                  <mssgle:LineSegment
-                    End="-238.25,88.5" />
+                    End="0,55.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-132.07498046875,38.0963597430407,25.8999609375,9.451171875"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\BKPF.Paths[delete]"
-          TopLeft="552.75,274">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="224.25,97"
-              Start="0,0"
-              End="224.25,89.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,29.441113490364" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,29.441113490364"
-                    Point2="0,33.441113490364"
-                    Point3="4,33.441113490364" />
-                  <mssgle:LineSegment
-                    End="220.25,33.441113490364" />
-                  <mssgle:CubicBezierSegment
-                    Point1="220.25,33.441113490364"
-                    Point2="224.25,33.441113490364"
-                    Point3="224.25,37.441113490364" />
-                  <mssgle:LineSegment
-                    End="224.25,89.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="97.92904296875,38.441113490364,28.3919140625,9.7490234375"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
     </LayoutInfo>
   </TaskHost>
   <PipelineComponentMetadata
-    design-time-name="Package\BKPF\stage deleted records">
+    design-time-name="Package\T156\stage changed records">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -2106,7 +1739,7 @@ ORDER BY A01.[MANDT]
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\BKPF\DB SAP">
+    design-time-name="Package\T156\DB SAP">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -2114,20 +1747,7 @@ ORDER BY A01.[MANDT]
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\BKPF\stage changed records">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-      <Property>
-        <Name>TableInfoObjectType</Name>
-        <Value
-          type="q2:string">Table</Value>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
-    design-time-name="Package\BKPF\insert new records">
+    design-time-name="Package\T156\insert new records">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -2140,7 +1760,20 @@ ORDER BY A01.[MANDT]
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\BKPF\DB PBI">
+    design-time-name="Package\T156\stage deleted records">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\T156\DB PBI">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>

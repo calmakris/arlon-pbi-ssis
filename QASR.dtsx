@@ -1,18 +1,18 @@
 ﻿<?xml version="1.0"?>
 <DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
   DTS:refId="Package"
-  DTS:CreationDate="3/2/2021 7:51:51 PM"
+  DTS:CreationDate="2/10/2021 6:49:29 PM"
   DTS:CreationName="Microsoft.Package"
   DTS:CreatorComputerName="ARLPBIDEV"
   DTS:CreatorName="DOMAIN\RPETRELLA"
-  DTS:DTSID="{4DE2AA12-6074-468E-A934-B751A99EEDE5}"
+  DTS:DTSID="{D7BF386C-AFA7-4642-9669-A030820DC812}"
   DTS:ExecutableType="Microsoft.Package"
   DTS:LastModifiedProductVersion="15.0.2000.152"
   DTS:LocaleID="1033"
-  DTS:ObjectName="Package1"
+  DTS:ObjectName="QASR"
   DTS:PackageType="5"
-  DTS:VersionBuild="37"
-  DTS:VersionGUID="{B50B9562-84D3-41D2-80FE-BDBEA34EAFA2}">
+  DTS:VersionBuild="43"
+  DTS:VersionGUID="{EDE27974-CDF6-439E-A9F5-92B0B33A48CF}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:Variables />
@@ -21,7 +21,7 @@
       DTS:refId="Package\clean stage"
       DTS:CreationName="Microsoft.ExecuteSQLTask"
       DTS:Description="Execute SQL Task"
-      DTS:DTSID="{AD67E72D-6A21-4B1C-A198-5314181E1AFE}"
+      DTS:DTSID="{127992D0-64A2-4017-9A9A-9E58456CA55B}"
       DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
       DTS:ObjectName="clean stage"
@@ -31,17 +31,17 @@
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
           SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-          SQLTask:SqlStatementSource="TRUNCATE TABLE [KNVV_STAGE_UPDATE]&#xA;go&#xA;TRUNCATE TABLE [KNVV_STAGE_DELETE]&#xA;go&#xA;TRUNCATE TABLE [KNVV_STAGE_INSERT]&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          SQLTask:SqlStatementSource="TRUNCATE TABLE [QASR_STAGE_UPDATE]&#xA;go&#xA;TRUNCATE TABLE [QASR_STAGE_DELETE]&#xA;go&#xA;TRUNCATE TABLE [QASR_STAGE_INSERT]&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
-      DTS:refId="Package\KNVV"
+      DTS:refId="Package\QASR"
       DTS:CreationName="Microsoft.Pipeline"
       DTS:Description="Data Flow Task"
-      DTS:DTSID="{F3B53FCE-BBC2-469A-9F4C-28D98BE4BDCC}"
+      DTS:DTSID="{89158324-5FDA-4934-9B45-CD1020E199A2}"
       DTS:ExecutableType="Microsoft.Pipeline"
       DTS:LocaleID="-1"
-      DTS:ObjectName="KNVV"
+      DTS:ObjectName="QASR"
       DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
       <DTS:Variables />
       <DTS:ObjectData>
@@ -49,11 +49,11 @@
           version="1">
           <components>
             <component
-              refId="Package\KNVV\DB PBI KNVV"
+              refId="Package\QASR\DB PBI ADRC"
               componentClassID="Microsoft.OLEDBSource"
               contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
               description="OLE DB Source"
-              name="DB PBI KNVV"
+              name="DB PBI ADRC"
               usesDispositions="true"
               version="7">
               <properties>
@@ -73,20 +73,20 @@
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT A01.[MANDT]
-      ,A01.[KUNNR]
-      ,A01.[VKORG]
-      ,A01.[VTWEG]
-      ,A01.[SPART]
-      ,A01.[BZIRK]
-      ,A01.[VKBUR]
-      ,A01.[VWERK]
-FROM [KNVV] A01 (NOLOCK)
-ORDER BY A01.[MANDT]
-        ,A01.[KUNNR]
-        ,A01.[VKORG]
-        ,A01.[VTWEG]
-        ,A01.[SPART]</property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT A01.[MANDANT]
+      ,A01.[PRUEFLOS]
+      ,A01.[VORGLFNR]
+      ,A01.[MERKNR]
+      ,A01.[PROBENR]
+      ,A01.[MASCHINE]
+      ,A01.[MITTELWERT]
+      ,A01.[PRUEFBEMKT]
+FROM [QASR] A01 (NOLOCK)
+ORDER BY A01.[MANDANT]
+      ,A01.[PRUEFLOS]
+      ,A01.[VORGLFNR]
+      ,A01.[MERKNR]
+      ,A01.[PROBENR]</property>
                 <property
                   dataType="System.String"
                   description="The variable that contains the SQL command to be executed."
@@ -111,7 +111,7 @@ ORDER BY A01.[MANDT]
               </properties>
               <connections>
                 <connection
-                  refId="Package\KNVV\DB PBI KNVV.Connections[OleDbConnection]"
+                  refId="Package\QASR\DB PBI ADRC.Connections[OleDbConnection]"
                   connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
                   connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
                   description="The OLE DB runtime connection used to access the database."
@@ -119,203 +119,200 @@ ORDER BY A01.[MANDT]
               </connections>
               <outputs>
                 <output
-                  refId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Output]"
+                  refId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output]"
                   isSorted="true"
                   name="OLE DB Source Output">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      refId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[PRUEFLOS]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
-                      length="3"
-                      lineageId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Output].Columns[MANDT]"
-                      name="MANDT"
-                      sortKeyPosition="1"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Output].Columns[KUNNR]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Output].ExternalColumns[KUNNR]"
-                      length="10"
-                      lineageId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Output].Columns[KUNNR]"
-                      name="KUNNR"
+                      externalMetadataColumnId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].ExternalColumns[PRUEFLOS]"
+                      length="12"
+                      lineageId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[PRUEFLOS]"
+                      name="PRUEFLOS"
                       sortKeyPosition="2"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Output].Columns[VKORG]"
+                      refId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[VORGLFNR]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Output].ExternalColumns[VKORG]"
-                      length="4"
-                      lineageId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Output].Columns[VKORG]"
-                      name="VKORG"
+                      externalMetadataColumnId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].ExternalColumns[VORGLFNR]"
+                      length="8"
+                      lineageId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[VORGLFNR]"
+                      name="VORGLFNR"
                       sortKeyPosition="3"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Output].Columns[VTWEG]"
+                      refId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[PROBENR]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Output].ExternalColumns[VTWEG]"
-                      length="2"
-                      lineageId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Output].Columns[VTWEG]"
-                      name="VTWEG"
-                      sortKeyPosition="4"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Output].Columns[SPART]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Output].ExternalColumns[SPART]"
-                      length="2"
-                      lineageId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Output].Columns[SPART]"
-                      name="SPART"
+                      externalMetadataColumnId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].ExternalColumns[PROBENR]"
+                      length="6"
+                      lineageId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[PROBENR]"
+                      name="PROBENR"
                       sortKeyPosition="5"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Output].Columns[BZIRK]"
+                      refId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[MANDANT]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Output].ExternalColumns[BZIRK]"
-                      length="6"
-                      lineageId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Output].Columns[BZIRK]"
-                      name="BZIRK"
+                      externalMetadataColumnId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].ExternalColumns[MANDANT]"
+                      length="3"
+                      lineageId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[MANDANT]"
+                      name="MANDANT"
+                      sortKeyPosition="1"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Output].Columns[VKBUR]"
+                      refId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[MERKNR]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Output].ExternalColumns[VKBUR]"
+                      externalMetadataColumnId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].ExternalColumns[MERKNR]"
                       length="4"
-                      lineageId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Output].Columns[VKBUR]"
-                      name="VKBUR"
+                      lineageId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[MERKNR]"
+                      name="MERKNR"
+                      sortKeyPosition="4"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Output].Columns[VWERK]"
+                      refId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[MASCHINE]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Output].ExternalColumns[VWERK]"
-                      length="4"
-                      lineageId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Output].Columns[VWERK]"
-                      name="VWERK"
+                      externalMetadataColumnId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].ExternalColumns[MASCHINE]"
+                      length="18"
+                      lineageId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[MASCHINE]"
+                      name="MASCHINE"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[PRUEFBEMKT]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].ExternalColumns[PRUEFBEMKT]"
+                      length="40"
+                      lineageId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[PRUEFBEMKT]"
+                      name="PRUEFBEMKT"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[MITTELWERT]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].ExternalColumns[MITTELWERT]"
+                      lineageId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[MITTELWERT]"
+                      name="MITTELWERT"
                       truncationRowDisposition="FailComponent" />
                   </outputColumns>
                   <externalMetadataColumns
                     isUsed="True">
                     <externalMetadataColumn
-                      refId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      refId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].ExternalColumns[PRUEFLOS]"
                       dataType="wstr"
-                      length="3"
-                      name="MANDT" />
+                      length="12"
+                      name="PRUEFLOS" />
                     <externalMetadataColumn
-                      refId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Output].ExternalColumns[KUNNR]"
+                      refId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].ExternalColumns[VORGLFNR]"
                       dataType="wstr"
-                      length="10"
-                      name="KUNNR" />
+                      length="8"
+                      name="VORGLFNR" />
                     <externalMetadataColumn
-                      refId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Output].ExternalColumns[VKORG]"
-                      dataType="wstr"
-                      length="4"
-                      name="VKORG" />
-                    <externalMetadataColumn
-                      refId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Output].ExternalColumns[VTWEG]"
-                      dataType="wstr"
-                      length="2"
-                      name="VTWEG" />
-                    <externalMetadataColumn
-                      refId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Output].ExternalColumns[SPART]"
-                      dataType="wstr"
-                      length="2"
-                      name="SPART" />
-                    <externalMetadataColumn
-                      refId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Output].ExternalColumns[BZIRK]"
+                      refId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].ExternalColumns[PROBENR]"
                       dataType="wstr"
                       length="6"
-                      name="BZIRK" />
+                      name="PROBENR" />
                     <externalMetadataColumn
-                      refId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Output].ExternalColumns[VKBUR]"
+                      refId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].ExternalColumns[MANDANT]"
+                      dataType="wstr"
+                      length="3"
+                      name="MANDANT" />
+                    <externalMetadataColumn
+                      refId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].ExternalColumns[MERKNR]"
                       dataType="wstr"
                       length="4"
-                      name="VKBUR" />
+                      name="MERKNR" />
                     <externalMetadataColumn
-                      refId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Output].ExternalColumns[VWERK]"
+                      refId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].ExternalColumns[MASCHINE]"
                       dataType="wstr"
-                      length="4"
-                      name="VWERK" />
+                      length="18"
+                      name="MASCHINE" />
+                    <externalMetadataColumn
+                      refId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].ExternalColumns[PRUEFBEMKT]"
+                      dataType="wstr"
+                      length="40"
+                      name="PRUEFBEMKT" />
+                    <externalMetadataColumn
+                      refId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].ExternalColumns[MITTELWERT]"
+                      dataType="r8"
+                      name="MITTELWERT" />
                   </externalMetadataColumns>
                 </output>
                 <output
-                  refId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Error Output]"
+                  refId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Error Output]"
                   isErrorOut="true"
                   name="OLE DB Source Error Output">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      refId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[MANDANT]"
                       dataType="wstr"
                       length="3"
-                      lineageId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Error Output].Columns[MANDT]"
-                      name="MANDT" />
+                      lineageId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[MANDANT]"
+                      name="MANDANT" />
                     <outputColumn
-                      refId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Error Output].Columns[KUNNR]"
+                      refId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[PRUEFLOS]"
                       dataType="wstr"
-                      length="10"
-                      lineageId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Error Output].Columns[KUNNR]"
-                      name="KUNNR" />
+                      length="12"
+                      lineageId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[PRUEFLOS]"
+                      name="PRUEFLOS" />
                     <outputColumn
-                      refId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Error Output].Columns[VKORG]"
+                      refId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[VORGLFNR]"
+                      dataType="wstr"
+                      length="8"
+                      lineageId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[VORGLFNR]"
+                      name="VORGLFNR" />
+                    <outputColumn
+                      refId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[MERKNR]"
                       dataType="wstr"
                       length="4"
-                      lineageId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Error Output].Columns[VKORG]"
-                      name="VKORG" />
+                      lineageId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[MERKNR]"
+                      name="MERKNR" />
                     <outputColumn
-                      refId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Error Output].Columns[VTWEG]"
+                      refId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[MASCHINE]"
                       dataType="wstr"
-                      length="2"
-                      lineageId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Error Output].Columns[VTWEG]"
-                      name="VTWEG" />
+                      length="18"
+                      lineageId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[MASCHINE]"
+                      name="MASCHINE" />
                     <outputColumn
-                      refId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Error Output].Columns[SPART]"
-                      dataType="wstr"
-                      length="2"
-                      lineageId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Error Output].Columns[SPART]"
-                      name="SPART" />
-                    <outputColumn
-                      refId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Error Output].Columns[BZIRK]"
+                      refId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[PROBENR]"
                       dataType="wstr"
                       length="6"
-                      lineageId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Error Output].Columns[BZIRK]"
-                      name="BZIRK" />
+                      lineageId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[PROBENR]"
+                      name="PROBENR" />
                     <outputColumn
-                      refId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Error Output].Columns[VKBUR]"
+                      refId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[MITTELWERT]"
+                      dataType="r8"
+                      lineageId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[MITTELWERT]"
+                      name="MITTELWERT" />
+                    <outputColumn
+                      refId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[PRUEFBEMKT]"
                       dataType="wstr"
-                      length="4"
-                      lineageId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Error Output].Columns[VKBUR]"
-                      name="VKBUR" />
+                      length="40"
+                      lineageId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[PRUEFBEMKT]"
+                      name="PRUEFBEMKT" />
                     <outputColumn
-                      refId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Error Output].Columns[VWERK]"
-                      dataType="wstr"
-                      length="4"
-                      lineageId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Error Output].Columns[VWERK]"
-                      name="VWERK" />
-                    <outputColumn
-                      refId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      refId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      lineageId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      refId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -324,11 +321,11 @@ ORDER BY A01.[MANDT]
               </outputs>
             </component>
             <component
-              refId="Package\KNVV\DB SAP KNVV"
+              refId="Package\QASR\DB SAP ADRC"
               componentClassID="Microsoft.OLEDBSource"
               contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
               description="OLE DB Source"
-              name="DB SAP KNVV"
+              name="DB SAP ADRC"
               usesDispositions="true"
               version="7">
               <properties>
@@ -348,20 +345,20 @@ ORDER BY A01.[MANDT]
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT A01.[MANDT]
-      ,A01.[KUNNR]
-      ,A01.[VKORG]
-      ,A01.[VTWEG]
-      ,A01.[SPART]
-      ,A01.[BZIRK]
-      ,A01.[VKBUR]
-      ,A01.[VWERK]
-FROM [ecp].[KNVV] A01 (NOLOCK)
-ORDER BY A01.[MANDT]
-        ,A01.[KUNNR]
-        ,A01.[VKORG]
-        ,A01.[VTWEG]
-        ,A01.[SPART]</property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT A01.[MANDANT]
+      ,A01.[PRUEFLOS]
+      ,A01.[VORGLFNR]
+      ,A01.[MERKNR]
+      ,A01.[PROBENR]
+      ,A01.[MASCHINE]
+      ,A01.[MITTELWERT]
+      ,A01.[PRUEFBEMKT]
+FROM [ecp].[QASR] A01 (NOLOCK)
+ORDER BY A01.[MANDANT]
+      ,A01.[PRUEFLOS]
+      ,A01.[VORGLFNR]
+      ,A01.[MERKNR]
+      ,A01.[PROBENR]</property>
                 <property
                   dataType="System.String"
                   description="The variable that contains the SQL command to be executed."
@@ -386,7 +383,7 @@ ORDER BY A01.[MANDT]
               </properties>
               <connections>
                 <connection
-                  refId="Package\KNVV\DB SAP KNVV.Connections[OleDbConnection]"
+                  refId="Package\QASR\DB SAP ADRC.Connections[OleDbConnection]"
                   connectionManagerID="{544CCAD9-2CB1-4D87-98D7-A7C478586195}:external"
                   connectionManagerRefId="Project.ConnectionManagers[SQL_SAP]"
                   description="The OLE DB runtime connection used to access the database."
@@ -394,203 +391,200 @@ ORDER BY A01.[MANDT]
               </connections>
               <outputs>
                 <output
-                  refId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Output]"
+                  refId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output]"
                   isSorted="true"
                   name="OLE DB Source Output">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      refId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[PRUEFLOS]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
-                      length="3"
-                      lineageId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Output].Columns[MANDT]"
-                      name="MANDT"
-                      sortKeyPosition="1"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Output].Columns[KUNNR]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Output].ExternalColumns[KUNNR]"
-                      length="10"
-                      lineageId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Output].Columns[KUNNR]"
-                      name="KUNNR"
+                      externalMetadataColumnId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].ExternalColumns[PRUEFLOS]"
+                      length="12"
+                      lineageId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[PRUEFLOS]"
+                      name="PRUEFLOS"
                       sortKeyPosition="2"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Output].Columns[VKORG]"
+                      refId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[VORGLFNR]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Output].ExternalColumns[VKORG]"
-                      length="4"
-                      lineageId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Output].Columns[VKORG]"
-                      name="VKORG"
+                      externalMetadataColumnId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].ExternalColumns[VORGLFNR]"
+                      length="8"
+                      lineageId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[VORGLFNR]"
+                      name="VORGLFNR"
                       sortKeyPosition="3"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Output].Columns[VTWEG]"
+                      refId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[PROBENR]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Output].ExternalColumns[VTWEG]"
-                      length="2"
-                      lineageId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Output].Columns[VTWEG]"
-                      name="VTWEG"
-                      sortKeyPosition="4"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Output].Columns[SPART]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Output].ExternalColumns[SPART]"
-                      length="2"
-                      lineageId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Output].Columns[SPART]"
-                      name="SPART"
+                      externalMetadataColumnId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].ExternalColumns[PROBENR]"
+                      length="6"
+                      lineageId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[PROBENR]"
+                      name="PROBENR"
                       sortKeyPosition="5"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Output].Columns[BZIRK]"
+                      refId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[MANDANT]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Output].ExternalColumns[BZIRK]"
-                      length="6"
-                      lineageId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Output].Columns[BZIRK]"
-                      name="BZIRK"
+                      externalMetadataColumnId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].ExternalColumns[MANDANT]"
+                      length="3"
+                      lineageId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[MANDANT]"
+                      name="MANDANT"
+                      sortKeyPosition="1"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Output].Columns[VKBUR]"
+                      refId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[MERKNR]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Output].ExternalColumns[VKBUR]"
+                      externalMetadataColumnId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].ExternalColumns[MERKNR]"
                       length="4"
-                      lineageId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Output].Columns[VKBUR]"
-                      name="VKBUR"
+                      lineageId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[MERKNR]"
+                      name="MERKNR"
+                      sortKeyPosition="4"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Output].Columns[VWERK]"
+                      refId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[MASCHINE]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Output].ExternalColumns[VWERK]"
-                      length="4"
-                      lineageId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Output].Columns[VWERK]"
-                      name="VWERK"
+                      externalMetadataColumnId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].ExternalColumns[MASCHINE]"
+                      length="18"
+                      lineageId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[MASCHINE]"
+                      name="MASCHINE"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[PRUEFBEMKT]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].ExternalColumns[PRUEFBEMKT]"
+                      length="40"
+                      lineageId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[PRUEFBEMKT]"
+                      name="PRUEFBEMKT"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[MITTELWERT]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].ExternalColumns[MITTELWERT]"
+                      lineageId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[MITTELWERT]"
+                      name="MITTELWERT"
                       truncationRowDisposition="FailComponent" />
                   </outputColumns>
                   <externalMetadataColumns
                     isUsed="True">
                     <externalMetadataColumn
-                      refId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      refId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].ExternalColumns[PRUEFLOS]"
                       dataType="wstr"
-                      length="3"
-                      name="MANDT" />
+                      length="12"
+                      name="PRUEFLOS" />
                     <externalMetadataColumn
-                      refId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Output].ExternalColumns[KUNNR]"
+                      refId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].ExternalColumns[VORGLFNR]"
                       dataType="wstr"
-                      length="10"
-                      name="KUNNR" />
+                      length="8"
+                      name="VORGLFNR" />
                     <externalMetadataColumn
-                      refId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Output].ExternalColumns[VKORG]"
-                      dataType="wstr"
-                      length="4"
-                      name="VKORG" />
-                    <externalMetadataColumn
-                      refId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Output].ExternalColumns[VTWEG]"
-                      dataType="wstr"
-                      length="2"
-                      name="VTWEG" />
-                    <externalMetadataColumn
-                      refId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Output].ExternalColumns[SPART]"
-                      dataType="wstr"
-                      length="2"
-                      name="SPART" />
-                    <externalMetadataColumn
-                      refId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Output].ExternalColumns[BZIRK]"
+                      refId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].ExternalColumns[PROBENR]"
                       dataType="wstr"
                       length="6"
-                      name="BZIRK" />
+                      name="PROBENR" />
                     <externalMetadataColumn
-                      refId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Output].ExternalColumns[VKBUR]"
+                      refId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].ExternalColumns[MANDANT]"
+                      dataType="wstr"
+                      length="3"
+                      name="MANDANT" />
+                    <externalMetadataColumn
+                      refId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].ExternalColumns[MERKNR]"
                       dataType="wstr"
                       length="4"
-                      name="VKBUR" />
+                      name="MERKNR" />
                     <externalMetadataColumn
-                      refId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Output].ExternalColumns[VWERK]"
+                      refId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].ExternalColumns[MASCHINE]"
                       dataType="wstr"
-                      length="4"
-                      name="VWERK" />
+                      length="18"
+                      name="MASCHINE" />
+                    <externalMetadataColumn
+                      refId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].ExternalColumns[PRUEFBEMKT]"
+                      dataType="wstr"
+                      length="40"
+                      name="PRUEFBEMKT" />
+                    <externalMetadataColumn
+                      refId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].ExternalColumns[MITTELWERT]"
+                      dataType="r8"
+                      name="MITTELWERT" />
                   </externalMetadataColumns>
                 </output>
                 <output
-                  refId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Error Output]"
+                  refId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Error Output]"
                   isErrorOut="true"
                   name="OLE DB Source Error Output">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      refId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[MANDANT]"
                       dataType="wstr"
                       length="3"
-                      lineageId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Error Output].Columns[MANDT]"
-                      name="MANDT" />
+                      lineageId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[MANDANT]"
+                      name="MANDANT" />
                     <outputColumn
-                      refId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Error Output].Columns[KUNNR]"
+                      refId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[PRUEFLOS]"
                       dataType="wstr"
-                      length="10"
-                      lineageId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Error Output].Columns[KUNNR]"
-                      name="KUNNR" />
+                      length="12"
+                      lineageId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[PRUEFLOS]"
+                      name="PRUEFLOS" />
                     <outputColumn
-                      refId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Error Output].Columns[VKORG]"
+                      refId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[VORGLFNR]"
+                      dataType="wstr"
+                      length="8"
+                      lineageId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[VORGLFNR]"
+                      name="VORGLFNR" />
+                    <outputColumn
+                      refId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[MERKNR]"
                       dataType="wstr"
                       length="4"
-                      lineageId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Error Output].Columns[VKORG]"
-                      name="VKORG" />
+                      lineageId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[MERKNR]"
+                      name="MERKNR" />
                     <outputColumn
-                      refId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Error Output].Columns[VTWEG]"
+                      refId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[MASCHINE]"
                       dataType="wstr"
-                      length="2"
-                      lineageId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Error Output].Columns[VTWEG]"
-                      name="VTWEG" />
+                      length="18"
+                      lineageId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[MASCHINE]"
+                      name="MASCHINE" />
                     <outputColumn
-                      refId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Error Output].Columns[SPART]"
-                      dataType="wstr"
-                      length="2"
-                      lineageId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Error Output].Columns[SPART]"
-                      name="SPART" />
-                    <outputColumn
-                      refId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Error Output].Columns[BZIRK]"
+                      refId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[PROBENR]"
                       dataType="wstr"
                       length="6"
-                      lineageId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Error Output].Columns[BZIRK]"
-                      name="BZIRK" />
+                      lineageId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[PROBENR]"
+                      name="PROBENR" />
                     <outputColumn
-                      refId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Error Output].Columns[VKBUR]"
+                      refId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[MITTELWERT]"
+                      dataType="r8"
+                      lineageId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[MITTELWERT]"
+                      name="MITTELWERT" />
+                    <outputColumn
+                      refId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[PRUEFBEMKT]"
                       dataType="wstr"
-                      length="4"
-                      lineageId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Error Output].Columns[VKBUR]"
-                      name="VKBUR" />
+                      length="40"
+                      lineageId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[PRUEFBEMKT]"
+                      name="PRUEFBEMKT" />
                     <outputColumn
-                      refId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Error Output].Columns[VWERK]"
-                      dataType="wstr"
-                      length="4"
-                      lineageId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Error Output].Columns[VWERK]"
-                      name="VWERK" />
-                    <outputColumn
-                      refId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      refId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      lineageId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      refId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -599,80 +593,78 @@ ORDER BY A01.[MANDT]
               </outputs>
             </component>
             <component
-              refId="Package\KNVV\Find Changed records"
+              refId="Package\QASR\Find Changed Records"
               componentClassID="Microsoft.ConditionalSplit"
               contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
               description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
-              name="Find Changed records"
+              name="Find Changed Records"
               usesDispositions="true">
               <inputs>
                 <input
-                  refId="Package\KNVV\Find Changed records.Inputs[Conditional Split Input]"
+                  refId="Package\QASR\Find Changed Records.Inputs[Conditional Split Input]"
                   description="Input to the Conditional Split Transformation"
                   name="Conditional Split Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\KNVV\Find Changed records.Inputs[Conditional Split Input].Columns[BZIRK]"
+                      refId="Package\QASR\Find Changed Records.Inputs[Conditional Split Input].Columns[MASCHINE]"
                       cachedDataType="wstr"
-                      cachedLength="6"
-                      cachedName="BZIRK"
-                      lineageId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[BZIRK]" />
+                      cachedLength="18"
+                      cachedName="MASCHINE"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MASCHINE]" />
                     <inputColumn
-                      refId="Package\KNVV\Find Changed records.Inputs[Conditional Split Input].Columns[VKBUR]"
+                      refId="Package\QASR\Find Changed Records.Inputs[Conditional Split Input].Columns[PRUEFBEMKT]"
                       cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="VKBUR"
-                      lineageId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[VKBUR]" />
+                      cachedLength="40"
+                      cachedName="PRUEFBEMKT"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[PRUEFBEMKT]" />
                     <inputColumn
-                      refId="Package\KNVV\Find Changed records.Inputs[Conditional Split Input].Columns[BZIRK (1)]"
+                      refId="Package\QASR\Find Changed Records.Inputs[Conditional Split Input].Columns[MASCHINE (1)]"
                       cachedDataType="wstr"
-                      cachedLength="6"
-                      cachedName="BZIRK (1)"
-                      lineageId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[BZIRK (1)]" />
+                      cachedLength="18"
+                      cachedName="MASCHINE (1)"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MASCHINE (1)]" />
                     <inputColumn
-                      refId="Package\KNVV\Find Changed records.Inputs[Conditional Split Input].Columns[VKBUR (1)]"
+                      refId="Package\QASR\Find Changed Records.Inputs[Conditional Split Input].Columns[PRUEFBEMKT (1)]"
                       cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="VKBUR (1)"
-                      lineageId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[VKBUR (1)]" />
+                      cachedLength="40"
+                      cachedName="PRUEFBEMKT (1)"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[PRUEFBEMKT (1)]" />
                     <inputColumn
-                      refId="Package\KNVV\Find Changed records.Inputs[Conditional Split Input].Columns[VWERK]"
-                      cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="VWERK"
-                      lineageId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[VWERK]" />
+                      refId="Package\QASR\Find Changed Records.Inputs[Conditional Split Input].Columns[MITTELWERT]"
+                      cachedDataType="r8"
+                      cachedName="MITTELWERT"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MITTELWERT]" />
                     <inputColumn
-                      refId="Package\KNVV\Find Changed records.Inputs[Conditional Split Input].Columns[VWERK (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="VWERK (1)"
-                      lineageId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[VWERK (1)]" />
+                      refId="Package\QASR\Find Changed Records.Inputs[Conditional Split Input].Columns[MITTELWERT (1)]"
+                      cachedDataType="r8"
+                      cachedName="MITTELWERT (1)"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MITTELWERT (1)]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\KNVV\Find Changed records.Outputs[update]"
+                  refId="Package\QASR\Find Changed Records.Outputs[update]"
                   description="Output 1 of the Conditional Split Transformation"
                   errorOrTruncationOperation="Computation"
                   errorRowDisposition="FailComponent"
                   exclusionGroup="1"
                   name="update"
-                  synchronousInputId="Package\KNVV\Find Changed records.Inputs[Conditional Split Input]"
+                  synchronousInputId="Package\QASR\Find Changed Records.Inputs[Conditional Split Input]"
                   truncationRowDisposition="FailComponent">
                   <properties>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
-                      name="Expression">#{Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[BZIRK]} != #{Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[BZIRK (1)]} || #{Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[VKBUR]} != #{Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[VKBUR (1)]} || #{Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[VWERK]} != #{Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[VWERK (1)]}</property>
+                      name="Expression">#{Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MASCHINE]} != #{Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MASCHINE (1)]} || #{Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MITTELWERT]} != #{Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MITTELWERT (1)]} || #{Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[PRUEFBEMKT]} != #{Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[PRUEFBEMKT (1)]}</property>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the friendly version of the expression. This expression version uses column names."
                       expressionType="Notify"
-                      name="FriendlyExpression">BZIRK != [BZIRK (1)] || VKBUR != [VKBUR (1)] || VWERK != [VWERK (1)]</property>
+                      name="FriendlyExpression">MASCHINE != [MASCHINE (1)] || MITTELWERT != [MITTELWERT (1)] || PRUEFBEMKT != [PRUEFBEMKT (1)]</property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
@@ -681,11 +673,11 @@ ORDER BY A01.[MANDT]
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\KNVV\Find Changed records.Outputs[Conditional Split Default Output]"
+                  refId="Package\QASR\Find Changed Records.Outputs[Conditional Split Default Output]"
                   description="Default Output of the Conditional Split Transformation"
                   exclusionGroup="1"
                   name="Conditional Split Default Output"
-                  synchronousInputId="Package\KNVV\Find Changed records.Inputs[Conditional Split Input]">
+                  synchronousInputId="Package\QASR\Find Changed Records.Inputs[Conditional Split Input]">
                   <properties>
                     <property
                       dataType="System.Boolean"
@@ -694,23 +686,23 @@ ORDER BY A01.[MANDT]
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\KNVV\Find Changed records.Outputs[Conditional Split Error Output]"
+                  refId="Package\QASR\Find Changed Records.Outputs[Conditional Split Error Output]"
                   description="Error Output of the Conditional Split Transformation"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="Conditional Split Error Output"
-                  synchronousInputId="Package\KNVV\Find Changed records.Inputs[Conditional Split Input]">
+                  synchronousInputId="Package\QASR\Find Changed Records.Inputs[Conditional Split Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\KNVV\Find Changed records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      refId="Package\QASR\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\KNVV\Find Changed records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      lineageId="Package\QASR\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\KNVV\Find Changed records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      refId="Package\QASR\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\KNVV\Find Changed records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\QASR\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -719,7 +711,7 @@ ORDER BY A01.[MANDT]
               </outputs>
             </component>
             <component
-              refId="Package\KNVV\Identify records"
+              refId="Package\QASR\Identify records"
               componentClassID="Microsoft.ConditionalSplit"
               contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
               description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
@@ -727,49 +719,49 @@ ORDER BY A01.[MANDT]
               usesDispositions="true">
               <inputs>
                 <input
-                  refId="Package\KNVV\Identify records.Inputs[Conditional Split Input]"
+                  refId="Package\QASR\Identify records.Inputs[Conditional Split Input]"
                   description="Input to the Conditional Split Transformation"
                   name="Conditional Split Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\KNVV\Identify records.Inputs[Conditional Split Input].Columns[MANDT]"
+                      refId="Package\QASR\Identify records.Inputs[Conditional Split Input].Columns[MANDANT]"
                       cachedDataType="wstr"
                       cachedLength="3"
-                      cachedName="MANDT"
+                      cachedName="MANDANT"
                       cachedSortKeyPosition="1"
-                      lineageId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MANDANT]" />
                     <inputColumn
-                      refId="Package\KNVV\Identify records.Inputs[Conditional Split Input].Columns[MANDT (1)]"
+                      refId="Package\QASR\Identify records.Inputs[Conditional Split Input].Columns[MANDANT (1)]"
                       cachedDataType="wstr"
                       cachedLength="3"
-                      cachedName="MANDT (1)"
-                      lineageId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]" />
+                      cachedName="MANDANT (1)"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MANDANT (1)]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\KNVV\Identify records.Outputs[update]"
+                  refId="Package\QASR\Identify records.Outputs[update]"
                   description="Output 1 of the Conditional Split Transformation"
                   errorOrTruncationOperation="Computation"
                   errorRowDisposition="FailComponent"
                   exclusionGroup="1"
                   name="update"
-                  synchronousInputId="Package\KNVV\Identify records.Inputs[Conditional Split Input]"
+                  synchronousInputId="Package\QASR\Identify records.Inputs[Conditional Split Input]"
                   truncationRowDisposition="FailComponent">
                   <properties>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
-                      name="Expression">![ISNULL](#{Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; ![ISNULL](#{Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
+                      name="Expression">![ISNULL](#{Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MANDANT]}) &amp;&amp; ![ISNULL](#{Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MANDANT (1)]})</property>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the friendly version of the expression. This expression version uses column names."
                       expressionType="Notify"
-                      name="FriendlyExpression">!ISNULL(MANDT) &amp;&amp; !ISNULL([MANDT (1)])</property>
+                      name="FriendlyExpression">!ISNULL(MANDANT) &amp;&amp; !ISNULL([MANDANT (1)])</property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
@@ -778,26 +770,26 @@ ORDER BY A01.[MANDT]
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\KNVV\Identify records.Outputs[insert]"
+                  refId="Package\QASR\Identify records.Outputs[insert]"
                   description="Output 2 of the Conditional Split Transformation"
                   errorOrTruncationOperation="Computation"
                   errorRowDisposition="FailComponent"
                   exclusionGroup="1"
                   name="insert"
-                  synchronousInputId="Package\KNVV\Identify records.Inputs[Conditional Split Input]"
+                  synchronousInputId="Package\QASR\Identify records.Inputs[Conditional Split Input]"
                   truncationRowDisposition="FailComponent">
                   <properties>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
-                      name="Expression">![ISNULL](#{Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; [ISNULL](#{Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
+                      name="Expression">![ISNULL](#{Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MANDANT]}) &amp;&amp; [ISNULL](#{Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MANDANT (1)]})</property>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the friendly version of the expression. This expression version uses column names."
                       expressionType="Notify"
-                      name="FriendlyExpression">!ISNULL(MANDT) &amp;&amp; ISNULL([MANDT (1)])</property>
+                      name="FriendlyExpression">!ISNULL(MANDANT) &amp;&amp; ISNULL([MANDANT (1)])</property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
@@ -806,26 +798,26 @@ ORDER BY A01.[MANDT]
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\KNVV\Identify records.Outputs[delete]"
+                  refId="Package\QASR\Identify records.Outputs[delete]"
                   description="Output 3 of the Conditional Split Transformation"
                   errorOrTruncationOperation="Computation"
                   errorRowDisposition="FailComponent"
                   exclusionGroup="1"
                   name="delete"
-                  synchronousInputId="Package\KNVV\Identify records.Inputs[Conditional Split Input]"
+                  synchronousInputId="Package\QASR\Identify records.Inputs[Conditional Split Input]"
                   truncationRowDisposition="FailComponent">
                   <properties>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
-                      name="Expression">[ISNULL](#{Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; ![ISNULL](#{Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
+                      name="Expression">[ISNULL](#{Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MANDANT]}) &amp;&amp; ![ISNULL](#{Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MANDANT (1)]})</property>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the friendly version of the expression. This expression version uses column names."
                       expressionType="Notify"
-                      name="FriendlyExpression">ISNULL(MANDT) &amp;&amp; !ISNULL([MANDT (1)])</property>
+                      name="FriendlyExpression">ISNULL(MANDANT) &amp;&amp; !ISNULL([MANDANT (1)])</property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
@@ -834,11 +826,11 @@ ORDER BY A01.[MANDT]
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\KNVV\Identify records.Outputs[Conditional Split Default Output]"
+                  refId="Package\QASR\Identify records.Outputs[Conditional Split Default Output]"
                   description="Default Output of the Conditional Split Transformation"
                   exclusionGroup="1"
                   name="Conditional Split Default Output"
-                  synchronousInputId="Package\KNVV\Identify records.Inputs[Conditional Split Input]">
+                  synchronousInputId="Package\QASR\Identify records.Inputs[Conditional Split Input]">
                   <properties>
                     <property
                       dataType="System.Boolean"
@@ -847,23 +839,23 @@ ORDER BY A01.[MANDT]
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\KNVV\Identify records.Outputs[Conditional Split Error Output]"
+                  refId="Package\QASR\Identify records.Outputs[Conditional Split Error Output]"
                   description="Error Output of the Conditional Split Transformation"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="Conditional Split Error Output"
-                  synchronousInputId="Package\KNVV\Identify records.Inputs[Conditional Split Input]">
+                  synchronousInputId="Package\QASR\Identify records.Inputs[Conditional Split Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\KNVV\Identify records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      refId="Package\QASR\Identify records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\KNVV\Identify records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      lineageId="Package\QASR\Identify records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\KNVV\Identify records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      refId="Package\QASR\Identify records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\KNVV\Identify records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\QASR\Identify records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -872,7 +864,7 @@ ORDER BY A01.[MANDT]
               </outputs>
             </component>
             <component
-              refId="Package\KNVV\insert new records"
+              refId="Package\QASR\insert new records"
               componentClassID="Microsoft.OLEDBDestination"
               contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
               description="OLE DB Destination"
@@ -887,7 +879,7 @@ ORDER BY A01.[MANDT]
                 <property
                   dataType="System.String"
                   description="Specifies the name of the database object used to open a rowset."
-                  name="OpenRowset">[dbo].[KNVV_STAGE_INSERT]</property>
+                  name="OpenRowset">[dbo].[QASR_STAGE_INSERT]</property>
                 <property
                   dataType="System.String"
                   description="Specifies the variable that contains the name of the database object used to open a rowset."
@@ -929,7 +921,7 @@ ORDER BY A01.[MANDT]
               </properties>
               <connections>
                 <connection
-                  refId="Package\KNVV\insert new records.Connections[OleDbConnection]"
+                  refId="Package\QASR\insert new records.Connections[OleDbConnection]"
                   connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
                   connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
                   description="The OLE DB runtime connection used to access the database."
@@ -937,137 +929,135 @@ ORDER BY A01.[MANDT]
               </connections>
               <inputs>
                 <input
-                  refId="Package\KNVV\insert new records.Inputs[OLE DB Destination Input]"
+                  refId="Package\QASR\insert new records.Inputs[OLE DB Destination Input]"
                   errorOrTruncationOperation="Insert"
                   errorRowDisposition="FailComponent"
                   hasSideEffects="true"
                   name="OLE DB Destination Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\KNVV\insert new records.Inputs[OLE DB Destination Input].Columns[MANDT]"
+                      refId="Package\QASR\insert new records.Inputs[OLE DB Destination Input].Columns[PRUEFLOS]"
                       cachedDataType="wstr"
-                      cachedLength="3"
-                      cachedName="MANDT"
-                      cachedSortKeyPosition="1"
-                      externalMetadataColumnId="Package\KNVV\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
-                      lineageId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
-                    <inputColumn
-                      refId="Package\KNVV\insert new records.Inputs[OLE DB Destination Input].Columns[KUNNR]"
-                      cachedDataType="wstr"
-                      cachedLength="10"
-                      cachedName="KUNNR"
+                      cachedLength="12"
+                      cachedName="PRUEFLOS"
                       cachedSortKeyPosition="2"
-                      externalMetadataColumnId="Package\KNVV\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[KUNNR]"
-                      lineageId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[KUNNR]" />
+                      externalMetadataColumnId="Package\QASR\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[PRUEFLOS]"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[PRUEFLOS]" />
                     <inputColumn
-                      refId="Package\KNVV\insert new records.Inputs[OLE DB Destination Input].Columns[VKORG]"
+                      refId="Package\QASR\insert new records.Inputs[OLE DB Destination Input].Columns[VORGLFNR]"
                       cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="VKORG"
+                      cachedLength="8"
+                      cachedName="VORGLFNR"
                       cachedSortKeyPosition="3"
-                      externalMetadataColumnId="Package\KNVV\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[VKORG]"
-                      lineageId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[VKORG]" />
+                      externalMetadataColumnId="Package\QASR\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[VORGLFNR]"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[VORGLFNR]" />
                     <inputColumn
-                      refId="Package\KNVV\insert new records.Inputs[OLE DB Destination Input].Columns[VTWEG]"
-                      cachedDataType="wstr"
-                      cachedLength="2"
-                      cachedName="VTWEG"
-                      cachedSortKeyPosition="4"
-                      externalMetadataColumnId="Package\KNVV\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[VTWEG]"
-                      lineageId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[VTWEG]" />
-                    <inputColumn
-                      refId="Package\KNVV\insert new records.Inputs[OLE DB Destination Input].Columns[SPART]"
-                      cachedDataType="wstr"
-                      cachedLength="2"
-                      cachedName="SPART"
-                      cachedSortKeyPosition="5"
-                      externalMetadataColumnId="Package\KNVV\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[SPART]"
-                      lineageId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[SPART]" />
-                    <inputColumn
-                      refId="Package\KNVV\insert new records.Inputs[OLE DB Destination Input].Columns[BZIRK]"
+                      refId="Package\QASR\insert new records.Inputs[OLE DB Destination Input].Columns[PROBENR]"
                       cachedDataType="wstr"
                       cachedLength="6"
-                      cachedName="BZIRK"
-                      externalMetadataColumnId="Package\KNVV\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[BZIRK]"
-                      lineageId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[BZIRK]" />
+                      cachedName="PROBENR"
+                      cachedSortKeyPosition="5"
+                      externalMetadataColumnId="Package\QASR\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[PROBENR]"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[PROBENR]" />
                     <inputColumn
-                      refId="Package\KNVV\insert new records.Inputs[OLE DB Destination Input].Columns[VKBUR]"
+                      refId="Package\QASR\insert new records.Inputs[OLE DB Destination Input].Columns[MANDANT]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDANT"
+                      cachedSortKeyPosition="1"
+                      externalMetadataColumnId="Package\QASR\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MANDANT]"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MANDANT]" />
+                    <inputColumn
+                      refId="Package\QASR\insert new records.Inputs[OLE DB Destination Input].Columns[MERKNR]"
                       cachedDataType="wstr"
                       cachedLength="4"
-                      cachedName="VKBUR"
-                      externalMetadataColumnId="Package\KNVV\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[VKBUR]"
-                      lineageId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[VKBUR]" />
+                      cachedName="MERKNR"
+                      cachedSortKeyPosition="4"
+                      externalMetadataColumnId="Package\QASR\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MERKNR]"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MERKNR]" />
                     <inputColumn
-                      refId="Package\KNVV\insert new records.Inputs[OLE DB Destination Input].Columns[VWERK]"
+                      refId="Package\QASR\insert new records.Inputs[OLE DB Destination Input].Columns[MASCHINE]"
                       cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="VWERK"
-                      externalMetadataColumnId="Package\KNVV\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[VWERK]"
-                      lineageId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[VWERK]" />
+                      cachedLength="18"
+                      cachedName="MASCHINE"
+                      externalMetadataColumnId="Package\QASR\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MASCHINE]"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MASCHINE]" />
+                    <inputColumn
+                      refId="Package\QASR\insert new records.Inputs[OLE DB Destination Input].Columns[PRUEFBEMKT]"
+                      cachedDataType="wstr"
+                      cachedLength="40"
+                      cachedName="PRUEFBEMKT"
+                      externalMetadataColumnId="Package\QASR\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[PRUEFBEMKT]"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[PRUEFBEMKT]" />
+                    <inputColumn
+                      refId="Package\QASR\insert new records.Inputs[OLE DB Destination Input].Columns[MITTELWERT]"
+                      cachedDataType="r8"
+                      cachedName="MITTELWERT"
+                      externalMetadataColumnId="Package\QASR\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MITTELWERT]"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MITTELWERT]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
                     <externalMetadataColumn
-                      refId="Package\KNVV\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      refId="Package\QASR\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[PRUEFLOS]"
                       dataType="wstr"
-                      length="3"
-                      name="MANDT" />
+                      length="12"
+                      name="PRUEFLOS" />
                     <externalMetadataColumn
-                      refId="Package\KNVV\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[KUNNR]"
+                      refId="Package\QASR\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[VORGLFNR]"
                       dataType="wstr"
-                      length="10"
-                      name="KUNNR" />
+                      length="8"
+                      name="VORGLFNR" />
                     <externalMetadataColumn
-                      refId="Package\KNVV\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[VKORG]"
-                      dataType="wstr"
-                      length="4"
-                      name="VKORG" />
-                    <externalMetadataColumn
-                      refId="Package\KNVV\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[VTWEG]"
-                      dataType="wstr"
-                      length="2"
-                      name="VTWEG" />
-                    <externalMetadataColumn
-                      refId="Package\KNVV\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[SPART]"
-                      dataType="wstr"
-                      length="2"
-                      name="SPART" />
-                    <externalMetadataColumn
-                      refId="Package\KNVV\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[BZIRK]"
+                      refId="Package\QASR\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[PROBENR]"
                       dataType="wstr"
                       length="6"
-                      name="BZIRK" />
+                      name="PROBENR" />
                     <externalMetadataColumn
-                      refId="Package\KNVV\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[VKBUR]"
+                      refId="Package\QASR\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MANDANT]"
+                      dataType="wstr"
+                      length="3"
+                      name="MANDANT" />
+                    <externalMetadataColumn
+                      refId="Package\QASR\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MERKNR]"
                       dataType="wstr"
                       length="4"
-                      name="VKBUR" />
+                      name="MERKNR" />
                     <externalMetadataColumn
-                      refId="Package\KNVV\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[VWERK]"
+                      refId="Package\QASR\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MASCHINE]"
                       dataType="wstr"
-                      length="4"
-                      name="VWERK" />
+                      length="18"
+                      name="MASCHINE" />
+                    <externalMetadataColumn
+                      refId="Package\QASR\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[PRUEFBEMKT]"
+                      dataType="wstr"
+                      length="40"
+                      name="PRUEFBEMKT" />
+                    <externalMetadataColumn
+                      refId="Package\QASR\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MITTELWERT]"
+                      dataType="r8"
+                      name="MITTELWERT" />
                   </externalMetadataColumns>
                 </input>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\KNVV\insert new records.Outputs[OLE DB Destination Error Output]"
+                  refId="Package\QASR\insert new records.Outputs[OLE DB Destination Error Output]"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="OLE DB Destination Error Output"
-                  synchronousInputId="Package\KNVV\insert new records.Inputs[OLE DB Destination Input]">
+                  synchronousInputId="Package\QASR\insert new records.Inputs[OLE DB Destination Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\KNVV\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      refId="Package\QASR\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\KNVV\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      lineageId="Package\QASR\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\KNVV\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      refId="Package\QASR\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\KNVV\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\QASR\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -1076,7 +1066,7 @@ ORDER BY A01.[MANDT]
               </outputs>
             </component>
             <component
-              refId="Package\KNVV\Merge Join"
+              refId="Package\QASR\Merge Join"
               componentClassID="Microsoft.MergeJoin"
               contactInfo="Merge Join;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
               description="Combine two sorted data flows into one using the FULL, LEFT, or INNER join. We recommend this transformation when data flows can be sorted at their sources."
@@ -1103,361 +1093,357 @@ ORDER BY A01.[MANDT]
               </properties>
               <inputs>
                 <input
-                  refId="Package\KNVV\Merge Join.Inputs[Merge Join Left Input]"
+                  refId="Package\QASR\Merge Join.Inputs[Merge Join Left Input]"
                   hasSideEffects="true"
                   name="Merge Join Left Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\KNVV\Merge Join.Inputs[Merge Join Left Input].Columns[MANDT]"
+                      refId="Package\QASR\Merge Join.Inputs[Merge Join Left Input].Columns[PRUEFLOS]"
                       cachedDataType="wstr"
-                      cachedLength="3"
-                      cachedName="MANDT"
-                      cachedSortKeyPosition="1"
-                      lineageId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Output].Columns[MANDT]" />
-                    <inputColumn
-                      refId="Package\KNVV\Merge Join.Inputs[Merge Join Left Input].Columns[KUNNR]"
-                      cachedDataType="wstr"
-                      cachedLength="10"
-                      cachedName="KUNNR"
+                      cachedLength="12"
+                      cachedName="PRUEFLOS"
                       cachedSortKeyPosition="2"
-                      lineageId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Output].Columns[KUNNR]" />
+                      lineageId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[PRUEFLOS]" />
                     <inputColumn
-                      refId="Package\KNVV\Merge Join.Inputs[Merge Join Left Input].Columns[VKORG]"
+                      refId="Package\QASR\Merge Join.Inputs[Merge Join Left Input].Columns[VORGLFNR]"
                       cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="VKORG"
+                      cachedLength="8"
+                      cachedName="VORGLFNR"
                       cachedSortKeyPosition="3"
-                      lineageId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Output].Columns[VKORG]" />
+                      lineageId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[VORGLFNR]" />
                     <inputColumn
-                      refId="Package\KNVV\Merge Join.Inputs[Merge Join Left Input].Columns[VTWEG]"
-                      cachedDataType="wstr"
-                      cachedLength="2"
-                      cachedName="VTWEG"
-                      cachedSortKeyPosition="4"
-                      lineageId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Output].Columns[VTWEG]" />
-                    <inputColumn
-                      refId="Package\KNVV\Merge Join.Inputs[Merge Join Left Input].Columns[SPART]"
-                      cachedDataType="wstr"
-                      cachedLength="2"
-                      cachedName="SPART"
-                      cachedSortKeyPosition="5"
-                      lineageId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Output].Columns[SPART]" />
-                    <inputColumn
-                      refId="Package\KNVV\Merge Join.Inputs[Merge Join Left Input].Columns[BZIRK]"
+                      refId="Package\QASR\Merge Join.Inputs[Merge Join Left Input].Columns[PROBENR]"
                       cachedDataType="wstr"
                       cachedLength="6"
-                      cachedName="BZIRK"
-                      lineageId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Output].Columns[BZIRK]" />
+                      cachedName="PROBENR"
+                      cachedSortKeyPosition="5"
+                      lineageId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[PROBENR]" />
                     <inputColumn
-                      refId="Package\KNVV\Merge Join.Inputs[Merge Join Left Input].Columns[VKBUR]"
+                      refId="Package\QASR\Merge Join.Inputs[Merge Join Left Input].Columns[MANDANT]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDANT"
+                      cachedSortKeyPosition="1"
+                      lineageId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[MANDANT]" />
+                    <inputColumn
+                      refId="Package\QASR\Merge Join.Inputs[Merge Join Left Input].Columns[MERKNR]"
                       cachedDataType="wstr"
                       cachedLength="4"
-                      cachedName="VKBUR"
-                      lineageId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Output].Columns[VKBUR]" />
+                      cachedName="MERKNR"
+                      cachedSortKeyPosition="4"
+                      lineageId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[MERKNR]" />
                     <inputColumn
-                      refId="Package\KNVV\Merge Join.Inputs[Merge Join Left Input].Columns[VWERK]"
+                      refId="Package\QASR\Merge Join.Inputs[Merge Join Left Input].Columns[MASCHINE]"
                       cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="VWERK"
-                      lineageId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Output].Columns[VWERK]" />
+                      cachedLength="18"
+                      cachedName="MASCHINE"
+                      lineageId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[MASCHINE]" />
+                    <inputColumn
+                      refId="Package\QASR\Merge Join.Inputs[Merge Join Left Input].Columns[PRUEFBEMKT]"
+                      cachedDataType="wstr"
+                      cachedLength="40"
+                      cachedName="PRUEFBEMKT"
+                      lineageId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[PRUEFBEMKT]" />
+                    <inputColumn
+                      refId="Package\QASR\Merge Join.Inputs[Merge Join Left Input].Columns[MITTELWERT]"
+                      cachedDataType="r8"
+                      cachedName="MITTELWERT"
+                      lineageId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output].Columns[MITTELWERT]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
                 <input
-                  refId="Package\KNVV\Merge Join.Inputs[Merge Join Right Input]"
+                  refId="Package\QASR\Merge Join.Inputs[Merge Join Right Input]"
                   hasSideEffects="true"
                   name="Merge Join Right Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\KNVV\Merge Join.Inputs[Merge Join Right Input].Columns[MANDT]"
+                      refId="Package\QASR\Merge Join.Inputs[Merge Join Right Input].Columns[PRUEFLOS]"
                       cachedDataType="wstr"
-                      cachedLength="3"
-                      cachedName="MANDT"
-                      cachedSortKeyPosition="1"
-                      lineageId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Output].Columns[MANDT]" />
-                    <inputColumn
-                      refId="Package\KNVV\Merge Join.Inputs[Merge Join Right Input].Columns[KUNNR]"
-                      cachedDataType="wstr"
-                      cachedLength="10"
-                      cachedName="KUNNR"
+                      cachedLength="12"
+                      cachedName="PRUEFLOS"
                       cachedSortKeyPosition="2"
-                      lineageId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Output].Columns[KUNNR]" />
+                      lineageId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[PRUEFLOS]" />
                     <inputColumn
-                      refId="Package\KNVV\Merge Join.Inputs[Merge Join Right Input].Columns[VKORG]"
+                      refId="Package\QASR\Merge Join.Inputs[Merge Join Right Input].Columns[VORGLFNR]"
                       cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="VKORG"
+                      cachedLength="8"
+                      cachedName="VORGLFNR"
                       cachedSortKeyPosition="3"
-                      lineageId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Output].Columns[VKORG]" />
+                      lineageId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[VORGLFNR]" />
                     <inputColumn
-                      refId="Package\KNVV\Merge Join.Inputs[Merge Join Right Input].Columns[VTWEG]"
-                      cachedDataType="wstr"
-                      cachedLength="2"
-                      cachedName="VTWEG"
-                      cachedSortKeyPosition="4"
-                      lineageId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Output].Columns[VTWEG]" />
-                    <inputColumn
-                      refId="Package\KNVV\Merge Join.Inputs[Merge Join Right Input].Columns[SPART]"
-                      cachedDataType="wstr"
-                      cachedLength="2"
-                      cachedName="SPART"
-                      cachedSortKeyPosition="5"
-                      lineageId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Output].Columns[SPART]" />
-                    <inputColumn
-                      refId="Package\KNVV\Merge Join.Inputs[Merge Join Right Input].Columns[BZIRK]"
+                      refId="Package\QASR\Merge Join.Inputs[Merge Join Right Input].Columns[PROBENR]"
                       cachedDataType="wstr"
                       cachedLength="6"
-                      cachedName="BZIRK"
-                      lineageId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Output].Columns[BZIRK]" />
+                      cachedName="PROBENR"
+                      cachedSortKeyPosition="5"
+                      lineageId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[PROBENR]" />
                     <inputColumn
-                      refId="Package\KNVV\Merge Join.Inputs[Merge Join Right Input].Columns[VKBUR]"
+                      refId="Package\QASR\Merge Join.Inputs[Merge Join Right Input].Columns[MANDANT]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDANT"
+                      cachedSortKeyPosition="1"
+                      lineageId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[MANDANT]" />
+                    <inputColumn
+                      refId="Package\QASR\Merge Join.Inputs[Merge Join Right Input].Columns[MERKNR]"
                       cachedDataType="wstr"
                       cachedLength="4"
-                      cachedName="VKBUR"
-                      lineageId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Output].Columns[VKBUR]" />
+                      cachedName="MERKNR"
+                      cachedSortKeyPosition="4"
+                      lineageId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[MERKNR]" />
                     <inputColumn
-                      refId="Package\KNVV\Merge Join.Inputs[Merge Join Right Input].Columns[VWERK]"
+                      refId="Package\QASR\Merge Join.Inputs[Merge Join Right Input].Columns[MASCHINE]"
                       cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="VWERK"
-                      lineageId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Output].Columns[VWERK]" />
+                      cachedLength="18"
+                      cachedName="MASCHINE"
+                      lineageId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[MASCHINE]" />
+                    <inputColumn
+                      refId="Package\QASR\Merge Join.Inputs[Merge Join Right Input].Columns[PRUEFBEMKT]"
+                      cachedDataType="wstr"
+                      cachedLength="40"
+                      cachedName="PRUEFBEMKT"
+                      lineageId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[PRUEFBEMKT]" />
+                    <inputColumn
+                      refId="Package\QASR\Merge Join.Inputs[Merge Join Right Input].Columns[MITTELWERT]"
+                      cachedDataType="r8"
+                      cachedName="MITTELWERT"
+                      lineageId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output].Columns[MITTELWERT]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\KNVV\Merge Join.Outputs[Merge Join Output]"
+                  refId="Package\QASR\Merge Join.Outputs[Merge Join Output]"
                   isSorted="true"
                   name="Merge Join Output">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[MANDT]"
+                      refId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[PRUEFLOS]"
                       dataType="wstr"
-                      length="3"
-                      lineageId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[MANDT]"
-                      name="MANDT"
-                      sortKeyPosition="1">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\KNVV\Merge Join.Inputs[Merge Join Left Input].Columns[MANDT]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[KUNNR]"
-                      dataType="wstr"
-                      length="10"
-                      lineageId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[KUNNR]"
-                      name="KUNNR"
+                      length="12"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[PRUEFLOS]"
+                      name="PRUEFLOS"
                       sortKeyPosition="2">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\KNVV\Merge Join.Inputs[Merge Join Left Input].Columns[KUNNR]}</property>
+                          name="InputColumnID">#{Package\QASR\Merge Join.Inputs[Merge Join Left Input].Columns[PRUEFLOS]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[VKORG]"
+                      refId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[VORGLFNR]"
                       dataType="wstr"
-                      length="4"
-                      lineageId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[VKORG]"
-                      name="VKORG"
+                      length="8"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[VORGLFNR]"
+                      name="VORGLFNR"
                       sortKeyPosition="3">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\KNVV\Merge Join.Inputs[Merge Join Left Input].Columns[VKORG]}</property>
+                          name="InputColumnID">#{Package\QASR\Merge Join.Inputs[Merge Join Left Input].Columns[VORGLFNR]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[VTWEG]"
+                      refId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[PROBENR]"
                       dataType="wstr"
-                      length="2"
-                      lineageId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[VTWEG]"
-                      name="VTWEG"
-                      sortKeyPosition="4">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\KNVV\Merge Join.Inputs[Merge Join Left Input].Columns[VTWEG]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[SPART]"
-                      dataType="wstr"
-                      length="2"
-                      lineageId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[SPART]"
-                      name="SPART"
+                      length="6"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[PROBENR]"
+                      name="PROBENR"
                       sortKeyPosition="5">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\KNVV\Merge Join.Inputs[Merge Join Left Input].Columns[SPART]}</property>
+                          name="InputColumnID">#{Package\QASR\Merge Join.Inputs[Merge Join Left Input].Columns[PROBENR]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[BZIRK]"
-                      dataType="wstr"
-                      length="6"
-                      lineageId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[BZIRK]"
-                      name="BZIRK">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\KNVV\Merge Join.Inputs[Merge Join Left Input].Columns[BZIRK]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[VKBUR]"
-                      dataType="wstr"
-                      length="4"
-                      lineageId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[VKBUR]"
-                      name="VKBUR">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\KNVV\Merge Join.Inputs[Merge Join Left Input].Columns[VKBUR]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]"
+                      refId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MANDANT]"
                       dataType="wstr"
                       length="3"
-                      lineageId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]"
-                      name="MANDT (1)">
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MANDANT]"
+                      name="MANDANT"
+                      sortKeyPosition="1">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\KNVV\Merge Join.Inputs[Merge Join Right Input].Columns[MANDT]}</property>
+                          name="InputColumnID">#{Package\QASR\Merge Join.Inputs[Merge Join Left Input].Columns[MANDANT]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[KUNNR (1)]"
-                      dataType="wstr"
-                      length="10"
-                      lineageId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[KUNNR (1)]"
-                      name="KUNNR (1)">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\KNVV\Merge Join.Inputs[Merge Join Right Input].Columns[KUNNR]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[VKORG (1)]"
+                      refId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MERKNR]"
                       dataType="wstr"
                       length="4"
-                      lineageId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[VKORG (1)]"
-                      name="VKORG (1)">
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MERKNR]"
+                      name="MERKNR"
+                      sortKeyPosition="4">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\KNVV\Merge Join.Inputs[Merge Join Right Input].Columns[VKORG]}</property>
+                          name="InputColumnID">#{Package\QASR\Merge Join.Inputs[Merge Join Left Input].Columns[MERKNR]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[VTWEG (1)]"
+                      refId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MASCHINE]"
                       dataType="wstr"
-                      length="2"
-                      lineageId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[VTWEG (1)]"
-                      name="VTWEG (1)">
+                      length="18"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MASCHINE]"
+                      name="MASCHINE">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\KNVV\Merge Join.Inputs[Merge Join Right Input].Columns[VTWEG]}</property>
+                          name="InputColumnID">#{Package\QASR\Merge Join.Inputs[Merge Join Left Input].Columns[MASCHINE]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[SPART (1)]"
+                      refId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[PRUEFBEMKT]"
                       dataType="wstr"
-                      length="2"
-                      lineageId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[SPART (1)]"
-                      name="SPART (1)">
+                      length="40"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[PRUEFBEMKT]"
+                      name="PRUEFBEMKT">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\KNVV\Merge Join.Inputs[Merge Join Right Input].Columns[SPART]}</property>
+                          name="InputColumnID">#{Package\QASR\Merge Join.Inputs[Merge Join Left Input].Columns[PRUEFBEMKT]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[BZIRK (1)]"
+                      refId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MITTELWERT]"
+                      dataType="r8"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MITTELWERT]"
+                      name="MITTELWERT">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\QASR\Merge Join.Inputs[Merge Join Left Input].Columns[MITTELWERT]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[PRUEFLOS (1)]"
+                      dataType="wstr"
+                      length="12"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[PRUEFLOS (1)]"
+                      name="PRUEFLOS (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\QASR\Merge Join.Inputs[Merge Join Right Input].Columns[PRUEFLOS]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[VORGLFNR (1)]"
+                      dataType="wstr"
+                      length="8"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[VORGLFNR (1)]"
+                      name="VORGLFNR (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\QASR\Merge Join.Inputs[Merge Join Right Input].Columns[VORGLFNR]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[PROBENR (1)]"
                       dataType="wstr"
                       length="6"
-                      lineageId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[BZIRK (1)]"
-                      name="BZIRK (1)">
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[PROBENR (1)]"
+                      name="PROBENR (1)">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\KNVV\Merge Join.Inputs[Merge Join Right Input].Columns[BZIRK]}</property>
+                          name="InputColumnID">#{Package\QASR\Merge Join.Inputs[Merge Join Right Input].Columns[PROBENR]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[VKBUR (1)]"
+                      refId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MANDANT (1)]"
                       dataType="wstr"
-                      length="4"
-                      lineageId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[VKBUR (1)]"
-                      name="VKBUR (1)">
+                      length="3"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MANDANT (1)]"
+                      name="MANDANT (1)">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\KNVV\Merge Join.Inputs[Merge Join Right Input].Columns[VKBUR]}</property>
+                          name="InputColumnID">#{Package\QASR\Merge Join.Inputs[Merge Join Right Input].Columns[MANDANT]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[VWERK]"
+                      refId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MERKNR (1)]"
                       dataType="wstr"
                       length="4"
-                      lineageId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[VWERK]"
-                      name="VWERK">
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MERKNR (1)]"
+                      name="MERKNR (1)">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\KNVV\Merge Join.Inputs[Merge Join Left Input].Columns[VWERK]}</property>
+                          name="InputColumnID">#{Package\QASR\Merge Join.Inputs[Merge Join Right Input].Columns[MERKNR]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[VWERK (1)]"
+                      refId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MASCHINE (1)]"
                       dataType="wstr"
-                      length="4"
-                      lineageId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[VWERK (1)]"
-                      name="VWERK (1)">
+                      length="18"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MASCHINE (1)]"
+                      name="MASCHINE (1)">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\KNVV\Merge Join.Inputs[Merge Join Right Input].Columns[VWERK]}</property>
+                          name="InputColumnID">#{Package\QASR\Merge Join.Inputs[Merge Join Right Input].Columns[MASCHINE]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[PRUEFBEMKT (1)]"
+                      dataType="wstr"
+                      length="40"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[PRUEFBEMKT (1)]"
+                      name="PRUEFBEMKT (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\QASR\Merge Join.Inputs[Merge Join Right Input].Columns[PRUEFBEMKT]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MITTELWERT (1)]"
+                      dataType="r8"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MITTELWERT (1)]"
+                      name="MITTELWERT (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\QASR\Merge Join.Inputs[Merge Join Right Input].Columns[MITTELWERT]}</property>
                       </properties>
                     </outputColumn>
                   </outputColumns>
@@ -1466,7 +1452,7 @@ ORDER BY A01.[MANDT]
               </outputs>
             </component>
             <component
-              refId="Package\KNVV\stage changed records"
+              refId="Package\QASR\stage changed records"
               componentClassID="Microsoft.OLEDBDestination"
               contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
               description="OLE DB Destination"
@@ -1481,7 +1467,7 @@ ORDER BY A01.[MANDT]
                 <property
                   dataType="System.String"
                   description="Specifies the name of the database object used to open a rowset."
-                  name="OpenRowset">[dbo].[KNVV_STAGE_UPDATE]</property>
+                  name="OpenRowset">[dbo].[QASR_STAGE_UPDATE]</property>
                 <property
                   dataType="System.String"
                   description="Specifies the variable that contains the name of the database object used to open a rowset."
@@ -1523,7 +1509,7 @@ ORDER BY A01.[MANDT]
               </properties>
               <connections>
                 <connection
-                  refId="Package\KNVV\stage changed records.Connections[OleDbConnection]"
+                  refId="Package\QASR\stage changed records.Connections[OleDbConnection]"
                   connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
                   connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
                   description="The OLE DB runtime connection used to access the database."
@@ -1531,137 +1517,135 @@ ORDER BY A01.[MANDT]
               </connections>
               <inputs>
                 <input
-                  refId="Package\KNVV\stage changed records.Inputs[OLE DB Destination Input]"
+                  refId="Package\QASR\stage changed records.Inputs[OLE DB Destination Input]"
                   errorOrTruncationOperation="Insert"
                   errorRowDisposition="FailComponent"
                   hasSideEffects="true"
                   name="OLE DB Destination Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\KNVV\stage changed records.Inputs[OLE DB Destination Input].Columns[MANDT]"
+                      refId="Package\QASR\stage changed records.Inputs[OLE DB Destination Input].Columns[PRUEFLOS]"
                       cachedDataType="wstr"
-                      cachedLength="3"
-                      cachedName="MANDT"
-                      cachedSortKeyPosition="1"
-                      externalMetadataColumnId="Package\KNVV\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
-                      lineageId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
-                    <inputColumn
-                      refId="Package\KNVV\stage changed records.Inputs[OLE DB Destination Input].Columns[KUNNR]"
-                      cachedDataType="wstr"
-                      cachedLength="10"
-                      cachedName="KUNNR"
+                      cachedLength="12"
+                      cachedName="PRUEFLOS"
                       cachedSortKeyPosition="2"
-                      externalMetadataColumnId="Package\KNVV\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[KUNNR]"
-                      lineageId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[KUNNR]" />
+                      externalMetadataColumnId="Package\QASR\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[PRUEFLOS]"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[PRUEFLOS]" />
                     <inputColumn
-                      refId="Package\KNVV\stage changed records.Inputs[OLE DB Destination Input].Columns[VKORG]"
+                      refId="Package\QASR\stage changed records.Inputs[OLE DB Destination Input].Columns[VORGLFNR]"
                       cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="VKORG"
+                      cachedLength="8"
+                      cachedName="VORGLFNR"
                       cachedSortKeyPosition="3"
-                      externalMetadataColumnId="Package\KNVV\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[VKORG]"
-                      lineageId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[VKORG]" />
+                      externalMetadataColumnId="Package\QASR\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[VORGLFNR]"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[VORGLFNR]" />
                     <inputColumn
-                      refId="Package\KNVV\stage changed records.Inputs[OLE DB Destination Input].Columns[VTWEG]"
-                      cachedDataType="wstr"
-                      cachedLength="2"
-                      cachedName="VTWEG"
-                      cachedSortKeyPosition="4"
-                      externalMetadataColumnId="Package\KNVV\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[VTWEG]"
-                      lineageId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[VTWEG]" />
-                    <inputColumn
-                      refId="Package\KNVV\stage changed records.Inputs[OLE DB Destination Input].Columns[SPART]"
-                      cachedDataType="wstr"
-                      cachedLength="2"
-                      cachedName="SPART"
-                      cachedSortKeyPosition="5"
-                      externalMetadataColumnId="Package\KNVV\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[SPART]"
-                      lineageId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[SPART]" />
-                    <inputColumn
-                      refId="Package\KNVV\stage changed records.Inputs[OLE DB Destination Input].Columns[BZIRK]"
+                      refId="Package\QASR\stage changed records.Inputs[OLE DB Destination Input].Columns[PROBENR]"
                       cachedDataType="wstr"
                       cachedLength="6"
-                      cachedName="BZIRK"
-                      externalMetadataColumnId="Package\KNVV\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[BZIRK]"
-                      lineageId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[BZIRK]" />
+                      cachedName="PROBENR"
+                      cachedSortKeyPosition="5"
+                      externalMetadataColumnId="Package\QASR\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[PROBENR]"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[PROBENR]" />
                     <inputColumn
-                      refId="Package\KNVV\stage changed records.Inputs[OLE DB Destination Input].Columns[VKBUR]"
+                      refId="Package\QASR\stage changed records.Inputs[OLE DB Destination Input].Columns[MANDANT]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDANT"
+                      cachedSortKeyPosition="1"
+                      externalMetadataColumnId="Package\QASR\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MANDANT]"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MANDANT]" />
+                    <inputColumn
+                      refId="Package\QASR\stage changed records.Inputs[OLE DB Destination Input].Columns[MERKNR]"
                       cachedDataType="wstr"
                       cachedLength="4"
-                      cachedName="VKBUR"
-                      externalMetadataColumnId="Package\KNVV\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[VKBUR]"
-                      lineageId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[VKBUR]" />
+                      cachedName="MERKNR"
+                      cachedSortKeyPosition="4"
+                      externalMetadataColumnId="Package\QASR\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MERKNR]"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MERKNR]" />
                     <inputColumn
-                      refId="Package\KNVV\stage changed records.Inputs[OLE DB Destination Input].Columns[VWERK]"
+                      refId="Package\QASR\stage changed records.Inputs[OLE DB Destination Input].Columns[MASCHINE]"
                       cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="VWERK"
-                      externalMetadataColumnId="Package\KNVV\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[VWERK]"
-                      lineageId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[VWERK]" />
+                      cachedLength="18"
+                      cachedName="MASCHINE"
+                      externalMetadataColumnId="Package\QASR\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MASCHINE]"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MASCHINE]" />
+                    <inputColumn
+                      refId="Package\QASR\stage changed records.Inputs[OLE DB Destination Input].Columns[PRUEFBEMKT]"
+                      cachedDataType="wstr"
+                      cachedLength="40"
+                      cachedName="PRUEFBEMKT"
+                      externalMetadataColumnId="Package\QASR\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[PRUEFBEMKT]"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[PRUEFBEMKT]" />
+                    <inputColumn
+                      refId="Package\QASR\stage changed records.Inputs[OLE DB Destination Input].Columns[MITTELWERT]"
+                      cachedDataType="r8"
+                      cachedName="MITTELWERT"
+                      externalMetadataColumnId="Package\QASR\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MITTELWERT]"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MITTELWERT]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
                     <externalMetadataColumn
-                      refId="Package\KNVV\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      refId="Package\QASR\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[PRUEFLOS]"
                       dataType="wstr"
-                      length="3"
-                      name="MANDT" />
+                      length="12"
+                      name="PRUEFLOS" />
                     <externalMetadataColumn
-                      refId="Package\KNVV\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[KUNNR]"
+                      refId="Package\QASR\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[VORGLFNR]"
                       dataType="wstr"
-                      length="10"
-                      name="KUNNR" />
+                      length="8"
+                      name="VORGLFNR" />
                     <externalMetadataColumn
-                      refId="Package\KNVV\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[VKORG]"
-                      dataType="wstr"
-                      length="4"
-                      name="VKORG" />
-                    <externalMetadataColumn
-                      refId="Package\KNVV\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[VTWEG]"
-                      dataType="wstr"
-                      length="2"
-                      name="VTWEG" />
-                    <externalMetadataColumn
-                      refId="Package\KNVV\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[SPART]"
-                      dataType="wstr"
-                      length="2"
-                      name="SPART" />
-                    <externalMetadataColumn
-                      refId="Package\KNVV\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[BZIRK]"
+                      refId="Package\QASR\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[PROBENR]"
                       dataType="wstr"
                       length="6"
-                      name="BZIRK" />
+                      name="PROBENR" />
                     <externalMetadataColumn
-                      refId="Package\KNVV\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[VKBUR]"
+                      refId="Package\QASR\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MANDANT]"
+                      dataType="wstr"
+                      length="3"
+                      name="MANDANT" />
+                    <externalMetadataColumn
+                      refId="Package\QASR\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MERKNR]"
                       dataType="wstr"
                       length="4"
-                      name="VKBUR" />
+                      name="MERKNR" />
                     <externalMetadataColumn
-                      refId="Package\KNVV\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[VWERK]"
+                      refId="Package\QASR\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MASCHINE]"
                       dataType="wstr"
-                      length="4"
-                      name="VWERK" />
+                      length="18"
+                      name="MASCHINE" />
+                    <externalMetadataColumn
+                      refId="Package\QASR\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[PRUEFBEMKT]"
+                      dataType="wstr"
+                      length="40"
+                      name="PRUEFBEMKT" />
+                    <externalMetadataColumn
+                      refId="Package\QASR\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MITTELWERT]"
+                      dataType="r8"
+                      name="MITTELWERT" />
                   </externalMetadataColumns>
                 </input>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\KNVV\stage changed records.Outputs[OLE DB Destination Error Output]"
+                  refId="Package\QASR\stage changed records.Outputs[OLE DB Destination Error Output]"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="OLE DB Destination Error Output"
-                  synchronousInputId="Package\KNVV\stage changed records.Inputs[OLE DB Destination Input]">
+                  synchronousInputId="Package\QASR\stage changed records.Inputs[OLE DB Destination Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\KNVV\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      refId="Package\QASR\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\KNVV\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      lineageId="Package\QASR\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\KNVV\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      refId="Package\QASR\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\KNVV\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\QASR\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -1670,7 +1654,7 @@ ORDER BY A01.[MANDT]
               </outputs>
             </component>
             <component
-              refId="Package\KNVV\stage deleted records"
+              refId="Package\QASR\stage deleted records"
               componentClassID="Microsoft.OLEDBDestination"
               contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
               description="OLE DB Destination"
@@ -1685,7 +1669,7 @@ ORDER BY A01.[MANDT]
                 <property
                   dataType="System.String"
                   description="Specifies the name of the database object used to open a rowset."
-                  name="OpenRowset">[dbo].[KNVV_STAGE_DELETE]</property>
+                  name="OpenRowset">[dbo].[QASR_STAGE_DELETE]</property>
                 <property
                   dataType="System.String"
                   description="Specifies the variable that contains the name of the database object used to open a rowset."
@@ -1727,7 +1711,7 @@ ORDER BY A01.[MANDT]
               </properties>
               <connections>
                 <connection
-                  refId="Package\KNVV\stage deleted records.Connections[OleDbConnection]"
+                  refId="Package\QASR\stage deleted records.Connections[OleDbConnection]"
                   connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
                   connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
                   description="The OLE DB runtime connection used to access the database."
@@ -1735,96 +1719,101 @@ ORDER BY A01.[MANDT]
               </connections>
               <inputs>
                 <input
-                  refId="Package\KNVV\stage deleted records.Inputs[OLE DB Destination Input]"
+                  refId="Package\QASR\stage deleted records.Inputs[OLE DB Destination Input]"
                   errorOrTruncationOperation="Insert"
                   errorRowDisposition="FailComponent"
                   hasSideEffects="true"
                   name="OLE DB Destination Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\KNVV\stage deleted records.Inputs[OLE DB Destination Input].Columns[MANDT (1)]"
+                      refId="Package\QASR\stage deleted records.Inputs[OLE DB Destination Input].Columns[PRUEFLOS]"
+                      cachedDataType="wstr"
+                      cachedLength="12"
+                      cachedName="PRUEFLOS"
+                      cachedSortKeyPosition="2"
+                      externalMetadataColumnId="Package\QASR\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[PRUEFLOS]"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[PRUEFLOS]" />
+                    <inputColumn
+                      refId="Package\QASR\stage deleted records.Inputs[OLE DB Destination Input].Columns[VORGLFNR]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="VORGLFNR"
+                      cachedSortKeyPosition="3"
+                      externalMetadataColumnId="Package\QASR\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[VORGLFNR]"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[VORGLFNR]" />
+                    <inputColumn
+                      refId="Package\QASR\stage deleted records.Inputs[OLE DB Destination Input].Columns[PROBENR]"
+                      cachedDataType="wstr"
+                      cachedLength="6"
+                      cachedName="PROBENR"
+                      cachedSortKeyPosition="5"
+                      externalMetadataColumnId="Package\QASR\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[PROBENR]"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[PROBENR]" />
+                    <inputColumn
+                      refId="Package\QASR\stage deleted records.Inputs[OLE DB Destination Input].Columns[MANDANT]"
                       cachedDataType="wstr"
                       cachedLength="3"
-                      cachedName="MANDT (1)"
-                      externalMetadataColumnId="Package\KNVV\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
-                      lineageId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]" />
+                      cachedName="MANDANT"
+                      cachedSortKeyPosition="1"
+                      externalMetadataColumnId="Package\QASR\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MANDANT]"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MANDANT]" />
                     <inputColumn
-                      refId="Package\KNVV\stage deleted records.Inputs[OLE DB Destination Input].Columns[KUNNR (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="10"
-                      cachedName="KUNNR (1)"
-                      externalMetadataColumnId="Package\KNVV\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[KUNNR]"
-                      lineageId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[KUNNR (1)]" />
-                    <inputColumn
-                      refId="Package\KNVV\stage deleted records.Inputs[OLE DB Destination Input].Columns[VKORG (1)]"
+                      refId="Package\QASR\stage deleted records.Inputs[OLE DB Destination Input].Columns[MERKNR]"
                       cachedDataType="wstr"
                       cachedLength="4"
-                      cachedName="VKORG (1)"
-                      externalMetadataColumnId="Package\KNVV\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[VKORG]"
-                      lineageId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[VKORG (1)]" />
-                    <inputColumn
-                      refId="Package\KNVV\stage deleted records.Inputs[OLE DB Destination Input].Columns[VTWEG (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="2"
-                      cachedName="VTWEG (1)"
-                      externalMetadataColumnId="Package\KNVV\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[VTWEG]"
-                      lineageId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[VTWEG (1)]" />
-                    <inputColumn
-                      refId="Package\KNVV\stage deleted records.Inputs[OLE DB Destination Input].Columns[SPART (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="2"
-                      cachedName="SPART (1)"
-                      externalMetadataColumnId="Package\KNVV\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[SPART]"
-                      lineageId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[SPART (1)]" />
+                      cachedName="MERKNR"
+                      cachedSortKeyPosition="4"
+                      externalMetadataColumnId="Package\QASR\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MERKNR]"
+                      lineageId="Package\QASR\Merge Join.Outputs[Merge Join Output].Columns[MERKNR]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
                     <externalMetadataColumn
-                      refId="Package\KNVV\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      refId="Package\QASR\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[PRUEFLOS]"
+                      dataType="wstr"
+                      length="12"
+                      name="PRUEFLOS" />
+                    <externalMetadataColumn
+                      refId="Package\QASR\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[VORGLFNR]"
+                      dataType="wstr"
+                      length="8"
+                      name="VORGLFNR" />
+                    <externalMetadataColumn
+                      refId="Package\QASR\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MANDANT]"
                       dataType="wstr"
                       length="3"
-                      name="MANDT" />
+                      name="MANDANT" />
                     <externalMetadataColumn
-                      refId="Package\KNVV\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[KUNNR]"
-                      dataType="wstr"
-                      length="10"
-                      name="KUNNR" />
-                    <externalMetadataColumn
-                      refId="Package\KNVV\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[VKORG]"
+                      refId="Package\QASR\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MERKNR]"
                       dataType="wstr"
                       length="4"
-                      name="VKORG" />
+                      name="MERKNR" />
                     <externalMetadataColumn
-                      refId="Package\KNVV\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[VTWEG]"
+                      refId="Package\QASR\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[PROBENR]"
                       dataType="wstr"
-                      length="2"
-                      name="VTWEG" />
-                    <externalMetadataColumn
-                      refId="Package\KNVV\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[SPART]"
-                      dataType="wstr"
-                      length="2"
-                      name="SPART" />
+                      length="6"
+                      name="PROBENR" />
                   </externalMetadataColumns>
                 </input>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\KNVV\stage deleted records.Outputs[OLE DB Destination Error Output]"
+                  refId="Package\QASR\stage deleted records.Outputs[OLE DB Destination Error Output]"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="OLE DB Destination Error Output"
-                  synchronousInputId="Package\KNVV\stage deleted records.Inputs[OLE DB Destination Input]">
+                  synchronousInputId="Package\QASR\stage deleted records.Inputs[OLE DB Destination Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\KNVV\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      refId="Package\QASR\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\KNVV\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      lineageId="Package\QASR\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\KNVV\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      refId="Package\QASR\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\KNVV\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\QASR\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -1835,40 +1824,40 @@ ORDER BY A01.[MANDT]
           </components>
           <paths>
             <path
-              refId="Package\KNVV.Paths[delete]"
-              endId="Package\KNVV\stage deleted records.Inputs[OLE DB Destination Input]"
+              refId="Package\QASR.Paths[delete]"
+              endId="Package\QASR\stage deleted records.Inputs[OLE DB Destination Input]"
               name="delete"
-              startId="Package\KNVV\Identify records.Outputs[delete]" />
+              startId="Package\QASR\Identify records.Outputs[delete]" />
             <path
-              refId="Package\KNVV.Paths[insert]"
-              endId="Package\KNVV\insert new records.Inputs[OLE DB Destination Input]"
+              refId="Package\QASR.Paths[insert]"
+              endId="Package\QASR\insert new records.Inputs[OLE DB Destination Input]"
               name="insert"
-              startId="Package\KNVV\Identify records.Outputs[insert]" />
+              startId="Package\QASR\Identify records.Outputs[insert]" />
             <path
-              refId="Package\KNVV.Paths[Merge Join Output]"
-              endId="Package\KNVV\Identify records.Inputs[Conditional Split Input]"
+              refId="Package\QASR.Paths[Merge Join Output]"
+              endId="Package\QASR\Identify records.Inputs[Conditional Split Input]"
               name="Merge Join Output"
-              startId="Package\KNVV\Merge Join.Outputs[Merge Join Output]" />
+              startId="Package\QASR\Merge Join.Outputs[Merge Join Output]" />
             <path
-              refId="Package\KNVV.Paths[OLE DB Source Output]"
-              endId="Package\KNVV\Merge Join.Inputs[Merge Join Left Input]"
+              refId="Package\QASR.Paths[OLE DB Source Output]"
+              endId="Package\QASR\Merge Join.Inputs[Merge Join Left Input]"
               name="OLE DB Source Output"
-              startId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Output]" />
+              startId="Package\QASR\DB SAP ADRC.Outputs[OLE DB Source Output]" />
             <path
-              refId="Package\KNVV.Paths[OLE DB Source Output1]"
-              endId="Package\KNVV\Merge Join.Inputs[Merge Join Right Input]"
+              refId="Package\QASR.Paths[OLE DB Source Output1]"
+              endId="Package\QASR\Merge Join.Inputs[Merge Join Right Input]"
               name="OLE DB Source Output"
-              startId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Output]" />
+              startId="Package\QASR\DB PBI ADRC.Outputs[OLE DB Source Output]" />
             <path
-              refId="Package\KNVV.Paths[update]"
-              endId="Package\KNVV\Find Changed records.Inputs[Conditional Split Input]"
+              refId="Package\QASR.Paths[update]"
+              endId="Package\QASR\Find Changed Records.Inputs[Conditional Split Input]"
               name="update"
-              startId="Package\KNVV\Identify records.Outputs[update]" />
+              startId="Package\QASR\Identify records.Outputs[update]" />
             <path
-              refId="Package\KNVV.Paths[update1]"
-              endId="Package\KNVV\stage changed records.Inputs[OLE DB Destination Input]"
+              refId="Package\QASR.Paths[update1]"
+              endId="Package\QASR\stage changed records.Inputs[OLE DB Destination Input]"
               name="update"
-              startId="Package\KNVV\Find Changed records.Outputs[update]" />
+              startId="Package\QASR\Find Changed Records.Outputs[update]" />
           </paths>
         </pipeline>
       </DTS:ObjectData>
@@ -1877,7 +1866,7 @@ ORDER BY A01.[MANDT]
       DTS:refId="Package\Sequence Container"
       DTS:CreationName="STOCK:SEQUENCE"
       DTS:Description="Sequence Container"
-      DTS:DTSID="{F341836E-7C39-4677-99F7-ADD34EE511DF}"
+      DTS:DTSID="{AF8F0FD0-353D-4A48-9ABF-6FFC0ACB0F3E}"
       DTS:ExecutableType="STOCK:SEQUENCE"
       DTS:LocaleID="-1"
       DTS:ObjectName="Sequence Container">
@@ -1887,7 +1876,7 @@ ORDER BY A01.[MANDT]
           DTS:refId="Package\Sequence Container\delete"
           DTS:CreationName="Microsoft.ExecuteSQLTask"
           DTS:Description="Execute SQL Task"
-          DTS:DTSID="{41936665-0482-47F2-9638-587484E63C59}"
+          DTS:DTSID="{500D59A0-05CD-4CCD-9628-E556C34343A8}"
           DTS:ExecutableType="Microsoft.ExecuteSQLTask"
           DTS:LocaleID="-1"
           DTS:ObjectName="delete"
@@ -1897,14 +1886,14 @@ ORDER BY A01.[MANDT]
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
               SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-              SQLTask:SqlStatementSource="DELETE A01&#xA;FROM [KNVV] A01 INNER JOIN [KNVV_STAGE_DELETE] B01 ON ( A01.MANDT = B01.MANDT&#xA;                                                    AND A01.KUNNR = B01.KUNNR&#xA;                                                    AND A01.VKORG = B01.VKORG&#xA;                                                    AND A01.VTWEG = B01.VTWEG&#xA;                                                    AND A01.SPART = B01.SPART )" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+              SQLTask:SqlStatementSource="DELETE A01&#xA;FROM [QASR] A01 INNER JOIN [QASR_STAGE_DELETE] B01 ON ( A01.[MANDANT] = B01.[MANDANT]&#xA;                                                    AND A01.[PRUEFLOS] = B01.[PRUEFLOS]&#xA;                                                    AND A01.[VORGLFNR] = B01.[VORGLFNR]&#xA;                                                    AND A01.[MERKNR] = B01.[MERKNR]&#xA;                                                    AND A01.[PROBENR] = B01.[PROBENR] )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
           </DTS:ObjectData>
         </DTS:Executable>
         <DTS:Executable
           DTS:refId="Package\Sequence Container\update"
           DTS:CreationName="Microsoft.ExecuteSQLTask"
           DTS:Description="Execute SQL Task"
-          DTS:DTSID="{09C39945-DD96-40EF-9339-5E676B2240B7}"
+          DTS:DTSID="{1882DFE6-24A2-422C-9A3D-A416F8A38D2B}"
           DTS:ExecutableType="Microsoft.ExecuteSQLTask"
           DTS:LocaleID="-1"
           DTS:ObjectName="update"
@@ -1914,7 +1903,7 @@ ORDER BY A01.[MANDT]
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
               SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-              SQLTask:SqlStatementSource="UPDATE A01&#xA;SET A01.[BZIRK] = B01.[BZIRK]&#xA;   ,A01.[VWERK] = B01.[VWERK]&#xA;   ,A01.[VKBUR] = B01.[VKBUR]&#xA;FROM [KNVV] A01 INNER JOIN [KNVV_STAGE_UPDATE] B01 ON ( A01.[MANDT] = B01.[MANDT]&#xA;                                                    AND A01.[KUNNR] = B01.[KUNNR]&#xA;                                                    AND A01.[VKORG] = B01.[VKORG]&#xA;                                                    AND A01.[VTWEG] = B01.[VTWEG]&#xA;                                                    AND A01.[SPART] = B01.[SPART] )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+              SQLTask:SqlStatementSource="UPDATE A01&#xA;SET A01.[MASCHINE] = B01.[MASCHINE]&#xA;   ,A01.[MITTELWERT] = B01.[MITTELWERT]&#xA;   ,A01.[PRUEFBEMKT] = B01.[PRUEFBEMKT]&#xA;FROM [QASR] A01 INNER JOIN [QASR_STAGE_UPDATE] B01 ON ( A01.[MANDANT] = B01.[MANDANT]&#xA;                                                    AND A01.[PRUEFLOS] = B01.[PRUEFLOS]&#xA;                                                    AND A01.[VORGLFNR] = B01.[VORGLFNR]&#xA;                                                    AND A01.[MERKNR] = B01.[MERKNR]&#xA;                                                    AND A01.[PROBENR] = B01.[PROBENR] )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
           </DTS:ObjectData>
         </DTS:Executable>
       </DTS:Executables>
@@ -1923,27 +1912,27 @@ ORDER BY A01.[MANDT]
       DTS:refId="Package\Sequence Container 1"
       DTS:CreationName="STOCK:SEQUENCE"
       DTS:Description="Sequence Container"
-      DTS:DTSID="{1adec654-20dd-49e0-bfb9-be334e276478}"
+      DTS:DTSID="{04D313BA-A207-4F39-B18B-9122F57BFF02}"
       DTS:ExecutableType="STOCK:SEQUENCE"
       DTS:LocaleID="-1"
       DTS:ObjectName="Sequence Container 1">
       <DTS:Variables />
       <DTS:Executables>
         <DTS:Executable
-          DTS:refId="Package\Sequence Container 1\Insert"
+          DTS:refId="Package\Sequence Container 1\insert"
           DTS:CreationName="Microsoft.ExecuteSQLTask"
           DTS:Description="Execute SQL Task"
-          DTS:DTSID="{8f385d60-8cfd-49c0-b41f-c5ad553a771f}"
+          DTS:DTSID="{8A8C169B-EED5-41FE-BBD1-4FA4314BA782}"
           DTS:ExecutableType="Microsoft.ExecuteSQLTask"
           DTS:LocaleID="-1"
-          DTS:ObjectName="Insert"
+          DTS:ObjectName="insert"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
           DTS:ThreadHint="0">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
               SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-              SQLTask:SqlStatementSource="INSERT INTO [KNVV]&#xA;SELECT * FROM [KNVV_STAGE_INSERT]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+              SQLTask:SqlStatementSource="INSERT INTO [QASR]&#xA;SELECT * FROM [QASR_STAGE_INSERT]&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
           </DTS:ObjectData>
         </DTS:Executable>
       </DTS:Executables>
@@ -1953,23 +1942,23 @@ ORDER BY A01.[MANDT]
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint]"
       DTS:CreationName=""
-      DTS:DTSID="{9097E6C9-C489-45D5-B608-82274F0E4896}"
-      DTS:From="Package\KNVV"
+      DTS:DTSID="{1AAA07EA-2109-43D9-B23F-A7F7AF49E22F}"
+      DTS:From="Package\QASR"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint"
       DTS:To="Package\Sequence Container" />
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
       DTS:CreationName=""
-      DTS:DTSID="{12692730-095A-4522-8899-0CF75C397D7C}"
+      DTS:DTSID="{6EA16A81-8538-45BB-B79E-EBC707DD31C9}"
       DTS:From="Package\clean stage"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 1"
-      DTS:To="Package\KNVV" />
+      DTS:To="Package\QASR" />
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
       DTS:CreationName=""
-      DTS:DTSID="{B91BAFD5-A25D-47E4-93B2-5B6244C73777}"
+      DTS:DTSID="{15679BBC-E9B3-497C-829C-DE94700BB301}"
       DTS:From="Package\Sequence Container"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 2"
@@ -1990,51 +1979,51 @@ ORDER BY A01.[MANDT]
         <NodeLayout
           Size="132,42"
           Id="Package\clean stage"
-          TopLeft="155,40" />
+          TopLeft="116,44.333333333333" />
         <NodeLayout
-          Size="105,42"
-          Id="Package\KNVV"
-          TopLeft="413,41" />
+          Size="106,42"
+          Id="Package\QASR"
+          TopLeft="350,43" />
         <NodeLayout
           Size="108,42"
           Id="Package\Sequence Container\delete"
-          TopLeft="225,38" />
+          TopLeft="161,14" />
         <NodeLayout
           Size="112,42"
           Id="Package\Sequence Container\update"
-          TopLeft="42,33" />
+          TopLeft="14,14" />
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="402,135"
-          Size="402,178"
+          PanelSize="305,79"
+          Size="305,122"
           Id="Package\Sequence Container"
-          TopLeft="265,147" />
+          TopLeft="250,153" />
         <NodeLayout
-          Size="107,42"
-          Id="Package\Sequence Container 1\Insert"
-          TopLeft="131,32" />
+          Size="105,42"
+          Id="Package\Sequence Container 1\insert"
+          TopLeft="86.5,28.75" />
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="402,135"
-          Size="402,178"
+          PanelSize="305,126"
+          Size="305,169"
           Id="Package\Sequence Container 1"
-          TopLeft="264,391" />
+          TopLeft="248.75,327.75" />
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint]"
-          TopLeft="465.75,83">
+          TopLeft="402.75,85">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,64"
+              EndConnector="0,68"
               Start="0,0"
-              End="0,56.5">
+              End="0,60.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,56.5" />
+                    End="0,60.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -2045,18 +2034,18 @@ ORDER BY A01.[MANDT]
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 1]"
-          TopLeft="287,61.5">
+          TopLeft="248,64.6666666666665">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="126,0"
+              EndConnector="102,0"
               Start="0,0"
-              End="118.5,0">
+              End="94.5,0">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="118.5,0" />
+                    End="94.5,0" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -2067,18 +2056,18 @@ ORDER BY A01.[MANDT]
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 2]"
-          TopLeft="465.5,325">
+          TopLeft="401.875,275">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,66"
+              EndConnector="0,52.75"
               Start="0,0"
-              End="0,58.5">
+              End="0,45.25">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,58.5" />
+                    End="0,45.25" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -2091,68 +2080,188 @@ ORDER BY A01.[MANDT]
     </LayoutInfo>
   </Package>
   <TaskHost
-    design-time-name="Package\KNVV">
+    design-time-name="Package\QASR">
     <LayoutInfo>
       <GraphLayout
         Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
           Size="166,42"
-          Id="Package\KNVV\insert new records"
-          TopLeft="169,350" />
-        <NodeLayout
-          Size="130,42"
-          Id="Package\KNVV\Merge Join"
-          TopLeft="450,122" />
-        <NodeLayout
-          Size="181,42"
-          Id="Package\KNVV\Find Changed records"
-          TopLeft="427,372" />
+          Id="Package\QASR\insert new records"
+          TopLeft="89,302" />
         <NodeLayout
           Size="144,42"
-          Id="Package\KNVV\DB SAP KNVV"
-          TopLeft="273,36" />
-        <NodeLayout
-          Size="180,42"
-          Id="Package\KNVV\stage deleted records"
-          TopLeft="679,360" />
-        <NodeLayout
-          Size="186,42"
-          Id="Package\KNVV\stage changed records"
-          TopLeft="428,480" />
-        <NodeLayout
-          Size="141,42"
-          Id="Package\KNVV\DB PBI KNVV"
-          TopLeft="618,31" />
+          Id="Package\QASR\DB SAP ADRC"
+          TopLeft="224,40" />
         <NodeLayout
           Size="153,42"
-          Id="Package\KNVV\Identify records"
-          TopLeft="440,243" />
+          Id="Package\QASR\Identify records"
+          TopLeft="382,209" />
+        <NodeLayout
+          Size="186,42"
+          Id="Package\QASR\stage changed records"
+          TopLeft="367,379" />
+        <NodeLayout
+          Size="184,42"
+          Id="Package\QASR\Find Changed Records"
+          TopLeft="371,303" />
+        <NodeLayout
+          Size="180,42"
+          Id="Package\QASR\stage deleted records"
+          TopLeft="654,301" />
+        <NodeLayout
+          Size="142,42"
+          Id="Package\QASR\DB PBI ADRC"
+          TopLeft="511,35" />
         <EdgeLayout
-          Id="Package\KNVV.Paths[OLE DB Source Output1]"
-          TopLeft="688.5,73">
+          Id="Package\QASR.Paths[insert]"
+          TopLeft="422.25,251">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-153.166666666667,49"
+              EndConnector="-250.25,51"
               Start="0,0"
-              End="-153.166666666667,41.5">
+              End="-250.25,43.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,25.0425531914894" />
+                    End="0,13.5824411134904" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,25.0425531914894"
-                    Point2="0,29.0425531914894"
-                    Point3="-4,29.0425531914894" />
+                    Point1="0,13.5824411134904"
+                    Point2="0,17.5824411134904"
+                    Point3="-4,17.5824411134904" />
                   <mssgle:LineSegment
-                    End="-149.166666666667,29.0425531914894" />
+                    End="-246.25,17.5824411134904" />
                   <mssgle:CubicBezierSegment
-                    Point1="-149.166666666667,29.0425531914894"
-                    Point2="-153.166666666667,29.0425531914894"
-                    Point3="-153.166666666667,33.0425531914894" />
+                    Point1="-246.25,17.5824411134904"
+                    Point2="-250.25,17.5824411134904"
+                    Point3="-250.25,21.5824411134904" />
                   <mssgle:LineSegment
-                    End="-153.166666666667,41.5" />
+                    End="-250.25,43.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-138.07498046875,22.5824411134904,25.8999609375,9.451171875"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\QASR.Paths[delete]"
+          TopLeft="494.75,251">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="249.25,50"
+              Start="0,0"
+              End="249.25,42.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,13.237687366167" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,13.237687366167"
+                    Point2="0,17.237687366167"
+                    Point3="4,17.237687366167" />
+                  <mssgle:LineSegment
+                    End="245.25,17.237687366167" />
+                  <mssgle:CubicBezierSegment
+                    Point1="245.25,17.237687366167"
+                    Point2="249.25,17.237687366167"
+                    Point3="249.25,21.237687366167" />
+                  <mssgle:LineSegment
+                    End="249.25,42.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="110.42904296875,22.237687366167,28.3919140625,9.7490234375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\QASR.Paths[update1]"
+          TopLeft="461.5,345">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,34"
+              Start="0,0"
+              End="0,26.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,26.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-15.8025,7.4453125,31.605,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\QASR.Paths[update]"
+          TopLeft="460.75,251">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,52"
+              Start="0,0"
+              End="0,44.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,44.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-15.8025,16.4453125,31.605,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="130,42"
+          Id="Package\QASR\Merge Join"
+          TopLeft="395,120" />
+        <EdgeLayout
+          Id="Package\QASR.Paths[OLE DB Source Output]"
+          TopLeft="296,82">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="164,38"
+              Start="0,0"
+              End="164,30.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,15" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,15"
+                    Point2="0,19"
+                    Point3="4,19" />
+                  <mssgle:LineSegment
+                    End="160,19" />
+                  <mssgle:CubicBezierSegment
+                    Point1="160,19"
+                    Point2="164,19"
+                    Point3="164,23" />
+                  <mssgle:LineSegment
+                    End="164,30.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -2162,31 +2271,31 @@ ORDER BY A01.[MANDT]
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\KNVV.Paths[OLE DB Source Output]"
-          TopLeft="345,78">
+          Id="Package\QASR.Paths[OLE DB Source Output1]"
+          TopLeft="582,77">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="149.666666666667,44"
+              EndConnector="-101.666666666667,43"
               Start="0,0"
-              End="149.666666666667,36.5">
+              End="-101.666666666667,35.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,22.0790273556231" />
+                    End="0,21.4863221884498" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,22.0790273556231"
-                    Point2="0,26.0790273556231"
-                    Point3="4,26.0790273556231" />
+                    Point1="0,21.4863221884498"
+                    Point2="0,25.4863221884498"
+                    Point3="-4,25.4863221884498" />
                   <mssgle:LineSegment
-                    End="145.666666666667,26.0790273556231" />
+                    End="-97.6666666666667,25.4863221884498" />
                   <mssgle:CubicBezierSegment
-                    Point1="145.666666666667,26.0790273556231"
-                    Point2="149.666666666667,26.0790273556231"
-                    Point3="149.666666666667,30.0790273556231" />
+                    Point1="-97.6666666666667,25.4863221884498"
+                    Point2="-101.666666666667,25.4863221884498"
+                    Point3="-101.666666666667,29.4863221884498" />
                   <mssgle:LineSegment
-                    End="149.666666666667,36.5" />
+                    End="-101.666666666667,35.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -2196,152 +2305,32 @@ ORDER BY A01.[MANDT]
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\KNVV.Paths[Merge Join Output]"
-          TopLeft="515.75,164">
+          Id="Package\QASR.Paths[Merge Join Output]"
+          TopLeft="459.25,162">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,79"
+              EndConnector="0,47"
               Start="0,0"
-              End="0,71.5">
+              End="0,39.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,71.5" />
+                    End="0,39.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\KNVV.Paths[insert]"
-          TopLeft="480.25,285">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="-228.25,65"
-              Start="0,0"
-              End="-228.25,57.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,18.4089935760171" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,18.4089935760171"
-                    Point2="0,22.4089935760171"
-                    Point3="-4,22.4089935760171" />
-                  <mssgle:LineSegment
-                    End="-224.25,22.4089935760171" />
-                  <mssgle:CubicBezierSegment
-                    Point1="-224.25,22.4089935760171"
-                    Point2="-228.25,22.4089935760171"
-                    Point3="-228.25,26.4089935760171" />
-                  <mssgle:LineSegment
-                    End="-228.25,57.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-127.07498046875,27.4089935760171,25.8999609375,9.451171875"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\KNVV.Paths[delete]"
-          TopLeft="552.75,285">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="216.25,75"
-              Start="0,0"
-              End="216.25,67.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,21.8565310492505" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,21.8565310492505"
-                    Point2="0,25.8565310492505"
-                    Point3="4,25.8565310492505" />
-                  <mssgle:LineSegment
-                    End="212.25,25.8565310492505" />
-                  <mssgle:CubicBezierSegment
-                    Point1="212.25,25.8565310492505"
-                    Point2="216.25,25.8565310492505"
-                    Point3="216.25,29.8565310492505" />
-                  <mssgle:LineSegment
-                    End="216.25,67.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="93.92904296875,30.8565310492505,28.3919140625,9.7490234375"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\KNVV.Paths[update1]"
-          TopLeft="519.25,414">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,66"
-              Start="0,0"
-              End="0,58.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,58.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-15.8025,23.4453125,31.605,11.609375"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\KNVV.Paths[update]"
-          TopLeft="517,285">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,87"
-              Start="0,0"
-              End="0,79.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,79.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-15.8025,33.9453125,31.605,11.609375"
-              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
     </LayoutInfo>
   </TaskHost>
   <PipelineComponentMetadata
-    design-time-name="Package\KNVV\insert new records">
+    design-time-name="Package\QASR\insert new records">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -2354,7 +2343,7 @@ ORDER BY A01.[MANDT]
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\KNVV\DB SAP KNVV">
+    design-time-name="Package\QASR\DB SAP ADRC">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -2362,20 +2351,7 @@ ORDER BY A01.[MANDT]
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\KNVV\stage deleted records">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-      <Property>
-        <Name>TableInfoObjectType</Name>
-        <Value
-          type="q2:string">Table</Value>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
-    design-time-name="Package\KNVV\stage changed records">
+    design-time-name="Package\QASR\stage changed records">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -2388,7 +2364,20 @@ ORDER BY A01.[MANDT]
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\KNVV\DB PBI KNVV">
+    design-time-name="Package\QASR\stage deleted records">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\QASR\DB PBI ADRC">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
