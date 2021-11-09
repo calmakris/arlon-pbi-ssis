@@ -11,8 +11,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="zC3"
   DTS:PackageType="5"
-  DTS:VersionBuild="140"
-  DTS:VersionGUID="{B211399C-655E-4CAB-B318-FE93D2C63698}">
+  DTS:VersionBuild="144"
+  DTS:VersionGUID="{C60FBFF8-A06F-4AF0-9324-CD690B2270FF}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:Variables>
@@ -46,7 +46,7 @@
           DTS:LocaleID="-1"
           DTS:ObjectName="Clean Stage"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="1">
+          DTS:ThreadHint="0">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -55,37 +55,32 @@
           </DTS:ObjectData>
         </DTS:Executable>
         <DTS:Executable
-          DTS:refId="Package\Job Data\Get Last Datetime from Dest"
+          DTS:refId="Package\Job Data\Delete Data"
           DTS:CreationName="Microsoft.ExecuteSQLTask"
           DTS:Description="Execute SQL Task"
-          DTS:DTSID="{8522B9D1-E2A3-4685-AAD3-F2E7224AA1FE}"
+          DTS:DTSID="{a835f805-2252-4399-a21e-a5c835058238}"
           DTS:ExecutableType="Microsoft.ExecuteSQLTask"
           DTS:LocaleID="-1"
-          DTS:ObjectName="Get Last Datetime from Dest"
+          DTS:ObjectName="Delete Data"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="1">
+          DTS:ThreadHint="0">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
               SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-              SQLTask:SqlStatementSource="SELECT MAX([DateTime])&#xA;FROM zC3_JOBDATA"
-              SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
-              <SQLTask:ResultBinding
-                SQLTask:ResultName="0"
-                SQLTask:DtsVariableName="User::LastDatetime_C3" />
-            </SQLTask:SqlTaskData>
+              SQLTask:SqlStatementSource="DELETE A01&#xA;FROM [zC3_JOBDATA] A01 INNER JOIN [zC3_JOBDATA_STAGE_DELETE] B01 ON (A01.[RecordID] = B01.[RecordID])&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
           </DTS:ObjectData>
         </DTS:Executable>
         <DTS:Executable
           DTS:refId="Package\Job Data\Insert Data"
           DTS:CreationName="Microsoft.ExecuteSQLTask"
           DTS:Description="Execute SQL Task"
-          DTS:DTSID="{75C3ED56-6C51-4026-A6FE-6C9F767FA6E9}"
+          DTS:DTSID="{1178b86d-78fa-4295-aed1-1faad5acaf35}"
           DTS:ExecutableType="Microsoft.ExecuteSQLTask"
           DTS:LocaleID="-1"
           DTS:ObjectName="Insert Data"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="1">
+          DTS:ThreadHint="0">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -97,7 +92,7 @@
           DTS:refId="Package\Job Data\Staging"
           DTS:CreationName="Microsoft.Pipeline"
           DTS:Description="Data Flow Task"
-          DTS:DTSID="{4820DDF2-D99A-41BB-BF16-A85CA7F26223}"
+          DTS:DTSID="{92247511-9885-45fe-912a-8fc05370fe49}"
           DTS:ExecutableType="Microsoft.Pipeline"
           DTS:LocaleID="-1"
           DTS:ObjectName="Staging"
@@ -107,6 +102,191 @@
             <pipeline
               version="1">
               <components>
+                <component
+                  refId="Package\Job Data\Staging\DB PBI"
+                  componentClassID="Microsoft.OLEDBSource"
+                  contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+                  description="OLE DB Source"
+                  name="DB PBI"
+                  usesDispositions="true"
+                  version="7">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT [RecordID]
+    ,[DateTime]
+    ,[JobIndex]
+    ,[Footage]
+    ,[Downtime]
+FROM [zC3_JOBDATA]</property>
+                    <property
+                      dataType="System.String"
+                      description="The variable that contains the SQL command to be executed."
+                      name="SqlCommandVariable"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">2</property>
+                    <property
+                      dataType="System.String"
+                      description="The mappings between the parameters in the SQL command and variables."
+                      name="ParameterMapping"></property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\Job Data\Staging\DB PBI.Connections[OleDbConnection]"
+                      connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
+                      connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <outputs>
+                    <output
+                      refId="Package\Job Data\Staging\DB PBI.Outputs[OLE DB Source Output]"
+                      isSorted="true"
+                      name="OLE DB Source Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Job Data\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[RecordID]"
+                          dataType="i8"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Job Data\Staging\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[RecordID]"
+                          lineageId="Package\Job Data\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[RecordID]"
+                          name="RecordID"
+                          sortKeyPosition="1"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\Job Data\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[DateTime]"
+                          dataType="dbTimeStamp"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Job Data\Staging\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[DateTime]"
+                          lineageId="Package\Job Data\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[DateTime]"
+                          name="DateTime"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\Job Data\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[JobIndex]"
+                          dataType="i8"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Job Data\Staging\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[JobIndex]"
+                          lineageId="Package\Job Data\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[JobIndex]"
+                          name="JobIndex"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\Job Data\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[Footage]"
+                          dataType="i8"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Job Data\Staging\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[Footage]"
+                          lineageId="Package\Job Data\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[Footage]"
+                          name="Footage"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\Job Data\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[Downtime]"
+                          dataType="r8"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Job Data\Staging\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[Downtime]"
+                          lineageId="Package\Job Data\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[Downtime]"
+                          name="Downtime"
+                          truncationRowDisposition="FailComponent" />
+                      </outputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\Job Data\Staging\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[RecordID]"
+                          dataType="i8"
+                          name="RecordID" />
+                        <externalMetadataColumn
+                          refId="Package\Job Data\Staging\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[DateTime]"
+                          dataType="dbTimeStamp"
+                          name="DateTime" />
+                        <externalMetadataColumn
+                          refId="Package\Job Data\Staging\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[JobIndex]"
+                          dataType="i8"
+                          name="JobIndex" />
+                        <externalMetadataColumn
+                          refId="Package\Job Data\Staging\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[Footage]"
+                          dataType="i8"
+                          name="Footage" />
+                        <externalMetadataColumn
+                          refId="Package\Job Data\Staging\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[Downtime]"
+                          dataType="r8"
+                          name="Downtime" />
+                      </externalMetadataColumns>
+                    </output>
+                    <output
+                      refId="Package\Job Data\Staging\DB PBI.Outputs[OLE DB Source Error Output]"
+                      isErrorOut="true"
+                      name="OLE DB Source Error Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Job Data\Staging\DB PBI.Outputs[OLE DB Source Error Output].Columns[RecordID]"
+                          dataType="i8"
+                          lineageId="Package\Job Data\Staging\DB PBI.Outputs[OLE DB Source Error Output].Columns[RecordID]"
+                          name="RecordID" />
+                        <outputColumn
+                          refId="Package\Job Data\Staging\DB PBI.Outputs[OLE DB Source Error Output].Columns[DateTime]"
+                          dataType="dbTimeStamp"
+                          lineageId="Package\Job Data\Staging\DB PBI.Outputs[OLE DB Source Error Output].Columns[DateTime]"
+                          name="DateTime" />
+                        <outputColumn
+                          refId="Package\Job Data\Staging\DB PBI.Outputs[OLE DB Source Error Output].Columns[JobIndex]"
+                          dataType="i8"
+                          lineageId="Package\Job Data\Staging\DB PBI.Outputs[OLE DB Source Error Output].Columns[JobIndex]"
+                          name="JobIndex" />
+                        <outputColumn
+                          refId="Package\Job Data\Staging\DB PBI.Outputs[OLE DB Source Error Output].Columns[Footage]"
+                          dataType="i8"
+                          lineageId="Package\Job Data\Staging\DB PBI.Outputs[OLE DB Source Error Output].Columns[Footage]"
+                          name="Footage" />
+                        <outputColumn
+                          refId="Package\Job Data\Staging\DB PBI.Outputs[OLE DB Source Error Output].Columns[Downtime]"
+                          dataType="r8"
+                          lineageId="Package\Job Data\Staging\DB PBI.Outputs[OLE DB Source Error Output].Columns[Downtime]"
+                          name="Downtime" />
+                        <outputColumn
+                          refId="Package\Job Data\Staging\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\Job Data\Staging\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\Job Data\Staging\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\Job Data\Staging\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
                 <component
                   refId="Package\Job Data\Staging\DB Runtime"
                   componentClassID="Microsoft.OLEDBSource"
@@ -138,7 +318,7 @@
     LastRollFt AS Footage,
     DownTime AS Downtime
 FROM c3jobdata
-WHERE Date_Time &gt;= ?
+WHERE Date_Time IS NOT NULL
 ORDER BY Record_ID,
     Date_Time</property>
                     <property
@@ -161,7 +341,7 @@ ORDER BY Record_ID,
                     <property
                       dataType="System.String"
                       description="The mappings between the parameters in the SQL command and variables."
-                      name="ParameterMapping">"Parameter0:Input",{A7E9D8BE-330B-43A3-A364-5129B6D0A3FC};</property>
+                      name="ParameterMapping"></property>
                   </properties>
                   <connections>
                     <connection
@@ -174,6 +354,7 @@ ORDER BY Record_ID,
                   <outputs>
                     <output
                       refId="Package\Job Data\Staging\DB Runtime.Outputs[OLE DB Source Output]"
+                      isSorted="true"
                       name="OLE DB Source Output">
                       <outputColumns>
                         <outputColumn
@@ -184,6 +365,7 @@ ORDER BY Record_ID,
                           externalMetadataColumnId="Package\Job Data\Staging\DB Runtime.Outputs[OLE DB Source Output].ExternalColumns[RecordID]"
                           lineageId="Package\Job Data\Staging\DB Runtime.Outputs[OLE DB Source Output].Columns[RecordID]"
                           name="RecordID"
+                          sortKeyPosition="1"
                           truncationRowDisposition="FailComponent" />
                         <outputColumn
                           refId="Package\Job Data\Staging\DB Runtime.Outputs[OLE DB Source Output].Columns[DateTime]"
@@ -214,7 +396,7 @@ ORDER BY Record_ID,
                           truncationRowDisposition="FailComponent" />
                         <outputColumn
                           refId="Package\Job Data\Staging\DB Runtime.Outputs[OLE DB Source Output].Columns[Downtime]"
-                          dataType="r4"
+                          dataType="r8"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
                           externalMetadataColumnId="Package\Job Data\Staging\DB Runtime.Outputs[OLE DB Source Output].ExternalColumns[Downtime]"
@@ -286,6 +468,384 @@ ORDER BY Record_ID,
                           refId="Package\Job Data\Staging\DB Runtime.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
                           dataType="i4"
                           lineageId="Package\Job Data\Staging\DB Runtime.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\Job Data\Staging\DELETE Stage"
+                  componentClassID="Microsoft.OLEDBDestination"
+                  contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                  description="OLE DB Destination"
+                  name="DELETE Stage"
+                  usesDispositions="true"
+                  version="4">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset">[dbo].[zC3_JOBDATA_STAGE_DELETE]</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">3</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepIdentity">false</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                      name="FastLoadOptions">CHECK_CONSTRAINTS</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                      name="FastLoadMaxInsertCommitSize">2147483647</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\Job Data\Staging\DELETE Stage.Connections[OleDbConnection]"
+                      connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
+                      connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\Job Data\Staging\DELETE Stage.Inputs[OLE DB Destination Input]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="OLE DB Destination Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\Job Data\Staging\DELETE Stage.Inputs[OLE DB Destination Input].Columns[RecordID (1)]"
+                          cachedDataType="i8"
+                          cachedName="RecordID (1)"
+                          externalMetadataColumnId="Package\Job Data\Staging\DELETE Stage.Inputs[OLE DB Destination Input].ExternalColumns[RecordID]"
+                          lineageId="Package\Job Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[RecordID (1)]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\Job Data\Staging\DELETE Stage.Inputs[OLE DB Destination Input].ExternalColumns[RecordID]"
+                          dataType="i8"
+                          name="RecordID" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\Job Data\Staging\DELETE Stage.Outputs[OLE DB Destination Error Output]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="OLE DB Destination Error Output"
+                      synchronousInputId="Package\Job Data\Staging\DELETE Stage.Inputs[OLE DB Destination Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Job Data\Staging\DELETE Stage.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\Job Data\Staging\DELETE Stage.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\Job Data\Staging\DELETE Stage.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\Job Data\Staging\DELETE Stage.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\Job Data\Staging\Find Changed Records"
+                  componentClassID="Microsoft.ConditionalSplit"
+                  contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                  description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
+                  name="Find Changed Records"
+                  usesDispositions="true">
+                  <inputs>
+                    <input
+                      refId="Package\Job Data\Staging\Find Changed Records.Inputs[Conditional Split Input]"
+                      description="Input to the Conditional Split Transformation"
+                      name="Conditional Split Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\Job Data\Staging\Find Changed Records.Inputs[Conditional Split Input].Columns[JobIndex]"
+                          cachedDataType="i8"
+                          cachedName="JobIndex"
+                          lineageId="Package\Job Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[JobIndex]" />
+                        <inputColumn
+                          refId="Package\Job Data\Staging\Find Changed Records.Inputs[Conditional Split Input].Columns[Footage]"
+                          cachedDataType="i8"
+                          cachedName="Footage"
+                          lineageId="Package\Job Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[Footage]" />
+                        <inputColumn
+                          refId="Package\Job Data\Staging\Find Changed Records.Inputs[Conditional Split Input].Columns[JobIndex (1)]"
+                          cachedDataType="i8"
+                          cachedName="JobIndex (1)"
+                          lineageId="Package\Job Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[JobIndex (1)]" />
+                        <inputColumn
+                          refId="Package\Job Data\Staging\Find Changed Records.Inputs[Conditional Split Input].Columns[Footage (1)]"
+                          cachedDataType="i8"
+                          cachedName="Footage (1)"
+                          lineageId="Package\Job Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[Footage (1)]" />
+                        <inputColumn
+                          refId="Package\Job Data\Staging\Find Changed Records.Inputs[Conditional Split Input].Columns[Downtime]"
+                          cachedDataType="r8"
+                          cachedName="Downtime"
+                          lineageId="Package\Job Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[Downtime]" />
+                        <inputColumn
+                          refId="Package\Job Data\Staging\Find Changed Records.Inputs[Conditional Split Input].Columns[Downtime (1)]"
+                          cachedDataType="r8"
+                          cachedName="Downtime (1)"
+                          lineageId="Package\Job Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[Downtime (1)]" />
+                      </inputColumns>
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\Job Data\Staging\Find Changed Records.Outputs[update]"
+                      description="Output 1 of the Conditional Split Transformation"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      exclusionGroup="1"
+                      name="update"
+                      synchronousInputId="Package\Job Data\Staging\Find Changed Records.Inputs[Conditional Split Input]"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                          name="Expression">[REPLACENULL](#{Package\Job Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[JobIndex]},-1) != [REPLACENULL](#{Package\Job Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[JobIndex (1)]},-1) || [REPLACENULL](#{Package\Job Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[Footage]},0) != [REPLACENULL](#{Package\Job Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[Footage (1)]},0) || [REPLACENULL](#{Package\Job Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[Downtime]},0) != [REPLACENULL](#{Package\Job Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[Downtime (1)]},0)</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Specifies the friendly version of the expression. This expression version uses column names."
+                          expressionType="Notify"
+                          name="FriendlyExpression">REPLACENULL(JobIndex,-1) != REPLACENULL([JobIndex (1)],-1) || REPLACENULL(Footage,0) != REPLACENULL([Footage (1)],0) || REPLACENULL(Downtime,0) != REPLACENULL([Downtime (1)],0)</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                          name="EvaluationOrder">0</property>
+                      </properties>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\Job Data\Staging\Find Changed Records.Outputs[Conditional Split Default Output]"
+                      description="Default Output of the Conditional Split Transformation"
+                      exclusionGroup="1"
+                      name="Conditional Split Default Output"
+                      synchronousInputId="Package\Job Data\Staging\Find Changed Records.Inputs[Conditional Split Input]">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          name="IsDefaultOut">true</property>
+                      </properties>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\Job Data\Staging\Find Changed Records.Outputs[Conditional Split Error Output]"
+                      description="Error Output of the Conditional Split Transformation"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Conditional Split Error Output"
+                      synchronousInputId="Package\Job Data\Staging\Find Changed Records.Inputs[Conditional Split Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Job Data\Staging\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\Job Data\Staging\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\Job Data\Staging\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\Job Data\Staging\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\Job Data\Staging\Identify Records"
+                  componentClassID="Microsoft.ConditionalSplit"
+                  contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                  description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
+                  name="Identify Records"
+                  usesDispositions="true">
+                  <inputs>
+                    <input
+                      refId="Package\Job Data\Staging\Identify Records.Inputs[Conditional Split Input]"
+                      description="Input to the Conditional Split Transformation"
+                      name="Conditional Split Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\Job Data\Staging\Identify Records.Inputs[Conditional Split Input].Columns[RecordID]"
+                          cachedDataType="i8"
+                          cachedName="RecordID"
+                          cachedSortKeyPosition="1"
+                          lineageId="Package\Job Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[RecordID]" />
+                        <inputColumn
+                          refId="Package\Job Data\Staging\Identify Records.Inputs[Conditional Split Input].Columns[RecordID (1)]"
+                          cachedDataType="i8"
+                          cachedName="RecordID (1)"
+                          lineageId="Package\Job Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[RecordID (1)]" />
+                      </inputColumns>
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\Job Data\Staging\Identify Records.Outputs[update]"
+                      description="Output 1 of the Conditional Split Transformation"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      exclusionGroup="1"
+                      name="update"
+                      synchronousInputId="Package\Job Data\Staging\Identify Records.Inputs[Conditional Split Input]"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                          name="Expression">![ISNULL](#{Package\Job Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[RecordID]}) &amp;&amp; ![ISNULL](#{Package\Job Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[RecordID (1)]})</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Specifies the friendly version of the expression. This expression version uses column names."
+                          expressionType="Notify"
+                          name="FriendlyExpression">!ISNULL(RecordID) &amp;&amp; !ISNULL([RecordID (1)])</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                          name="EvaluationOrder">0</property>
+                      </properties>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\Job Data\Staging\Identify Records.Outputs[insert]"
+                      description="Output 2 of the Conditional Split Transformation"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      exclusionGroup="1"
+                      name="insert"
+                      synchronousInputId="Package\Job Data\Staging\Identify Records.Inputs[Conditional Split Input]"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                          name="Expression">![ISNULL](#{Package\Job Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[RecordID]}) &amp;&amp; [ISNULL](#{Package\Job Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[RecordID (1)]})</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Specifies the friendly version of the expression. This expression version uses column names."
+                          expressionType="Notify"
+                          name="FriendlyExpression">!ISNULL(RecordID) &amp;&amp; ISNULL([RecordID (1)])</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                          name="EvaluationOrder">1</property>
+                      </properties>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\Job Data\Staging\Identify Records.Outputs[delete]"
+                      description="Output 3 of the Conditional Split Transformation"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      exclusionGroup="1"
+                      name="delete"
+                      synchronousInputId="Package\Job Data\Staging\Identify Records.Inputs[Conditional Split Input]"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                          name="Expression">[ISNULL](#{Package\Job Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[RecordID]}) &amp;&amp; ![ISNULL](#{Package\Job Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[RecordID (1)]})</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Specifies the friendly version of the expression. This expression version uses column names."
+                          expressionType="Notify"
+                          name="FriendlyExpression">ISNULL(RecordID) &amp;&amp; !ISNULL([RecordID (1)])</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                          name="EvaluationOrder">2</property>
+                      </properties>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\Job Data\Staging\Identify Records.Outputs[Conditional Split Default Output]"
+                      description="Default Output of the Conditional Split Transformation"
+                      exclusionGroup="1"
+                      name="Conditional Split Default Output"
+                      synchronousInputId="Package\Job Data\Staging\Identify Records.Inputs[Conditional Split Input]">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          name="IsDefaultOut">true</property>
+                      </properties>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\Job Data\Staging\Identify Records.Outputs[Conditional Split Error Output]"
+                      description="Error Output of the Conditional Split Transformation"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Conditional Split Error Output"
+                      synchronousInputId="Package\Job Data\Staging\Identify Records.Inputs[Conditional Split Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Job Data\Staging\Identify Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\Job Data\Staging\Identify Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\Job Data\Staging\Identify Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\Job Data\Staging\Identify Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
                           name="ErrorColumn"
                           specialFlags="2" />
                       </outputColumns>
@@ -369,43 +929,44 @@ ORDER BY Record_ID,
                           refId="Package\Job Data\Staging\INSERT Stage.Inputs[OLE DB Destination Input].Columns[RecordID]"
                           cachedDataType="i8"
                           cachedName="RecordID"
+                          cachedSortKeyPosition="1"
                           externalMetadataColumnId="Package\Job Data\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[RecordID]"
-                          lineageId="Package\Job Data\Staging\DB Runtime.Outputs[OLE DB Source Output].Columns[RecordID]" />
-                        <inputColumn
-                          refId="Package\Job Data\Staging\INSERT Stage.Inputs[OLE DB Destination Input].Columns[JobIndex]"
-                          cachedDataType="i8"
-                          cachedName="JobIndex"
-                          externalMetadataColumnId="Package\Job Data\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[JobIndex]"
-                          lineageId="Package\Job Data\Staging\DB Runtime.Outputs[OLE DB Source Output].Columns[JobIndex]" />
-                        <inputColumn
-                          refId="Package\Job Data\Staging\INSERT Stage.Inputs[OLE DB Destination Input].Columns[Footage]"
-                          cachedDataType="i8"
-                          cachedName="Footage"
-                          externalMetadataColumnId="Package\Job Data\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[Footage]"
-                          lineageId="Package\Job Data\Staging\DB Runtime.Outputs[OLE DB Source Output].Columns[Footage]" />
-                        <inputColumn
-                          refId="Package\Job Data\Staging\INSERT Stage.Inputs[OLE DB Destination Input].Columns[Downtime]"
-                          cachedDataType="r4"
-                          cachedName="Downtime"
-                          externalMetadataColumnId="Package\Job Data\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[Downtime]"
-                          lineageId="Package\Job Data\Staging\DB Runtime.Outputs[OLE DB Source Output].Columns[Downtime]" />
+                          lineageId="Package\Job Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[RecordID]" />
                         <inputColumn
                           refId="Package\Job Data\Staging\INSERT Stage.Inputs[OLE DB Destination Input].Columns[DateTime]"
                           cachedDataType="dbTimeStamp"
                           cachedName="DateTime"
                           externalMetadataColumnId="Package\Job Data\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[DateTime]"
-                          lineageId="Package\Job Data\Staging\DB Runtime.Outputs[OLE DB Source Output].Columns[DateTime]" />
+                          lineageId="Package\Job Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[DateTime]" />
+                        <inputColumn
+                          refId="Package\Job Data\Staging\INSERT Stage.Inputs[OLE DB Destination Input].Columns[JobIndex]"
+                          cachedDataType="i8"
+                          cachedName="JobIndex"
+                          externalMetadataColumnId="Package\Job Data\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[JobIndex]"
+                          lineageId="Package\Job Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[JobIndex]" />
+                        <inputColumn
+                          refId="Package\Job Data\Staging\INSERT Stage.Inputs[OLE DB Destination Input].Columns[Footage]"
+                          cachedDataType="i8"
+                          cachedName="Footage"
+                          externalMetadataColumnId="Package\Job Data\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[Footage]"
+                          lineageId="Package\Job Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[Footage]" />
+                        <inputColumn
+                          refId="Package\Job Data\Staging\INSERT Stage.Inputs[OLE DB Destination Input].Columns[Downtime]"
+                          cachedDataType="r8"
+                          cachedName="Downtime"
+                          externalMetadataColumnId="Package\Job Data\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[Downtime]"
+                          lineageId="Package\Job Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[Downtime]" />
                       </inputColumns>
                       <externalMetadataColumns
                         isUsed="True">
                         <externalMetadataColumn
-                          refId="Package\Job Data\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[DateTime]"
-                          dataType="dbTimeStamp"
-                          name="DateTime" />
-                        <externalMetadataColumn
                           refId="Package\Job Data\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[RecordID]"
                           dataType="i8"
                           name="RecordID" />
+                        <externalMetadataColumn
+                          refId="Package\Job Data\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[DateTime]"
+                          dataType="dbTimeStamp"
+                          name="DateTime" />
                         <externalMetadataColumn
                           refId="Package\Job Data\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[JobIndex]"
                           dataType="i8"
@@ -447,157 +1008,238 @@ ORDER BY Record_ID,
                   </outputs>
                 </component>
                 <component
-                  refId="Package\Job Data\Staging\Lookup"
-                  componentClassID="Microsoft.Lookup"
-                  contactInfo="Lookup;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;6"
-                  description="Joins additional columns to the data flow by looking up values in a table. For example, join to the 'employee id' column the employees table to get 'hire date' and 'employee name'. We recommend this transformation when the lookup table can fit into memory."
-                  name="Lookup"
-                  usesDispositions="true"
-                  version="6">
+                  refId="Package\Job Data\Staging\Merge Join"
+                  componentClassID="Microsoft.MergeJoin"
+                  contactInfo="Merge Join;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
+                  description="Combine two sorted data flows into one using the FULL, LEFT, or INNER join. We recommend this transformation when data flows can be sorted at their sources."
+                  name="Merge Join"
+                  version="1">
                   <properties>
                     <property
-                      dataType="System.String"
-                      description="Specifies the SQL statement that generates the lookup table."
-                      expressionType="Notify"
-                      name="SqlCommand"
-                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT RecordID FROM zC3_JOBDATA</property>
-                    <property
-                      dataType="System.String"
-                      description="Specifies a SQL statement that uses parameters to generate the lookup table."
-                      expressionType="Notify"
-                      name="SqlCommandParam"
-                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (SELECT RecordID FROM zC3_JOBDATA) [refTable]
-where [refTable].[RecordID] = ?</property>
+                      dataType="System.Int32"
+                      description="Specifies the type of join to perform."
+                      name="JoinType"
+                      typeConverter="JoinType">0</property>
                     <property
                       dataType="System.Int32"
-                      description="Specifies the type of connection used to access the reference dataset."
-                      name="ConnectionType"
-                      typeConverter="LookupConnectionType">0</property>
-                    <property
-                      dataType="System.Int32"
-                      description="Specifies the cache type of the lookup table."
-                      name="CacheType"
-                      typeConverter="CacheType">0</property>
-                    <property
-                      dataType="System.Int32"
-                      description="Specifies how the Lookup transformation handles rows without matching entries in the reference data set."
-                      name="NoMatchBehavior"
-                      typeConverter="LookupNoMatchBehavior">1</property>
-                    <property
-                      dataType="System.Int32"
-                      description="Specifies the percentage of the cache that is allocated for rows with no matching entries in the reference dataset."
-                      name="NoMatchCachePercentage">0</property>
-                    <property
-                      dataType="System.Int32"
-                      description="Maximum Memory Usage for Reference Cache on a 32 bit platform."
-                      name="MaxMemoryUsage">25</property>
-                    <property
-                      dataType="System.Int64"
-                      description="Maximum Memory Usage for Reference Cache on a 64 bit platform."
-                      name="MaxMemoryUsage64">25</property>
-                    <property
-                      dataType="System.String"
-                      description="Indicates whether to reference metadata in an XML format."
-                      name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="RecordID" dataType="DT_I8" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
-                    <property
-                      containsID="true"
-                      dataType="System.String"
-                      description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
-                      name="ParameterMap">#{Package\Job Data\Staging\DB Runtime.Outputs[OLE DB Source Output].Columns[RecordID]};</property>
-                    <property
-                      dataType="System.Int32"
-                      description="Specifies the column code page to use when code page information is unavailable from the data source."
-                      name="DefaultCodePage">1252</property>
+                      description="Specifies the number of columns in the ordering key."
+                      name="NumKeyColumns">1</property>
                     <property
                       dataType="System.Boolean"
-                      description="Determines whether duplicate keys in the reference data should be treated as errors when full cache mode is used."
-                      name="TreatDuplicateKeysAsError">false</property>
+                      description="Indicates whether the null values are treated as equal values."
+                      name="TreatNullsAsEqual">true</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Indicates the requested maximum buffers per input before blocking."
+                      name="MaxBuffersPerInput">5</property>
                   </properties>
-                  <connections>
-                    <connection
-                      refId="Package\Job Data\Staging\Lookup.Connections[OleDbConnection]"
-                      connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
-                      connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
-                      description="Connection manager used to access lookup data."
-                      name="OleDbConnection" />
-                  </connections>
                   <inputs>
                     <input
-                      refId="Package\Job Data\Staging\Lookup.Inputs[Lookup Input]"
-                      name="Lookup Input">
+                      refId="Package\Job Data\Staging\Merge Join.Inputs[Merge Join Left Input]"
+                      hasSideEffects="true"
+                      name="Merge Join Left Input">
                       <inputColumns>
                         <inputColumn
-                          refId="Package\Job Data\Staging\Lookup.Inputs[Lookup Input].Columns[RecordID]"
+                          refId="Package\Job Data\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[RecordID]"
                           cachedDataType="i8"
                           cachedName="RecordID"
-                          lineageId="Package\Job Data\Staging\DB Runtime.Outputs[OLE DB Source Output].Columns[RecordID]">
-                          <properties>
-                            <property
-                              dataType="System.String"
-                              description="Specifies the column in the reference table that a column joins."
-                              name="JoinToReferenceColumn">RecordID</property>
-                            <property
-                              dataType="System.Null"
-                              description="Specifies the column in the reference table from which a column is copied."
-                              name="CopyFromReferenceColumn" />
-                          </properties>
-                        </inputColumn>
+                          cachedSortKeyPosition="1"
+                          lineageId="Package\Job Data\Staging\DB Runtime.Outputs[OLE DB Source Output].Columns[RecordID]" />
+                        <inputColumn
+                          refId="Package\Job Data\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[DateTime]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="DateTime"
+                          lineageId="Package\Job Data\Staging\DB Runtime.Outputs[OLE DB Source Output].Columns[DateTime]" />
+                        <inputColumn
+                          refId="Package\Job Data\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[JobIndex]"
+                          cachedDataType="i8"
+                          cachedName="JobIndex"
+                          lineageId="Package\Job Data\Staging\DB Runtime.Outputs[OLE DB Source Output].Columns[JobIndex]" />
+                        <inputColumn
+                          refId="Package\Job Data\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[Footage]"
+                          cachedDataType="i8"
+                          cachedName="Footage"
+                          lineageId="Package\Job Data\Staging\DB Runtime.Outputs[OLE DB Source Output].Columns[Footage]" />
+                        <inputColumn
+                          refId="Package\Job Data\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[Downtime]"
+                          cachedDataType="r8"
+                          cachedName="Downtime"
+                          lineageId="Package\Job Data\Staging\DB Runtime.Outputs[OLE DB Source Output].Columns[Downtime]" />
+                      </inputColumns>
+                      <externalMetadataColumns />
+                    </input>
+                    <input
+                      refId="Package\Job Data\Staging\Merge Join.Inputs[Merge Join Right Input]"
+                      hasSideEffects="true"
+                      name="Merge Join Right Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\Job Data\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[RecordID]"
+                          cachedDataType="i8"
+                          cachedName="RecordID"
+                          cachedSortKeyPosition="1"
+                          lineageId="Package\Job Data\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[RecordID]" />
+                        <inputColumn
+                          refId="Package\Job Data\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[DateTime]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="DateTime"
+                          lineageId="Package\Job Data\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[DateTime]" />
+                        <inputColumn
+                          refId="Package\Job Data\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[JobIndex]"
+                          cachedDataType="i8"
+                          cachedName="JobIndex"
+                          lineageId="Package\Job Data\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[JobIndex]" />
+                        <inputColumn
+                          refId="Package\Job Data\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[Footage]"
+                          cachedDataType="i8"
+                          cachedName="Footage"
+                          lineageId="Package\Job Data\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[Footage]" />
+                        <inputColumn
+                          refId="Package\Job Data\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[Downtime]"
+                          cachedDataType="r8"
+                          cachedName="Downtime"
+                          lineageId="Package\Job Data\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[Downtime]" />
                       </inputColumns>
                       <externalMetadataColumns />
                     </input>
                   </inputs>
                   <outputs>
                     <output
-                      refId="Package\Job Data\Staging\Lookup.Outputs[Lookup Match Output]"
-                      errorOrTruncationOperation="Lookup"
-                      exclusionGroup="1"
-                      name="Lookup Match Output"
-                      synchronousInputId="Package\Job Data\Staging\Lookup.Inputs[Lookup Input]">
+                      refId="Package\Job Data\Staging\Merge Join.Outputs[Merge Join Output]"
+                      isSorted="true"
+                      name="Merge Join Output">
                       <outputColumns>
                         <outputColumn
-                          refId="Package\Job Data\Staging\Lookup.Outputs[Lookup Match Output].Columns[RecordID]"
+                          refId="Package\Job Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[RecordID]"
                           dataType="i8"
-                          errorOrTruncationOperation="Copy Column"
-                          lineageId="Package\Job Data\Staging\Lookup.Outputs[Lookup Match Output].Columns[RecordID]"
+                          lineageId="Package\Job Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[RecordID]"
                           name="RecordID"
-                          truncationRowDisposition="FailComponent">
+                          sortKeyPosition="1">
                           <properties>
                             <property
-                              dataType="System.String"
-                              description="Specifies the column in the reference table from which a column is copied."
-                              name="CopyFromReferenceColumn">RecordID</property>
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\Job Data\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[RecordID]}</property>
                           </properties>
                         </outputColumn>
-                      </outputColumns>
-                      <externalMetadataColumns />
-                    </output>
-                    <output
-                      refId="Package\Job Data\Staging\Lookup.Outputs[Lookup No Match Output]"
-                      description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
-                      exclusionGroup="1"
-                      name="Lookup No Match Output"
-                      synchronousInputId="Package\Job Data\Staging\Lookup.Inputs[Lookup Input]">
-                      <externalMetadataColumns />
-                    </output>
-                    <output
-                      refId="Package\Job Data\Staging\Lookup.Outputs[Lookup Error Output]"
-                      exclusionGroup="1"
-                      isErrorOut="true"
-                      name="Lookup Error Output"
-                      synchronousInputId="Package\Job Data\Staging\Lookup.Inputs[Lookup Input]">
-                      <outputColumns>
                         <outputColumn
-                          refId="Package\Job Data\Staging\Lookup.Outputs[Lookup Error Output].Columns[ErrorCode]"
-                          dataType="i4"
-                          lineageId="Package\Job Data\Staging\Lookup.Outputs[Lookup Error Output].Columns[ErrorCode]"
-                          name="ErrorCode"
-                          specialFlags="1" />
+                          refId="Package\Job Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[DateTime]"
+                          dataType="dbTimeStamp"
+                          lineageId="Package\Job Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[DateTime]"
+                          name="DateTime">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\Job Data\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[DateTime]}</property>
+                          </properties>
+                        </outputColumn>
                         <outputColumn
-                          refId="Package\Job Data\Staging\Lookup.Outputs[Lookup Error Output].Columns[ErrorColumn]"
-                          dataType="i4"
-                          lineageId="Package\Job Data\Staging\Lookup.Outputs[Lookup Error Output].Columns[ErrorColumn]"
-                          name="ErrorColumn"
-                          specialFlags="2" />
+                          refId="Package\Job Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[JobIndex]"
+                          dataType="i8"
+                          lineageId="Package\Job Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[JobIndex]"
+                          name="JobIndex">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\Job Data\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[JobIndex]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Job Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[Footage]"
+                          dataType="i8"
+                          lineageId="Package\Job Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[Footage]"
+                          name="Footage">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\Job Data\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[Footage]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Job Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[Downtime]"
+                          dataType="r8"
+                          lineageId="Package\Job Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[Downtime]"
+                          name="Downtime">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\Job Data\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[Downtime]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Job Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[RecordID (1)]"
+                          dataType="i8"
+                          lineageId="Package\Job Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[RecordID (1)]"
+                          name="RecordID (1)">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\Job Data\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[RecordID]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Job Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[DateTime (1)]"
+                          dataType="dbTimeStamp"
+                          lineageId="Package\Job Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[DateTime (1)]"
+                          name="DateTime (1)">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\Job Data\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[DateTime]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Job Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[JobIndex (1)]"
+                          dataType="i8"
+                          lineageId="Package\Job Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[JobIndex (1)]"
+                          name="JobIndex (1)">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\Job Data\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[JobIndex]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Job Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[Footage (1)]"
+                          dataType="i8"
+                          lineageId="Package\Job Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[Footage (1)]"
+                          name="Footage (1)">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\Job Data\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[Footage]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Job Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[Downtime (1)]"
+                          dataType="r8"
+                          lineageId="Package\Job Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[Downtime (1)]"
+                          name="Downtime (1)">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\Job Data\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[Downtime]}</property>
+                          </properties>
+                        </outputColumn>
                       </outputColumns>
                       <externalMetadataColumns />
                     </output>
@@ -679,43 +1321,44 @@ where [refTable].[RecordID] = ?</property>
                           refId="Package\Job Data\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].Columns[RecordID]"
                           cachedDataType="i8"
                           cachedName="RecordID"
+                          cachedSortKeyPosition="1"
                           externalMetadataColumnId="Package\Job Data\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[RecordID]"
-                          lineageId="Package\Job Data\Staging\Lookup.Outputs[Lookup Match Output].Columns[RecordID]" />
-                        <inputColumn
-                          refId="Package\Job Data\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].Columns[JobIndex]"
-                          cachedDataType="i8"
-                          cachedName="JobIndex"
-                          externalMetadataColumnId="Package\Job Data\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[JobIndex]"
-                          lineageId="Package\Job Data\Staging\DB Runtime.Outputs[OLE DB Source Output].Columns[JobIndex]" />
-                        <inputColumn
-                          refId="Package\Job Data\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].Columns[Footage]"
-                          cachedDataType="i8"
-                          cachedName="Footage"
-                          externalMetadataColumnId="Package\Job Data\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[Footage]"
-                          lineageId="Package\Job Data\Staging\DB Runtime.Outputs[OLE DB Source Output].Columns[Footage]" />
-                        <inputColumn
-                          refId="Package\Job Data\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].Columns[Downtime]"
-                          cachedDataType="r4"
-                          cachedName="Downtime"
-                          externalMetadataColumnId="Package\Job Data\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[Downtime]"
-                          lineageId="Package\Job Data\Staging\DB Runtime.Outputs[OLE DB Source Output].Columns[Downtime]" />
+                          lineageId="Package\Job Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[RecordID]" />
                         <inputColumn
                           refId="Package\Job Data\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].Columns[DateTime]"
                           cachedDataType="dbTimeStamp"
                           cachedName="DateTime"
                           externalMetadataColumnId="Package\Job Data\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[DateTime]"
-                          lineageId="Package\Job Data\Staging\DB Runtime.Outputs[OLE DB Source Output].Columns[DateTime]" />
+                          lineageId="Package\Job Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[DateTime]" />
+                        <inputColumn
+                          refId="Package\Job Data\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].Columns[JobIndex]"
+                          cachedDataType="i8"
+                          cachedName="JobIndex"
+                          externalMetadataColumnId="Package\Job Data\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[JobIndex]"
+                          lineageId="Package\Job Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[JobIndex]" />
+                        <inputColumn
+                          refId="Package\Job Data\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].Columns[Footage]"
+                          cachedDataType="i8"
+                          cachedName="Footage"
+                          externalMetadataColumnId="Package\Job Data\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[Footage]"
+                          lineageId="Package\Job Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[Footage]" />
+                        <inputColumn
+                          refId="Package\Job Data\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].Columns[Downtime]"
+                          cachedDataType="r8"
+                          cachedName="Downtime"
+                          externalMetadataColumnId="Package\Job Data\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[Downtime]"
+                          lineageId="Package\Job Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[Downtime]" />
                       </inputColumns>
                       <externalMetadataColumns
                         isUsed="True">
                         <externalMetadataColumn
-                          refId="Package\Job Data\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[DateTime]"
-                          dataType="dbTimeStamp"
-                          name="DateTime" />
-                        <externalMetadataColumn
                           refId="Package\Job Data\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[RecordID]"
                           dataType="i8"
                           name="RecordID" />
+                        <externalMetadataColumn
+                          refId="Package\Job Data\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[DateTime]"
+                          dataType="dbTimeStamp"
+                          name="DateTime" />
                         <externalMetadataColumn
                           refId="Package\Job Data\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[JobIndex]"
                           dataType="i8"
@@ -759,20 +1402,40 @@ where [refTable].[RecordID] = ?</property>
               </components>
               <paths>
                 <path
-                  refId="Package\Job Data\Staging.Paths[Lookup Match Output]"
-                  endId="Package\Job Data\Staging\UPDATE Stage.Inputs[OLE DB Destination Input]"
-                  name="Lookup Match Output"
-                  startId="Package\Job Data\Staging\Lookup.Outputs[Lookup Match Output]" />
+                  refId="Package\Job Data\Staging.Paths[delete]"
+                  endId="Package\Job Data\Staging\DELETE Stage.Inputs[OLE DB Destination Input]"
+                  name="delete"
+                  startId="Package\Job Data\Staging\Identify Records.Outputs[delete]" />
                 <path
-                  refId="Package\Job Data\Staging.Paths[Lookup No Match Output]"
+                  refId="Package\Job Data\Staging.Paths[insert]"
                   endId="Package\Job Data\Staging\INSERT Stage.Inputs[OLE DB Destination Input]"
-                  name="Lookup No Match Output"
-                  startId="Package\Job Data\Staging\Lookup.Outputs[Lookup No Match Output]" />
+                  name="insert"
+                  startId="Package\Job Data\Staging\Identify Records.Outputs[insert]" />
+                <path
+                  refId="Package\Job Data\Staging.Paths[Merge Join Output]"
+                  endId="Package\Job Data\Staging\Identify Records.Inputs[Conditional Split Input]"
+                  name="Merge Join Output"
+                  startId="Package\Job Data\Staging\Merge Join.Outputs[Merge Join Output]" />
                 <path
                   refId="Package\Job Data\Staging.Paths[OLE DB Source Output]"
-                  endId="Package\Job Data\Staging\Lookup.Inputs[Lookup Input]"
+                  endId="Package\Job Data\Staging\Merge Join.Inputs[Merge Join Left Input]"
                   name="OLE DB Source Output"
                   startId="Package\Job Data\Staging\DB Runtime.Outputs[OLE DB Source Output]" />
+                <path
+                  refId="Package\Job Data\Staging.Paths[OLE DB Source Output1]"
+                  endId="Package\Job Data\Staging\Merge Join.Inputs[Merge Join Right Input]"
+                  name="OLE DB Source Output"
+                  startId="Package\Job Data\Staging\DB PBI.Outputs[OLE DB Source Output]" />
+                <path
+                  refId="Package\Job Data\Staging.Paths[update]"
+                  endId="Package\Job Data\Staging\Find Changed Records.Inputs[Conditional Split Input]"
+                  name="update"
+                  startId="Package\Job Data\Staging\Identify Records.Outputs[update]" />
+                <path
+                  refId="Package\Job Data\Staging.Paths[update1]"
+                  endId="Package\Job Data\Staging\UPDATE Stage.Inputs[OLE DB Destination Input]"
+                  name="update"
+                  startId="Package\Job Data\Staging\Find Changed Records.Outputs[update]" />
               </paths>
             </pipeline>
           </DTS:ObjectData>
@@ -781,17 +1444,17 @@ where [refTable].[RecordID] = ?</property>
           DTS:refId="Package\Job Data\Update Data"
           DTS:CreationName="Microsoft.ExecuteSQLTask"
           DTS:Description="Execute SQL Task"
-          DTS:DTSID="{8647256E-431B-454A-8301-A4787B8E3EA2}"
+          DTS:DTSID="{44324b86-f5c8-4dbb-a98d-6e36a41b4657}"
           DTS:ExecutableType="Microsoft.ExecuteSQLTask"
           DTS:LocaleID="-1"
           DTS:ObjectName="Update Data"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="1">
+          DTS:ThreadHint="0">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
               SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-              SQLTask:SqlStatementSource="UPDATE a&#xA;SET a.[JobIndex] = b.[JobIndex],&#xA; a.[Footage] = b.[Footage],&#xA; a.[Downtime] = b.[Downtime]&#xA;FROM [dbo].[zC3_JOBDATA] a&#xA;INNER JOIN zC3_JOBDATA_STAGE_UPDATE b&#xA;ON a.[RecordID] = b.[RecordID]&#xA; AND a.[DateTime] = b.[DateTime]&#xA;GO&#xA;&#xA;UPDATE [zMACHINE_CONFIG]&#xA;SET [LastDatetimeValue] = (SELECT MAX([DateTime]) FROM [zC3_JOBDATA])&#xA;WHERE [TableName] = 'zC3_JOBDATA'&#xA; AND (SELECT COUNT(*) FROM [zC3_JOBDATA]) &gt; 0&#xA;GO" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+              SQLTask:SqlStatementSource="UPDATE a&#xA;SET a.[JobIndex] = b.[JobIndex],&#xA; a.[DateTime]=b.[DateTime],&#xA; a.[Footage] = b.[Footage],&#xA; a.[Downtime] = b.[Downtime]&#xA;FROM [dbo].[zC3_JOBDATA] a&#xA;INNER JOIN zC3_JOBDATA_STAGE_UPDATE b&#xA;ON a.[RecordID] = b.[RecordID]&#xA;GO" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
           </DTS:ObjectData>
         </DTS:Executable>
       </DTS:Executables>
@@ -799,31 +1462,31 @@ where [refTable].[RecordID] = ?</property>
         <DTS:PrecedenceConstraint
           DTS:refId="Package\Job Data.PrecedenceConstraints[Constraint]"
           DTS:CreationName=""
-          DTS:DTSID="{75B2984D-4842-4CFC-989A-5B4805056131}"
+          DTS:DTSID="{FD7E3928-EB5A-48B4-B567-31CB86F9B6DA}"
           DTS:From="Package\Job Data\Clean Stage"
           DTS:LogicalAnd="True"
           DTS:ObjectName="Constraint"
-          DTS:To="Package\Job Data\Get Last Datetime from Dest" />
+          DTS:To="Package\Job Data\Staging" />
         <DTS:PrecedenceConstraint
           DTS:refId="Package\Job Data.PrecedenceConstraints[Constraint 1]"
           DTS:CreationName=""
-          DTS:DTSID="{E167F8A0-CA2F-4402-9FF7-9F82129FA0F5}"
-          DTS:From="Package\Job Data\Get Last Datetime from Dest"
+          DTS:DTSID="{7e04440a-1ab1-4841-aa76-7cf719cfbad0}"
+          DTS:From="Package\Job Data\Staging"
           DTS:LogicalAnd="True"
           DTS:ObjectName="Constraint 1"
-          DTS:To="Package\Job Data\Staging" />
+          DTS:To="Package\Job Data\Delete Data" />
         <DTS:PrecedenceConstraint
           DTS:refId="Package\Job Data.PrecedenceConstraints[Constraint 2]"
           DTS:CreationName=""
-          DTS:DTSID="{BBB0C2B5-3AC2-4A8B-98CD-5471DE88A0FD}"
-          DTS:From="Package\Job Data\Staging"
+          DTS:DTSID="{053df95a-6bf7-4eb3-8b0e-4c489f7b936f}"
+          DTS:From="Package\Job Data\Delete Data"
           DTS:LogicalAnd="True"
           DTS:ObjectName="Constraint 2"
           DTS:To="Package\Job Data\Update Data" />
         <DTS:PrecedenceConstraint
           DTS:refId="Package\Job Data.PrecedenceConstraints[Constraint 3]"
           DTS:CreationName=""
-          DTS:DTSID="{7F75F92F-FBFA-4069-AB85-8BEB4B12C4B0}"
+          DTS:DTSID="{2f6737cd-24a0-4bb3-97e9-4d126e36f0dc}"
           DTS:From="Package\Job Data\Update Data"
           DTS:LogicalAnd="True"
           DTS:ObjectName="Constraint 3"
@@ -849,7 +1512,7 @@ where [refTable].[RecordID] = ?</property>
           DTS:LocaleID="-1"
           DTS:ObjectName="Clean Stage"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="0">
+          DTS:ThreadHint="1">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -866,7 +1529,7 @@ where [refTable].[RecordID] = ?</property>
           DTS:LocaleID="-1"
           DTS:ObjectName="Insert Data"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="0">
+          DTS:ThreadHint="1">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -2770,7 +3433,7 @@ ORDER BY [PIndex]</property>
           DTS:LocaleID="-1"
           DTS:ObjectName="Update Data"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="0">
+          DTS:ThreadHint="1">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -2824,79 +3487,99 @@ ORDER BY [PIndex]</property>
           Id="Package\Job Data\Clean Stage"
           TopLeft="61,15" />
         <NodeLayout
-          Size="214,42"
-          Id="Package\Job Data\Get Last Datetime from Dest"
-          TopLeft="21,82" />
+          Size="114,42"
+          Id="Package\Job Data\Staging"
+          TopLeft="81,92" />
+        <EdgeLayout
+          Id="Package\Job Data.PrecedenceConstraints[Constraint 1]"
+          TopLeft="138,134">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="10,36"
+              Start="0,0"
+              End="10,28.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,14" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,14"
+                    Point2="0,18"
+                    Point3="4,18" />
+                  <mssgle:LineSegment
+                    End="6,18" />
+                  <mssgle:CubicBezierSegment
+                    Point1="6,18"
+                    Point2="10,18"
+                    Point3="10,22" />
+                  <mssgle:LineSegment
+                    End="10,28.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
         <NodeLayout
           Size="132,42"
           Id="Package\Job Data\Insert Data"
-          TopLeft="56,308" />
-        <NodeLayout
-          Size="114,42"
-          Id="Package\Job Data\Staging"
-          TopLeft="68,151" />
+          TopLeft="75,324" />
+        <EdgeLayout
+          Id="Package\Job Data.PrecedenceConstraints[Constraint 3]"
+          TopLeft="149,288">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-8,36"
+              Start="0,0"
+              End="-8,28.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,14" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,14"
+                    Point2="0,18"
+                    Point3="-4,18" />
+                  <mssgle:LineSegment
+                    End="-4,18" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-4,18"
+                    Point2="-8,18"
+                    Point3="-8,22" />
+                  <mssgle:LineSegment
+                    End="-8,28.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
         <NodeLayout
           Size="138,42"
           Id="Package\Job Data\Update Data"
-          TopLeft="58,228" />
-        <EdgeLayout
-          Id="Package\Job Data.PrecedenceConstraints[Constraint]"
-          TopLeft="128.25,57">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,25"
-              Start="0,0"
-              End="0,17.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,17.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\Job Data.PrecedenceConstraints[Constraint 1]"
-          TopLeft="126.5,124">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,27"
-              Start="0,0"
-              End="0,19.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,19.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
+          TopLeft="80,246" />
         <EdgeLayout
           Id="Package\Job Data.PrecedenceConstraints[Constraint 2]"
-          TopLeft="126,193">
+          TopLeft="148.5,212">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,35"
+              EndConnector="0,34"
               Start="0,0"
-              End="0,27.5">
+              End="0,26.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,27.5" />
+                    End="0,26.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -2905,20 +3588,36 @@ ORDER BY [PIndex]</property>
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
+        <NodeLayout
+          Size="134,42"
+          Id="Package\Job Data\Delete Data"
+          TopLeft="81,170" />
         <EdgeLayout
-          Id="Package\Job Data.PrecedenceConstraints[Constraint 3]"
-          TopLeft="124.5,270">
+          Id="Package\Job Data.PrecedenceConstraints[Constraint]"
+          TopLeft="128.5,57">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,38"
+              EndConnector="9.5,35"
               Start="0,0"
-              End="0,30.5">
+              End="9.5,27.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,30.5" />
+                    End="0,13.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,13.5"
+                    Point2="0,17.5"
+                    Point3="4,17.5" />
+                  <mssgle:LineSegment
+                    End="5.5,17.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="5.5,17.5"
+                    Point2="9.5,17.5"
+                    Point3="9.5,21.5" />
+                  <mssgle:LineSegment
+                    End="9.5,27.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -2930,8 +3629,8 @@ ORDER BY [PIndex]</property>
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="299,405"
-          Size="299,448"
+          PanelSize="299,421"
+          Size="299,464"
           Id="Package\Job Data"
           TopLeft="18,9" />
         <NodeLayout
@@ -3026,181 +3725,6 @@ ORDER BY [PIndex]</property>
       </GraphLayout>
     </LayoutInfo>
   </Package>
-  <TaskHost
-    design-time-name="Package\Job Data\Staging">
-    <LayoutInfo>
-      <GraphLayout
-        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
-        <NodeLayout
-          Size="145,42"
-          Id="Package\Job Data\Staging\INSERT Stage"
-          TopLeft="164,247" />
-        <NodeLayout
-          Size="113,42"
-          Id="Package\Job Data\Staging\Lookup"
-          TopLeft="387,127" />
-        <NodeLayout
-          Size="135,42"
-          Id="Package\Job Data\Staging\DB Runtime"
-          TopLeft="380,25" />
-        <NodeLayout
-          Size="148,42"
-          Id="Package\Job Data\Staging\UPDATE Stage"
-          TopLeft="590,262" />
-        <EdgeLayout
-          Id="Package\Job Data\Staging.Paths[Lookup Match Output]"
-          TopLeft="461,169">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="203,93"
-              Start="0,0"
-              End="203,85.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,33.979057591623" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,33.979057591623"
-                    Point2="0,37.979057591623"
-                    Point3="4,37.979057591623" />
-                  <mssgle:LineSegment
-                    End="199,37.979057591623" />
-                  <mssgle:CubicBezierSegment
-                    Point1="199,37.979057591623"
-                    Point2="203,37.979057591623"
-                    Point3="203,41.979057591623" />
-                  <mssgle:LineSegment
-                    End="203,85.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="53.30861328125,42.979057591623,96.3827734375,11.609375"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\Job Data\Staging.Paths[OLE DB Source Output]"
-          TopLeft="445.5,67">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,60"
-              Start="0,0"
-              End="0,52.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,52.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\Job Data\Staging.Paths[Lookup No Match Output]"
-          TopLeft="443.5,169">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="-207,78"
-              Start="0,0"
-              End="-207,70.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,35" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,35"
-                    Point2="0,39"
-                    Point3="-4,39" />
-                  <mssgle:LineSegment
-                    End="-203,39" />
-                  <mssgle:CubicBezierSegment
-                    Point1="-203,39"
-                    Point2="-207,39"
-                    Point3="-207,43" />
-                  <mssgle:LineSegment
-                    End="-207,70.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-159.30638671875,44,111.6127734375,11.609375"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-      </GraphLayout>
-    </LayoutInfo>
-  </TaskHost>
-  <PipelineComponentMetadata
-    design-time-name="Package\Job Data\Staging\INSERT Stage">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-      <Property>
-        <Name>TableInfoObjectType</Name>
-        <Value
-          type="q2:string">Table</Value>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
-    design-time-name="Package\Job Data\Staging\Lookup">
-    <Properties>
-      <Property>
-        <Name>OverwriteParamsSQLProp</Name>
-        <Value
-          type="q2:boolean">false</Value>
-      </Property>
-      <Property>
-        <Name>UsedTableName</Name>
-        <Value
-          type="q3:string"></Value>
-      </Property>
-      <Property>
-        <Name>TableInfoObjectType</Name>
-        <Value
-          type="q4:int">0</Value>
-      </Property>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
-    design-time-name="Package\Job Data\Staging\DB Runtime">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
-    design-time-name="Package\Job Data\Staging\UPDATE Stage">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-      <Property>
-        <Name>TableInfoObjectType</Name>
-        <Value
-          type="q2:string">Table</Value>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
   <TaskHost
     design-time-name="Package\Primary Structure\Staging">
     <LayoutInfo>
@@ -3495,6 +4019,323 @@ ORDER BY [PIndex]</property>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
     design-time-name="Package\Primary Structure\Staging\INSERT Stage">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <TaskHost
+    design-time-name="Package\Job Data\Staging">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="130,42"
+          Id="Package\Job Data\Staging\Merge Join"
+          TopLeft="347,133" />
+        <NodeLayout
+          Size="135,42"
+          Id="Package\Job Data\Staging\DB Runtime"
+          TopLeft="38,58" />
+        <NodeLayout
+          Size="112,42"
+          Id="Package\Job Data\Staging\DB PBI"
+          TopLeft="638,57" />
+        <NodeLayout
+          Size="184,42"
+          Id="Package\Job Data\Staging\Find Changed Records"
+          TopLeft="330,385" />
+        <NodeLayout
+          Size="148,42"
+          Id="Package\Job Data\Staging\UPDATE Stage"
+          TopLeft="350,482" />
+        <NodeLayout
+          Size="146,42"
+          Id="Package\Job Data\Staging\DELETE Stage"
+          TopLeft="713,344" />
+        <NodeLayout
+          Size="145,42"
+          Id="Package\Job Data\Staging\INSERT Stage"
+          TopLeft="39,347" />
+        <NodeLayout
+          Size="156,42"
+          Id="Package\Job Data\Staging\Identify Records"
+          TopLeft="341,243" />
+        <EdgeLayout
+          Id="Package\Job Data\Staging.Paths[Merge Join Output]"
+          TopLeft="415.5,175">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,68"
+              Start="0,0"
+              End="0,60.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,60.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Job Data\Staging.Paths[delete]"
+          TopLeft="456,285">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="330,59"
+              Start="0,0"
+              End="330,51.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,16.327731092437" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,16.327731092437"
+                    Point2="0,20.327731092437"
+                    Point3="4,20.327731092437" />
+                  <mssgle:LineSegment
+                    End="326,20.327731092437" />
+                  <mssgle:CubicBezierSegment
+                    Point1="326,20.327731092437"
+                    Point2="330,20.327731092437"
+                    Point3="330,24.327731092437" />
+                  <mssgle:LineSegment
+                    End="330,51.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="150.80404296875,25.327731092437,28.3919140625,9.7490234375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Job Data\Staging.Paths[update]"
+          TopLeft="443.666666666667,285">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-21.6666666666667,100"
+              Start="0,0"
+              End="-21.6666666666667,92.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,36.6091370558376" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,36.6091370558376"
+                    Point2="0,40.6091370558376"
+                    Point3="-4,40.6091370558376" />
+                  <mssgle:LineSegment
+                    End="-17.6666666666667,40.6091370558376" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-17.6666666666667,40.6091370558376"
+                    Point2="-21.6666666666667,40.6091370558376"
+                    Point3="-21.6666666666667,44.6091370558376" />
+                  <mssgle:LineSegment
+                    End="-21.6666666666667,92.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-26.6358333333334,45.6091370558376,31.605,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Job Data\Staging.Paths[update1]"
+          TopLeft="423,427">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,55"
+              Start="0,0"
+              End="0,47.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,47.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-15.8025,17.9453125,31.605,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Job Data\Staging.Paths[insert]"
+          TopLeft="394.333333333333,285">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-282.833333333333,62"
+              Start="0,0"
+              End="-282.833333333333,54.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,21.1776649746193" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,21.1776649746193"
+                    Point2="0,25.1776649746193"
+                    Point3="-4,25.1776649746193" />
+                  <mssgle:LineSegment
+                    End="-278.833333333333,25.1776649746193" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-278.833333333333,25.1776649746193"
+                    Point2="-282.833333333333,25.1776649746193"
+                    Point3="-282.833333333333,29.1776649746193" />
+                  <mssgle:LineSegment
+                    End="-282.833333333333,54.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-154.366647135416,30.1776649746193,25.8999609375,9.451171875"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Job Data\Staging.Paths[OLE DB Source Output1]"
+          TopLeft="694,99">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-261.666666666667,34"
+              Start="0,0"
+              End="-261.666666666667,26.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,16.1519756838906" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,16.1519756838906"
+                    Point2="0,20.1519756838906"
+                    Point3="-4,20.1519756838906" />
+                  <mssgle:LineSegment
+                    End="-257.666666666667,20.1519756838906" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-257.666666666667,20.1519756838906"
+                    Point2="-261.666666666667,20.1519756838906"
+                    Point3="-261.666666666667,24.1519756838906" />
+                  <mssgle:LineSegment
+                    End="-261.666666666667,26.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Job Data\Staging.Paths[OLE DB Source Output]"
+          TopLeft="105.5,100">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="286.166666666667,33"
+              Start="0,0"
+              End="286.166666666667,25.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,15.5592705167173" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,15.5592705167173"
+                    Point2="0,19.5592705167173"
+                    Point3="4,19.5592705167173" />
+                  <mssgle:LineSegment
+                    End="282.166666666667,19.5592705167173" />
+                  <mssgle:CubicBezierSegment
+                    Point1="282.166666666667,19.5592705167173"
+                    Point2="286.166666666667,19.5592705167173"
+                    Point3="286.166666666667,23.5592705167173" />
+                  <mssgle:LineSegment
+                    End="286.166666666667,25.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Job Data\Staging\DB Runtime">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Job Data\Staging\DB PBI">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Job Data\Staging\UPDATE Stage">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Job Data\Staging\DELETE Stage">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Job Data\Staging\INSERT Stage">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
