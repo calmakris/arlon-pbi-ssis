@@ -1,0 +1,2524 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="4/19/2021 12:56:58 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="ARLPBIDEV"
+  DTS:CreatorName="DOMAIN\RPETRELLA"
+  DTS:DTSID="{B227FF5C-D32B-4078-BE0A-316A9A049989}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="15.0.2000.170"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="LAGP"
+  DTS:PackageType="5"
+  DTS:VersionBuild="10"
+  DTS:VersionGUID="{5E0F631B-576B-4FC3-AA94-5AA3CD2C8685}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\clean stage"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{543048CC-51A0-4CB9-8157-1D072FC64A04}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="clean stage"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="TRUNCATE TABLE [LAGP_STAGE_UPDATE]&#xA;go&#xA;TRUNCATE TABLE [LAGP_STAGE_DELETE]&#xA;go&#xA;TRUNCATE TABLE [LAGP_STAGE_INSERT]&#xA;go" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\LAGP"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{F4FEFEF8-9F5C-4222-8784-E327023F32EA}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="LAGP"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\LAGP\DB PBI"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="DB PBI"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT [MANDT]
+    ,[LGNUM]
+    ,[LGTYP]
+    ,[LGPLA]
+    ,[ANZQU]
+    ,[BDATU]
+    ,[BZEIT]
+    ,[BTANR]
+    ,[KZLER]
+FROM [LAGP] (NOLOCK)
+WHERE MANDT = '105'
+ORDER BY [MANDT]
+    ,[LGNUM]
+    ,[LGTYP]
+    ,[LGPLA]</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\LAGP\DB PBI.Connections[OleDbConnection]"
+                  connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\LAGP\DB PBI.Outputs[OLE DB Source Output]"
+                  isSorted="true"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\LAGP\DB PBI.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\LAGP\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      length="3"
+                      lineageId="Package\LAGP\DB PBI.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      name="MANDT"
+                      sortKeyPosition="1"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\LAGP\DB PBI.Outputs[OLE DB Source Output].Columns[LGNUM]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\LAGP\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[LGNUM]"
+                      length="3"
+                      lineageId="Package\LAGP\DB PBI.Outputs[OLE DB Source Output].Columns[LGNUM]"
+                      name="LGNUM"
+                      sortKeyPosition="2"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\LAGP\DB PBI.Outputs[OLE DB Source Output].Columns[LGPLA]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\LAGP\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[LGPLA]"
+                      length="10"
+                      lineageId="Package\LAGP\DB PBI.Outputs[OLE DB Source Output].Columns[LGPLA]"
+                      name="LGPLA"
+                      sortKeyPosition="4"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\LAGP\DB PBI.Outputs[OLE DB Source Output].Columns[LGTYP]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\LAGP\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[LGTYP]"
+                      length="3"
+                      lineageId="Package\LAGP\DB PBI.Outputs[OLE DB Source Output].Columns[LGTYP]"
+                      name="LGTYP"
+                      sortKeyPosition="3"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\LAGP\DB PBI.Outputs[OLE DB Source Output].Columns[ANZQU]"
+                      dataType="numeric"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\LAGP\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[ANZQU]"
+                      lineageId="Package\LAGP\DB PBI.Outputs[OLE DB Source Output].Columns[ANZQU]"
+                      name="ANZQU"
+                      precision="7"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\LAGP\DB PBI.Outputs[OLE DB Source Output].Columns[BDATU]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\LAGP\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[BDATU]"
+                      length="8"
+                      lineageId="Package\LAGP\DB PBI.Outputs[OLE DB Source Output].Columns[BDATU]"
+                      name="BDATU"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\LAGP\DB PBI.Outputs[OLE DB Source Output].Columns[BZEIT]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\LAGP\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[BZEIT]"
+                      length="6"
+                      lineageId="Package\LAGP\DB PBI.Outputs[OLE DB Source Output].Columns[BZEIT]"
+                      name="BZEIT"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\LAGP\DB PBI.Outputs[OLE DB Source Output].Columns[BTANR]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\LAGP\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[BTANR]"
+                      length="10"
+                      lineageId="Package\LAGP\DB PBI.Outputs[OLE DB Source Output].Columns[BTANR]"
+                      name="BTANR"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\LAGP\DB PBI.Outputs[OLE DB Source Output].Columns[KZLER]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\LAGP\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[KZLER]"
+                      length="1"
+                      lineageId="Package\LAGP\DB PBI.Outputs[OLE DB Source Output].Columns[KZLER]"
+                      name="KZLER"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\LAGP\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      name="MANDT" />
+                    <externalMetadataColumn
+                      refId="Package\LAGP\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[LGNUM]"
+                      dataType="wstr"
+                      length="3"
+                      name="LGNUM" />
+                    <externalMetadataColumn
+                      refId="Package\LAGP\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[LGPLA]"
+                      dataType="wstr"
+                      length="10"
+                      name="LGPLA" />
+                    <externalMetadataColumn
+                      refId="Package\LAGP\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[LGTYP]"
+                      dataType="wstr"
+                      length="3"
+                      name="LGTYP" />
+                    <externalMetadataColumn
+                      refId="Package\LAGP\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[ANZQU]"
+                      dataType="numeric"
+                      name="ANZQU"
+                      precision="7" />
+                    <externalMetadataColumn
+                      refId="Package\LAGP\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[BDATU]"
+                      dataType="wstr"
+                      length="8"
+                      name="BDATU" />
+                    <externalMetadataColumn
+                      refId="Package\LAGP\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[BZEIT]"
+                      dataType="wstr"
+                      length="6"
+                      name="BZEIT" />
+                    <externalMetadataColumn
+                      refId="Package\LAGP\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[BTANR]"
+                      dataType="wstr"
+                      length="10"
+                      name="BTANR" />
+                    <externalMetadataColumn
+                      refId="Package\LAGP\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[KZLER]"
+                      dataType="wstr"
+                      length="1"
+                      name="KZLER" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\LAGP\DB PBI.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\LAGP\DB PBI.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      lineageId="Package\LAGP\DB PBI.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      name="MANDT" />
+                    <outputColumn
+                      refId="Package\LAGP\DB PBI.Outputs[OLE DB Source Error Output].Columns[LGNUM]"
+                      dataType="wstr"
+                      length="3"
+                      lineageId="Package\LAGP\DB PBI.Outputs[OLE DB Source Error Output].Columns[LGNUM]"
+                      name="LGNUM" />
+                    <outputColumn
+                      refId="Package\LAGP\DB PBI.Outputs[OLE DB Source Error Output].Columns[LGTYP]"
+                      dataType="wstr"
+                      length="3"
+                      lineageId="Package\LAGP\DB PBI.Outputs[OLE DB Source Error Output].Columns[LGTYP]"
+                      name="LGTYP" />
+                    <outputColumn
+                      refId="Package\LAGP\DB PBI.Outputs[OLE DB Source Error Output].Columns[LGPLA]"
+                      dataType="wstr"
+                      length="10"
+                      lineageId="Package\LAGP\DB PBI.Outputs[OLE DB Source Error Output].Columns[LGPLA]"
+                      name="LGPLA" />
+                    <outputColumn
+                      refId="Package\LAGP\DB PBI.Outputs[OLE DB Source Error Output].Columns[ANZQU]"
+                      dataType="numeric"
+                      lineageId="Package\LAGP\DB PBI.Outputs[OLE DB Source Error Output].Columns[ANZQU]"
+                      name="ANZQU"
+                      precision="7" />
+                    <outputColumn
+                      refId="Package\LAGP\DB PBI.Outputs[OLE DB Source Error Output].Columns[BDATU]"
+                      dataType="wstr"
+                      length="8"
+                      lineageId="Package\LAGP\DB PBI.Outputs[OLE DB Source Error Output].Columns[BDATU]"
+                      name="BDATU" />
+                    <outputColumn
+                      refId="Package\LAGP\DB PBI.Outputs[OLE DB Source Error Output].Columns[BZEIT]"
+                      dataType="wstr"
+                      length="6"
+                      lineageId="Package\LAGP\DB PBI.Outputs[OLE DB Source Error Output].Columns[BZEIT]"
+                      name="BZEIT" />
+                    <outputColumn
+                      refId="Package\LAGP\DB PBI.Outputs[OLE DB Source Error Output].Columns[BTANR]"
+                      dataType="wstr"
+                      length="10"
+                      lineageId="Package\LAGP\DB PBI.Outputs[OLE DB Source Error Output].Columns[BTANR]"
+                      name="BTANR" />
+                    <outputColumn
+                      refId="Package\LAGP\DB PBI.Outputs[OLE DB Source Error Output].Columns[KZLER]"
+                      dataType="wstr"
+                      length="1"
+                      lineageId="Package\LAGP\DB PBI.Outputs[OLE DB Source Error Output].Columns[KZLER]"
+                      name="KZLER" />
+                    <outputColumn
+                      refId="Package\LAGP\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\LAGP\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\LAGP\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\LAGP\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\LAGP\DB SAP"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="DB SAP"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT [MANDT]
+    ,[LGNUM]
+    ,[LGTYP]
+    ,[LGPLA]
+    ,[ANZQU]
+    ,[BDATU]
+    ,[BZEIT]
+    ,[BTANR]
+    ,[KZLER]
+FROM [ecp].[LAGP] (NOLOCK)
+WHERE MANDT = '105'
+ORDER BY [MANDT]
+    ,[LGNUM]
+    ,[LGTYP]
+    ,[LGPLA]</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\LAGP\DB SAP.Connections[OleDbConnection]"
+                  connectionManagerID="{544CCAD9-2CB1-4D87-98D7-A7C478586195}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[SQL_SAP]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\LAGP\DB SAP.Outputs[OLE DB Source Output]"
+                  isSorted="true"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\LAGP\DB SAP.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\LAGP\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      length="3"
+                      lineageId="Package\LAGP\DB SAP.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      name="MANDT"
+                      sortKeyPosition="1"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\LAGP\DB SAP.Outputs[OLE DB Source Output].Columns[LGNUM]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\LAGP\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[LGNUM]"
+                      length="3"
+                      lineageId="Package\LAGP\DB SAP.Outputs[OLE DB Source Output].Columns[LGNUM]"
+                      name="LGNUM"
+                      sortKeyPosition="2"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\LAGP\DB SAP.Outputs[OLE DB Source Output].Columns[LGPLA]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\LAGP\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[LGPLA]"
+                      length="10"
+                      lineageId="Package\LAGP\DB SAP.Outputs[OLE DB Source Output].Columns[LGPLA]"
+                      name="LGPLA"
+                      sortKeyPosition="4"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\LAGP\DB SAP.Outputs[OLE DB Source Output].Columns[LGTYP]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\LAGP\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[LGTYP]"
+                      length="3"
+                      lineageId="Package\LAGP\DB SAP.Outputs[OLE DB Source Output].Columns[LGTYP]"
+                      name="LGTYP"
+                      sortKeyPosition="3"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\LAGP\DB SAP.Outputs[OLE DB Source Output].Columns[ANZQU]"
+                      dataType="numeric"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\LAGP\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[ANZQU]"
+                      lineageId="Package\LAGP\DB SAP.Outputs[OLE DB Source Output].Columns[ANZQU]"
+                      name="ANZQU"
+                      precision="7"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\LAGP\DB SAP.Outputs[OLE DB Source Output].Columns[BDATU]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\LAGP\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[BDATU]"
+                      length="8"
+                      lineageId="Package\LAGP\DB SAP.Outputs[OLE DB Source Output].Columns[BDATU]"
+                      name="BDATU"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\LAGP\DB SAP.Outputs[OLE DB Source Output].Columns[BZEIT]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\LAGP\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[BZEIT]"
+                      length="6"
+                      lineageId="Package\LAGP\DB SAP.Outputs[OLE DB Source Output].Columns[BZEIT]"
+                      name="BZEIT"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\LAGP\DB SAP.Outputs[OLE DB Source Output].Columns[BTANR]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\LAGP\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[BTANR]"
+                      length="10"
+                      lineageId="Package\LAGP\DB SAP.Outputs[OLE DB Source Output].Columns[BTANR]"
+                      name="BTANR"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\LAGP\DB SAP.Outputs[OLE DB Source Output].Columns[KZLER]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\LAGP\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[KZLER]"
+                      length="1"
+                      lineageId="Package\LAGP\DB SAP.Outputs[OLE DB Source Output].Columns[KZLER]"
+                      name="KZLER"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\LAGP\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      name="MANDT" />
+                    <externalMetadataColumn
+                      refId="Package\LAGP\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[LGNUM]"
+                      dataType="wstr"
+                      length="3"
+                      name="LGNUM" />
+                    <externalMetadataColumn
+                      refId="Package\LAGP\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[LGPLA]"
+                      dataType="wstr"
+                      length="10"
+                      name="LGPLA" />
+                    <externalMetadataColumn
+                      refId="Package\LAGP\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[LGTYP]"
+                      dataType="wstr"
+                      length="3"
+                      name="LGTYP" />
+                    <externalMetadataColumn
+                      refId="Package\LAGP\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[ANZQU]"
+                      dataType="numeric"
+                      name="ANZQU"
+                      precision="7" />
+                    <externalMetadataColumn
+                      refId="Package\LAGP\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[BDATU]"
+                      dataType="wstr"
+                      length="8"
+                      name="BDATU" />
+                    <externalMetadataColumn
+                      refId="Package\LAGP\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[BZEIT]"
+                      dataType="wstr"
+                      length="6"
+                      name="BZEIT" />
+                    <externalMetadataColumn
+                      refId="Package\LAGP\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[BTANR]"
+                      dataType="wstr"
+                      length="10"
+                      name="BTANR" />
+                    <externalMetadataColumn
+                      refId="Package\LAGP\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[KZLER]"
+                      dataType="wstr"
+                      length="1"
+                      name="KZLER" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\LAGP\DB SAP.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\LAGP\DB SAP.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      lineageId="Package\LAGP\DB SAP.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      name="MANDT" />
+                    <outputColumn
+                      refId="Package\LAGP\DB SAP.Outputs[OLE DB Source Error Output].Columns[LGNUM]"
+                      dataType="wstr"
+                      length="3"
+                      lineageId="Package\LAGP\DB SAP.Outputs[OLE DB Source Error Output].Columns[LGNUM]"
+                      name="LGNUM" />
+                    <outputColumn
+                      refId="Package\LAGP\DB SAP.Outputs[OLE DB Source Error Output].Columns[LGTYP]"
+                      dataType="wstr"
+                      length="3"
+                      lineageId="Package\LAGP\DB SAP.Outputs[OLE DB Source Error Output].Columns[LGTYP]"
+                      name="LGTYP" />
+                    <outputColumn
+                      refId="Package\LAGP\DB SAP.Outputs[OLE DB Source Error Output].Columns[LGPLA]"
+                      dataType="wstr"
+                      length="10"
+                      lineageId="Package\LAGP\DB SAP.Outputs[OLE DB Source Error Output].Columns[LGPLA]"
+                      name="LGPLA" />
+                    <outputColumn
+                      refId="Package\LAGP\DB SAP.Outputs[OLE DB Source Error Output].Columns[ANZQU]"
+                      dataType="numeric"
+                      lineageId="Package\LAGP\DB SAP.Outputs[OLE DB Source Error Output].Columns[ANZQU]"
+                      name="ANZQU"
+                      precision="7" />
+                    <outputColumn
+                      refId="Package\LAGP\DB SAP.Outputs[OLE DB Source Error Output].Columns[BDATU]"
+                      dataType="wstr"
+                      length="8"
+                      lineageId="Package\LAGP\DB SAP.Outputs[OLE DB Source Error Output].Columns[BDATU]"
+                      name="BDATU" />
+                    <outputColumn
+                      refId="Package\LAGP\DB SAP.Outputs[OLE DB Source Error Output].Columns[BZEIT]"
+                      dataType="wstr"
+                      length="6"
+                      lineageId="Package\LAGP\DB SAP.Outputs[OLE DB Source Error Output].Columns[BZEIT]"
+                      name="BZEIT" />
+                    <outputColumn
+                      refId="Package\LAGP\DB SAP.Outputs[OLE DB Source Error Output].Columns[BTANR]"
+                      dataType="wstr"
+                      length="10"
+                      lineageId="Package\LAGP\DB SAP.Outputs[OLE DB Source Error Output].Columns[BTANR]"
+                      name="BTANR" />
+                    <outputColumn
+                      refId="Package\LAGP\DB SAP.Outputs[OLE DB Source Error Output].Columns[KZLER]"
+                      dataType="wstr"
+                      length="1"
+                      lineageId="Package\LAGP\DB SAP.Outputs[OLE DB Source Error Output].Columns[KZLER]"
+                      name="KZLER" />
+                    <outputColumn
+                      refId="Package\LAGP\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\LAGP\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\LAGP\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\LAGP\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\LAGP\Find Changed Records"
+              componentClassID="Microsoft.ConditionalSplit"
+              contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
+              name="Find Changed Records"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\LAGP\Find Changed Records.Inputs[Conditional Split Input]"
+                  description="Input to the Conditional Split Transformation"
+                  name="Conditional Split Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\LAGP\Find Changed Records.Inputs[Conditional Split Input].Columns[ANZQU]"
+                      cachedDataType="numeric"
+                      cachedName="ANZQU"
+                      cachedPrecision="7"
+                      lineageId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[ANZQU]" />
+                    <inputColumn
+                      refId="Package\LAGP\Find Changed Records.Inputs[Conditional Split Input].Columns[BDATU]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="BDATU"
+                      lineageId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[BDATU]" />
+                    <inputColumn
+                      refId="Package\LAGP\Find Changed Records.Inputs[Conditional Split Input].Columns[BZEIT]"
+                      cachedDataType="wstr"
+                      cachedLength="6"
+                      cachedName="BZEIT"
+                      lineageId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[BZEIT]" />
+                    <inputColumn
+                      refId="Package\LAGP\Find Changed Records.Inputs[Conditional Split Input].Columns[BTANR]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="BTANR"
+                      lineageId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[BTANR]" />
+                    <inputColumn
+                      refId="Package\LAGP\Find Changed Records.Inputs[Conditional Split Input].Columns[KZLER]"
+                      cachedDataType="wstr"
+                      cachedLength="1"
+                      cachedName="KZLER"
+                      lineageId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[KZLER]" />
+                    <inputColumn
+                      refId="Package\LAGP\Find Changed Records.Inputs[Conditional Split Input].Columns[ANZQU (1)]"
+                      cachedDataType="numeric"
+                      cachedName="ANZQU (1)"
+                      cachedPrecision="7"
+                      lineageId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[ANZQU (1)]" />
+                    <inputColumn
+                      refId="Package\LAGP\Find Changed Records.Inputs[Conditional Split Input].Columns[BDATU (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="BDATU (1)"
+                      lineageId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[BDATU (1)]" />
+                    <inputColumn
+                      refId="Package\LAGP\Find Changed Records.Inputs[Conditional Split Input].Columns[BZEIT (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="6"
+                      cachedName="BZEIT (1)"
+                      lineageId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[BZEIT (1)]" />
+                    <inputColumn
+                      refId="Package\LAGP\Find Changed Records.Inputs[Conditional Split Input].Columns[BTANR (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="BTANR (1)"
+                      lineageId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[BTANR (1)]" />
+                    <inputColumn
+                      refId="Package\LAGP\Find Changed Records.Inputs[Conditional Split Input].Columns[KZLER (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="1"
+                      cachedName="KZLER (1)"
+                      lineageId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[KZLER (1)]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\LAGP\Find Changed Records.Outputs[update]"
+                  description="Output 1 of the Conditional Split Transformation"
+                  errorOrTruncationOperation="Computation"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="update"
+                  synchronousInputId="Package\LAGP\Find Changed Records.Inputs[Conditional Split Input]"
+                  truncationRowDisposition="FailComponent">
+                  <properties>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                      name="Expression">#{Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[ANZQU]} != #{Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[ANZQU (1)]} || #{Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[BDATU]} != #{Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[BDATU (1)]} || #{Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[BZEIT]} != #{Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[BZEIT (1)]} || #{Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[BTANR]} != #{Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[BTANR (1)]} || #{Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[KZLER]} != #{Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[KZLER (1)]}</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the friendly version of the expression. This expression version uses column names."
+                      expressionType="Notify"
+                      name="FriendlyExpression">ANZQU != [ANZQU (1)] || BDATU != [BDATU (1)] || BZEIT != [BZEIT (1)] || BTANR != [BTANR (1)] || KZLER != [KZLER (1)]</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                      name="EvaluationOrder">0</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\LAGP\Find Changed Records.Outputs[Conditional Split Default Output]"
+                  description="Default Output of the Conditional Split Transformation"
+                  exclusionGroup="1"
+                  name="Conditional Split Default Output"
+                  synchronousInputId="Package\LAGP\Find Changed Records.Inputs[Conditional Split Input]">
+                  <properties>
+                    <property
+                      dataType="System.Boolean"
+                      name="IsDefaultOut">true</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\LAGP\Find Changed Records.Outputs[Conditional Split Error Output]"
+                  description="Error Output of the Conditional Split Transformation"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Conditional Split Error Output"
+                  synchronousInputId="Package\LAGP\Find Changed Records.Inputs[Conditional Split Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\LAGP\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\LAGP\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\LAGP\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\LAGP\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\LAGP\Identity records"
+              componentClassID="Microsoft.ConditionalSplit"
+              contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
+              name="Identity records"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\LAGP\Identity records.Inputs[Conditional Split Input]"
+                  description="Input to the Conditional Split Transformation"
+                  name="Conditional Split Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\LAGP\Identity records.Inputs[Conditional Split Input].Columns[MANDT]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT"
+                      cachedSortKeyPosition="1"
+                      lineageId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
+                    <inputColumn
+                      refId="Package\LAGP\Identity records.Inputs[Conditional Split Input].Columns[MANDT (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT (1)"
+                      lineageId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\LAGP\Identity records.Outputs[update]"
+                  description="Output 1 of the Conditional Split Transformation"
+                  errorOrTruncationOperation="Computation"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="update"
+                  synchronousInputId="Package\LAGP\Identity records.Inputs[Conditional Split Input]"
+                  truncationRowDisposition="FailComponent">
+                  <properties>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                      name="Expression">![ISNULL](#{Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; ![ISNULL](#{Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the friendly version of the expression. This expression version uses column names."
+                      expressionType="Notify"
+                      name="FriendlyExpression">!ISNULL(MANDT) &amp;&amp; !ISNULL([MANDT (1)])</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                      name="EvaluationOrder">0</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\LAGP\Identity records.Outputs[insert]"
+                  description="Output 2 of the Conditional Split Transformation"
+                  errorOrTruncationOperation="Computation"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="insert"
+                  synchronousInputId="Package\LAGP\Identity records.Inputs[Conditional Split Input]"
+                  truncationRowDisposition="FailComponent">
+                  <properties>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                      name="Expression">![ISNULL](#{Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; [ISNULL](#{Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the friendly version of the expression. This expression version uses column names."
+                      expressionType="Notify"
+                      name="FriendlyExpression">!ISNULL(MANDT) &amp;&amp; ISNULL([MANDT (1)])</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                      name="EvaluationOrder">1</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\LAGP\Identity records.Outputs[delete]"
+                  description="Output 3 of the Conditional Split Transformation"
+                  errorOrTruncationOperation="Computation"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="delete"
+                  synchronousInputId="Package\LAGP\Identity records.Inputs[Conditional Split Input]"
+                  truncationRowDisposition="FailComponent">
+                  <properties>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                      name="Expression">[ISNULL](#{Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; ![ISNULL](#{Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the friendly version of the expression. This expression version uses column names."
+                      expressionType="Notify"
+                      name="FriendlyExpression">ISNULL(MANDT) &amp;&amp; !ISNULL([MANDT (1)])</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                      name="EvaluationOrder">2</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\LAGP\Identity records.Outputs[Conditional Split Default Output]"
+                  description="Default Output of the Conditional Split Transformation"
+                  exclusionGroup="1"
+                  name="Conditional Split Default Output"
+                  synchronousInputId="Package\LAGP\Identity records.Inputs[Conditional Split Input]">
+                  <properties>
+                    <property
+                      dataType="System.Boolean"
+                      name="IsDefaultOut">true</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\LAGP\Identity records.Outputs[Conditional Split Error Output]"
+                  description="Error Output of the Conditional Split Transformation"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Conditional Split Error Output"
+                  synchronousInputId="Package\LAGP\Identity records.Inputs[Conditional Split Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\LAGP\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\LAGP\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\LAGP\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\LAGP\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\LAGP\insert new records"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="insert new records"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[LAGP_STAGE_INSERT]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\LAGP\insert new records.Connections[OleDbConnection]"
+                  connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\LAGP\insert new records.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\LAGP\insert new records.Inputs[OLE DB Destination Input].Columns[MANDT]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT"
+                      cachedSortKeyPosition="1"
+                      externalMetadataColumnId="Package\LAGP\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      lineageId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
+                    <inputColumn
+                      refId="Package\LAGP\insert new records.Inputs[OLE DB Destination Input].Columns[LGNUM]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="LGNUM"
+                      cachedSortKeyPosition="2"
+                      externalMetadataColumnId="Package\LAGP\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[LGNUM]"
+                      lineageId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[LGNUM]" />
+                    <inputColumn
+                      refId="Package\LAGP\insert new records.Inputs[OLE DB Destination Input].Columns[LGPLA]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="LGPLA"
+                      cachedSortKeyPosition="4"
+                      externalMetadataColumnId="Package\LAGP\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[LGPLA]"
+                      lineageId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[LGPLA]" />
+                    <inputColumn
+                      refId="Package\LAGP\insert new records.Inputs[OLE DB Destination Input].Columns[LGTYP]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="LGTYP"
+                      cachedSortKeyPosition="3"
+                      externalMetadataColumnId="Package\LAGP\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[LGTYP]"
+                      lineageId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[LGTYP]" />
+                    <inputColumn
+                      refId="Package\LAGP\insert new records.Inputs[OLE DB Destination Input].Columns[ANZQU]"
+                      cachedDataType="numeric"
+                      cachedName="ANZQU"
+                      cachedPrecision="7"
+                      externalMetadataColumnId="Package\LAGP\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[ANZQU]"
+                      lineageId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[ANZQU]" />
+                    <inputColumn
+                      refId="Package\LAGP\insert new records.Inputs[OLE DB Destination Input].Columns[BDATU]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="BDATU"
+                      externalMetadataColumnId="Package\LAGP\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[BDATU]"
+                      lineageId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[BDATU]" />
+                    <inputColumn
+                      refId="Package\LAGP\insert new records.Inputs[OLE DB Destination Input].Columns[BZEIT]"
+                      cachedDataType="wstr"
+                      cachedLength="6"
+                      cachedName="BZEIT"
+                      externalMetadataColumnId="Package\LAGP\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[BZEIT]"
+                      lineageId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[BZEIT]" />
+                    <inputColumn
+                      refId="Package\LAGP\insert new records.Inputs[OLE DB Destination Input].Columns[BTANR]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="BTANR"
+                      externalMetadataColumnId="Package\LAGP\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[BTANR]"
+                      lineageId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[BTANR]" />
+                    <inputColumn
+                      refId="Package\LAGP\insert new records.Inputs[OLE DB Destination Input].Columns[KZLER]"
+                      cachedDataType="wstr"
+                      cachedLength="1"
+                      cachedName="KZLER"
+                      externalMetadataColumnId="Package\LAGP\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[KZLER]"
+                      lineageId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[KZLER]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\LAGP\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      name="MANDT" />
+                    <externalMetadataColumn
+                      refId="Package\LAGP\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[LGNUM]"
+                      dataType="wstr"
+                      length="3"
+                      name="LGNUM" />
+                    <externalMetadataColumn
+                      refId="Package\LAGP\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[LGPLA]"
+                      dataType="wstr"
+                      length="10"
+                      name="LGPLA" />
+                    <externalMetadataColumn
+                      refId="Package\LAGP\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[LGTYP]"
+                      dataType="wstr"
+                      length="3"
+                      name="LGTYP" />
+                    <externalMetadataColumn
+                      refId="Package\LAGP\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[ANZQU]"
+                      dataType="numeric"
+                      name="ANZQU"
+                      precision="7" />
+                    <externalMetadataColumn
+                      refId="Package\LAGP\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[BDATU]"
+                      dataType="wstr"
+                      length="8"
+                      name="BDATU" />
+                    <externalMetadataColumn
+                      refId="Package\LAGP\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[BZEIT]"
+                      dataType="wstr"
+                      length="6"
+                      name="BZEIT" />
+                    <externalMetadataColumn
+                      refId="Package\LAGP\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[BTANR]"
+                      dataType="wstr"
+                      length="10"
+                      name="BTANR" />
+                    <externalMetadataColumn
+                      refId="Package\LAGP\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[KZLER]"
+                      dataType="wstr"
+                      length="1"
+                      name="KZLER" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\LAGP\insert new records.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\LAGP\insert new records.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\LAGP\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\LAGP\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\LAGP\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\LAGP\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\LAGP\Merge Join"
+              componentClassID="Microsoft.MergeJoin"
+              contactInfo="Merge Join;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
+              description="Combine two sorted data flows into one using the FULL, LEFT, or INNER join. We recommend this transformation when data flows can be sorted at their sources."
+              name="Merge Join"
+              version="1">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the type of join to perform."
+                  name="JoinType"
+                  typeConverter="JoinType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the number of columns in the ordering key."
+                  name="NumKeyColumns">4</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the null values are treated as equal values."
+                  name="TreatNullsAsEqual">true</property>
+                <property
+                  dataType="System.Int32"
+                  description="Indicates the requested maximum buffers per input before blocking."
+                  name="MaxBuffersPerInput">5</property>
+              </properties>
+              <inputs>
+                <input
+                  refId="Package\LAGP\Merge Join.Inputs[Merge Join Left Input]"
+                  hasSideEffects="true"
+                  name="Merge Join Left Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\LAGP\Merge Join.Inputs[Merge Join Left Input].Columns[MANDT]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT"
+                      cachedSortKeyPosition="1"
+                      lineageId="Package\LAGP\DB SAP.Outputs[OLE DB Source Output].Columns[MANDT]" />
+                    <inputColumn
+                      refId="Package\LAGP\Merge Join.Inputs[Merge Join Left Input].Columns[LGNUM]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="LGNUM"
+                      cachedSortKeyPosition="2"
+                      lineageId="Package\LAGP\DB SAP.Outputs[OLE DB Source Output].Columns[LGNUM]" />
+                    <inputColumn
+                      refId="Package\LAGP\Merge Join.Inputs[Merge Join Left Input].Columns[LGPLA]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="LGPLA"
+                      cachedSortKeyPosition="4"
+                      lineageId="Package\LAGP\DB SAP.Outputs[OLE DB Source Output].Columns[LGPLA]" />
+                    <inputColumn
+                      refId="Package\LAGP\Merge Join.Inputs[Merge Join Left Input].Columns[LGTYP]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="LGTYP"
+                      cachedSortKeyPosition="3"
+                      lineageId="Package\LAGP\DB SAP.Outputs[OLE DB Source Output].Columns[LGTYP]" />
+                    <inputColumn
+                      refId="Package\LAGP\Merge Join.Inputs[Merge Join Left Input].Columns[ANZQU]"
+                      cachedDataType="numeric"
+                      cachedName="ANZQU"
+                      cachedPrecision="7"
+                      lineageId="Package\LAGP\DB SAP.Outputs[OLE DB Source Output].Columns[ANZQU]" />
+                    <inputColumn
+                      refId="Package\LAGP\Merge Join.Inputs[Merge Join Left Input].Columns[BDATU]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="BDATU"
+                      lineageId="Package\LAGP\DB SAP.Outputs[OLE DB Source Output].Columns[BDATU]" />
+                    <inputColumn
+                      refId="Package\LAGP\Merge Join.Inputs[Merge Join Left Input].Columns[BZEIT]"
+                      cachedDataType="wstr"
+                      cachedLength="6"
+                      cachedName="BZEIT"
+                      lineageId="Package\LAGP\DB SAP.Outputs[OLE DB Source Output].Columns[BZEIT]" />
+                    <inputColumn
+                      refId="Package\LAGP\Merge Join.Inputs[Merge Join Left Input].Columns[BTANR]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="BTANR"
+                      lineageId="Package\LAGP\DB SAP.Outputs[OLE DB Source Output].Columns[BTANR]" />
+                    <inputColumn
+                      refId="Package\LAGP\Merge Join.Inputs[Merge Join Left Input].Columns[KZLER]"
+                      cachedDataType="wstr"
+                      cachedLength="1"
+                      cachedName="KZLER"
+                      lineageId="Package\LAGP\DB SAP.Outputs[OLE DB Source Output].Columns[KZLER]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+                <input
+                  refId="Package\LAGP\Merge Join.Inputs[Merge Join Right Input]"
+                  hasSideEffects="true"
+                  name="Merge Join Right Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\LAGP\Merge Join.Inputs[Merge Join Right Input].Columns[MANDT]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT"
+                      cachedSortKeyPosition="1"
+                      lineageId="Package\LAGP\DB PBI.Outputs[OLE DB Source Output].Columns[MANDT]" />
+                    <inputColumn
+                      refId="Package\LAGP\Merge Join.Inputs[Merge Join Right Input].Columns[LGNUM]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="LGNUM"
+                      cachedSortKeyPosition="2"
+                      lineageId="Package\LAGP\DB PBI.Outputs[OLE DB Source Output].Columns[LGNUM]" />
+                    <inputColumn
+                      refId="Package\LAGP\Merge Join.Inputs[Merge Join Right Input].Columns[LGPLA]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="LGPLA"
+                      cachedSortKeyPosition="4"
+                      lineageId="Package\LAGP\DB PBI.Outputs[OLE DB Source Output].Columns[LGPLA]" />
+                    <inputColumn
+                      refId="Package\LAGP\Merge Join.Inputs[Merge Join Right Input].Columns[LGTYP]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="LGTYP"
+                      cachedSortKeyPosition="3"
+                      lineageId="Package\LAGP\DB PBI.Outputs[OLE DB Source Output].Columns[LGTYP]" />
+                    <inputColumn
+                      refId="Package\LAGP\Merge Join.Inputs[Merge Join Right Input].Columns[ANZQU]"
+                      cachedDataType="numeric"
+                      cachedName="ANZQU"
+                      cachedPrecision="7"
+                      lineageId="Package\LAGP\DB PBI.Outputs[OLE DB Source Output].Columns[ANZQU]" />
+                    <inputColumn
+                      refId="Package\LAGP\Merge Join.Inputs[Merge Join Right Input].Columns[BDATU]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="BDATU"
+                      lineageId="Package\LAGP\DB PBI.Outputs[OLE DB Source Output].Columns[BDATU]" />
+                    <inputColumn
+                      refId="Package\LAGP\Merge Join.Inputs[Merge Join Right Input].Columns[BZEIT]"
+                      cachedDataType="wstr"
+                      cachedLength="6"
+                      cachedName="BZEIT"
+                      lineageId="Package\LAGP\DB PBI.Outputs[OLE DB Source Output].Columns[BZEIT]" />
+                    <inputColumn
+                      refId="Package\LAGP\Merge Join.Inputs[Merge Join Right Input].Columns[BTANR]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="BTANR"
+                      lineageId="Package\LAGP\DB PBI.Outputs[OLE DB Source Output].Columns[BTANR]" />
+                    <inputColumn
+                      refId="Package\LAGP\Merge Join.Inputs[Merge Join Right Input].Columns[KZLER]"
+                      cachedDataType="wstr"
+                      cachedLength="1"
+                      cachedName="KZLER"
+                      lineageId="Package\LAGP\DB PBI.Outputs[OLE DB Source Output].Columns[KZLER]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\LAGP\Merge Join.Outputs[Merge Join Output]"
+                  isSorted="true"
+                  name="Merge Join Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      lineageId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[MANDT]"
+                      name="MANDT"
+                      sortKeyPosition="1">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\LAGP\Merge Join.Inputs[Merge Join Left Input].Columns[MANDT]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[LGNUM]"
+                      dataType="wstr"
+                      length="3"
+                      lineageId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[LGNUM]"
+                      name="LGNUM"
+                      sortKeyPosition="2">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\LAGP\Merge Join.Inputs[Merge Join Left Input].Columns[LGNUM]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[LGPLA]"
+                      dataType="wstr"
+                      length="10"
+                      lineageId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[LGPLA]"
+                      name="LGPLA"
+                      sortKeyPosition="4">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\LAGP\Merge Join.Inputs[Merge Join Left Input].Columns[LGPLA]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]"
+                      dataType="wstr"
+                      length="3"
+                      lineageId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]"
+                      name="MANDT (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\LAGP\Merge Join.Inputs[Merge Join Right Input].Columns[MANDT]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[LGNUM (1)]"
+                      dataType="wstr"
+                      length="3"
+                      lineageId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[LGNUM (1)]"
+                      name="LGNUM (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\LAGP\Merge Join.Inputs[Merge Join Right Input].Columns[LGNUM]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[LGPLA (1)]"
+                      dataType="wstr"
+                      length="10"
+                      lineageId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[LGPLA (1)]"
+                      name="LGPLA (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\LAGP\Merge Join.Inputs[Merge Join Right Input].Columns[LGPLA]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[LGTYP]"
+                      dataType="wstr"
+                      length="3"
+                      lineageId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[LGTYP]"
+                      name="LGTYP"
+                      sortKeyPosition="3">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\LAGP\Merge Join.Inputs[Merge Join Left Input].Columns[LGTYP]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[LGTYP (1)]"
+                      dataType="wstr"
+                      length="3"
+                      lineageId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[LGTYP (1)]"
+                      name="LGTYP (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\LAGP\Merge Join.Inputs[Merge Join Right Input].Columns[LGTYP]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[ANZQU]"
+                      dataType="numeric"
+                      lineageId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[ANZQU]"
+                      name="ANZQU"
+                      precision="7">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\LAGP\Merge Join.Inputs[Merge Join Left Input].Columns[ANZQU]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[BDATU]"
+                      dataType="wstr"
+                      length="8"
+                      lineageId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[BDATU]"
+                      name="BDATU">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\LAGP\Merge Join.Inputs[Merge Join Left Input].Columns[BDATU]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[BZEIT]"
+                      dataType="wstr"
+                      length="6"
+                      lineageId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[BZEIT]"
+                      name="BZEIT">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\LAGP\Merge Join.Inputs[Merge Join Left Input].Columns[BZEIT]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[BTANR]"
+                      dataType="wstr"
+                      length="10"
+                      lineageId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[BTANR]"
+                      name="BTANR">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\LAGP\Merge Join.Inputs[Merge Join Left Input].Columns[BTANR]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[KZLER]"
+                      dataType="wstr"
+                      length="1"
+                      lineageId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[KZLER]"
+                      name="KZLER">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\LAGP\Merge Join.Inputs[Merge Join Left Input].Columns[KZLER]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[ANZQU (1)]"
+                      dataType="numeric"
+                      lineageId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[ANZQU (1)]"
+                      name="ANZQU (1)"
+                      precision="7">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\LAGP\Merge Join.Inputs[Merge Join Right Input].Columns[ANZQU]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[BDATU (1)]"
+                      dataType="wstr"
+                      length="8"
+                      lineageId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[BDATU (1)]"
+                      name="BDATU (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\LAGP\Merge Join.Inputs[Merge Join Right Input].Columns[BDATU]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[BZEIT (1)]"
+                      dataType="wstr"
+                      length="6"
+                      lineageId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[BZEIT (1)]"
+                      name="BZEIT (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\LAGP\Merge Join.Inputs[Merge Join Right Input].Columns[BZEIT]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[BTANR (1)]"
+                      dataType="wstr"
+                      length="10"
+                      lineageId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[BTANR (1)]"
+                      name="BTANR (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\LAGP\Merge Join.Inputs[Merge Join Right Input].Columns[BTANR]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[KZLER (1)]"
+                      dataType="wstr"
+                      length="1"
+                      lineageId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[KZLER (1)]"
+                      name="KZLER (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\LAGP\Merge Join.Inputs[Merge Join Right Input].Columns[KZLER]}</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\LAGP\stage changed records"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="stage changed records"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[LAGP_STAGE_UPDATE]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\LAGP\stage changed records.Connections[OleDbConnection]"
+                  connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\LAGP\stage changed records.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\LAGP\stage changed records.Inputs[OLE DB Destination Input].Columns[MANDT]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT"
+                      cachedSortKeyPosition="1"
+                      externalMetadataColumnId="Package\LAGP\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      lineageId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
+                    <inputColumn
+                      refId="Package\LAGP\stage changed records.Inputs[OLE DB Destination Input].Columns[LGNUM]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="LGNUM"
+                      cachedSortKeyPosition="2"
+                      externalMetadataColumnId="Package\LAGP\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[LGNUM]"
+                      lineageId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[LGNUM]" />
+                    <inputColumn
+                      refId="Package\LAGP\stage changed records.Inputs[OLE DB Destination Input].Columns[LGPLA]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="LGPLA"
+                      cachedSortKeyPosition="4"
+                      externalMetadataColumnId="Package\LAGP\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[LGPLA]"
+                      lineageId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[LGPLA]" />
+                    <inputColumn
+                      refId="Package\LAGP\stage changed records.Inputs[OLE DB Destination Input].Columns[LGTYP]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="LGTYP"
+                      cachedSortKeyPosition="3"
+                      externalMetadataColumnId="Package\LAGP\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[LGTYP]"
+                      lineageId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[LGTYP]" />
+                    <inputColumn
+                      refId="Package\LAGP\stage changed records.Inputs[OLE DB Destination Input].Columns[ANZQU]"
+                      cachedDataType="numeric"
+                      cachedName="ANZQU"
+                      cachedPrecision="7"
+                      externalMetadataColumnId="Package\LAGP\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[ANZQU]"
+                      lineageId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[ANZQU]" />
+                    <inputColumn
+                      refId="Package\LAGP\stage changed records.Inputs[OLE DB Destination Input].Columns[BDATU]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="BDATU"
+                      externalMetadataColumnId="Package\LAGP\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[BDATU]"
+                      lineageId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[BDATU]" />
+                    <inputColumn
+                      refId="Package\LAGP\stage changed records.Inputs[OLE DB Destination Input].Columns[BZEIT]"
+                      cachedDataType="wstr"
+                      cachedLength="6"
+                      cachedName="BZEIT"
+                      externalMetadataColumnId="Package\LAGP\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[BZEIT]"
+                      lineageId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[BZEIT]" />
+                    <inputColumn
+                      refId="Package\LAGP\stage changed records.Inputs[OLE DB Destination Input].Columns[BTANR]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="BTANR"
+                      externalMetadataColumnId="Package\LAGP\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[BTANR]"
+                      lineageId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[BTANR]" />
+                    <inputColumn
+                      refId="Package\LAGP\stage changed records.Inputs[OLE DB Destination Input].Columns[KZLER]"
+                      cachedDataType="wstr"
+                      cachedLength="1"
+                      cachedName="KZLER"
+                      externalMetadataColumnId="Package\LAGP\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[KZLER]"
+                      lineageId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[KZLER]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\LAGP\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      name="MANDT" />
+                    <externalMetadataColumn
+                      refId="Package\LAGP\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[LGNUM]"
+                      dataType="wstr"
+                      length="3"
+                      name="LGNUM" />
+                    <externalMetadataColumn
+                      refId="Package\LAGP\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[LGPLA]"
+                      dataType="wstr"
+                      length="10"
+                      name="LGPLA" />
+                    <externalMetadataColumn
+                      refId="Package\LAGP\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[LGTYP]"
+                      dataType="wstr"
+                      length="3"
+                      name="LGTYP" />
+                    <externalMetadataColumn
+                      refId="Package\LAGP\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[ANZQU]"
+                      dataType="numeric"
+                      name="ANZQU"
+                      precision="7" />
+                    <externalMetadataColumn
+                      refId="Package\LAGP\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[BDATU]"
+                      dataType="wstr"
+                      length="8"
+                      name="BDATU" />
+                    <externalMetadataColumn
+                      refId="Package\LAGP\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[BZEIT]"
+                      dataType="wstr"
+                      length="6"
+                      name="BZEIT" />
+                    <externalMetadataColumn
+                      refId="Package\LAGP\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[BTANR]"
+                      dataType="wstr"
+                      length="10"
+                      name="BTANR" />
+                    <externalMetadataColumn
+                      refId="Package\LAGP\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[KZLER]"
+                      dataType="wstr"
+                      length="1"
+                      name="KZLER" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\LAGP\stage changed records.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\LAGP\stage changed records.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\LAGP\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\LAGP\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\LAGP\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\LAGP\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\LAGP\stage deleted records"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="stage deleted records"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[LAGP_STAGE_DELETE]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\LAGP\stage deleted records.Connections[OleDbConnection]"
+                  connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\LAGP\stage deleted records.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\LAGP\stage deleted records.Inputs[OLE DB Destination Input].Columns[MANDT (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT (1)"
+                      externalMetadataColumnId="Package\LAGP\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      lineageId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]" />
+                    <inputColumn
+                      refId="Package\LAGP\stage deleted records.Inputs[OLE DB Destination Input].Columns[LGNUM (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="LGNUM (1)"
+                      externalMetadataColumnId="Package\LAGP\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[LGNUM]"
+                      lineageId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[LGNUM (1)]" />
+                    <inputColumn
+                      refId="Package\LAGP\stage deleted records.Inputs[OLE DB Destination Input].Columns[LGTYP (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="LGTYP (1)"
+                      externalMetadataColumnId="Package\LAGP\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[LGTYP]"
+                      lineageId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[LGTYP (1)]" />
+                    <inputColumn
+                      refId="Package\LAGP\stage deleted records.Inputs[OLE DB Destination Input].Columns[LGPLA (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="LGPLA (1)"
+                      externalMetadataColumnId="Package\LAGP\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[LGPLA]"
+                      lineageId="Package\LAGP\Merge Join.Outputs[Merge Join Output].Columns[LGPLA (1)]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\LAGP\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      name="MANDT" />
+                    <externalMetadataColumn
+                      refId="Package\LAGP\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[LGNUM]"
+                      dataType="wstr"
+                      length="3"
+                      name="LGNUM" />
+                    <externalMetadataColumn
+                      refId="Package\LAGP\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[LGTYP]"
+                      dataType="wstr"
+                      length="3"
+                      name="LGTYP" />
+                    <externalMetadataColumn
+                      refId="Package\LAGP\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[LGPLA]"
+                      dataType="wstr"
+                      length="10"
+                      name="LGPLA" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\LAGP\stage deleted records.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\LAGP\stage deleted records.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\LAGP\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\LAGP\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\LAGP\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\LAGP\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\LAGP.Paths[delete]"
+              endId="Package\LAGP\stage deleted records.Inputs[OLE DB Destination Input]"
+              name="delete"
+              startId="Package\LAGP\Identity records.Outputs[delete]" />
+            <path
+              refId="Package\LAGP.Paths[insert]"
+              endId="Package\LAGP\insert new records.Inputs[OLE DB Destination Input]"
+              name="insert"
+              startId="Package\LAGP\Identity records.Outputs[insert]" />
+            <path
+              refId="Package\LAGP.Paths[Merge Join Output]"
+              endId="Package\LAGP\Identity records.Inputs[Conditional Split Input]"
+              name="Merge Join Output"
+              startId="Package\LAGP\Merge Join.Outputs[Merge Join Output]" />
+            <path
+              refId="Package\LAGP.Paths[OLE DB Source Output]"
+              endId="Package\LAGP\Merge Join.Inputs[Merge Join Left Input]"
+              name="OLE DB Source Output"
+              startId="Package\LAGP\DB SAP.Outputs[OLE DB Source Output]" />
+            <path
+              refId="Package\LAGP.Paths[OLE DB Source Output1]"
+              endId="Package\LAGP\Merge Join.Inputs[Merge Join Right Input]"
+              name="OLE DB Source Output"
+              startId="Package\LAGP\DB PBI.Outputs[OLE DB Source Output]" />
+            <path
+              refId="Package\LAGP.Paths[update]"
+              endId="Package\LAGP\Find Changed Records.Inputs[Conditional Split Input]"
+              name="update"
+              startId="Package\LAGP\Identity records.Outputs[update]" />
+            <path
+              refId="Package\LAGP.Paths[update1]"
+              endId="Package\LAGP\stage changed records.Inputs[OLE DB Destination Input]"
+              name="update"
+              startId="Package\LAGP\Find Changed Records.Outputs[update]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Sequence Container"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Sequence Container"
+      DTS:DTSID="{45B915A1-95F1-429E-A8AE-A57205885DFB}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Sequence Container">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\Sequence Container\delete"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{1D278857-56D0-4394-8AF8-604567DCAB75}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="delete"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+              SQLTask:SqlStatementSource="DELETE A01&#xA;FROM [LAGP] A01&#xA;INNER JOIN [LAGP_STAGE_DELETE] B01 &#xA;ON A01.[MANDT] = B01.[MANDT]&#xA;    AND A01.[LGNUM] = B01.[LGNUM]&#xA;    AND A01.[LGTYP] = B01.[LGTYP]&#xA;    AND A01.[LGPLA] = B01.[LGPLA]&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Sequence Container\update"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{5D7121E2-6205-4D00-8884-9877215F1235}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="update"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+              SQLTask:SqlStatementSource="UPDATE A01&#xA;SET A01.[ANZQU] = B01.[ANZQU]&#xA;    ,A01.[BDATU] = B01.[BDATU]&#xA;    ,A01.[BZEIT] = B01.[BZEIT]&#xA;    ,A01.[BTANR] = B01.[BTANR]&#xA;    ,A01.[KZLER] = B01.[KZLER]&#xA;FROM [LAGP] A01&#xA;INNER JOIN [LAGP_STAGE_UPDATE] B01&#xA;ON A01.[MANDT] = B01.[MANDT]&#xA;    AND A01.[LGNUM] = B01.[LGNUM]&#xA;    AND A01.[LGTYP] = B01.[LGTYP]&#xA;    AND A01.[LGPLA] = B01.[LGPLA]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Sequence Container 1"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Sequence Container"
+      DTS:DTSID="{19A1148C-18C7-452F-8B01-1EC81824631F}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Sequence Container 1">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\Sequence Container 1\Insert"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{B0BB616B-BE3C-468F-A990-3BCD5C461E3D}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Insert"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+              SQLTask:SqlStatementSource="INSERT INTO [LAGP]&#xA;SELECT * FROM [LAGP_STAGE_INSERT]&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{31B1A960-B5FA-4064-B651-7476710BD7AC}"
+      DTS:From="Package\LAGP"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\Sequence Container" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
+      DTS:CreationName=""
+      DTS:DTSID="{42F45ED9-834B-4092-B1CC-DA327E47A492}"
+      DTS:From="Package\clean stage"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 1"
+      DTS:To="Package\LAGP" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
+      DTS:CreationName=""
+      DTS:DTSID="{626953FB-3A40-45B8-AEBA-D82CEC92BFBF}"
+      DTS:From="Package\Sequence Container"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 2"
+      DTS:To="Package\Sequence Container 1" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="132,42"
+          Id="Package\clean stage"
+          TopLeft="419,37" />
+        <NodeLayout
+          Size="104,42"
+          Id="Package\LAGP"
+          TopLeft="192,57" />
+        <NodeLayout
+          Size="108,42"
+          Id="Package\Sequence Container\delete"
+          TopLeft="195,39" />
+        <NodeLayout
+          Size="112,42"
+          Id="Package\Sequence Container\update"
+          TopLeft="17,42" />
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="383,139"
+          Size="383,182"
+          Id="Package\Sequence Container"
+          TopLeft="60,174" />
+        <NodeLayout
+          Size="107,42"
+          Id="Package\Sequence Container 1\Insert"
+          TopLeft="126,41" />
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="383,139"
+          Size="383,182"
+          Id="Package\Sequence Container 1"
+          TopLeft="60,416" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="247.75,99">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,75"
+              Start="0,0"
+              End="0,67.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,67.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="419,58">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-123,20"
+              Start="0,0"
+              End="-115.5,20">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="-57.5,0" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-57.5,0"
+                    Point2="-61.5,0"
+                    Point3="-61.5,4" />
+                  <mssgle:LineSegment
+                    End="-61.5,16" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-61.5,16"
+                    Point2="-61.5,20"
+                    Point3="-65.5,20" />
+                  <mssgle:LineSegment
+                    End="-115.5,20" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 2]"
+          TopLeft="251.5,356">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\LAGP">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="153,42"
+          Id="Package\LAGP\Identity records"
+          TopLeft="435.375,232" />
+        <NodeLayout
+          Size="114,42"
+          Id="Package\LAGP\DB SAP"
+          TopLeft="199,46" />
+        <NodeLayout
+          Size="184,42"
+          Id="Package\LAGP\Find Changed Records"
+          TopLeft="419.875,366" />
+        <NodeLayout
+          Size="180,42"
+          Id="Package\LAGP\stage deleted records"
+          TopLeft="687,371" />
+        <NodeLayout
+          Size="130,42"
+          Id="Package\LAGP\Merge Join"
+          TopLeft="446.875,137" />
+        <NodeLayout
+          Size="186,42"
+          Id="Package\LAGP\stage changed records"
+          TopLeft="418.875,478" />
+        <NodeLayout
+          Size="112,42"
+          Id="Package\LAGP\DB PBI"
+          TopLeft="671,48" />
+        <NodeLayout
+          Size="166,42"
+          Id="Package\LAGP\insert new records"
+          TopLeft="159,370" />
+        <EdgeLayout
+          Id="Package\LAGP.Paths[delete]"
+          TopLeft="548.125,274">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="228.875,97"
+              Start="0,0"
+              End="228.875,89.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,29.441113490364" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,29.441113490364"
+                    Point2="0,33.441113490364"
+                    Point3="4,33.441113490364" />
+                  <mssgle:LineSegment
+                    End="224.875,33.441113490364" />
+                  <mssgle:CubicBezierSegment
+                    Point1="224.875,33.441113490364"
+                    Point2="228.875,33.441113490364"
+                    Point3="228.875,37.441113490364" />
+                  <mssgle:LineSegment
+                    End="228.875,89.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="100.24154296875,38.441113490364,28.3919140625,9.7490234375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\LAGP.Paths[update1]"
+          TopLeft="511.875,408">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,70"
+              Start="0,0"
+              End="0,62.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,62.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-15.8025,25.4453125,31.605,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\LAGP.Paths[update]"
+          TopLeft="511.875,274">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,92"
+              Start="0,0"
+              End="0,84.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,84.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-15.8025,36.4453125,31.605,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\LAGP.Paths[OLE DB Source Output1]"
+          TopLeft="727,90">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-194.791666666667,47"
+              Start="0,0"
+              End="-194.791666666667,39.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,23.8571428571429" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,23.8571428571429"
+                    Point2="0,27.8571428571429"
+                    Point3="-4,27.8571428571429" />
+                  <mssgle:LineSegment
+                    End="-190.791666666667,27.8571428571429" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-190.791666666667,27.8571428571429"
+                    Point2="-194.791666666667,27.8571428571429"
+                    Point3="-194.791666666667,31.8571428571429" />
+                  <mssgle:LineSegment
+                    End="-194.791666666667,39.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\LAGP.Paths[OLE DB Source Output]"
+          TopLeft="256,88">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="235.541666666667,49"
+              Start="0,0"
+              End="235.541666666667,41.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,25.0425531914894" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,25.0425531914894"
+                    Point2="0,29.0425531914894"
+                    Point3="4,29.0425531914894" />
+                  <mssgle:LineSegment
+                    End="231.541666666667,29.0425531914894" />
+                  <mssgle:CubicBezierSegment
+                    Point1="231.541666666667,29.0425531914894"
+                    Point2="235.541666666667,29.0425531914894"
+                    Point3="235.541666666667,33.0425531914894" />
+                  <mssgle:LineSegment
+                    End="235.541666666667,41.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\LAGP.Paths[Merge Join Output]"
+          TopLeft="511.875,179">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,53"
+              Start="0,0"
+              End="0,45.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,45.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\LAGP.Paths[insert]"
+          TopLeft="475.625,274">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-233.625,96"
+              Start="0,0"
+              End="-233.625,88.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,29.0963597430407" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,29.0963597430407"
+                    Point2="0,33.0963597430407"
+                    Point3="-4,33.0963597430407" />
+                  <mssgle:LineSegment
+                    End="-229.625,33.0963597430407" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-229.625,33.0963597430407"
+                    Point2="-233.625,33.0963597430407"
+                    Point3="-233.625,37.0963597430407" />
+                  <mssgle:LineSegment
+                    End="-233.625,88.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-129.76248046875,38.0963597430407,25.8999609375,9.451171875"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\LAGP\DB SAP">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\LAGP\stage deleted records">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\LAGP\stage changed records">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\LAGP\DB PBI">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\LAGP\insert new records">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>
