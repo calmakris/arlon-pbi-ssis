@@ -11,8 +11,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="RESB"
   DTS:PackageType="5"
-  DTS:VersionBuild="40"
-  DTS:VersionGUID="{8C5CC079-3761-41E1-A463-BEE430EA795A}">
+  DTS:VersionBuild="43"
+  DTS:VersionGUID="{C0A8F94D-C1FF-482D-BE49-F6D21D735F36}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:Variables />
@@ -1669,7 +1669,7 @@ ORDER BY [MANDT]
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
               SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-              SQLTask:SqlStatementSource="UPDATE A01&#xA;SET A01.[MATNR] = B01.[MATNR]&#xA;    A01.[AUFNR] = B01.[AUFNR]&#xA;FROM [RESB] A01&#xA;INNER JOIN [RESB_STAGE_DELETE] B01&#xA;ON A01.[MANDT] = B01.[MANDT]&#xA;    AND A01.[RSNUM] = B01.[RSNUM]&#xA;    AND A01.[RSPOS] = B01.[RSPOS]&#xA;    AND A01.[RSART] = B01.[RSART]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+              SQLTask:SqlStatementSource="UPDATE A01&#xA;SET A01.[MATNR] = B01.[MATNR]&#xA;    ,A01.[AUFNR] = B01.[AUFNR]&#xA;FROM [RESB] A01&#xA;INNER JOIN [RESB_STAGE_UPDATE] B01&#xA;ON A01.[MANDT] = B01.[MANDT]&#xA;    AND A01.[RSNUM] = B01.[RSNUM]&#xA;    AND A01.[RSPOS] = B01.[RSPOS]&#xA;    AND A01.[RSART] = B01.[RSART]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
           </DTS:ObjectData>
         </DTS:Executable>
       </DTS:Executables>
@@ -1851,25 +1851,21 @@ ORDER BY [MANDT]
       <GraphLayout
         Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
-          Size="184,42"
-          Id="Package\RESB\Find Changed Records"
-          TopLeft="371,303" />
+          Size="153,42"
+          Id="Package\RESB\Identify records"
+          TopLeft="382,209" />
         <NodeLayout
           Size="130,42"
           Id="Package\RESB\Merge Join"
           TopLeft="386,132" />
         <NodeLayout
+          Size="166,42"
+          Id="Package\RESB\insert new records"
+          TopLeft="89,302" />
+        <NodeLayout
           Size="180,42"
           Id="Package\RESB\stage deleted records"
           TopLeft="654,301" />
-        <NodeLayout
-          Size="114,42"
-          Id="Package\RESB\DB SAP"
-          TopLeft="225,40" />
-        <NodeLayout
-          Size="153,42"
-          Id="Package\RESB\Identify records"
-          TopLeft="382,209" />
         <NodeLayout
           Size="186,42"
           Id="Package\RESB\stage changed records"
@@ -1879,9 +1875,13 @@ ORDER BY [MANDT]
           Id="Package\RESB\DB PBI"
           TopLeft="559,36" />
         <NodeLayout
-          Size="166,42"
-          Id="Package\RESB\insert new records"
-          TopLeft="89,302" />
+          Size="114,42"
+          Id="Package\RESB\DB SAP"
+          TopLeft="225,40" />
+        <NodeLayout
+          Size="184,42"
+          Id="Package\RESB\Find Changed Records"
+          TopLeft="371,303" />
         <EdgeLayout
           Id="Package\RESB.Paths[update1]"
           TopLeft="461.5,345">
@@ -2096,7 +2096,7 @@ ORDER BY [MANDT]
     </LayoutInfo>
   </TaskHost>
   <PipelineComponentMetadata
-    design-time-name="Package\RESB\stage deleted records">
+    design-time-name="Package\RESB\insert new records">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -2109,10 +2109,15 @@ ORDER BY [MANDT]
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\RESB\DB SAP">
+    design-time-name="Package\RESB\stage deleted records">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
       </Property>
     </Properties>
   </PipelineComponentMetadata>
@@ -2138,15 +2143,10 @@ ORDER BY [MANDT]
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\RESB\insert new records">
+    design-time-name="Package\RESB\DB SAP">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
-      </Property>
-      <Property>
-        <Name>TableInfoObjectType</Name>
-        <Value
-          type="q2:string">Table</Value>
       </Property>
     </Properties>
   </PipelineComponentMetadata>
