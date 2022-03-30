@@ -1,47 +1,122 @@
 ﻿<?xml version="1.0"?>
 <DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
   DTS:refId="Package"
-  DTS:CreationDate="4/20/2021 7:35:31 PM"
+  DTS:CreationDate="4/19/2021 2:40:05 PM"
   DTS:CreationName="Microsoft.Package"
   DTS:CreatorComputerName="ARLPBIDEV"
   DTS:CreatorName="DOMAIN\RPETRELLA"
-  DTS:DTSID="{E4D896A4-F6D9-4032-BF7E-E7EFCCE8B298}"
+  DTS:DTSID="{607CA8C6-C5FC-45D8-B390-F34947743C65}"
   DTS:ExecutableType="Microsoft.Package"
   DTS:LastModifiedProductVersion="15.0.2000.170"
   DTS:LocaleID="1033"
-  DTS:ObjectName="MARD"
+  DTS:ObjectName="ZFORECAST"
   DTS:PackageType="5"
-  DTS:VersionBuild="12"
-  DTS:VersionGUID="{DBCF992B-4470-4572-8D5C-3FE58910A735}">
+  DTS:VersionBuild="13"
+  DTS:VersionGUID="{4558AAA2-070E-499D-917D-6D41CCBC869B}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:Variables />
   <DTS:Executables>
     <DTS:Executable
-      DTS:refId="Package\clean"
+      DTS:refId="Package\clean stage"
       DTS:CreationName="Microsoft.ExecuteSQLTask"
       DTS:Description="Execute SQL Task"
-      DTS:DTSID="{C7D38FDF-1794-4D6D-969C-BF4526AD2C17}"
+      DTS:DTSID="{C4E55123-6E84-41EA-BB7A-A1CAADFF45E3}"
       DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
-      DTS:ObjectName="clean"
+      DTS:ObjectName="clean stage"
       DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
       DTS:ThreadHint="0">
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
           SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-          SQLTask:SqlStatementSource="TRUNCATE TABLE [MARD_STAGE_UPDATE]&#xA;go&#xA;TRUNCATE TABLE [MARD_STAGE_DELETE]&#xA;go&#xA;TRUNCATE TABLE [MARD_STAGE_INSERT]&#xA;go" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          SQLTask:SqlStatementSource="TRUNCATE TABLE [ZFORECAST_STAGE_UPDATE]&#xA;go&#xA;TRUNCATE TABLE [ZFORECAST_STAGE_DELETE]&#xA;go&#xA;TRUNCATE TABLE [ZFORECAST_STAGE_INSERT]&#xA;go" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
-      DTS:refId="Package\MARD"
+      DTS:refId="Package\Sequence Container"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Sequence Container"
+      DTS:DTSID="{D6F9D811-5113-4D53-9D30-D3ECDA5F6709}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Sequence Container">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\Sequence Container\delete"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{98EA8C46-DAB5-4ED3-ACCA-207510D01BF5}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="delete"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+              SQLTask:SqlStatementSource="DELETE A01&#xA;FROM [ZFORECAST] A01&#xA;INNER JOIN [ZFORECAST_STAGE_DELETE] B01&#xA;ON ( A01.[MANDT] = B01.[MANDT]&#xA;&#x9;AND A01.[ZYEAR] = B01.[ZYEAR]&#xA;&#x9;AND A01.[FPERD] = B01.[FPERD]&#xA;&#x9;AND A01.[TYPE] = B01.[TYPE] )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Sequence Container\update"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{9CC06EE1-33E3-49F9-9845-2E2F6700A402}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="update"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+              SQLTask:SqlStatementSource="UPDATE A01&#xA;SET A01.[LABOR] = B01.[LABOR],&#xA;&#x9;A01.[OH] = B01.[OH],&#xA;&#x9;A01.[RM] = B01.[RM]&#xA;FROM [ZFORECAST] A01&#xA;INNER JOIN [ZFORECAST_STAGE_UPDATE] B01&#xA;ON ( A01.[MANDT] = B01.[MANDT]&#xA;&#x9;AND A01.[ZYEAR] = B01.[ZYEAR]&#xA;&#x9;AND A01.[FPERD] = B01.[FPERD]&#xA;&#x9;AND A01.[TYPE] = B01.[TYPE] )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Sequence Container 1"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Sequence Container"
+      DTS:DTSID="{2524D9D2-E08C-4F16-B353-222175A53871}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Sequence Container 1">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\Sequence Container 1\Insert"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{1E11CF72-315E-41C8-B7CD-E60FB85643DF}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Insert"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+              SQLTask:SqlStatementSource="INSERT INTO [ZFORECAST]&#xA;SELECT * FROM [ZFORECAST_STAGE_INSERT]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\ZFORECAST"
       DTS:CreationName="Microsoft.Pipeline"
       DTS:Description="Data Flow Task"
-      DTS:DTSID="{4E6C8C3B-5F8C-415E-886D-32C7B4D6A313}"
+      DTS:DTSID="{E364A95B-88EC-4C2B-BA20-EDB74AE7701C}"
       DTS:ExecutableType="Microsoft.Pipeline"
       DTS:LocaleID="-1"
-      DTS:ObjectName="MARD"
+      DTS:ObjectName="ZFORECAST"
       DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
       <DTS:Variables />
       <DTS:ObjectData>
@@ -49,7 +124,7 @@
           version="1">
           <components>
             <component
-              refId="Package\MARD\DB PBI"
+              refId="Package\ZFORECAST\DB PBI"
               componentClassID="Microsoft.OLEDBSource"
               contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
               description="OLE DB Source"
@@ -73,19 +148,18 @@
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT A01.[MANDT]
-      ,A01.[MATNR]
-      ,A01.[WERKS]
-      ,A01.[LGORT]
-      ,A01.[LABST]
-      ,A01.[INSME]
-      ,A01.[SPEME]
-      ,A01.[UMLME]
-FROM [MARD] A01 (NOLOCK)
-ORDER BY A01.[MANDT]
-      ,A01.[MATNR]
-      ,A01.[WERKS]
-      ,A01.[LGORT]</property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT [MANDT]
+      ,[ZYEAR]
+      ,[FPERD]
+      ,[TYPE]
+      ,[LABOR]
+      ,[OH]
+      ,[RM]
+FROM [ZFORECAST] (NOLOCK)
+ORDER BY [MANDT]
+      ,[ZYEAR]
+      ,[FPERD]
+      ,[TYPE]</property>
                 <property
                   dataType="System.String"
                   description="The variable that contains the SQL command to be executed."
@@ -110,7 +184,7 @@ ORDER BY A01.[MANDT]
               </properties>
               <connections>
                 <connection
-                  refId="Package\MARD\DB PBI.Connections[OleDbConnection]"
+                  refId="Package\ZFORECAST\DB PBI.Connections[OleDbConnection]"
                   connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
                   connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
                   description="The OLE DB runtime connection used to access the database."
@@ -118,214 +192,190 @@ ORDER BY A01.[MANDT]
               </connections>
               <outputs>
                 <output
-                  refId="Package\MARD\DB PBI.Outputs[OLE DB Source Output]"
+                  refId="Package\ZFORECAST\DB PBI.Outputs[OLE DB Source Output]"
                   isSorted="true"
                   name="OLE DB Source Output">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\MARD\DB PBI.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      refId="Package\ZFORECAST\DB PBI.Outputs[OLE DB Source Output].Columns[MANDT]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\MARD\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      externalMetadataColumnId="Package\ZFORECAST\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
                       length="3"
-                      lineageId="Package\MARD\DB PBI.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      lineageId="Package\ZFORECAST\DB PBI.Outputs[OLE DB Source Output].Columns[MANDT]"
                       name="MANDT"
                       sortKeyPosition="1"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\MARD\DB PBI.Outputs[OLE DB Source Output].Columns[MATNR]"
+                      refId="Package\ZFORECAST\DB PBI.Outputs[OLE DB Source Output].Columns[ZYEAR]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\MARD\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[MATNR]"
-                      length="18"
-                      lineageId="Package\MARD\DB PBI.Outputs[OLE DB Source Output].Columns[MATNR]"
-                      name="MATNR"
+                      externalMetadataColumnId="Package\ZFORECAST\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[ZYEAR]"
+                      length="4"
+                      lineageId="Package\ZFORECAST\DB PBI.Outputs[OLE DB Source Output].Columns[ZYEAR]"
+                      name="ZYEAR"
                       sortKeyPosition="2"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\MARD\DB PBI.Outputs[OLE DB Source Output].Columns[WERKS]"
+                      refId="Package\ZFORECAST\DB PBI.Outputs[OLE DB Source Output].Columns[FPERD]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\MARD\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[WERKS]"
-                      length="4"
-                      lineageId="Package\MARD\DB PBI.Outputs[OLE DB Source Output].Columns[WERKS]"
-                      name="WERKS"
+                      externalMetadataColumnId="Package\ZFORECAST\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[FPERD]"
+                      length="2"
+                      lineageId="Package\ZFORECAST\DB PBI.Outputs[OLE DB Source Output].Columns[FPERD]"
+                      name="FPERD"
                       sortKeyPosition="3"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\MARD\DB PBI.Outputs[OLE DB Source Output].Columns[LGORT]"
+                      refId="Package\ZFORECAST\DB PBI.Outputs[OLE DB Source Output].Columns[TYPE]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\MARD\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[LGORT]"
-                      length="4"
-                      lineageId="Package\MARD\DB PBI.Outputs[OLE DB Source Output].Columns[LGORT]"
-                      name="LGORT"
+                      externalMetadataColumnId="Package\ZFORECAST\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[TYPE]"
+                      length="1"
+                      lineageId="Package\ZFORECAST\DB PBI.Outputs[OLE DB Source Output].Columns[TYPE]"
+                      name="TYPE"
                       sortKeyPosition="4"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\MARD\DB PBI.Outputs[OLE DB Source Output].Columns[LABST]"
+                      refId="Package\ZFORECAST\DB PBI.Outputs[OLE DB Source Output].Columns[LABOR]"
                       dataType="numeric"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\MARD\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[LABST]"
-                      lineageId="Package\MARD\DB PBI.Outputs[OLE DB Source Output].Columns[LABST]"
-                      name="LABST"
+                      externalMetadataColumnId="Package\ZFORECAST\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[LABOR]"
+                      lineageId="Package\ZFORECAST\DB PBI.Outputs[OLE DB Source Output].Columns[LABOR]"
+                      name="LABOR"
                       precision="13"
-                      scale="3"
+                      scale="2"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\MARD\DB PBI.Outputs[OLE DB Source Output].Columns[INSME]"
+                      refId="Package\ZFORECAST\DB PBI.Outputs[OLE DB Source Output].Columns[OH]"
                       dataType="numeric"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\MARD\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[INSME]"
-                      lineageId="Package\MARD\DB PBI.Outputs[OLE DB Source Output].Columns[INSME]"
-                      name="INSME"
+                      externalMetadataColumnId="Package\ZFORECAST\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[OH]"
+                      lineageId="Package\ZFORECAST\DB PBI.Outputs[OLE DB Source Output].Columns[OH]"
+                      name="OH"
                       precision="13"
-                      scale="3"
+                      scale="2"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\MARD\DB PBI.Outputs[OLE DB Source Output].Columns[SPEME]"
+                      refId="Package\ZFORECAST\DB PBI.Outputs[OLE DB Source Output].Columns[RM]"
                       dataType="numeric"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\MARD\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[SPEME]"
-                      lineageId="Package\MARD\DB PBI.Outputs[OLE DB Source Output].Columns[SPEME]"
-                      name="SPEME"
+                      externalMetadataColumnId="Package\ZFORECAST\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[RM]"
+                      lineageId="Package\ZFORECAST\DB PBI.Outputs[OLE DB Source Output].Columns[RM]"
+                      name="RM"
                       precision="13"
-                      scale="3"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\MARD\DB PBI.Outputs[OLE DB Source Output].Columns[UMLME]"
-                      dataType="numeric"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\MARD\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[UMLME]"
-                      lineageId="Package\MARD\DB PBI.Outputs[OLE DB Source Output].Columns[UMLME]"
-                      name="UMLME"
-                      precision="13"
-                      scale="3"
+                      scale="2"
                       truncationRowDisposition="FailComponent" />
                   </outputColumns>
                   <externalMetadataColumns
                     isUsed="True">
                     <externalMetadataColumn
-                      refId="Package\MARD\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      refId="Package\ZFORECAST\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
                       dataType="wstr"
                       length="3"
                       name="MANDT" />
                     <externalMetadataColumn
-                      refId="Package\MARD\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[MATNR]"
-                      dataType="wstr"
-                      length="18"
-                      name="MATNR" />
-                    <externalMetadataColumn
-                      refId="Package\MARD\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[WERKS]"
+                      refId="Package\ZFORECAST\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[ZYEAR]"
                       dataType="wstr"
                       length="4"
-                      name="WERKS" />
+                      name="ZYEAR" />
                     <externalMetadataColumn
-                      refId="Package\MARD\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[LGORT]"
+                      refId="Package\ZFORECAST\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[FPERD]"
                       dataType="wstr"
-                      length="4"
-                      name="LGORT" />
+                      length="2"
+                      name="FPERD" />
                     <externalMetadataColumn
-                      refId="Package\MARD\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[LABST]"
-                      dataType="numeric"
-                      name="LABST"
-                      precision="13"
-                      scale="3" />
+                      refId="Package\ZFORECAST\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[TYPE]"
+                      dataType="wstr"
+                      length="1"
+                      name="TYPE" />
                     <externalMetadataColumn
-                      refId="Package\MARD\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[INSME]"
+                      refId="Package\ZFORECAST\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[LABOR]"
                       dataType="numeric"
-                      name="INSME"
+                      name="LABOR"
                       precision="13"
-                      scale="3" />
+                      scale="2" />
                     <externalMetadataColumn
-                      refId="Package\MARD\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[SPEME]"
+                      refId="Package\ZFORECAST\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[OH]"
                       dataType="numeric"
-                      name="SPEME"
+                      name="OH"
                       precision="13"
-                      scale="3" />
+                      scale="2" />
                     <externalMetadataColumn
-                      refId="Package\MARD\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[UMLME]"
+                      refId="Package\ZFORECAST\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[RM]"
                       dataType="numeric"
-                      name="UMLME"
+                      name="RM"
                       precision="13"
-                      scale="3" />
+                      scale="2" />
                   </externalMetadataColumns>
                 </output>
                 <output
-                  refId="Package\MARD\DB PBI.Outputs[OLE DB Source Error Output]"
+                  refId="Package\ZFORECAST\DB PBI.Outputs[OLE DB Source Error Output]"
                   isErrorOut="true"
                   name="OLE DB Source Error Output">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\MARD\DB PBI.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      refId="Package\ZFORECAST\DB PBI.Outputs[OLE DB Source Error Output].Columns[MANDT]"
                       dataType="wstr"
                       length="3"
-                      lineageId="Package\MARD\DB PBI.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      lineageId="Package\ZFORECAST\DB PBI.Outputs[OLE DB Source Error Output].Columns[MANDT]"
                       name="MANDT" />
                     <outputColumn
-                      refId="Package\MARD\DB PBI.Outputs[OLE DB Source Error Output].Columns[MATNR]"
-                      dataType="wstr"
-                      length="18"
-                      lineageId="Package\MARD\DB PBI.Outputs[OLE DB Source Error Output].Columns[MATNR]"
-                      name="MATNR" />
-                    <outputColumn
-                      refId="Package\MARD\DB PBI.Outputs[OLE DB Source Error Output].Columns[WERKS]"
+                      refId="Package\ZFORECAST\DB PBI.Outputs[OLE DB Source Error Output].Columns[ZYEAR]"
                       dataType="wstr"
                       length="4"
-                      lineageId="Package\MARD\DB PBI.Outputs[OLE DB Source Error Output].Columns[WERKS]"
-                      name="WERKS" />
+                      lineageId="Package\ZFORECAST\DB PBI.Outputs[OLE DB Source Error Output].Columns[ZYEAR]"
+                      name="ZYEAR" />
                     <outputColumn
-                      refId="Package\MARD\DB PBI.Outputs[OLE DB Source Error Output].Columns[LGORT]"
+                      refId="Package\ZFORECAST\DB PBI.Outputs[OLE DB Source Error Output].Columns[FPERD]"
                       dataType="wstr"
-                      length="4"
-                      lineageId="Package\MARD\DB PBI.Outputs[OLE DB Source Error Output].Columns[LGORT]"
-                      name="LGORT" />
+                      length="2"
+                      lineageId="Package\ZFORECAST\DB PBI.Outputs[OLE DB Source Error Output].Columns[FPERD]"
+                      name="FPERD" />
                     <outputColumn
-                      refId="Package\MARD\DB PBI.Outputs[OLE DB Source Error Output].Columns[LABST]"
+                      refId="Package\ZFORECAST\DB PBI.Outputs[OLE DB Source Error Output].Columns[TYPE]"
+                      dataType="wstr"
+                      length="1"
+                      lineageId="Package\ZFORECAST\DB PBI.Outputs[OLE DB Source Error Output].Columns[TYPE]"
+                      name="TYPE" />
+                    <outputColumn
+                      refId="Package\ZFORECAST\DB PBI.Outputs[OLE DB Source Error Output].Columns[LABOR]"
                       dataType="numeric"
-                      lineageId="Package\MARD\DB PBI.Outputs[OLE DB Source Error Output].Columns[LABST]"
-                      name="LABST"
+                      lineageId="Package\ZFORECAST\DB PBI.Outputs[OLE DB Source Error Output].Columns[LABOR]"
+                      name="LABOR"
                       precision="13"
-                      scale="3" />
+                      scale="2" />
                     <outputColumn
-                      refId="Package\MARD\DB PBI.Outputs[OLE DB Source Error Output].Columns[INSME]"
+                      refId="Package\ZFORECAST\DB PBI.Outputs[OLE DB Source Error Output].Columns[OH]"
                       dataType="numeric"
-                      lineageId="Package\MARD\DB PBI.Outputs[OLE DB Source Error Output].Columns[INSME]"
-                      name="INSME"
+                      lineageId="Package\ZFORECAST\DB PBI.Outputs[OLE DB Source Error Output].Columns[OH]"
+                      name="OH"
                       precision="13"
-                      scale="3" />
+                      scale="2" />
                     <outputColumn
-                      refId="Package\MARD\DB PBI.Outputs[OLE DB Source Error Output].Columns[SPEME]"
+                      refId="Package\ZFORECAST\DB PBI.Outputs[OLE DB Source Error Output].Columns[RM]"
                       dataType="numeric"
-                      lineageId="Package\MARD\DB PBI.Outputs[OLE DB Source Error Output].Columns[SPEME]"
-                      name="SPEME"
+                      lineageId="Package\ZFORECAST\DB PBI.Outputs[OLE DB Source Error Output].Columns[RM]"
+                      name="RM"
                       precision="13"
-                      scale="3" />
+                      scale="2" />
                     <outputColumn
-                      refId="Package\MARD\DB PBI.Outputs[OLE DB Source Error Output].Columns[UMLME]"
-                      dataType="numeric"
-                      lineageId="Package\MARD\DB PBI.Outputs[OLE DB Source Error Output].Columns[UMLME]"
-                      name="UMLME"
-                      precision="13"
-                      scale="3" />
-                    <outputColumn
-                      refId="Package\MARD\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      refId="Package\ZFORECAST\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\MARD\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      lineageId="Package\ZFORECAST\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\MARD\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      refId="Package\ZFORECAST\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\MARD\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\ZFORECAST\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -334,7 +384,7 @@ ORDER BY A01.[MANDT]
               </outputs>
             </component>
             <component
-              refId="Package\MARD\DB SAP"
+              refId="Package\ZFORECAST\DB SAP"
               componentClassID="Microsoft.OLEDBSource"
               contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
               description="OLE DB Source"
@@ -358,19 +408,18 @@ ORDER BY A01.[MANDT]
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT A01.[MANDT]
-      ,A01.[MATNR]
-      ,A01.[WERKS]
-      ,A01.[LGORT]
-      ,A01.[LABST]
-      ,A01.[INSME]
-      ,A01.[SPEME]
-      ,A01.[UMLME]
-FROM [ecp].[MARD] A01 (NOLOCK)
-ORDER BY A01.[MANDT]
-      ,A01.[MATNR]
-      ,A01.[WERKS]
-      ,A01.[LGORT]</property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT [MANDT]
+      ,[ZYEAR]
+      ,[FPERD]
+      ,[TYPE]
+      ,[LABOR]
+      ,[OH]
+      ,[RM]
+FROM [ecp].[ZFORECAST] (NOLOCK)
+ORDER BY [MANDT]
+      ,[ZYEAR]
+      ,[FPERD]
+      ,[TYPE]</property>
                 <property
                   dataType="System.String"
                   description="The variable that contains the SQL command to be executed."
@@ -395,7 +444,7 @@ ORDER BY A01.[MANDT]
               </properties>
               <connections>
                 <connection
-                  refId="Package\MARD\DB SAP.Connections[OleDbConnection]"
+                  refId="Package\ZFORECAST\DB SAP.Connections[OleDbConnection]"
                   connectionManagerID="{544CCAD9-2CB1-4D87-98D7-A7C478586195}:external"
                   connectionManagerRefId="Project.ConnectionManagers[SQL_SAP]"
                   description="The OLE DB runtime connection used to access the database."
@@ -403,214 +452,190 @@ ORDER BY A01.[MANDT]
               </connections>
               <outputs>
                 <output
-                  refId="Package\MARD\DB SAP.Outputs[OLE DB Source Output]"
+                  refId="Package\ZFORECAST\DB SAP.Outputs[OLE DB Source Output]"
                   isSorted="true"
                   name="OLE DB Source Output">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\MARD\DB SAP.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      refId="Package\ZFORECAST\DB SAP.Outputs[OLE DB Source Output].Columns[MANDT]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\MARD\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      externalMetadataColumnId="Package\ZFORECAST\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
                       length="3"
-                      lineageId="Package\MARD\DB SAP.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      lineageId="Package\ZFORECAST\DB SAP.Outputs[OLE DB Source Output].Columns[MANDT]"
                       name="MANDT"
                       sortKeyPosition="1"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\MARD\DB SAP.Outputs[OLE DB Source Output].Columns[MATNR]"
+                      refId="Package\ZFORECAST\DB SAP.Outputs[OLE DB Source Output].Columns[ZYEAR]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\MARD\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[MATNR]"
-                      length="18"
-                      lineageId="Package\MARD\DB SAP.Outputs[OLE DB Source Output].Columns[MATNR]"
-                      name="MATNR"
+                      externalMetadataColumnId="Package\ZFORECAST\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[ZYEAR]"
+                      length="4"
+                      lineageId="Package\ZFORECAST\DB SAP.Outputs[OLE DB Source Output].Columns[ZYEAR]"
+                      name="ZYEAR"
                       sortKeyPosition="2"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\MARD\DB SAP.Outputs[OLE DB Source Output].Columns[WERKS]"
+                      refId="Package\ZFORECAST\DB SAP.Outputs[OLE DB Source Output].Columns[FPERD]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\MARD\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[WERKS]"
-                      length="4"
-                      lineageId="Package\MARD\DB SAP.Outputs[OLE DB Source Output].Columns[WERKS]"
-                      name="WERKS"
+                      externalMetadataColumnId="Package\ZFORECAST\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[FPERD]"
+                      length="2"
+                      lineageId="Package\ZFORECAST\DB SAP.Outputs[OLE DB Source Output].Columns[FPERD]"
+                      name="FPERD"
                       sortKeyPosition="3"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\MARD\DB SAP.Outputs[OLE DB Source Output].Columns[LGORT]"
+                      refId="Package\ZFORECAST\DB SAP.Outputs[OLE DB Source Output].Columns[TYPE]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\MARD\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[LGORT]"
-                      length="4"
-                      lineageId="Package\MARD\DB SAP.Outputs[OLE DB Source Output].Columns[LGORT]"
-                      name="LGORT"
+                      externalMetadataColumnId="Package\ZFORECAST\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[TYPE]"
+                      length="1"
+                      lineageId="Package\ZFORECAST\DB SAP.Outputs[OLE DB Source Output].Columns[TYPE]"
+                      name="TYPE"
                       sortKeyPosition="4"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\MARD\DB SAP.Outputs[OLE DB Source Output].Columns[LABST]"
+                      refId="Package\ZFORECAST\DB SAP.Outputs[OLE DB Source Output].Columns[LABOR]"
                       dataType="numeric"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\MARD\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[LABST]"
-                      lineageId="Package\MARD\DB SAP.Outputs[OLE DB Source Output].Columns[LABST]"
-                      name="LABST"
+                      externalMetadataColumnId="Package\ZFORECAST\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[LABOR]"
+                      lineageId="Package\ZFORECAST\DB SAP.Outputs[OLE DB Source Output].Columns[LABOR]"
+                      name="LABOR"
                       precision="13"
-                      scale="3"
+                      scale="2"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\MARD\DB SAP.Outputs[OLE DB Source Output].Columns[INSME]"
+                      refId="Package\ZFORECAST\DB SAP.Outputs[OLE DB Source Output].Columns[OH]"
                       dataType="numeric"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\MARD\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[INSME]"
-                      lineageId="Package\MARD\DB SAP.Outputs[OLE DB Source Output].Columns[INSME]"
-                      name="INSME"
+                      externalMetadataColumnId="Package\ZFORECAST\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[OH]"
+                      lineageId="Package\ZFORECAST\DB SAP.Outputs[OLE DB Source Output].Columns[OH]"
+                      name="OH"
                       precision="13"
-                      scale="3"
+                      scale="2"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\MARD\DB SAP.Outputs[OLE DB Source Output].Columns[SPEME]"
+                      refId="Package\ZFORECAST\DB SAP.Outputs[OLE DB Source Output].Columns[RM]"
                       dataType="numeric"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\MARD\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[SPEME]"
-                      lineageId="Package\MARD\DB SAP.Outputs[OLE DB Source Output].Columns[SPEME]"
-                      name="SPEME"
+                      externalMetadataColumnId="Package\ZFORECAST\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[RM]"
+                      lineageId="Package\ZFORECAST\DB SAP.Outputs[OLE DB Source Output].Columns[RM]"
+                      name="RM"
                       precision="13"
-                      scale="3"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\MARD\DB SAP.Outputs[OLE DB Source Output].Columns[UMLME]"
-                      dataType="numeric"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\MARD\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[UMLME]"
-                      lineageId="Package\MARD\DB SAP.Outputs[OLE DB Source Output].Columns[UMLME]"
-                      name="UMLME"
-                      precision="13"
-                      scale="3"
+                      scale="2"
                       truncationRowDisposition="FailComponent" />
                   </outputColumns>
                   <externalMetadataColumns
                     isUsed="True">
                     <externalMetadataColumn
-                      refId="Package\MARD\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      refId="Package\ZFORECAST\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
                       dataType="wstr"
                       length="3"
                       name="MANDT" />
                     <externalMetadataColumn
-                      refId="Package\MARD\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[MATNR]"
-                      dataType="wstr"
-                      length="18"
-                      name="MATNR" />
-                    <externalMetadataColumn
-                      refId="Package\MARD\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[WERKS]"
+                      refId="Package\ZFORECAST\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[ZYEAR]"
                       dataType="wstr"
                       length="4"
-                      name="WERKS" />
+                      name="ZYEAR" />
                     <externalMetadataColumn
-                      refId="Package\MARD\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[LGORT]"
+                      refId="Package\ZFORECAST\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[FPERD]"
                       dataType="wstr"
-                      length="4"
-                      name="LGORT" />
+                      length="2"
+                      name="FPERD" />
                     <externalMetadataColumn
-                      refId="Package\MARD\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[LABST]"
-                      dataType="numeric"
-                      name="LABST"
-                      precision="13"
-                      scale="3" />
+                      refId="Package\ZFORECAST\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[TYPE]"
+                      dataType="wstr"
+                      length="1"
+                      name="TYPE" />
                     <externalMetadataColumn
-                      refId="Package\MARD\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[INSME]"
+                      refId="Package\ZFORECAST\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[LABOR]"
                       dataType="numeric"
-                      name="INSME"
+                      name="LABOR"
                       precision="13"
-                      scale="3" />
+                      scale="2" />
                     <externalMetadataColumn
-                      refId="Package\MARD\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[SPEME]"
+                      refId="Package\ZFORECAST\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[OH]"
                       dataType="numeric"
-                      name="SPEME"
+                      name="OH"
                       precision="13"
-                      scale="3" />
+                      scale="2" />
                     <externalMetadataColumn
-                      refId="Package\MARD\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[UMLME]"
+                      refId="Package\ZFORECAST\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[RM]"
                       dataType="numeric"
-                      name="UMLME"
+                      name="RM"
                       precision="13"
-                      scale="3" />
+                      scale="2" />
                   </externalMetadataColumns>
                 </output>
                 <output
-                  refId="Package\MARD\DB SAP.Outputs[OLE DB Source Error Output]"
+                  refId="Package\ZFORECAST\DB SAP.Outputs[OLE DB Source Error Output]"
                   isErrorOut="true"
                   name="OLE DB Source Error Output">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\MARD\DB SAP.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      refId="Package\ZFORECAST\DB SAP.Outputs[OLE DB Source Error Output].Columns[MANDT]"
                       dataType="wstr"
                       length="3"
-                      lineageId="Package\MARD\DB SAP.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      lineageId="Package\ZFORECAST\DB SAP.Outputs[OLE DB Source Error Output].Columns[MANDT]"
                       name="MANDT" />
                     <outputColumn
-                      refId="Package\MARD\DB SAP.Outputs[OLE DB Source Error Output].Columns[MATNR]"
-                      dataType="wstr"
-                      length="18"
-                      lineageId="Package\MARD\DB SAP.Outputs[OLE DB Source Error Output].Columns[MATNR]"
-                      name="MATNR" />
-                    <outputColumn
-                      refId="Package\MARD\DB SAP.Outputs[OLE DB Source Error Output].Columns[WERKS]"
+                      refId="Package\ZFORECAST\DB SAP.Outputs[OLE DB Source Error Output].Columns[ZYEAR]"
                       dataType="wstr"
                       length="4"
-                      lineageId="Package\MARD\DB SAP.Outputs[OLE DB Source Error Output].Columns[WERKS]"
-                      name="WERKS" />
+                      lineageId="Package\ZFORECAST\DB SAP.Outputs[OLE DB Source Error Output].Columns[ZYEAR]"
+                      name="ZYEAR" />
                     <outputColumn
-                      refId="Package\MARD\DB SAP.Outputs[OLE DB Source Error Output].Columns[LGORT]"
+                      refId="Package\ZFORECAST\DB SAP.Outputs[OLE DB Source Error Output].Columns[FPERD]"
                       dataType="wstr"
-                      length="4"
-                      lineageId="Package\MARD\DB SAP.Outputs[OLE DB Source Error Output].Columns[LGORT]"
-                      name="LGORT" />
+                      length="2"
+                      lineageId="Package\ZFORECAST\DB SAP.Outputs[OLE DB Source Error Output].Columns[FPERD]"
+                      name="FPERD" />
                     <outputColumn
-                      refId="Package\MARD\DB SAP.Outputs[OLE DB Source Error Output].Columns[LABST]"
+                      refId="Package\ZFORECAST\DB SAP.Outputs[OLE DB Source Error Output].Columns[TYPE]"
+                      dataType="wstr"
+                      length="1"
+                      lineageId="Package\ZFORECAST\DB SAP.Outputs[OLE DB Source Error Output].Columns[TYPE]"
+                      name="TYPE" />
+                    <outputColumn
+                      refId="Package\ZFORECAST\DB SAP.Outputs[OLE DB Source Error Output].Columns[LABOR]"
                       dataType="numeric"
-                      lineageId="Package\MARD\DB SAP.Outputs[OLE DB Source Error Output].Columns[LABST]"
-                      name="LABST"
+                      lineageId="Package\ZFORECAST\DB SAP.Outputs[OLE DB Source Error Output].Columns[LABOR]"
+                      name="LABOR"
                       precision="13"
-                      scale="3" />
+                      scale="2" />
                     <outputColumn
-                      refId="Package\MARD\DB SAP.Outputs[OLE DB Source Error Output].Columns[INSME]"
+                      refId="Package\ZFORECAST\DB SAP.Outputs[OLE DB Source Error Output].Columns[OH]"
                       dataType="numeric"
-                      lineageId="Package\MARD\DB SAP.Outputs[OLE DB Source Error Output].Columns[INSME]"
-                      name="INSME"
+                      lineageId="Package\ZFORECAST\DB SAP.Outputs[OLE DB Source Error Output].Columns[OH]"
+                      name="OH"
                       precision="13"
-                      scale="3" />
+                      scale="2" />
                     <outputColumn
-                      refId="Package\MARD\DB SAP.Outputs[OLE DB Source Error Output].Columns[SPEME]"
+                      refId="Package\ZFORECAST\DB SAP.Outputs[OLE DB Source Error Output].Columns[RM]"
                       dataType="numeric"
-                      lineageId="Package\MARD\DB SAP.Outputs[OLE DB Source Error Output].Columns[SPEME]"
-                      name="SPEME"
+                      lineageId="Package\ZFORECAST\DB SAP.Outputs[OLE DB Source Error Output].Columns[RM]"
+                      name="RM"
                       precision="13"
-                      scale="3" />
+                      scale="2" />
                     <outputColumn
-                      refId="Package\MARD\DB SAP.Outputs[OLE DB Source Error Output].Columns[UMLME]"
-                      dataType="numeric"
-                      lineageId="Package\MARD\DB SAP.Outputs[OLE DB Source Error Output].Columns[UMLME]"
-                      name="UMLME"
-                      precision="13"
-                      scale="3" />
-                    <outputColumn
-                      refId="Package\MARD\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      refId="Package\ZFORECAST\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\MARD\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      lineageId="Package\ZFORECAST\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\MARD\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      refId="Package\ZFORECAST\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\MARD\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\ZFORECAST\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -619,7 +644,7 @@ ORDER BY A01.[MANDT]
               </outputs>
             </component>
             <component
-              refId="Package\MARD\Find Changed Records"
+              refId="Package\ZFORECAST\Find Changed Records"
               componentClassID="Microsoft.ConditionalSplit"
               contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
               description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
@@ -627,92 +652,78 @@ ORDER BY A01.[MANDT]
               usesDispositions="true">
               <inputs>
                 <input
-                  refId="Package\MARD\Find Changed Records.Inputs[Conditional Split Input]"
+                  refId="Package\ZFORECAST\Find Changed Records.Inputs[Conditional Split Input]"
                   description="Input to the Conditional Split Transformation"
                   name="Conditional Split Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\MARD\Find Changed Records.Inputs[Conditional Split Input].Columns[LABST]"
+                      refId="Package\ZFORECAST\Find Changed Records.Inputs[Conditional Split Input].Columns[LABOR]"
                       cachedDataType="numeric"
-                      cachedName="LABST"
+                      cachedName="LABOR"
                       cachedPrecision="13"
-                      cachedScale="3"
-                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[LABST]" />
+                      cachedScale="2"
+                      lineageId="Package\ZFORECAST\Merge Join.Outputs[Merge Join Output].Columns[LABOR]" />
                     <inputColumn
-                      refId="Package\MARD\Find Changed Records.Inputs[Conditional Split Input].Columns[LABST (1)]"
+                      refId="Package\ZFORECAST\Find Changed Records.Inputs[Conditional Split Input].Columns[OH]"
                       cachedDataType="numeric"
-                      cachedName="LABST (1)"
+                      cachedName="OH"
                       cachedPrecision="13"
-                      cachedScale="3"
-                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[LABST (1)]" />
+                      cachedScale="2"
+                      lineageId="Package\ZFORECAST\Merge Join.Outputs[Merge Join Output].Columns[OH]" />
                     <inputColumn
-                      refId="Package\MARD\Find Changed Records.Inputs[Conditional Split Input].Columns[INSME]"
+                      refId="Package\ZFORECAST\Find Changed Records.Inputs[Conditional Split Input].Columns[RM]"
                       cachedDataType="numeric"
-                      cachedName="INSME"
+                      cachedName="RM"
                       cachedPrecision="13"
-                      cachedScale="3"
-                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[INSME]" />
+                      cachedScale="2"
+                      lineageId="Package\ZFORECAST\Merge Join.Outputs[Merge Join Output].Columns[RM]" />
                     <inputColumn
-                      refId="Package\MARD\Find Changed Records.Inputs[Conditional Split Input].Columns[SPEME]"
+                      refId="Package\ZFORECAST\Find Changed Records.Inputs[Conditional Split Input].Columns[LABOR (1)]"
                       cachedDataType="numeric"
-                      cachedName="SPEME"
+                      cachedName="LABOR (1)"
                       cachedPrecision="13"
-                      cachedScale="3"
-                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[SPEME]" />
+                      cachedScale="2"
+                      lineageId="Package\ZFORECAST\Merge Join.Outputs[Merge Join Output].Columns[LABOR (1)]" />
                     <inputColumn
-                      refId="Package\MARD\Find Changed Records.Inputs[Conditional Split Input].Columns[INSME (1)]"
+                      refId="Package\ZFORECAST\Find Changed Records.Inputs[Conditional Split Input].Columns[OH (1)]"
                       cachedDataType="numeric"
-                      cachedName="INSME (1)"
+                      cachedName="OH (1)"
                       cachedPrecision="13"
-                      cachedScale="3"
-                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[INSME (1)]" />
+                      cachedScale="2"
+                      lineageId="Package\ZFORECAST\Merge Join.Outputs[Merge Join Output].Columns[OH (1)]" />
                     <inputColumn
-                      refId="Package\MARD\Find Changed Records.Inputs[Conditional Split Input].Columns[SPEME (1)]"
+                      refId="Package\ZFORECAST\Find Changed Records.Inputs[Conditional Split Input].Columns[RM (1)]"
                       cachedDataType="numeric"
-                      cachedName="SPEME (1)"
+                      cachedName="RM (1)"
                       cachedPrecision="13"
-                      cachedScale="3"
-                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[SPEME (1)]" />
-                    <inputColumn
-                      refId="Package\MARD\Find Changed Records.Inputs[Conditional Split Input].Columns[UMLME]"
-                      cachedDataType="numeric"
-                      cachedName="UMLME"
-                      cachedPrecision="13"
-                      cachedScale="3"
-                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[UMLME]" />
-                    <inputColumn
-                      refId="Package\MARD\Find Changed Records.Inputs[Conditional Split Input].Columns[UMLME (1)]"
-                      cachedDataType="numeric"
-                      cachedName="UMLME (1)"
-                      cachedPrecision="13"
-                      cachedScale="3"
-                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[UMLME (1)]" />
+                      cachedScale="2"
+                      lineageId="Package\ZFORECAST\Merge Join.Outputs[Merge Join Output].Columns[RM (1)]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\MARD\Find Changed Records.Outputs[update]"
+                  refId="Package\ZFORECAST\Find Changed Records.Outputs[update]"
                   description="Output 1 of the Conditional Split Transformation"
                   errorOrTruncationOperation="Computation"
                   errorRowDisposition="FailComponent"
                   exclusionGroup="1"
                   name="update"
-                  synchronousInputId="Package\MARD\Find Changed Records.Inputs[Conditional Split Input]"
+                  synchronousInputId="Package\ZFORECAST\Find Changed Records.Inputs[Conditional Split Input]"
                   truncationRowDisposition="FailComponent">
                   <properties>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
-                      name="Expression">#{Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[LABST]} != #{Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[LABST (1)]} || #{Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[INSME]} != #{Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[INSME (1)]} || #{Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[SPEME]} != #{Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[SPEME (1)]} || #{Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[UMLME]} != #{Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[UMLME (1)]}</property>
+                      name="Expression">#{Package\ZFORECAST\Merge Join.Outputs[Merge Join Output].Columns[LABOR]} != #{Package\ZFORECAST\Merge Join.Outputs[Merge Join Output].Columns[LABOR (1)]} || #{Package\ZFORECAST\Merge Join.Outputs[Merge Join Output].Columns[OH]} != #{Package\ZFORECAST\Merge Join.Outputs[Merge Join Output].Columns[OH (1)]} || #{Package\ZFORECAST\Merge Join.Outputs[Merge Join Output].Columns[RM]} != #{Package\ZFORECAST\Merge Join.Outputs[Merge Join Output].Columns[RM (1)]}</property>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the friendly version of the expression. This expression version uses column names."
                       expressionType="Notify"
-                      name="FriendlyExpression">LABST != [LABST (1)] || INSME != [INSME (1)] || SPEME != [SPEME (1)] || UMLME != [UMLME (1)]</property>
+                      name="FriendlyExpression">LABOR != [LABOR (1)] || OH != [OH (1)] || RM != [RM (1)]</property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
@@ -721,11 +732,11 @@ ORDER BY A01.[MANDT]
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\MARD\Find Changed Records.Outputs[Conditional Split Default Output]"
+                  refId="Package\ZFORECAST\Find Changed Records.Outputs[Conditional Split Default Output]"
                   description="Default Output of the Conditional Split Transformation"
                   exclusionGroup="1"
                   name="Conditional Split Default Output"
-                  synchronousInputId="Package\MARD\Find Changed Records.Inputs[Conditional Split Input]">
+                  synchronousInputId="Package\ZFORECAST\Find Changed Records.Inputs[Conditional Split Input]">
                   <properties>
                     <property
                       dataType="System.Boolean"
@@ -734,23 +745,23 @@ ORDER BY A01.[MANDT]
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\MARD\Find Changed Records.Outputs[Conditional Split Error Output]"
+                  refId="Package\ZFORECAST\Find Changed Records.Outputs[Conditional Split Error Output]"
                   description="Error Output of the Conditional Split Transformation"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="Conditional Split Error Output"
-                  synchronousInputId="Package\MARD\Find Changed Records.Inputs[Conditional Split Input]">
+                  synchronousInputId="Package\ZFORECAST\Find Changed Records.Inputs[Conditional Split Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\MARD\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      refId="Package\ZFORECAST\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\MARD\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      lineageId="Package\ZFORECAST\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\MARD\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      refId="Package\ZFORECAST\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\MARD\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\ZFORECAST\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -759,51 +770,51 @@ ORDER BY A01.[MANDT]
               </outputs>
             </component>
             <component
-              refId="Package\MARD\Identify Records"
+              refId="Package\ZFORECAST\Identity records"
               componentClassID="Microsoft.ConditionalSplit"
               contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
               description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
-              name="Identify Records"
+              name="Identity records"
               usesDispositions="true">
               <inputs>
                 <input
-                  refId="Package\MARD\Identify Records.Inputs[Conditional Split Input]"
+                  refId="Package\ZFORECAST\Identity records.Inputs[Conditional Split Input]"
                   description="Input to the Conditional Split Transformation"
                   name="Conditional Split Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\MARD\Identify Records.Inputs[Conditional Split Input].Columns[MANDT]"
+                      refId="Package\ZFORECAST\Identity records.Inputs[Conditional Split Input].Columns[MANDT]"
                       cachedDataType="wstr"
                       cachedLength="3"
                       cachedName="MANDT"
                       cachedSortKeyPosition="1"
-                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
+                      lineageId="Package\ZFORECAST\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
                     <inputColumn
-                      refId="Package\MARD\Identify Records.Inputs[Conditional Split Input].Columns[MANDT (1)]"
+                      refId="Package\ZFORECAST\Identity records.Inputs[Conditional Split Input].Columns[MANDT (1)]"
                       cachedDataType="wstr"
                       cachedLength="3"
                       cachedName="MANDT (1)"
-                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]" />
+                      lineageId="Package\ZFORECAST\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\MARD\Identify Records.Outputs[update]"
+                  refId="Package\ZFORECAST\Identity records.Outputs[update]"
                   description="Output 1 of the Conditional Split Transformation"
                   errorOrTruncationOperation="Computation"
                   errorRowDisposition="FailComponent"
                   exclusionGroup="1"
                   name="update"
-                  synchronousInputId="Package\MARD\Identify Records.Inputs[Conditional Split Input]"
+                  synchronousInputId="Package\ZFORECAST\Identity records.Inputs[Conditional Split Input]"
                   truncationRowDisposition="FailComponent">
                   <properties>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
-                      name="Expression">![ISNULL](#{Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; ![ISNULL](#{Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
+                      name="Expression">![ISNULL](#{Package\ZFORECAST\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; ![ISNULL](#{Package\ZFORECAST\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
                     <property
                       containsID="true"
                       dataType="System.String"
@@ -818,20 +829,20 @@ ORDER BY A01.[MANDT]
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\MARD\Identify Records.Outputs[insert]"
+                  refId="Package\ZFORECAST\Identity records.Outputs[insert]"
                   description="Output 2 of the Conditional Split Transformation"
                   errorOrTruncationOperation="Computation"
                   errorRowDisposition="FailComponent"
                   exclusionGroup="1"
                   name="insert"
-                  synchronousInputId="Package\MARD\Identify Records.Inputs[Conditional Split Input]"
+                  synchronousInputId="Package\ZFORECAST\Identity records.Inputs[Conditional Split Input]"
                   truncationRowDisposition="FailComponent">
                   <properties>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
-                      name="Expression">![ISNULL](#{Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; [ISNULL](#{Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
+                      name="Expression">![ISNULL](#{Package\ZFORECAST\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; [ISNULL](#{Package\ZFORECAST\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
                     <property
                       containsID="true"
                       dataType="System.String"
@@ -846,20 +857,20 @@ ORDER BY A01.[MANDT]
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\MARD\Identify Records.Outputs[delete]"
+                  refId="Package\ZFORECAST\Identity records.Outputs[delete]"
                   description="Output 3 of the Conditional Split Transformation"
                   errorOrTruncationOperation="Computation"
                   errorRowDisposition="FailComponent"
                   exclusionGroup="1"
                   name="delete"
-                  synchronousInputId="Package\MARD\Identify Records.Inputs[Conditional Split Input]"
+                  synchronousInputId="Package\ZFORECAST\Identity records.Inputs[Conditional Split Input]"
                   truncationRowDisposition="FailComponent">
                   <properties>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
-                      name="Expression">[ISNULL](#{Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; ![ISNULL](#{Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
+                      name="Expression">[ISNULL](#{Package\ZFORECAST\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; ![ISNULL](#{Package\ZFORECAST\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
                     <property
                       containsID="true"
                       dataType="System.String"
@@ -874,11 +885,11 @@ ORDER BY A01.[MANDT]
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\MARD\Identify Records.Outputs[Conditional Split Default Output]"
+                  refId="Package\ZFORECAST\Identity records.Outputs[Conditional Split Default Output]"
                   description="Default Output of the Conditional Split Transformation"
                   exclusionGroup="1"
                   name="Conditional Split Default Output"
-                  synchronousInputId="Package\MARD\Identify Records.Inputs[Conditional Split Input]">
+                  synchronousInputId="Package\ZFORECAST\Identity records.Inputs[Conditional Split Input]">
                   <properties>
                     <property
                       dataType="System.Boolean"
@@ -887,23 +898,23 @@ ORDER BY A01.[MANDT]
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\MARD\Identify Records.Outputs[Conditional Split Error Output]"
+                  refId="Package\ZFORECAST\Identity records.Outputs[Conditional Split Error Output]"
                   description="Error Output of the Conditional Split Transformation"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="Conditional Split Error Output"
-                  synchronousInputId="Package\MARD\Identify Records.Inputs[Conditional Split Input]">
+                  synchronousInputId="Package\ZFORECAST\Identity records.Inputs[Conditional Split Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\MARD\Identify Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      refId="Package\ZFORECAST\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\MARD\Identify Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      lineageId="Package\ZFORECAST\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\MARD\Identify Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      refId="Package\ZFORECAST\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\MARD\Identify Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\ZFORECAST\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -912,7 +923,7 @@ ORDER BY A01.[MANDT]
               </outputs>
             </component>
             <component
-              refId="Package\MARD\insert new records"
+              refId="Package\ZFORECAST\insert new records"
               componentClassID="Microsoft.OLEDBDestination"
               contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
               description="OLE DB Destination"
@@ -927,7 +938,7 @@ ORDER BY A01.[MANDT]
                 <property
                   dataType="System.String"
                   description="Specifies the name of the database object used to open a rowset."
-                  name="OpenRowset">[dbo].[MARD_STAGE_INSERT]</property>
+                  name="OpenRowset">[dbo].[ZFORECAST_STAGE_INSERT]</property>
                 <property
                   dataType="System.String"
                   description="Specifies the variable that contains the name of the database object used to open a rowset."
@@ -969,7 +980,7 @@ ORDER BY A01.[MANDT]
               </properties>
               <connections>
                 <connection
-                  refId="Package\MARD\insert new records.Connections[OleDbConnection]"
+                  refId="Package\ZFORECAST\insert new records.Connections[OleDbConnection]"
                   connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
                   connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
                   description="The OLE DB runtime connection used to access the database."
@@ -977,144 +988,130 @@ ORDER BY A01.[MANDT]
               </connections>
               <inputs>
                 <input
-                  refId="Package\MARD\insert new records.Inputs[OLE DB Destination Input]"
+                  refId="Package\ZFORECAST\insert new records.Inputs[OLE DB Destination Input]"
                   errorOrTruncationOperation="Insert"
                   errorRowDisposition="FailComponent"
                   hasSideEffects="true"
                   name="OLE DB Destination Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\MARD\insert new records.Inputs[OLE DB Destination Input].Columns[MANDT]"
+                      refId="Package\ZFORECAST\insert new records.Inputs[OLE DB Destination Input].Columns[MANDT]"
                       cachedDataType="wstr"
                       cachedLength="3"
                       cachedName="MANDT"
                       cachedSortKeyPosition="1"
-                      externalMetadataColumnId="Package\MARD\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
-                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
+                      externalMetadataColumnId="Package\ZFORECAST\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      lineageId="Package\ZFORECAST\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
                     <inputColumn
-                      refId="Package\MARD\insert new records.Inputs[OLE DB Destination Input].Columns[MATNR]"
+                      refId="Package\ZFORECAST\insert new records.Inputs[OLE DB Destination Input].Columns[ZYEAR]"
                       cachedDataType="wstr"
-                      cachedLength="18"
-                      cachedName="MATNR"
+                      cachedLength="4"
+                      cachedName="ZYEAR"
                       cachedSortKeyPosition="2"
-                      externalMetadataColumnId="Package\MARD\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MATNR]"
-                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[MATNR]" />
+                      externalMetadataColumnId="Package\ZFORECAST\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[ZYEAR]"
+                      lineageId="Package\ZFORECAST\Merge Join.Outputs[Merge Join Output].Columns[ZYEAR]" />
                     <inputColumn
-                      refId="Package\MARD\insert new records.Inputs[OLE DB Destination Input].Columns[WERKS]"
+                      refId="Package\ZFORECAST\insert new records.Inputs[OLE DB Destination Input].Columns[FPERD]"
                       cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="WERKS"
+                      cachedLength="2"
+                      cachedName="FPERD"
                       cachedSortKeyPosition="3"
-                      externalMetadataColumnId="Package\MARD\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[WERKS]"
-                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[WERKS]" />
+                      externalMetadataColumnId="Package\ZFORECAST\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[FPERD]"
+                      lineageId="Package\ZFORECAST\Merge Join.Outputs[Merge Join Output].Columns[FPERD]" />
                     <inputColumn
-                      refId="Package\MARD\insert new records.Inputs[OLE DB Destination Input].Columns[LGORT]"
+                      refId="Package\ZFORECAST\insert new records.Inputs[OLE DB Destination Input].Columns[TYPE]"
                       cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="LGORT"
+                      cachedLength="1"
+                      cachedName="TYPE"
                       cachedSortKeyPosition="4"
-                      externalMetadataColumnId="Package\MARD\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[LGORT]"
-                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[LGORT]" />
+                      externalMetadataColumnId="Package\ZFORECAST\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[TYPE]"
+                      lineageId="Package\ZFORECAST\Merge Join.Outputs[Merge Join Output].Columns[TYPE]" />
                     <inputColumn
-                      refId="Package\MARD\insert new records.Inputs[OLE DB Destination Input].Columns[LABST]"
+                      refId="Package\ZFORECAST\insert new records.Inputs[OLE DB Destination Input].Columns[LABOR]"
                       cachedDataType="numeric"
-                      cachedName="LABST"
+                      cachedName="LABOR"
                       cachedPrecision="13"
-                      cachedScale="3"
-                      externalMetadataColumnId="Package\MARD\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[LABST]"
-                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[LABST]" />
+                      cachedScale="2"
+                      externalMetadataColumnId="Package\ZFORECAST\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[LABOR]"
+                      lineageId="Package\ZFORECAST\Merge Join.Outputs[Merge Join Output].Columns[LABOR]" />
                     <inputColumn
-                      refId="Package\MARD\insert new records.Inputs[OLE DB Destination Input].Columns[INSME]"
+                      refId="Package\ZFORECAST\insert new records.Inputs[OLE DB Destination Input].Columns[OH]"
                       cachedDataType="numeric"
-                      cachedName="INSME"
+                      cachedName="OH"
                       cachedPrecision="13"
-                      cachedScale="3"
-                      externalMetadataColumnId="Package\MARD\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[INSME]"
-                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[INSME]" />
+                      cachedScale="2"
+                      externalMetadataColumnId="Package\ZFORECAST\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[OH]"
+                      lineageId="Package\ZFORECAST\Merge Join.Outputs[Merge Join Output].Columns[OH]" />
                     <inputColumn
-                      refId="Package\MARD\insert new records.Inputs[OLE DB Destination Input].Columns[SPEME]"
+                      refId="Package\ZFORECAST\insert new records.Inputs[OLE DB Destination Input].Columns[RM]"
                       cachedDataType="numeric"
-                      cachedName="SPEME"
+                      cachedName="RM"
                       cachedPrecision="13"
-                      cachedScale="3"
-                      externalMetadataColumnId="Package\MARD\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[SPEME]"
-                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[SPEME]" />
-                    <inputColumn
-                      refId="Package\MARD\insert new records.Inputs[OLE DB Destination Input].Columns[UMLME]"
-                      cachedDataType="numeric"
-                      cachedName="UMLME"
-                      cachedPrecision="13"
-                      cachedScale="3"
-                      externalMetadataColumnId="Package\MARD\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[UMLME]"
-                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[UMLME]" />
+                      cachedScale="2"
+                      externalMetadataColumnId="Package\ZFORECAST\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[RM]"
+                      lineageId="Package\ZFORECAST\Merge Join.Outputs[Merge Join Output].Columns[RM]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
                     <externalMetadataColumn
-                      refId="Package\MARD\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      refId="Package\ZFORECAST\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
                       dataType="wstr"
                       length="3"
                       name="MANDT" />
                     <externalMetadataColumn
-                      refId="Package\MARD\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MATNR]"
-                      dataType="wstr"
-                      length="18"
-                      name="MATNR" />
-                    <externalMetadataColumn
-                      refId="Package\MARD\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[WERKS]"
+                      refId="Package\ZFORECAST\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[ZYEAR]"
                       dataType="wstr"
                       length="4"
-                      name="WERKS" />
+                      name="ZYEAR" />
                     <externalMetadataColumn
-                      refId="Package\MARD\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[LGORT]"
+                      refId="Package\ZFORECAST\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[FPERD]"
                       dataType="wstr"
-                      length="4"
-                      name="LGORT" />
+                      length="2"
+                      name="FPERD" />
                     <externalMetadataColumn
-                      refId="Package\MARD\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[LABST]"
-                      dataType="numeric"
-                      name="LABST"
-                      precision="13"
-                      scale="3" />
+                      refId="Package\ZFORECAST\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[TYPE]"
+                      dataType="wstr"
+                      length="1"
+                      name="TYPE" />
                     <externalMetadataColumn
-                      refId="Package\MARD\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[INSME]"
+                      refId="Package\ZFORECAST\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[LABOR]"
                       dataType="numeric"
-                      name="INSME"
+                      name="LABOR"
                       precision="13"
-                      scale="3" />
+                      scale="10" />
                     <externalMetadataColumn
-                      refId="Package\MARD\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[SPEME]"
+                      refId="Package\ZFORECAST\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[OH]"
                       dataType="numeric"
-                      name="SPEME"
+                      name="OH"
                       precision="13"
-                      scale="3" />
+                      scale="10" />
                     <externalMetadataColumn
-                      refId="Package\MARD\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[UMLME]"
+                      refId="Package\ZFORECAST\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[RM]"
                       dataType="numeric"
-                      name="UMLME"
+                      name="RM"
                       precision="13"
-                      scale="3" />
+                      scale="10" />
                   </externalMetadataColumns>
                 </input>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\MARD\insert new records.Outputs[OLE DB Destination Error Output]"
+                  refId="Package\ZFORECAST\insert new records.Outputs[OLE DB Destination Error Output]"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="OLE DB Destination Error Output"
-                  synchronousInputId="Package\MARD\insert new records.Inputs[OLE DB Destination Input]">
+                  synchronousInputId="Package\ZFORECAST\insert new records.Inputs[OLE DB Destination Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\MARD\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      refId="Package\ZFORECAST\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\MARD\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      lineageId="Package\ZFORECAST\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\MARD\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      refId="Package\ZFORECAST\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\MARD\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\ZFORECAST\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -1123,7 +1120,7 @@ ORDER BY A01.[MANDT]
               </outputs>
             </component>
             <component
-              refId="Package\MARD\Merge Join"
+              refId="Package\ZFORECAST\Merge Join"
               componentClassID="Microsoft.MergeJoin"
               contactInfo="Merge Join;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
               description="Combine two sorted data flows into one using the FULL, LEFT, or INNER join. We recommend this transformation when data flows can be sorted at their sources."
@@ -1150,145 +1147,131 @@ ORDER BY A01.[MANDT]
               </properties>
               <inputs>
                 <input
-                  refId="Package\MARD\Merge Join.Inputs[Merge Join Left Input]"
+                  refId="Package\ZFORECAST\Merge Join.Inputs[Merge Join Left Input]"
                   hasSideEffects="true"
                   name="Merge Join Left Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\MARD\Merge Join.Inputs[Merge Join Left Input].Columns[MANDT]"
+                      refId="Package\ZFORECAST\Merge Join.Inputs[Merge Join Left Input].Columns[MANDT]"
                       cachedDataType="wstr"
                       cachedLength="3"
                       cachedName="MANDT"
                       cachedSortKeyPosition="1"
-                      lineageId="Package\MARD\DB SAP.Outputs[OLE DB Source Output].Columns[MANDT]" />
+                      lineageId="Package\ZFORECAST\DB SAP.Outputs[OLE DB Source Output].Columns[MANDT]" />
                     <inputColumn
-                      refId="Package\MARD\Merge Join.Inputs[Merge Join Left Input].Columns[MATNR]"
+                      refId="Package\ZFORECAST\Merge Join.Inputs[Merge Join Left Input].Columns[ZYEAR]"
                       cachedDataType="wstr"
-                      cachedLength="18"
-                      cachedName="MATNR"
+                      cachedLength="4"
+                      cachedName="ZYEAR"
                       cachedSortKeyPosition="2"
-                      lineageId="Package\MARD\DB SAP.Outputs[OLE DB Source Output].Columns[MATNR]" />
+                      lineageId="Package\ZFORECAST\DB SAP.Outputs[OLE DB Source Output].Columns[ZYEAR]" />
                     <inputColumn
-                      refId="Package\MARD\Merge Join.Inputs[Merge Join Left Input].Columns[WERKS]"
+                      refId="Package\ZFORECAST\Merge Join.Inputs[Merge Join Left Input].Columns[FPERD]"
                       cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="WERKS"
+                      cachedLength="2"
+                      cachedName="FPERD"
                       cachedSortKeyPosition="3"
-                      lineageId="Package\MARD\DB SAP.Outputs[OLE DB Source Output].Columns[WERKS]" />
+                      lineageId="Package\ZFORECAST\DB SAP.Outputs[OLE DB Source Output].Columns[FPERD]" />
                     <inputColumn
-                      refId="Package\MARD\Merge Join.Inputs[Merge Join Left Input].Columns[LGORT]"
+                      refId="Package\ZFORECAST\Merge Join.Inputs[Merge Join Left Input].Columns[TYPE]"
                       cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="LGORT"
+                      cachedLength="1"
+                      cachedName="TYPE"
                       cachedSortKeyPosition="4"
-                      lineageId="Package\MARD\DB SAP.Outputs[OLE DB Source Output].Columns[LGORT]" />
+                      lineageId="Package\ZFORECAST\DB SAP.Outputs[OLE DB Source Output].Columns[TYPE]" />
                     <inputColumn
-                      refId="Package\MARD\Merge Join.Inputs[Merge Join Left Input].Columns[LABST]"
+                      refId="Package\ZFORECAST\Merge Join.Inputs[Merge Join Left Input].Columns[LABOR]"
                       cachedDataType="numeric"
-                      cachedName="LABST"
+                      cachedName="LABOR"
                       cachedPrecision="13"
-                      cachedScale="3"
-                      lineageId="Package\MARD\DB SAP.Outputs[OLE DB Source Output].Columns[LABST]" />
+                      cachedScale="2"
+                      lineageId="Package\ZFORECAST\DB SAP.Outputs[OLE DB Source Output].Columns[LABOR]" />
                     <inputColumn
-                      refId="Package\MARD\Merge Join.Inputs[Merge Join Left Input].Columns[INSME]"
+                      refId="Package\ZFORECAST\Merge Join.Inputs[Merge Join Left Input].Columns[OH]"
                       cachedDataType="numeric"
-                      cachedName="INSME"
+                      cachedName="OH"
                       cachedPrecision="13"
-                      cachedScale="3"
-                      lineageId="Package\MARD\DB SAP.Outputs[OLE DB Source Output].Columns[INSME]" />
+                      cachedScale="2"
+                      lineageId="Package\ZFORECAST\DB SAP.Outputs[OLE DB Source Output].Columns[OH]" />
                     <inputColumn
-                      refId="Package\MARD\Merge Join.Inputs[Merge Join Left Input].Columns[SPEME]"
+                      refId="Package\ZFORECAST\Merge Join.Inputs[Merge Join Left Input].Columns[RM]"
                       cachedDataType="numeric"
-                      cachedName="SPEME"
+                      cachedName="RM"
                       cachedPrecision="13"
-                      cachedScale="3"
-                      lineageId="Package\MARD\DB SAP.Outputs[OLE DB Source Output].Columns[SPEME]" />
-                    <inputColumn
-                      refId="Package\MARD\Merge Join.Inputs[Merge Join Left Input].Columns[UMLME]"
-                      cachedDataType="numeric"
-                      cachedName="UMLME"
-                      cachedPrecision="13"
-                      cachedScale="3"
-                      lineageId="Package\MARD\DB SAP.Outputs[OLE DB Source Output].Columns[UMLME]" />
+                      cachedScale="2"
+                      lineageId="Package\ZFORECAST\DB SAP.Outputs[OLE DB Source Output].Columns[RM]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
                 <input
-                  refId="Package\MARD\Merge Join.Inputs[Merge Join Right Input]"
+                  refId="Package\ZFORECAST\Merge Join.Inputs[Merge Join Right Input]"
                   hasSideEffects="true"
                   name="Merge Join Right Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\MARD\Merge Join.Inputs[Merge Join Right Input].Columns[MANDT]"
+                      refId="Package\ZFORECAST\Merge Join.Inputs[Merge Join Right Input].Columns[MANDT]"
                       cachedDataType="wstr"
                       cachedLength="3"
                       cachedName="MANDT"
                       cachedSortKeyPosition="1"
-                      lineageId="Package\MARD\DB PBI.Outputs[OLE DB Source Output].Columns[MANDT]" />
+                      lineageId="Package\ZFORECAST\DB PBI.Outputs[OLE DB Source Output].Columns[MANDT]" />
                     <inputColumn
-                      refId="Package\MARD\Merge Join.Inputs[Merge Join Right Input].Columns[MATNR]"
+                      refId="Package\ZFORECAST\Merge Join.Inputs[Merge Join Right Input].Columns[ZYEAR]"
                       cachedDataType="wstr"
-                      cachedLength="18"
-                      cachedName="MATNR"
+                      cachedLength="4"
+                      cachedName="ZYEAR"
                       cachedSortKeyPosition="2"
-                      lineageId="Package\MARD\DB PBI.Outputs[OLE DB Source Output].Columns[MATNR]" />
+                      lineageId="Package\ZFORECAST\DB PBI.Outputs[OLE DB Source Output].Columns[ZYEAR]" />
                     <inputColumn
-                      refId="Package\MARD\Merge Join.Inputs[Merge Join Right Input].Columns[WERKS]"
+                      refId="Package\ZFORECAST\Merge Join.Inputs[Merge Join Right Input].Columns[FPERD]"
                       cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="WERKS"
+                      cachedLength="2"
+                      cachedName="FPERD"
                       cachedSortKeyPosition="3"
-                      lineageId="Package\MARD\DB PBI.Outputs[OLE DB Source Output].Columns[WERKS]" />
+                      lineageId="Package\ZFORECAST\DB PBI.Outputs[OLE DB Source Output].Columns[FPERD]" />
                     <inputColumn
-                      refId="Package\MARD\Merge Join.Inputs[Merge Join Right Input].Columns[LGORT]"
+                      refId="Package\ZFORECAST\Merge Join.Inputs[Merge Join Right Input].Columns[TYPE]"
                       cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="LGORT"
+                      cachedLength="1"
+                      cachedName="TYPE"
                       cachedSortKeyPosition="4"
-                      lineageId="Package\MARD\DB PBI.Outputs[OLE DB Source Output].Columns[LGORT]" />
+                      lineageId="Package\ZFORECAST\DB PBI.Outputs[OLE DB Source Output].Columns[TYPE]" />
                     <inputColumn
-                      refId="Package\MARD\Merge Join.Inputs[Merge Join Right Input].Columns[LABST]"
+                      refId="Package\ZFORECAST\Merge Join.Inputs[Merge Join Right Input].Columns[LABOR]"
                       cachedDataType="numeric"
-                      cachedName="LABST"
+                      cachedName="LABOR"
                       cachedPrecision="13"
-                      cachedScale="3"
-                      lineageId="Package\MARD\DB PBI.Outputs[OLE DB Source Output].Columns[LABST]" />
+                      cachedScale="2"
+                      lineageId="Package\ZFORECAST\DB PBI.Outputs[OLE DB Source Output].Columns[LABOR]" />
                     <inputColumn
-                      refId="Package\MARD\Merge Join.Inputs[Merge Join Right Input].Columns[INSME]"
+                      refId="Package\ZFORECAST\Merge Join.Inputs[Merge Join Right Input].Columns[OH]"
                       cachedDataType="numeric"
-                      cachedName="INSME"
+                      cachedName="OH"
                       cachedPrecision="13"
-                      cachedScale="3"
-                      lineageId="Package\MARD\DB PBI.Outputs[OLE DB Source Output].Columns[INSME]" />
+                      cachedScale="2"
+                      lineageId="Package\ZFORECAST\DB PBI.Outputs[OLE DB Source Output].Columns[OH]" />
                     <inputColumn
-                      refId="Package\MARD\Merge Join.Inputs[Merge Join Right Input].Columns[SPEME]"
+                      refId="Package\ZFORECAST\Merge Join.Inputs[Merge Join Right Input].Columns[RM]"
                       cachedDataType="numeric"
-                      cachedName="SPEME"
+                      cachedName="RM"
                       cachedPrecision="13"
-                      cachedScale="3"
-                      lineageId="Package\MARD\DB PBI.Outputs[OLE DB Source Output].Columns[SPEME]" />
-                    <inputColumn
-                      refId="Package\MARD\Merge Join.Inputs[Merge Join Right Input].Columns[UMLME]"
-                      cachedDataType="numeric"
-                      cachedName="UMLME"
-                      cachedPrecision="13"
-                      cachedScale="3"
-                      lineageId="Package\MARD\DB PBI.Outputs[OLE DB Source Output].Columns[UMLME]" />
+                      cachedScale="2"
+                      lineageId="Package\ZFORECAST\DB PBI.Outputs[OLE DB Source Output].Columns[RM]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\MARD\Merge Join.Outputs[Merge Join Output]"
+                  refId="Package\ZFORECAST\Merge Join.Outputs[Merge Join Output]"
                   isSorted="true"
                   name="Merge Join Output">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[MANDT]"
+                      refId="Package\ZFORECAST\Merge Join.Outputs[Merge Join Output].Columns[MANDT]"
                       dataType="wstr"
                       length="3"
-                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[MANDT]"
+                      lineageId="Package\ZFORECAST\Merge Join.Outputs[Merge Join Output].Columns[MANDT]"
                       name="MANDT"
                       sortKeyPosition="1">
                       <properties>
@@ -1296,228 +1279,198 @@ ORDER BY A01.[MANDT]
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\MARD\Merge Join.Inputs[Merge Join Left Input].Columns[MANDT]}</property>
+                          name="InputColumnID">#{Package\ZFORECAST\Merge Join.Inputs[Merge Join Left Input].Columns[MANDT]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[MATNR]"
+                      refId="Package\ZFORECAST\Merge Join.Outputs[Merge Join Output].Columns[ZYEAR]"
                       dataType="wstr"
-                      length="18"
-                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[MATNR]"
-                      name="MATNR"
+                      length="4"
+                      lineageId="Package\ZFORECAST\Merge Join.Outputs[Merge Join Output].Columns[ZYEAR]"
+                      name="ZYEAR"
                       sortKeyPosition="2">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\MARD\Merge Join.Inputs[Merge Join Left Input].Columns[MATNR]}</property>
+                          name="InputColumnID">#{Package\ZFORECAST\Merge Join.Inputs[Merge Join Left Input].Columns[ZYEAR]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[WERKS]"
+                      refId="Package\ZFORECAST\Merge Join.Outputs[Merge Join Output].Columns[FPERD]"
                       dataType="wstr"
-                      length="4"
-                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[WERKS]"
-                      name="WERKS"
+                      length="2"
+                      lineageId="Package\ZFORECAST\Merge Join.Outputs[Merge Join Output].Columns[FPERD]"
+                      name="FPERD"
                       sortKeyPosition="3">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\MARD\Merge Join.Inputs[Merge Join Left Input].Columns[WERKS]}</property>
+                          name="InputColumnID">#{Package\ZFORECAST\Merge Join.Inputs[Merge Join Left Input].Columns[FPERD]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[LGORT]"
+                      refId="Package\ZFORECAST\Merge Join.Outputs[Merge Join Output].Columns[TYPE]"
                       dataType="wstr"
-                      length="4"
-                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[LGORT]"
-                      name="LGORT"
+                      length="1"
+                      lineageId="Package\ZFORECAST\Merge Join.Outputs[Merge Join Output].Columns[TYPE]"
+                      name="TYPE"
                       sortKeyPosition="4">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\MARD\Merge Join.Inputs[Merge Join Left Input].Columns[LGORT]}</property>
+                          name="InputColumnID">#{Package\ZFORECAST\Merge Join.Inputs[Merge Join Left Input].Columns[TYPE]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[LABST]"
+                      refId="Package\ZFORECAST\Merge Join.Outputs[Merge Join Output].Columns[LABOR]"
                       dataType="numeric"
-                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[LABST]"
-                      name="LABST"
+                      lineageId="Package\ZFORECAST\Merge Join.Outputs[Merge Join Output].Columns[LABOR]"
+                      name="LABOR"
                       precision="13"
-                      scale="3">
+                      scale="2">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\MARD\Merge Join.Inputs[Merge Join Left Input].Columns[LABST]}</property>
+                          name="InputColumnID">#{Package\ZFORECAST\Merge Join.Inputs[Merge Join Left Input].Columns[LABOR]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]"
+                      refId="Package\ZFORECAST\Merge Join.Outputs[Merge Join Output].Columns[OH]"
+                      dataType="numeric"
+                      lineageId="Package\ZFORECAST\Merge Join.Outputs[Merge Join Output].Columns[OH]"
+                      name="OH"
+                      precision="13"
+                      scale="2">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\ZFORECAST\Merge Join.Inputs[Merge Join Left Input].Columns[OH]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\ZFORECAST\Merge Join.Outputs[Merge Join Output].Columns[RM]"
+                      dataType="numeric"
+                      lineageId="Package\ZFORECAST\Merge Join.Outputs[Merge Join Output].Columns[RM]"
+                      name="RM"
+                      precision="13"
+                      scale="2">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\ZFORECAST\Merge Join.Inputs[Merge Join Left Input].Columns[RM]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\ZFORECAST\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]"
                       dataType="wstr"
                       length="3"
-                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]"
+                      lineageId="Package\ZFORECAST\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]"
                       name="MANDT (1)">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\MARD\Merge Join.Inputs[Merge Join Right Input].Columns[MANDT]}</property>
+                          name="InputColumnID">#{Package\ZFORECAST\Merge Join.Inputs[Merge Join Right Input].Columns[MANDT]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[MATNR (1)]"
-                      dataType="wstr"
-                      length="18"
-                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[MATNR (1)]"
-                      name="MATNR (1)">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\MARD\Merge Join.Inputs[Merge Join Right Input].Columns[MATNR]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[WERKS (1)]"
+                      refId="Package\ZFORECAST\Merge Join.Outputs[Merge Join Output].Columns[ZYEAR (1)]"
                       dataType="wstr"
                       length="4"
-                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[WERKS (1)]"
-                      name="WERKS (1)">
+                      lineageId="Package\ZFORECAST\Merge Join.Outputs[Merge Join Output].Columns[ZYEAR (1)]"
+                      name="ZYEAR (1)">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\MARD\Merge Join.Inputs[Merge Join Right Input].Columns[WERKS]}</property>
+                          name="InputColumnID">#{Package\ZFORECAST\Merge Join.Inputs[Merge Join Right Input].Columns[ZYEAR]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[LGORT (1)]"
+                      refId="Package\ZFORECAST\Merge Join.Outputs[Merge Join Output].Columns[FPERD (1)]"
                       dataType="wstr"
-                      length="4"
-                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[LGORT (1)]"
-                      name="LGORT (1)">
+                      length="2"
+                      lineageId="Package\ZFORECAST\Merge Join.Outputs[Merge Join Output].Columns[FPERD (1)]"
+                      name="FPERD (1)">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\MARD\Merge Join.Inputs[Merge Join Right Input].Columns[LGORT]}</property>
+                          name="InputColumnID">#{Package\ZFORECAST\Merge Join.Inputs[Merge Join Right Input].Columns[FPERD]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[LABST (1)]"
-                      dataType="numeric"
-                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[LABST (1)]"
-                      name="LABST (1)"
-                      precision="13"
-                      scale="3">
+                      refId="Package\ZFORECAST\Merge Join.Outputs[Merge Join Output].Columns[TYPE (1)]"
+                      dataType="wstr"
+                      length="1"
+                      lineageId="Package\ZFORECAST\Merge Join.Outputs[Merge Join Output].Columns[TYPE (1)]"
+                      name="TYPE (1)">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\MARD\Merge Join.Inputs[Merge Join Right Input].Columns[LABST]}</property>
+                          name="InputColumnID">#{Package\ZFORECAST\Merge Join.Inputs[Merge Join Right Input].Columns[TYPE]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[INSME]"
+                      refId="Package\ZFORECAST\Merge Join.Outputs[Merge Join Output].Columns[LABOR (1)]"
                       dataType="numeric"
-                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[INSME]"
-                      name="INSME"
+                      lineageId="Package\ZFORECAST\Merge Join.Outputs[Merge Join Output].Columns[LABOR (1)]"
+                      name="LABOR (1)"
                       precision="13"
-                      scale="3">
+                      scale="2">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\MARD\Merge Join.Inputs[Merge Join Left Input].Columns[INSME]}</property>
+                          name="InputColumnID">#{Package\ZFORECAST\Merge Join.Inputs[Merge Join Right Input].Columns[LABOR]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[SPEME]"
+                      refId="Package\ZFORECAST\Merge Join.Outputs[Merge Join Output].Columns[OH (1)]"
                       dataType="numeric"
-                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[SPEME]"
-                      name="SPEME"
+                      lineageId="Package\ZFORECAST\Merge Join.Outputs[Merge Join Output].Columns[OH (1)]"
+                      name="OH (1)"
                       precision="13"
-                      scale="3">
+                      scale="2">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\MARD\Merge Join.Inputs[Merge Join Left Input].Columns[SPEME]}</property>
+                          name="InputColumnID">#{Package\ZFORECAST\Merge Join.Inputs[Merge Join Right Input].Columns[OH]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[INSME (1)]"
+                      refId="Package\ZFORECAST\Merge Join.Outputs[Merge Join Output].Columns[RM (1)]"
                       dataType="numeric"
-                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[INSME (1)]"
-                      name="INSME (1)"
+                      lineageId="Package\ZFORECAST\Merge Join.Outputs[Merge Join Output].Columns[RM (1)]"
+                      name="RM (1)"
                       precision="13"
-                      scale="3">
+                      scale="2">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\MARD\Merge Join.Inputs[Merge Join Right Input].Columns[INSME]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[SPEME (1)]"
-                      dataType="numeric"
-                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[SPEME (1)]"
-                      name="SPEME (1)"
-                      precision="13"
-                      scale="3">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\MARD\Merge Join.Inputs[Merge Join Right Input].Columns[SPEME]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[UMLME]"
-                      dataType="numeric"
-                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[UMLME]"
-                      name="UMLME"
-                      precision="13"
-                      scale="3">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\MARD\Merge Join.Inputs[Merge Join Left Input].Columns[UMLME]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[UMLME (1)]"
-                      dataType="numeric"
-                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[UMLME (1)]"
-                      name="UMLME (1)"
-                      precision="13"
-                      scale="3">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\MARD\Merge Join.Inputs[Merge Join Right Input].Columns[UMLME]}</property>
+                          name="InputColumnID">#{Package\ZFORECAST\Merge Join.Inputs[Merge Join Right Input].Columns[RM]}</property>
                       </properties>
                     </outputColumn>
                   </outputColumns>
@@ -1526,7 +1479,7 @@ ORDER BY A01.[MANDT]
               </outputs>
             </component>
             <component
-              refId="Package\MARD\stage changed records"
+              refId="Package\ZFORECAST\stage changed records"
               componentClassID="Microsoft.OLEDBDestination"
               contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
               description="OLE DB Destination"
@@ -1541,7 +1494,7 @@ ORDER BY A01.[MANDT]
                 <property
                   dataType="System.String"
                   description="Specifies the name of the database object used to open a rowset."
-                  name="OpenRowset">[dbo].[MARD_STAGE_UPDATE]</property>
+                  name="OpenRowset">[dbo].[ZFORECAST_STAGE_UPDATE]</property>
                 <property
                   dataType="System.String"
                   description="Specifies the variable that contains the name of the database object used to open a rowset."
@@ -1583,7 +1536,7 @@ ORDER BY A01.[MANDT]
               </properties>
               <connections>
                 <connection
-                  refId="Package\MARD\stage changed records.Connections[OleDbConnection]"
+                  refId="Package\ZFORECAST\stage changed records.Connections[OleDbConnection]"
                   connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
                   connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
                   description="The OLE DB runtime connection used to access the database."
@@ -1591,144 +1544,130 @@ ORDER BY A01.[MANDT]
               </connections>
               <inputs>
                 <input
-                  refId="Package\MARD\stage changed records.Inputs[OLE DB Destination Input]"
+                  refId="Package\ZFORECAST\stage changed records.Inputs[OLE DB Destination Input]"
                   errorOrTruncationOperation="Insert"
                   errorRowDisposition="FailComponent"
                   hasSideEffects="true"
                   name="OLE DB Destination Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\MARD\stage changed records.Inputs[OLE DB Destination Input].Columns[MANDT]"
+                      refId="Package\ZFORECAST\stage changed records.Inputs[OLE DB Destination Input].Columns[MANDT]"
                       cachedDataType="wstr"
                       cachedLength="3"
                       cachedName="MANDT"
                       cachedSortKeyPosition="1"
-                      externalMetadataColumnId="Package\MARD\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
-                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
+                      externalMetadataColumnId="Package\ZFORECAST\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      lineageId="Package\ZFORECAST\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
                     <inputColumn
-                      refId="Package\MARD\stage changed records.Inputs[OLE DB Destination Input].Columns[MATNR]"
+                      refId="Package\ZFORECAST\stage changed records.Inputs[OLE DB Destination Input].Columns[ZYEAR]"
                       cachedDataType="wstr"
-                      cachedLength="18"
-                      cachedName="MATNR"
+                      cachedLength="4"
+                      cachedName="ZYEAR"
                       cachedSortKeyPosition="2"
-                      externalMetadataColumnId="Package\MARD\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MATNR]"
-                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[MATNR]" />
+                      externalMetadataColumnId="Package\ZFORECAST\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[ZYEAR]"
+                      lineageId="Package\ZFORECAST\Merge Join.Outputs[Merge Join Output].Columns[ZYEAR]" />
                     <inputColumn
-                      refId="Package\MARD\stage changed records.Inputs[OLE DB Destination Input].Columns[WERKS]"
+                      refId="Package\ZFORECAST\stage changed records.Inputs[OLE DB Destination Input].Columns[FPERD]"
                       cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="WERKS"
+                      cachedLength="2"
+                      cachedName="FPERD"
                       cachedSortKeyPosition="3"
-                      externalMetadataColumnId="Package\MARD\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[WERKS]"
-                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[WERKS]" />
+                      externalMetadataColumnId="Package\ZFORECAST\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[FPERD]"
+                      lineageId="Package\ZFORECAST\Merge Join.Outputs[Merge Join Output].Columns[FPERD]" />
                     <inputColumn
-                      refId="Package\MARD\stage changed records.Inputs[OLE DB Destination Input].Columns[LGORT]"
+                      refId="Package\ZFORECAST\stage changed records.Inputs[OLE DB Destination Input].Columns[TYPE]"
                       cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="LGORT"
+                      cachedLength="1"
+                      cachedName="TYPE"
                       cachedSortKeyPosition="4"
-                      externalMetadataColumnId="Package\MARD\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[LGORT]"
-                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[LGORT]" />
+                      externalMetadataColumnId="Package\ZFORECAST\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[TYPE]"
+                      lineageId="Package\ZFORECAST\Merge Join.Outputs[Merge Join Output].Columns[TYPE]" />
                     <inputColumn
-                      refId="Package\MARD\stage changed records.Inputs[OLE DB Destination Input].Columns[LABST]"
+                      refId="Package\ZFORECAST\stage changed records.Inputs[OLE DB Destination Input].Columns[LABOR]"
                       cachedDataType="numeric"
-                      cachedName="LABST"
+                      cachedName="LABOR"
                       cachedPrecision="13"
-                      cachedScale="3"
-                      externalMetadataColumnId="Package\MARD\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[LABST]"
-                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[LABST]" />
+                      cachedScale="2"
+                      externalMetadataColumnId="Package\ZFORECAST\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[LABOR]"
+                      lineageId="Package\ZFORECAST\Merge Join.Outputs[Merge Join Output].Columns[LABOR]" />
                     <inputColumn
-                      refId="Package\MARD\stage changed records.Inputs[OLE DB Destination Input].Columns[INSME]"
+                      refId="Package\ZFORECAST\stage changed records.Inputs[OLE DB Destination Input].Columns[OH]"
                       cachedDataType="numeric"
-                      cachedName="INSME"
+                      cachedName="OH"
                       cachedPrecision="13"
-                      cachedScale="3"
-                      externalMetadataColumnId="Package\MARD\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[INSME]"
-                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[INSME]" />
+                      cachedScale="2"
+                      externalMetadataColumnId="Package\ZFORECAST\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[OH]"
+                      lineageId="Package\ZFORECAST\Merge Join.Outputs[Merge Join Output].Columns[OH]" />
                     <inputColumn
-                      refId="Package\MARD\stage changed records.Inputs[OLE DB Destination Input].Columns[SPEME]"
+                      refId="Package\ZFORECAST\stage changed records.Inputs[OLE DB Destination Input].Columns[RM]"
                       cachedDataType="numeric"
-                      cachedName="SPEME"
+                      cachedName="RM"
                       cachedPrecision="13"
-                      cachedScale="3"
-                      externalMetadataColumnId="Package\MARD\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[SPEME]"
-                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[SPEME]" />
-                    <inputColumn
-                      refId="Package\MARD\stage changed records.Inputs[OLE DB Destination Input].Columns[UMLME]"
-                      cachedDataType="numeric"
-                      cachedName="UMLME"
-                      cachedPrecision="13"
-                      cachedScale="3"
-                      externalMetadataColumnId="Package\MARD\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[UMLME]"
-                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[UMLME]" />
+                      cachedScale="2"
+                      externalMetadataColumnId="Package\ZFORECAST\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[RM]"
+                      lineageId="Package\ZFORECAST\Merge Join.Outputs[Merge Join Output].Columns[RM]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
                     <externalMetadataColumn
-                      refId="Package\MARD\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      refId="Package\ZFORECAST\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
                       dataType="wstr"
                       length="3"
                       name="MANDT" />
                     <externalMetadataColumn
-                      refId="Package\MARD\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MATNR]"
-                      dataType="wstr"
-                      length="18"
-                      name="MATNR" />
-                    <externalMetadataColumn
-                      refId="Package\MARD\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[WERKS]"
+                      refId="Package\ZFORECAST\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[ZYEAR]"
                       dataType="wstr"
                       length="4"
-                      name="WERKS" />
+                      name="ZYEAR" />
                     <externalMetadataColumn
-                      refId="Package\MARD\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[LGORT]"
+                      refId="Package\ZFORECAST\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[FPERD]"
                       dataType="wstr"
-                      length="4"
-                      name="LGORT" />
+                      length="2"
+                      name="FPERD" />
                     <externalMetadataColumn
-                      refId="Package\MARD\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[LABST]"
-                      dataType="numeric"
-                      name="LABST"
-                      precision="13"
-                      scale="3" />
+                      refId="Package\ZFORECAST\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[TYPE]"
+                      dataType="wstr"
+                      length="1"
+                      name="TYPE" />
                     <externalMetadataColumn
-                      refId="Package\MARD\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[INSME]"
+                      refId="Package\ZFORECAST\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[LABOR]"
                       dataType="numeric"
-                      name="INSME"
+                      name="LABOR"
                       precision="13"
-                      scale="3" />
+                      scale="10" />
                     <externalMetadataColumn
-                      refId="Package\MARD\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[SPEME]"
+                      refId="Package\ZFORECAST\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[OH]"
                       dataType="numeric"
-                      name="SPEME"
+                      name="OH"
                       precision="13"
-                      scale="3" />
+                      scale="10" />
                     <externalMetadataColumn
-                      refId="Package\MARD\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[UMLME]"
+                      refId="Package\ZFORECAST\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[RM]"
                       dataType="numeric"
-                      name="UMLME"
+                      name="RM"
                       precision="13"
-                      scale="3" />
+                      scale="10" />
                   </externalMetadataColumns>
                 </input>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\MARD\stage changed records.Outputs[OLE DB Destination Error Output]"
+                  refId="Package\ZFORECAST\stage changed records.Outputs[OLE DB Destination Error Output]"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="OLE DB Destination Error Output"
-                  synchronousInputId="Package\MARD\stage changed records.Inputs[OLE DB Destination Input]">
+                  synchronousInputId="Package\ZFORECAST\stage changed records.Inputs[OLE DB Destination Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\MARD\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      refId="Package\ZFORECAST\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\MARD\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      lineageId="Package\ZFORECAST\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\MARD\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      refId="Package\ZFORECAST\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\MARD\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\ZFORECAST\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -1737,7 +1676,7 @@ ORDER BY A01.[MANDT]
               </outputs>
             </component>
             <component
-              refId="Package\MARD\stage deleted records"
+              refId="Package\ZFORECAST\stage deleted records"
               componentClassID="Microsoft.OLEDBDestination"
               contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
               description="OLE DB Destination"
@@ -1752,7 +1691,7 @@ ORDER BY A01.[MANDT]
                 <property
                   dataType="System.String"
                   description="Specifies the name of the database object used to open a rowset."
-                  name="OpenRowset">[dbo].[MARD_STAGE_DELETE]</property>
+                  name="OpenRowset">[dbo].[ZFORECAST_STAGE_DELETE]</property>
                 <property
                   dataType="System.String"
                   description="Specifies the variable that contains the name of the database object used to open a rowset."
@@ -1794,7 +1733,7 @@ ORDER BY A01.[MANDT]
               </properties>
               <connections>
                 <connection
-                  refId="Package\MARD\stage deleted records.Connections[OleDbConnection]"
+                  refId="Package\ZFORECAST\stage deleted records.Connections[OleDbConnection]"
                   connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
                   connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
                   description="The OLE DB runtime connection used to access the database."
@@ -1802,84 +1741,84 @@ ORDER BY A01.[MANDT]
               </connections>
               <inputs>
                 <input
-                  refId="Package\MARD\stage deleted records.Inputs[OLE DB Destination Input]"
+                  refId="Package\ZFORECAST\stage deleted records.Inputs[OLE DB Destination Input]"
                   errorOrTruncationOperation="Insert"
                   errorRowDisposition="FailComponent"
                   hasSideEffects="true"
                   name="OLE DB Destination Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\MARD\stage deleted records.Inputs[OLE DB Destination Input].Columns[MANDT (1)]"
+                      refId="Package\ZFORECAST\stage deleted records.Inputs[OLE DB Destination Input].Columns[MANDT (1)]"
                       cachedDataType="wstr"
                       cachedLength="3"
                       cachedName="MANDT (1)"
-                      externalMetadataColumnId="Package\MARD\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
-                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]" />
+                      externalMetadataColumnId="Package\ZFORECAST\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      lineageId="Package\ZFORECAST\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]" />
                     <inputColumn
-                      refId="Package\MARD\stage deleted records.Inputs[OLE DB Destination Input].Columns[MATNR (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="18"
-                      cachedName="MATNR (1)"
-                      externalMetadataColumnId="Package\MARD\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MATNR]"
-                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[MATNR (1)]" />
-                    <inputColumn
-                      refId="Package\MARD\stage deleted records.Inputs[OLE DB Destination Input].Columns[WERKS (1)]"
+                      refId="Package\ZFORECAST\stage deleted records.Inputs[OLE DB Destination Input].Columns[ZYEAR (1)]"
                       cachedDataType="wstr"
                       cachedLength="4"
-                      cachedName="WERKS (1)"
-                      externalMetadataColumnId="Package\MARD\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[WERKS]"
-                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[WERKS (1)]" />
+                      cachedName="ZYEAR (1)"
+                      externalMetadataColumnId="Package\ZFORECAST\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[ZYEAR]"
+                      lineageId="Package\ZFORECAST\Merge Join.Outputs[Merge Join Output].Columns[ZYEAR (1)]" />
                     <inputColumn
-                      refId="Package\MARD\stage deleted records.Inputs[OLE DB Destination Input].Columns[LGORT (1)]"
+                      refId="Package\ZFORECAST\stage deleted records.Inputs[OLE DB Destination Input].Columns[FPERD (1)]"
                       cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="LGORT (1)"
-                      externalMetadataColumnId="Package\MARD\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[LGORT]"
-                      lineageId="Package\MARD\Merge Join.Outputs[Merge Join Output].Columns[LGORT (1)]" />
+                      cachedLength="2"
+                      cachedName="FPERD (1)"
+                      externalMetadataColumnId="Package\ZFORECAST\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[FPERD]"
+                      lineageId="Package\ZFORECAST\Merge Join.Outputs[Merge Join Output].Columns[FPERD (1)]" />
+                    <inputColumn
+                      refId="Package\ZFORECAST\stage deleted records.Inputs[OLE DB Destination Input].Columns[TYPE (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="1"
+                      cachedName="TYPE (1)"
+                      externalMetadataColumnId="Package\ZFORECAST\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[TYPE]"
+                      lineageId="Package\ZFORECAST\Merge Join.Outputs[Merge Join Output].Columns[TYPE (1)]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
                     <externalMetadataColumn
-                      refId="Package\MARD\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      refId="Package\ZFORECAST\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
                       dataType="wstr"
                       length="3"
                       name="MANDT" />
                     <externalMetadataColumn
-                      refId="Package\MARD\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MATNR]"
-                      dataType="wstr"
-                      length="18"
-                      name="MATNR" />
-                    <externalMetadataColumn
-                      refId="Package\MARD\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[WERKS]"
+                      refId="Package\ZFORECAST\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[ZYEAR]"
                       dataType="wstr"
                       length="4"
-                      name="WERKS" />
+                      name="ZYEAR" />
                     <externalMetadataColumn
-                      refId="Package\MARD\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[LGORT]"
+                      refId="Package\ZFORECAST\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[FPERD]"
                       dataType="wstr"
-                      length="4"
-                      name="LGORT" />
+                      length="2"
+                      name="FPERD" />
+                    <externalMetadataColumn
+                      refId="Package\ZFORECAST\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[TYPE]"
+                      dataType="wstr"
+                      length="1"
+                      name="TYPE" />
                   </externalMetadataColumns>
                 </input>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\MARD\stage deleted records.Outputs[OLE DB Destination Error Output]"
+                  refId="Package\ZFORECAST\stage deleted records.Outputs[OLE DB Destination Error Output]"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="OLE DB Destination Error Output"
-                  synchronousInputId="Package\MARD\stage deleted records.Inputs[OLE DB Destination Input]">
+                  synchronousInputId="Package\ZFORECAST\stage deleted records.Inputs[OLE DB Destination Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\MARD\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      refId="Package\ZFORECAST\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\MARD\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      lineageId="Package\ZFORECAST\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\MARD\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      refId="Package\ZFORECAST\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\MARD\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\ZFORECAST\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -1890,141 +1829,66 @@ ORDER BY A01.[MANDT]
           </components>
           <paths>
             <path
-              refId="Package\MARD.Paths[delete]"
-              endId="Package\MARD\stage deleted records.Inputs[OLE DB Destination Input]"
+              refId="Package\ZFORECAST.Paths[Conditional Split Default Output]"
+              endId="Package\ZFORECAST\stage changed records.Inputs[OLE DB Destination Input]"
+              name="Conditional Split Default Output"
+              startId="Package\ZFORECAST\Find Changed Records.Outputs[Conditional Split Default Output]" />
+            <path
+              refId="Package\ZFORECAST.Paths[delete]"
+              endId="Package\ZFORECAST\stage deleted records.Inputs[OLE DB Destination Input]"
               name="delete"
-              startId="Package\MARD\Identify Records.Outputs[delete]" />
+              startId="Package\ZFORECAST\Identity records.Outputs[delete]" />
             <path
-              refId="Package\MARD.Paths[insert]"
-              endId="Package\MARD\insert new records.Inputs[OLE DB Destination Input]"
+              refId="Package\ZFORECAST.Paths[insert]"
+              endId="Package\ZFORECAST\insert new records.Inputs[OLE DB Destination Input]"
               name="insert"
-              startId="Package\MARD\Identify Records.Outputs[insert]" />
+              startId="Package\ZFORECAST\Identity records.Outputs[insert]" />
             <path
-              refId="Package\MARD.Paths[Merge Join Output]"
-              endId="Package\MARD\Identify Records.Inputs[Conditional Split Input]"
+              refId="Package\ZFORECAST.Paths[Merge Join Output]"
+              endId="Package\ZFORECAST\Identity records.Inputs[Conditional Split Input]"
               name="Merge Join Output"
-              startId="Package\MARD\Merge Join.Outputs[Merge Join Output]" />
+              startId="Package\ZFORECAST\Merge Join.Outputs[Merge Join Output]" />
             <path
-              refId="Package\MARD.Paths[OLE DB Source Output]"
-              endId="Package\MARD\Merge Join.Inputs[Merge Join Left Input]"
+              refId="Package\ZFORECAST.Paths[OLE DB Source Output]"
+              endId="Package\ZFORECAST\Merge Join.Inputs[Merge Join Left Input]"
               name="OLE DB Source Output"
-              startId="Package\MARD\DB SAP.Outputs[OLE DB Source Output]" />
+              startId="Package\ZFORECAST\DB SAP.Outputs[OLE DB Source Output]" />
             <path
-              refId="Package\MARD.Paths[OLE DB Source Output1]"
-              endId="Package\MARD\Merge Join.Inputs[Merge Join Right Input]"
+              refId="Package\ZFORECAST.Paths[OLE DB Source Output1]"
+              endId="Package\ZFORECAST\Merge Join.Inputs[Merge Join Right Input]"
               name="OLE DB Source Output"
-              startId="Package\MARD\DB PBI.Outputs[OLE DB Source Output]" />
+              startId="Package\ZFORECAST\DB PBI.Outputs[OLE DB Source Output]" />
             <path
-              refId="Package\MARD.Paths[update]"
-              endId="Package\MARD\Find Changed Records.Inputs[Conditional Split Input]"
+              refId="Package\ZFORECAST.Paths[update]"
+              endId="Package\ZFORECAST\Find Changed Records.Inputs[Conditional Split Input]"
               name="update"
-              startId="Package\MARD\Identify Records.Outputs[update]" />
-            <path
-              refId="Package\MARD.Paths[update1]"
-              endId="Package\MARD\stage changed records.Inputs[OLE DB Destination Input]"
-              name="update"
-              startId="Package\MARD\Find Changed Records.Outputs[update]" />
+              startId="Package\ZFORECAST\Identity records.Outputs[update]" />
           </paths>
         </pipeline>
       </DTS:ObjectData>
-    </DTS:Executable>
-    <DTS:Executable
-      DTS:refId="Package\Sequence Container"
-      DTS:CreationName="STOCK:SEQUENCE"
-      DTS:Description="Sequence Container"
-      DTS:DTSID="{BF2E2665-6755-46CF-BEAB-129D51D55709}"
-      DTS:ExecutableType="STOCK:SEQUENCE"
-      DTS:LocaleID="-1"
-      DTS:ObjectName="Sequence Container">
-      <DTS:Variables />
-      <DTS:Executables>
-        <DTS:Executable
-          DTS:refId="Package\Sequence Container\delete"
-          DTS:CreationName="Microsoft.ExecuteSQLTask"
-          DTS:Description="Execute SQL Task"
-          DTS:DTSID="{5957AD6D-8F3A-4144-8FFD-5567A9A08C5D}"
-          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
-          DTS:LocaleID="-1"
-          DTS:ObjectName="delete"
-          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="1">
-          <DTS:Variables />
-          <DTS:ObjectData>
-            <SQLTask:SqlTaskData
-              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-              SQLTask:SqlStatementSource="DELETE A01&#xA;FROM [MARD] A01 INNER JOIN [MARD_STAGE_DELETE] B01 ON ( A01.[MANDT] = B01.[MANDT]&#xA;                                                    AND A01.[MATNR] = B01.[MATNR]&#xA;                                                    AND A01.[WERKS] = B01.[WERKS]&#xA;                                                    AND A01.[LGORT] = B01.[LGORT] )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
-          </DTS:ObjectData>
-        </DTS:Executable>
-        <DTS:Executable
-          DTS:refId="Package\Sequence Container\update"
-          DTS:CreationName="Microsoft.ExecuteSQLTask"
-          DTS:Description="Execute SQL Task"
-          DTS:DTSID="{3892D120-33B7-4F59-A960-19D19E85F7E9}"
-          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
-          DTS:LocaleID="-1"
-          DTS:ObjectName="update"
-          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="0">
-          <DTS:Variables />
-          <DTS:ObjectData>
-            <SQLTask:SqlTaskData
-              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-              SQLTask:SqlStatementSource="UPDATE A01&#xA;SET A01.[LABST] = B01.[LABST],&#xA;&#x9;A01.[INSME] = B01.[INSME],&#xA;&#x9;A01.[SPEME] = B01.[SPEME],&#xA;&#x9;A01.[UMLME] = B01.[UMLME]&#xA;FROM [MARD] A01&#xA;INNER JOIN [MARD_STAGE_UPDATE] B01&#xA;ON ( A01.[MANDT] = B01.[MANDT]&#xA;&#x9;AND A01.[MATNR] = B01.[MATNR]&#xA;&#x9;AND A01.[WERKS] = B01.[WERKS]&#xA;&#x9;AND A01.[LGORT] = B01.[LGORT] )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
-          </DTS:ObjectData>
-        </DTS:Executable>
-      </DTS:Executables>
-    </DTS:Executable>
-    <DTS:Executable
-      DTS:refId="Package\Sequence Container 1"
-      DTS:CreationName="STOCK:SEQUENCE"
-      DTS:Description="Sequence Container"
-      DTS:DTSID="{66d96005-9245-4805-8659-1ce0c5dfe442}"
-      DTS:ExecutableType="STOCK:SEQUENCE"
-      DTS:LocaleID="-1"
-      DTS:ObjectName="Sequence Container 1">
-      <DTS:Variables />
-      <DTS:Executables>
-        <DTS:Executable
-          DTS:refId="Package\Sequence Container 1\Insert"
-          DTS:CreationName="Microsoft.ExecuteSQLTask"
-          DTS:Description="Execute SQL Task"
-          DTS:DTSID="{666ab0bd-28dd-4b8b-9e72-62d485c8ae6d}"
-          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
-          DTS:LocaleID="-1"
-          DTS:ObjectName="Insert"
-          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="0">
-          <DTS:Variables />
-          <DTS:ObjectData>
-            <SQLTask:SqlTaskData
-              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-              SQLTask:SqlStatementSource="INSERT INTO [MARD]&#xA;SELECT * FROM [MARD_STAGE_INSERT]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
-          </DTS:ObjectData>
-        </DTS:Executable>
-      </DTS:Executables>
     </DTS:Executable>
   </DTS:Executables>
   <DTS:PrecedenceConstraints>
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint]"
       DTS:CreationName=""
-      DTS:DTSID="{E78D71C0-9A5E-40B7-8672-681761238FC1}"
-      DTS:From="Package\MARD"
+      DTS:DTSID="{21EC229F-C453-4958-85ED-651AEF5434C3}"
+      DTS:From="Package\ZFORECAST"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint"
       DTS:To="Package\Sequence Container" />
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
       DTS:CreationName=""
-      DTS:DTSID="{3CE47668-F5E5-461D-9CCF-6AB3B8C67096}"
-      DTS:From="Package\clean"
+      DTS:DTSID="{8A88B46B-2322-48EA-837D-515C368E3380}"
+      DTS:From="Package\clean stage"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 1"
-      DTS:To="Package\MARD" />
+      DTS:To="Package\ZFORECAST" />
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
       DTS:CreationName=""
-      DTS:DTSID="{5D517CAA-673F-4F18-B041-5C98C0AE8DF6}"
+      DTS:DTSID="{D73F3FE2-571C-453C-AC10-8368A3AD2C5D}"
       DTS:From="Package\Sequence Container"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 2"
@@ -2043,48 +1907,48 @@ ORDER BY A01.[MANDT]
       <GraphLayout
         Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
-          Size="104,42"
-          Id="Package\clean"
-          TopLeft="404,44" />
-        <NodeLayout
-          Size="107,42"
-          Id="Package\MARD"
-          TopLeft="198,60" />
+          Size="132,42"
+          Id="Package\clean stage"
+          TopLeft="433,2" />
         <NodeLayout
           Size="108,42"
           Id="Package\Sequence Container\delete"
-          TopLeft="226,26" />
+          TopLeft="218,35" />
         <NodeLayout
           Size="112,42"
           Id="Package\Sequence Container\update"
-          TopLeft="22,26" />
+          TopLeft="53,35" />
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="431,123"
-          Size="431,166"
+          PanelSize="383,139"
+          Size="383,182"
           Id="Package\Sequence Container"
           TopLeft="60,174" />
         <NodeLayout
           Size="107,42"
           Id="Package\Sequence Container 1\Insert"
-          TopLeft="144,28" />
+          TopLeft="131,54" />
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="431,123"
-          Size="431,166"
+          PanelSize="383,151"
+          Size="383,194"
           Id="Package\Sequence Container 1"
-          TopLeft="60,394" />
+          TopLeft="60,416" />
+        <NodeLayout
+          Size="136,42"
+          Id="Package\ZFORECAST"
+          TopLeft="170,60" />
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint]"
-          TopLeft="251.5,102">
+          TopLeft="238,102">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="24,72"
+              EndConnector="13.5,72"
               Start="0,0"
-              End="24,64.5">
+              End="13.5,64.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
@@ -2095,13 +1959,13 @@ ORDER BY A01.[MANDT]
                     Point2="0,36"
                     Point3="4,36" />
                   <mssgle:LineSegment
-                    End="20,36" />
+                    End="9.5,36" />
                   <mssgle:CubicBezierSegment
-                    Point1="20,36"
-                    Point2="24,36"
-                    Point3="24,40" />
+                    Point1="9.5,36"
+                    Point2="13.5,36"
+                    Point3="13.5,40" />
                   <mssgle:LineSegment
-                    End="24,64.5" />
+                    End="13.5,64.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -2112,30 +1976,30 @@ ORDER BY A01.[MANDT]
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 1]"
-          TopLeft="404,65">
+          TopLeft="433,23">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-99,16"
+              EndConnector="-127,58"
               Start="0,0"
-              End="-91.5,16">
+              End="-119.5,58">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="-45.5,0" />
+                    End="-59.5,0" />
                   <mssgle:CubicBezierSegment
-                    Point1="-45.5,0"
-                    Point2="-49.5,0"
-                    Point3="-49.5,4" />
+                    Point1="-59.5,0"
+                    Point2="-63.5,0"
+                    Point3="-63.5,4" />
                   <mssgle:LineSegment
-                    End="-49.5,12" />
+                    End="-63.5,54" />
                   <mssgle:CubicBezierSegment
-                    Point1="-49.5,12"
-                    Point2="-49.5,16"
-                    Point3="-53.5,16" />
+                    Point1="-63.5,54"
+                    Point2="-63.5,58"
+                    Point3="-67.5,58" />
                   <mssgle:LineSegment
-                    End="-91.5,16" />
+                    End="-119.5,58" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -2146,18 +2010,18 @@ ORDER BY A01.[MANDT]
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 2]"
-          TopLeft="275.5,340">
+          TopLeft="251.5,356">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,54"
+              EndConnector="0,60"
               Start="0,0"
-              End="0,46.5">
+              End="0,52.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,46.5" />
+                    End="0,52.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -2170,75 +2034,227 @@ ORDER BY A01.[MANDT]
     </LayoutInfo>
   </Package>
   <TaskHost
-    design-time-name="Package\MARD">
+    design-time-name="Package\ZFORECAST">
     <LayoutInfo>
       <GraphLayout
         Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
-          Size="186,42"
-          Id="Package\MARD\stage changed records"
-          TopLeft="461,421" />
-        <NodeLayout
-          Size="166,42"
-          Id="Package\MARD\insert new records"
-          TopLeft="157,320" />
-        <NodeLayout
           Size="184,42"
-          Id="Package\MARD\Find Changed Records"
-          TopLeft="460,324" />
+          Id="Package\ZFORECAST\Find Changed Records"
+          TopLeft="425,366" />
         <NodeLayout
-          Size="130,42"
-          Id="Package\MARD\Merge Join"
-          TopLeft="497,127" />
+          Size="186,42"
+          Id="Package\ZFORECAST\stage changed records"
+          TopLeft="417,479" />
         <NodeLayout
-          Size="156,42"
-          Id="Package\MARD\Identify Records"
-          TopLeft="475.888888888889,223" />
+          Size="153,42"
+          Id="Package\ZFORECAST\Identity records"
+          TopLeft="438,237" />
         <NodeLayout
           Size="114,42"
-          Id="Package\MARD\DB SAP"
-          TopLeft="296,34" />
+          Id="Package\ZFORECAST\DB SAP"
+          TopLeft="199,46" />
+        <NodeLayout
+          Size="130,42"
+          Id="Package\ZFORECAST\Merge Join"
+          TopLeft="451,137" />
+        <NodeLayout
+          Size="166,42"
+          Id="Package\ZFORECAST\insert new records"
+          TopLeft="159,370" />
         <NodeLayout
           Size="180,42"
-          Id="Package\MARD\stage deleted records"
-          TopLeft="755,317" />
+          Id="Package\ZFORECAST\stage deleted records"
+          TopLeft="687,371" />
         <NodeLayout
           Size="112,42"
-          Id="Package\MARD\DB PBI"
-          TopLeft="678,38" />
+          Id="Package\ZFORECAST\DB PBI"
+          TopLeft="671,48" />
         <EdgeLayout
-          Id="Package\MARD.Paths[update]"
-          TopLeft="552.944444444444,265">
+          Id="Package\ZFORECAST.Paths[update]"
+          TopLeft="515.75,279">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,59"
+              EndConnector="0,87"
               Start="0,0"
-              End="0,51.5">
+              End="0,79.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,51.5" />
+                    End="0,79.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="-15.8025,19.9453125,31.605,11.609375"
+              BoundingBox="-15.8025,33.9453125,31.605,11.609375"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\MARD.Paths[OLE DB Source Output1]"
-          TopLeft="734,80">
+          Id="Package\ZFORECAST.Paths[Merge Join Output]"
+          TopLeft="515.25,179">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-151.666666666667,47"
+              EndConnector="0,58"
               Start="0,0"
-              End="-151.666666666667,39.5">
+              End="0,50.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,50.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\ZFORECAST.Paths[insert]"
+          TopLeft="478.25,279">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-236.25,91"
+              Start="0,0"
+              End="-236.25,83.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,27.372591006424" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,27.372591006424"
+                    Point2="0,31.372591006424"
+                    Point3="-4,31.372591006424" />
+                  <mssgle:LineSegment
+                    End="-232.25,31.372591006424" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-232.25,31.372591006424"
+                    Point2="-236.25,31.372591006424"
+                    Point3="-236.25,35.372591006424" />
+                  <mssgle:LineSegment
+                    End="-236.25,83.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-131.07498046875,36.372591006424,25.8999609375,9.451171875"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\ZFORECAST.Paths[delete]"
+          TopLeft="550.75,279">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="226.25,92"
+              Start="0,0"
+              End="226.25,84.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,27.7173447537473" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,27.7173447537473"
+                    Point2="0,31.7173447537473"
+                    Point3="4,31.7173447537473" />
+                  <mssgle:LineSegment
+                    End="222.25,31.7173447537473" />
+                  <mssgle:CubicBezierSegment
+                    Point1="222.25,31.7173447537473"
+                    Point2="226.25,31.7173447537473"
+                    Point3="226.25,35.7173447537473" />
+                  <mssgle:LineSegment
+                    End="226.25,84.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="98.92904296875,36.7173447537473,28.3919140625,9.7490234375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\ZFORECAST.Paths[Conditional Split Default Output]"
+          TopLeft="513.5,408">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,71"
+              Start="0,0"
+              End="0,63.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,63.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-70.61390625,25.9208984375,141.2278125,11.658203125"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\ZFORECAST.Paths[OLE DB Source Output]"
+          TopLeft="256,88">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="260,49"
+              Start="0,0"
+              End="260,41.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,20.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,20.5"
+                    Point2="0,24.5"
+                    Point3="4,24.5" />
+                  <mssgle:LineSegment
+                    End="256,24.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="256,24.5"
+                    Point2="260,24.5"
+                    Point3="260,28.5" />
+                  <mssgle:LineSegment
+                    End="260,41.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\ZFORECAST.Paths[OLE DB Source Output1]"
+          TopLeft="727,90">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-190.666666666667,47"
+              Start="0,0"
+              End="-190.666666666667,39.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
@@ -2249,190 +2265,26 @@ ORDER BY A01.[MANDT]
                     Point2="0,27.8571428571429"
                     Point3="-4,27.8571428571429" />
                   <mssgle:LineSegment
-                    End="-147.666666666667,27.8571428571429" />
+                    End="-186.666666666667,27.8571428571429" />
                   <mssgle:CubicBezierSegment
-                    Point1="-147.666666666667,27.8571428571429"
-                    Point2="-151.666666666667,27.8571428571429"
-                    Point3="-151.666666666667,31.8571428571429" />
+                    Point1="-186.666666666667,27.8571428571429"
+                    Point2="-190.666666666667,27.8571428571429"
+                    Point3="-190.666666666667,31.8571428571429" />
                   <mssgle:LineSegment
-                    End="-151.666666666667,39.5" />
+                    End="-190.666666666667,39.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\MARD.Paths[OLE DB Source Output]"
-          TopLeft="353,76">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="209,51"
-              Start="0,0"
-              End="209,43.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,21.5" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,21.5"
-                    Point2="0,25.5"
-                    Point3="4,25.5" />
-                  <mssgle:LineSegment
-                    End="205,25.5" />
-                  <mssgle:CubicBezierSegment
-                    Point1="205,25.5"
-                    Point2="209,25.5"
-                    Point3="209,29.5" />
-                  <mssgle:LineSegment
-                    End="209,43.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\MARD.Paths[Merge Join Output]"
-          TopLeft="562,169">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="-8.11111111111097,54"
-              Start="0,0"
-              End="-8.11111111111097,46.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,23" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,23"
-                    Point2="0,27"
-                    Point3="-4,27" />
-                  <mssgle:LineSegment
-                    End="-4.11111111111097,27" />
-                  <mssgle:CubicBezierSegment
-                    Point1="-4.11111111111097,27"
-                    Point2="-8.11111111111097,27"
-                    Point3="-8.11111111111097,31" />
-                  <mssgle:LineSegment
-                    End="-8.11111111111097,46.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\MARD.Paths[insert]"
-          TopLeft="516.888888888889,265">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="-276.888888888889,55"
-              Start="0,0"
-              End="-276.888888888889,47.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,14.9495798319328" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,14.9495798319328"
-                    Point2="0,18.9495798319328"
-                    Point3="-4,18.9495798319328" />
-                  <mssgle:LineSegment
-                    End="-272.888888888889,18.9495798319328" />
-                  <mssgle:CubicBezierSegment
-                    Point1="-272.888888888889,18.9495798319328"
-                    Point2="-276.888888888889,18.9495798319328"
-                    Point3="-276.888888888889,22.9495798319328" />
-                  <mssgle:LineSegment
-                    End="-276.888888888889,47.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-151.394424913195,23.9495798319328,25.8999609375,9.451171875"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\MARD.Paths[delete]"
-          TopLeft="590.888888888889,265">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="254.111111111111,52"
-              Start="0,0"
-              End="254.111111111111,44.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,13.9159663865546" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,13.9159663865546"
-                    Point2="0,17.9159663865546"
-                    Point3="4,17.9159663865546" />
-                  <mssgle:LineSegment
-                    End="250.111111111111,17.9159663865546" />
-                  <mssgle:CubicBezierSegment
-                    Point1="250.111111111111,17.9159663865546"
-                    Point2="254.111111111111,17.9159663865546"
-                    Point3="254.111111111111,21.9159663865546" />
-                  <mssgle:LineSegment
-                    End="254.111111111111,44.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="112.859598524305,22.9159663865546,28.3919140625,9.7490234375"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\MARD.Paths[update1]"
-          TopLeft="553,366">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,55"
-              Start="0,0"
-              End="0,47.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,47.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-15.8025,17.9453125,31.605,11.609375"
-              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
     </LayoutInfo>
   </TaskHost>
   <PipelineComponentMetadata
-    design-time-name="Package\MARD\stage changed records">
+    design-time-name="Package\ZFORECAST\stage changed records">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -2445,7 +2297,15 @@ ORDER BY A01.[MANDT]
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\MARD\insert new records">
+    design-time-name="Package\ZFORECAST\DB SAP">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\ZFORECAST\insert new records">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -2458,15 +2318,7 @@ ORDER BY A01.[MANDT]
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\MARD\DB SAP">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
-    design-time-name="Package\MARD\stage deleted records">
+    design-time-name="Package\ZFORECAST\stage deleted records">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -2479,7 +2331,7 @@ ORDER BY A01.[MANDT]
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\MARD\DB PBI">
+    design-time-name="Package\ZFORECAST\DB PBI">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
