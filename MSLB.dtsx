@@ -1,0 +1,2726 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="4/19/2021 1:22:01 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="ARLPBIDEV"
+  DTS:CreatorName="DOMAIN\RPETRELLA"
+  DTS:DTSID="{0B929258-2771-4994-A0BE-C09AD68D1416}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="15.0.2000.180"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="MSLB"
+  DTS:PackageType="5"
+  DTS:VersionBuild="10"
+  DTS:VersionGUID="{17236B74-FB75-4214-AA87-E94EDFD165CF}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\clean stage"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{110BF825-4CF6-419E-B81B-65733B3DEA61}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="clean stage"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="TRUNCATE TABLE [MSLB_STAGE_UPDATE]&#xA;go&#xA;TRUNCATE TABLE [MSLB_STAGE_DELETE]&#xA;go&#xA;TRUNCATE TABLE [MSLB_STAGE_INSERT]&#xA;go" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\MSLB"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{368F81B2-8AFA-4FB2-949E-3447CE7AE1B0}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="MSLB"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\MSLB\DB PBI"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="DB PBI"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT [MANDT]
+    ,[MATNR]
+    ,[WERKS]
+    ,[CHARG]
+    ,[SOBKZ]
+    ,[LIFNR]
+    ,[LBLAB]
+    ,[LBINS]
+    ,[LBEIN]
+    ,[LBUML]
+FROM [MSLB] (NOLOCK)
+WHERE [MANDT] = '105'
+ORDER BY [MANDT]
+    ,[MATNR]
+    ,[WERKS]
+    ,[CHARG]
+    ,[SOBKZ]
+    ,[LIFNR]</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\MSLB\DB PBI.Connections[OleDbConnection]"
+                  connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\MSLB\DB PBI.Outputs[OLE DB Source Output]"
+                  isSorted="true"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\MSLB\DB PBI.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\MSLB\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      length="3"
+                      lineageId="Package\MSLB\DB PBI.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      name="MANDT"
+                      sortKeyPosition="1"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\MSLB\DB PBI.Outputs[OLE DB Source Output].Columns[MATNR]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\MSLB\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[MATNR]"
+                      length="18"
+                      lineageId="Package\MSLB\DB PBI.Outputs[OLE DB Source Output].Columns[MATNR]"
+                      name="MATNR"
+                      sortKeyPosition="2"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\MSLB\DB PBI.Outputs[OLE DB Source Output].Columns[WERKS]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\MSLB\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[WERKS]"
+                      length="4"
+                      lineageId="Package\MSLB\DB PBI.Outputs[OLE DB Source Output].Columns[WERKS]"
+                      name="WERKS"
+                      sortKeyPosition="3"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\MSLB\DB PBI.Outputs[OLE DB Source Output].Columns[CHARG]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\MSLB\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[CHARG]"
+                      length="10"
+                      lineageId="Package\MSLB\DB PBI.Outputs[OLE DB Source Output].Columns[CHARG]"
+                      name="CHARG"
+                      sortKeyPosition="4"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\MSLB\DB PBI.Outputs[OLE DB Source Output].Columns[SOBKZ]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\MSLB\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[SOBKZ]"
+                      length="1"
+                      lineageId="Package\MSLB\DB PBI.Outputs[OLE DB Source Output].Columns[SOBKZ]"
+                      name="SOBKZ"
+                      sortKeyPosition="5"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\MSLB\DB PBI.Outputs[OLE DB Source Output].Columns[LIFNR]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\MSLB\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[LIFNR]"
+                      length="10"
+                      lineageId="Package\MSLB\DB PBI.Outputs[OLE DB Source Output].Columns[LIFNR]"
+                      name="LIFNR"
+                      sortKeyPosition="6"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\MSLB\DB PBI.Outputs[OLE DB Source Output].Columns[LBLAB]"
+                      dataType="numeric"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\MSLB\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[LBLAB]"
+                      lineageId="Package\MSLB\DB PBI.Outputs[OLE DB Source Output].Columns[LBLAB]"
+                      name="LBLAB"
+                      precision="13"
+                      scale="3"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\MSLB\DB PBI.Outputs[OLE DB Source Output].Columns[LBINS]"
+                      dataType="numeric"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\MSLB\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[LBINS]"
+                      lineageId="Package\MSLB\DB PBI.Outputs[OLE DB Source Output].Columns[LBINS]"
+                      name="LBINS"
+                      precision="13"
+                      scale="3"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\MSLB\DB PBI.Outputs[OLE DB Source Output].Columns[LBEIN]"
+                      dataType="numeric"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\MSLB\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[LBEIN]"
+                      lineageId="Package\MSLB\DB PBI.Outputs[OLE DB Source Output].Columns[LBEIN]"
+                      name="LBEIN"
+                      precision="13"
+                      scale="3"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\MSLB\DB PBI.Outputs[OLE DB Source Output].Columns[LBUML]"
+                      dataType="numeric"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\MSLB\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[LBUML]"
+                      lineageId="Package\MSLB\DB PBI.Outputs[OLE DB Source Output].Columns[LBUML]"
+                      name="LBUML"
+                      precision="13"
+                      scale="3"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\MSLB\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      name="MANDT" />
+                    <externalMetadataColumn
+                      refId="Package\MSLB\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[MATNR]"
+                      dataType="wstr"
+                      length="18"
+                      name="MATNR" />
+                    <externalMetadataColumn
+                      refId="Package\MSLB\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[WERKS]"
+                      dataType="wstr"
+                      length="4"
+                      name="WERKS" />
+                    <externalMetadataColumn
+                      refId="Package\MSLB\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[CHARG]"
+                      dataType="wstr"
+                      length="10"
+                      name="CHARG" />
+                    <externalMetadataColumn
+                      refId="Package\MSLB\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[SOBKZ]"
+                      dataType="wstr"
+                      length="1"
+                      name="SOBKZ" />
+                    <externalMetadataColumn
+                      refId="Package\MSLB\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[LIFNR]"
+                      dataType="wstr"
+                      length="10"
+                      name="LIFNR" />
+                    <externalMetadataColumn
+                      refId="Package\MSLB\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[LBLAB]"
+                      dataType="numeric"
+                      name="LBLAB"
+                      precision="13"
+                      scale="3" />
+                    <externalMetadataColumn
+                      refId="Package\MSLB\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[LBINS]"
+                      dataType="numeric"
+                      name="LBINS"
+                      precision="13"
+                      scale="3" />
+                    <externalMetadataColumn
+                      refId="Package\MSLB\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[LBEIN]"
+                      dataType="numeric"
+                      name="LBEIN"
+                      precision="13"
+                      scale="3" />
+                    <externalMetadataColumn
+                      refId="Package\MSLB\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[LBUML]"
+                      dataType="numeric"
+                      name="LBUML"
+                      precision="13"
+                      scale="3" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\MSLB\DB PBI.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\MSLB\DB PBI.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      lineageId="Package\MSLB\DB PBI.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      name="MANDT" />
+                    <outputColumn
+                      refId="Package\MSLB\DB PBI.Outputs[OLE DB Source Error Output].Columns[MATNR]"
+                      dataType="wstr"
+                      length="18"
+                      lineageId="Package\MSLB\DB PBI.Outputs[OLE DB Source Error Output].Columns[MATNR]"
+                      name="MATNR" />
+                    <outputColumn
+                      refId="Package\MSLB\DB PBI.Outputs[OLE DB Source Error Output].Columns[WERKS]"
+                      dataType="wstr"
+                      length="4"
+                      lineageId="Package\MSLB\DB PBI.Outputs[OLE DB Source Error Output].Columns[WERKS]"
+                      name="WERKS" />
+                    <outputColumn
+                      refId="Package\MSLB\DB PBI.Outputs[OLE DB Source Error Output].Columns[CHARG]"
+                      dataType="wstr"
+                      length="10"
+                      lineageId="Package\MSLB\DB PBI.Outputs[OLE DB Source Error Output].Columns[CHARG]"
+                      name="CHARG" />
+                    <outputColumn
+                      refId="Package\MSLB\DB PBI.Outputs[OLE DB Source Error Output].Columns[SOBKZ]"
+                      dataType="wstr"
+                      length="1"
+                      lineageId="Package\MSLB\DB PBI.Outputs[OLE DB Source Error Output].Columns[SOBKZ]"
+                      name="SOBKZ" />
+                    <outputColumn
+                      refId="Package\MSLB\DB PBI.Outputs[OLE DB Source Error Output].Columns[LIFNR]"
+                      dataType="wstr"
+                      length="10"
+                      lineageId="Package\MSLB\DB PBI.Outputs[OLE DB Source Error Output].Columns[LIFNR]"
+                      name="LIFNR" />
+                    <outputColumn
+                      refId="Package\MSLB\DB PBI.Outputs[OLE DB Source Error Output].Columns[LBLAB]"
+                      dataType="numeric"
+                      lineageId="Package\MSLB\DB PBI.Outputs[OLE DB Source Error Output].Columns[LBLAB]"
+                      name="LBLAB"
+                      precision="13"
+                      scale="3" />
+                    <outputColumn
+                      refId="Package\MSLB\DB PBI.Outputs[OLE DB Source Error Output].Columns[LBINS]"
+                      dataType="numeric"
+                      lineageId="Package\MSLB\DB PBI.Outputs[OLE DB Source Error Output].Columns[LBINS]"
+                      name="LBINS"
+                      precision="13"
+                      scale="3" />
+                    <outputColumn
+                      refId="Package\MSLB\DB PBI.Outputs[OLE DB Source Error Output].Columns[LBEIN]"
+                      dataType="numeric"
+                      lineageId="Package\MSLB\DB PBI.Outputs[OLE DB Source Error Output].Columns[LBEIN]"
+                      name="LBEIN"
+                      precision="13"
+                      scale="3" />
+                    <outputColumn
+                      refId="Package\MSLB\DB PBI.Outputs[OLE DB Source Error Output].Columns[LBUML]"
+                      dataType="numeric"
+                      lineageId="Package\MSLB\DB PBI.Outputs[OLE DB Source Error Output].Columns[LBUML]"
+                      name="LBUML"
+                      precision="13"
+                      scale="3" />
+                    <outputColumn
+                      refId="Package\MSLB\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\MSLB\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\MSLB\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\MSLB\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\MSLB\DB SAP"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="DB SAP"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT [MANDT]
+    ,[MATNR]
+    ,[WERKS]
+    ,[CHARG]
+    ,[SOBKZ]
+    ,[LIFNR]
+    ,[LBLAB]
+    ,[LBINS]
+    ,[LBEIN]
+    ,[LBUML]
+FROM [ecp].[MSLB] (NOLOCK)
+WHERE [MANDT] = '105'
+ORDER BY [MANDT]
+    ,[MATNR]
+    ,[WERKS]
+    ,[CHARG]
+    ,[SOBKZ]
+    ,[LIFNR]</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\MSLB\DB SAP.Connections[OleDbConnection]"
+                  connectionManagerID="{544CCAD9-2CB1-4D87-98D7-A7C478586195}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[SQL_SAP]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\MSLB\DB SAP.Outputs[OLE DB Source Output]"
+                  isSorted="true"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\MSLB\DB SAP.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\MSLB\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      length="3"
+                      lineageId="Package\MSLB\DB SAP.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      name="MANDT"
+                      sortKeyPosition="1"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\MSLB\DB SAP.Outputs[OLE DB Source Output].Columns[MATNR]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\MSLB\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[MATNR]"
+                      length="18"
+                      lineageId="Package\MSLB\DB SAP.Outputs[OLE DB Source Output].Columns[MATNR]"
+                      name="MATNR"
+                      sortKeyPosition="2"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\MSLB\DB SAP.Outputs[OLE DB Source Output].Columns[WERKS]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\MSLB\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[WERKS]"
+                      length="4"
+                      lineageId="Package\MSLB\DB SAP.Outputs[OLE DB Source Output].Columns[WERKS]"
+                      name="WERKS"
+                      sortKeyPosition="3"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\MSLB\DB SAP.Outputs[OLE DB Source Output].Columns[CHARG]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\MSLB\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[CHARG]"
+                      length="10"
+                      lineageId="Package\MSLB\DB SAP.Outputs[OLE DB Source Output].Columns[CHARG]"
+                      name="CHARG"
+                      sortKeyPosition="4"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\MSLB\DB SAP.Outputs[OLE DB Source Output].Columns[SOBKZ]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\MSLB\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[SOBKZ]"
+                      length="1"
+                      lineageId="Package\MSLB\DB SAP.Outputs[OLE DB Source Output].Columns[SOBKZ]"
+                      name="SOBKZ"
+                      sortKeyPosition="5"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\MSLB\DB SAP.Outputs[OLE DB Source Output].Columns[LIFNR]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\MSLB\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[LIFNR]"
+                      length="10"
+                      lineageId="Package\MSLB\DB SAP.Outputs[OLE DB Source Output].Columns[LIFNR]"
+                      name="LIFNR"
+                      sortKeyPosition="6"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\MSLB\DB SAP.Outputs[OLE DB Source Output].Columns[LBLAB]"
+                      dataType="numeric"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\MSLB\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[LBLAB]"
+                      lineageId="Package\MSLB\DB SAP.Outputs[OLE DB Source Output].Columns[LBLAB]"
+                      name="LBLAB"
+                      precision="13"
+                      scale="3"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\MSLB\DB SAP.Outputs[OLE DB Source Output].Columns[LBINS]"
+                      dataType="numeric"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\MSLB\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[LBINS]"
+                      lineageId="Package\MSLB\DB SAP.Outputs[OLE DB Source Output].Columns[LBINS]"
+                      name="LBINS"
+                      precision="13"
+                      scale="3"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\MSLB\DB SAP.Outputs[OLE DB Source Output].Columns[LBEIN]"
+                      dataType="numeric"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\MSLB\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[LBEIN]"
+                      lineageId="Package\MSLB\DB SAP.Outputs[OLE DB Source Output].Columns[LBEIN]"
+                      name="LBEIN"
+                      precision="13"
+                      scale="3"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\MSLB\DB SAP.Outputs[OLE DB Source Output].Columns[LBUML]"
+                      dataType="numeric"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\MSLB\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[LBUML]"
+                      lineageId="Package\MSLB\DB SAP.Outputs[OLE DB Source Output].Columns[LBUML]"
+                      name="LBUML"
+                      precision="13"
+                      scale="3"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\MSLB\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      name="MANDT" />
+                    <externalMetadataColumn
+                      refId="Package\MSLB\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[MATNR]"
+                      dataType="wstr"
+                      length="18"
+                      name="MATNR" />
+                    <externalMetadataColumn
+                      refId="Package\MSLB\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[WERKS]"
+                      dataType="wstr"
+                      length="4"
+                      name="WERKS" />
+                    <externalMetadataColumn
+                      refId="Package\MSLB\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[CHARG]"
+                      dataType="wstr"
+                      length="10"
+                      name="CHARG" />
+                    <externalMetadataColumn
+                      refId="Package\MSLB\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[SOBKZ]"
+                      dataType="wstr"
+                      length="1"
+                      name="SOBKZ" />
+                    <externalMetadataColumn
+                      refId="Package\MSLB\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[LIFNR]"
+                      dataType="wstr"
+                      length="10"
+                      name="LIFNR" />
+                    <externalMetadataColumn
+                      refId="Package\MSLB\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[LBLAB]"
+                      dataType="numeric"
+                      name="LBLAB"
+                      precision="13"
+                      scale="3" />
+                    <externalMetadataColumn
+                      refId="Package\MSLB\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[LBINS]"
+                      dataType="numeric"
+                      name="LBINS"
+                      precision="13"
+                      scale="3" />
+                    <externalMetadataColumn
+                      refId="Package\MSLB\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[LBEIN]"
+                      dataType="numeric"
+                      name="LBEIN"
+                      precision="13"
+                      scale="3" />
+                    <externalMetadataColumn
+                      refId="Package\MSLB\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[LBUML]"
+                      dataType="numeric"
+                      name="LBUML"
+                      precision="13"
+                      scale="3" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\MSLB\DB SAP.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\MSLB\DB SAP.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      lineageId="Package\MSLB\DB SAP.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      name="MANDT" />
+                    <outputColumn
+                      refId="Package\MSLB\DB SAP.Outputs[OLE DB Source Error Output].Columns[MATNR]"
+                      dataType="wstr"
+                      length="18"
+                      lineageId="Package\MSLB\DB SAP.Outputs[OLE DB Source Error Output].Columns[MATNR]"
+                      name="MATNR" />
+                    <outputColumn
+                      refId="Package\MSLB\DB SAP.Outputs[OLE DB Source Error Output].Columns[WERKS]"
+                      dataType="wstr"
+                      length="4"
+                      lineageId="Package\MSLB\DB SAP.Outputs[OLE DB Source Error Output].Columns[WERKS]"
+                      name="WERKS" />
+                    <outputColumn
+                      refId="Package\MSLB\DB SAP.Outputs[OLE DB Source Error Output].Columns[CHARG]"
+                      dataType="wstr"
+                      length="10"
+                      lineageId="Package\MSLB\DB SAP.Outputs[OLE DB Source Error Output].Columns[CHARG]"
+                      name="CHARG" />
+                    <outputColumn
+                      refId="Package\MSLB\DB SAP.Outputs[OLE DB Source Error Output].Columns[SOBKZ]"
+                      dataType="wstr"
+                      length="1"
+                      lineageId="Package\MSLB\DB SAP.Outputs[OLE DB Source Error Output].Columns[SOBKZ]"
+                      name="SOBKZ" />
+                    <outputColumn
+                      refId="Package\MSLB\DB SAP.Outputs[OLE DB Source Error Output].Columns[LIFNR]"
+                      dataType="wstr"
+                      length="10"
+                      lineageId="Package\MSLB\DB SAP.Outputs[OLE DB Source Error Output].Columns[LIFNR]"
+                      name="LIFNR" />
+                    <outputColumn
+                      refId="Package\MSLB\DB SAP.Outputs[OLE DB Source Error Output].Columns[LBLAB]"
+                      dataType="numeric"
+                      lineageId="Package\MSLB\DB SAP.Outputs[OLE DB Source Error Output].Columns[LBLAB]"
+                      name="LBLAB"
+                      precision="13"
+                      scale="3" />
+                    <outputColumn
+                      refId="Package\MSLB\DB SAP.Outputs[OLE DB Source Error Output].Columns[LBINS]"
+                      dataType="numeric"
+                      lineageId="Package\MSLB\DB SAP.Outputs[OLE DB Source Error Output].Columns[LBINS]"
+                      name="LBINS"
+                      precision="13"
+                      scale="3" />
+                    <outputColumn
+                      refId="Package\MSLB\DB SAP.Outputs[OLE DB Source Error Output].Columns[LBEIN]"
+                      dataType="numeric"
+                      lineageId="Package\MSLB\DB SAP.Outputs[OLE DB Source Error Output].Columns[LBEIN]"
+                      name="LBEIN"
+                      precision="13"
+                      scale="3" />
+                    <outputColumn
+                      refId="Package\MSLB\DB SAP.Outputs[OLE DB Source Error Output].Columns[LBUML]"
+                      dataType="numeric"
+                      lineageId="Package\MSLB\DB SAP.Outputs[OLE DB Source Error Output].Columns[LBUML]"
+                      name="LBUML"
+                      precision="13"
+                      scale="3" />
+                    <outputColumn
+                      refId="Package\MSLB\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\MSLB\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\MSLB\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\MSLB\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\MSLB\Find Changed Records"
+              componentClassID="Microsoft.ConditionalSplit"
+              contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
+              name="Find Changed Records"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\MSLB\Find Changed Records.Inputs[Conditional Split Input]"
+                  description="Input to the Conditional Split Transformation"
+                  name="Conditional Split Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\MSLB\Find Changed Records.Inputs[Conditional Split Input].Columns[LBLAB]"
+                      cachedDataType="numeric"
+                      cachedName="LBLAB"
+                      cachedPrecision="13"
+                      cachedScale="3"
+                      lineageId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[LBLAB]" />
+                    <inputColumn
+                      refId="Package\MSLB\Find Changed Records.Inputs[Conditional Split Input].Columns[LBINS]"
+                      cachedDataType="numeric"
+                      cachedName="LBINS"
+                      cachedPrecision="13"
+                      cachedScale="3"
+                      lineageId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[LBINS]" />
+                    <inputColumn
+                      refId="Package\MSLB\Find Changed Records.Inputs[Conditional Split Input].Columns[LBEIN]"
+                      cachedDataType="numeric"
+                      cachedName="LBEIN"
+                      cachedPrecision="13"
+                      cachedScale="3"
+                      lineageId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[LBEIN]" />
+                    <inputColumn
+                      refId="Package\MSLB\Find Changed Records.Inputs[Conditional Split Input].Columns[LBUML]"
+                      cachedDataType="numeric"
+                      cachedName="LBUML"
+                      cachedPrecision="13"
+                      cachedScale="3"
+                      lineageId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[LBUML]" />
+                    <inputColumn
+                      refId="Package\MSLB\Find Changed Records.Inputs[Conditional Split Input].Columns[LBLAB (1)]"
+                      cachedDataType="numeric"
+                      cachedName="LBLAB (1)"
+                      cachedPrecision="13"
+                      cachedScale="3"
+                      lineageId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[LBLAB (1)]" />
+                    <inputColumn
+                      refId="Package\MSLB\Find Changed Records.Inputs[Conditional Split Input].Columns[LBINS (1)]"
+                      cachedDataType="numeric"
+                      cachedName="LBINS (1)"
+                      cachedPrecision="13"
+                      cachedScale="3"
+                      lineageId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[LBINS (1)]" />
+                    <inputColumn
+                      refId="Package\MSLB\Find Changed Records.Inputs[Conditional Split Input].Columns[LBEIN (1)]"
+                      cachedDataType="numeric"
+                      cachedName="LBEIN (1)"
+                      cachedPrecision="13"
+                      cachedScale="3"
+                      lineageId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[LBEIN (1)]" />
+                    <inputColumn
+                      refId="Package\MSLB\Find Changed Records.Inputs[Conditional Split Input].Columns[LBUML (1)]"
+                      cachedDataType="numeric"
+                      cachedName="LBUML (1)"
+                      cachedPrecision="13"
+                      cachedScale="3"
+                      lineageId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[LBUML (1)]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\MSLB\Find Changed Records.Outputs[update]"
+                  description="Output 1 of the Conditional Split Transformation"
+                  errorOrTruncationOperation="Computation"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="update"
+                  synchronousInputId="Package\MSLB\Find Changed Records.Inputs[Conditional Split Input]"
+                  truncationRowDisposition="FailComponent">
+                  <properties>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                      name="Expression">#{Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[LBLAB]} != #{Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[LBLAB (1)]} || #{Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[LBINS]} != #{Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[LBINS (1)]} || #{Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[LBEIN]} != #{Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[LBEIN (1)]} || #{Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[LBUML]} != #{Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[LBUML (1)]}</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the friendly version of the expression. This expression version uses column names."
+                      expressionType="Notify"
+                      name="FriendlyExpression">LBLAB != [LBLAB (1)] || LBINS != [LBINS (1)] || LBEIN != [LBEIN (1)] || LBUML != [LBUML (1)]</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                      name="EvaluationOrder">0</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\MSLB\Find Changed Records.Outputs[Conditional Split Default Output]"
+                  description="Default Output of the Conditional Split Transformation"
+                  exclusionGroup="1"
+                  name="Conditional Split Default Output"
+                  synchronousInputId="Package\MSLB\Find Changed Records.Inputs[Conditional Split Input]">
+                  <properties>
+                    <property
+                      dataType="System.Boolean"
+                      name="IsDefaultOut">true</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\MSLB\Find Changed Records.Outputs[Conditional Split Error Output]"
+                  description="Error Output of the Conditional Split Transformation"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Conditional Split Error Output"
+                  synchronousInputId="Package\MSLB\Find Changed Records.Inputs[Conditional Split Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\MSLB\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\MSLB\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\MSLB\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\MSLB\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\MSLB\Identity records"
+              componentClassID="Microsoft.ConditionalSplit"
+              contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
+              name="Identity records"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\MSLB\Identity records.Inputs[Conditional Split Input]"
+                  description="Input to the Conditional Split Transformation"
+                  name="Conditional Split Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\MSLB\Identity records.Inputs[Conditional Split Input].Columns[MANDT]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT"
+                      cachedSortKeyPosition="1"
+                      lineageId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
+                    <inputColumn
+                      refId="Package\MSLB\Identity records.Inputs[Conditional Split Input].Columns[MANDT (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT (1)"
+                      lineageId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\MSLB\Identity records.Outputs[update]"
+                  description="Output 1 of the Conditional Split Transformation"
+                  errorOrTruncationOperation="Computation"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="update"
+                  synchronousInputId="Package\MSLB\Identity records.Inputs[Conditional Split Input]"
+                  truncationRowDisposition="FailComponent">
+                  <properties>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                      name="Expression">![ISNULL](#{Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; ![ISNULL](#{Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the friendly version of the expression. This expression version uses column names."
+                      expressionType="Notify"
+                      name="FriendlyExpression">!ISNULL(MANDT) &amp;&amp; !ISNULL([MANDT (1)])</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                      name="EvaluationOrder">0</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\MSLB\Identity records.Outputs[insert]"
+                  description="Output 2 of the Conditional Split Transformation"
+                  errorOrTruncationOperation="Computation"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="insert"
+                  synchronousInputId="Package\MSLB\Identity records.Inputs[Conditional Split Input]"
+                  truncationRowDisposition="FailComponent">
+                  <properties>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                      name="Expression">![ISNULL](#{Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; [ISNULL](#{Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the friendly version of the expression. This expression version uses column names."
+                      expressionType="Notify"
+                      name="FriendlyExpression">!ISNULL(MANDT) &amp;&amp; ISNULL([MANDT (1)])</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                      name="EvaluationOrder">1</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\MSLB\Identity records.Outputs[delete]"
+                  description="Output 3 of the Conditional Split Transformation"
+                  errorOrTruncationOperation="Computation"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="delete"
+                  synchronousInputId="Package\MSLB\Identity records.Inputs[Conditional Split Input]"
+                  truncationRowDisposition="FailComponent">
+                  <properties>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                      name="Expression">[ISNULL](#{Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; ![ISNULL](#{Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the friendly version of the expression. This expression version uses column names."
+                      expressionType="Notify"
+                      name="FriendlyExpression">ISNULL(MANDT) &amp;&amp; !ISNULL([MANDT (1)])</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                      name="EvaluationOrder">2</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\MSLB\Identity records.Outputs[Conditional Split Default Output]"
+                  description="Default Output of the Conditional Split Transformation"
+                  exclusionGroup="1"
+                  name="Conditional Split Default Output"
+                  synchronousInputId="Package\MSLB\Identity records.Inputs[Conditional Split Input]">
+                  <properties>
+                    <property
+                      dataType="System.Boolean"
+                      name="IsDefaultOut">true</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\MSLB\Identity records.Outputs[Conditional Split Error Output]"
+                  description="Error Output of the Conditional Split Transformation"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Conditional Split Error Output"
+                  synchronousInputId="Package\MSLB\Identity records.Inputs[Conditional Split Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\MSLB\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\MSLB\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\MSLB\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\MSLB\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\MSLB\insert new records"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="insert new records"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[MSLB_STAGE_INSERT]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\MSLB\insert new records.Connections[OleDbConnection]"
+                  connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\MSLB\insert new records.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\MSLB\insert new records.Inputs[OLE DB Destination Input].Columns[MANDT]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT"
+                      cachedSortKeyPosition="1"
+                      externalMetadataColumnId="Package\MSLB\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      lineageId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
+                    <inputColumn
+                      refId="Package\MSLB\insert new records.Inputs[OLE DB Destination Input].Columns[MATNR]"
+                      cachedDataType="wstr"
+                      cachedLength="18"
+                      cachedName="MATNR"
+                      cachedSortKeyPosition="2"
+                      externalMetadataColumnId="Package\MSLB\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MATNR]"
+                      lineageId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[MATNR]" />
+                    <inputColumn
+                      refId="Package\MSLB\insert new records.Inputs[OLE DB Destination Input].Columns[WERKS]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="WERKS"
+                      cachedSortKeyPosition="3"
+                      externalMetadataColumnId="Package\MSLB\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[WERKS]"
+                      lineageId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[WERKS]" />
+                    <inputColumn
+                      refId="Package\MSLB\insert new records.Inputs[OLE DB Destination Input].Columns[CHARG]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="CHARG"
+                      cachedSortKeyPosition="4"
+                      externalMetadataColumnId="Package\MSLB\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[CHARG]"
+                      lineageId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[CHARG]" />
+                    <inputColumn
+                      refId="Package\MSLB\insert new records.Inputs[OLE DB Destination Input].Columns[SOBKZ]"
+                      cachedDataType="wstr"
+                      cachedLength="1"
+                      cachedName="SOBKZ"
+                      cachedSortKeyPosition="5"
+                      externalMetadataColumnId="Package\MSLB\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[SOBKZ]"
+                      lineageId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[SOBKZ]" />
+                    <inputColumn
+                      refId="Package\MSLB\insert new records.Inputs[OLE DB Destination Input].Columns[LIFNR]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="LIFNR"
+                      cachedSortKeyPosition="6"
+                      externalMetadataColumnId="Package\MSLB\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[LIFNR]"
+                      lineageId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[LIFNR]" />
+                    <inputColumn
+                      refId="Package\MSLB\insert new records.Inputs[OLE DB Destination Input].Columns[LBLAB]"
+                      cachedDataType="numeric"
+                      cachedName="LBLAB"
+                      cachedPrecision="13"
+                      cachedScale="3"
+                      externalMetadataColumnId="Package\MSLB\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[LBLAB]"
+                      lineageId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[LBLAB]" />
+                    <inputColumn
+                      refId="Package\MSLB\insert new records.Inputs[OLE DB Destination Input].Columns[LBINS]"
+                      cachedDataType="numeric"
+                      cachedName="LBINS"
+                      cachedPrecision="13"
+                      cachedScale="3"
+                      externalMetadataColumnId="Package\MSLB\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[LBINS]"
+                      lineageId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[LBINS]" />
+                    <inputColumn
+                      refId="Package\MSLB\insert new records.Inputs[OLE DB Destination Input].Columns[LBEIN]"
+                      cachedDataType="numeric"
+                      cachedName="LBEIN"
+                      cachedPrecision="13"
+                      cachedScale="3"
+                      externalMetadataColumnId="Package\MSLB\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[LBEIN]"
+                      lineageId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[LBEIN]" />
+                    <inputColumn
+                      refId="Package\MSLB\insert new records.Inputs[OLE DB Destination Input].Columns[LBUML]"
+                      cachedDataType="numeric"
+                      cachedName="LBUML"
+                      cachedPrecision="13"
+                      cachedScale="3"
+                      externalMetadataColumnId="Package\MSLB\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[LBUML]"
+                      lineageId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[LBUML]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\MSLB\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      name="MANDT" />
+                    <externalMetadataColumn
+                      refId="Package\MSLB\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MATNR]"
+                      dataType="wstr"
+                      length="18"
+                      name="MATNR" />
+                    <externalMetadataColumn
+                      refId="Package\MSLB\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[WERKS]"
+                      dataType="wstr"
+                      length="4"
+                      name="WERKS" />
+                    <externalMetadataColumn
+                      refId="Package\MSLB\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[CHARG]"
+                      dataType="wstr"
+                      length="10"
+                      name="CHARG" />
+                    <externalMetadataColumn
+                      refId="Package\MSLB\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[SOBKZ]"
+                      dataType="wstr"
+                      length="1"
+                      name="SOBKZ" />
+                    <externalMetadataColumn
+                      refId="Package\MSLB\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[LIFNR]"
+                      dataType="wstr"
+                      length="10"
+                      name="LIFNR" />
+                    <externalMetadataColumn
+                      refId="Package\MSLB\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[LBLAB]"
+                      dataType="numeric"
+                      name="LBLAB"
+                      precision="13"
+                      scale="3" />
+                    <externalMetadataColumn
+                      refId="Package\MSLB\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[LBINS]"
+                      dataType="numeric"
+                      name="LBINS"
+                      precision="13"
+                      scale="3" />
+                    <externalMetadataColumn
+                      refId="Package\MSLB\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[LBEIN]"
+                      dataType="numeric"
+                      name="LBEIN"
+                      precision="13"
+                      scale="3" />
+                    <externalMetadataColumn
+                      refId="Package\MSLB\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[LBUML]"
+                      dataType="numeric"
+                      name="LBUML"
+                      precision="13"
+                      scale="3" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\MSLB\insert new records.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\MSLB\insert new records.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\MSLB\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\MSLB\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\MSLB\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\MSLB\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\MSLB\Merge Join"
+              componentClassID="Microsoft.MergeJoin"
+              contactInfo="Merge Join;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
+              description="Combine two sorted data flows into one using the FULL, LEFT, or INNER join. We recommend this transformation when data flows can be sorted at their sources."
+              name="Merge Join"
+              version="1">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the type of join to perform."
+                  name="JoinType"
+                  typeConverter="JoinType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the number of columns in the ordering key."
+                  name="NumKeyColumns">6</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the null values are treated as equal values."
+                  name="TreatNullsAsEqual">true</property>
+                <property
+                  dataType="System.Int32"
+                  description="Indicates the requested maximum buffers per input before blocking."
+                  name="MaxBuffersPerInput">5</property>
+              </properties>
+              <inputs>
+                <input
+                  refId="Package\MSLB\Merge Join.Inputs[Merge Join Left Input]"
+                  hasSideEffects="true"
+                  name="Merge Join Left Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\MSLB\Merge Join.Inputs[Merge Join Left Input].Columns[MANDT]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT"
+                      cachedSortKeyPosition="1"
+                      lineageId="Package\MSLB\DB SAP.Outputs[OLE DB Source Output].Columns[MANDT]" />
+                    <inputColumn
+                      refId="Package\MSLB\Merge Join.Inputs[Merge Join Left Input].Columns[MATNR]"
+                      cachedDataType="wstr"
+                      cachedLength="18"
+                      cachedName="MATNR"
+                      cachedSortKeyPosition="2"
+                      lineageId="Package\MSLB\DB SAP.Outputs[OLE DB Source Output].Columns[MATNR]" />
+                    <inputColumn
+                      refId="Package\MSLB\Merge Join.Inputs[Merge Join Left Input].Columns[WERKS]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="WERKS"
+                      cachedSortKeyPosition="3"
+                      lineageId="Package\MSLB\DB SAP.Outputs[OLE DB Source Output].Columns[WERKS]" />
+                    <inputColumn
+                      refId="Package\MSLB\Merge Join.Inputs[Merge Join Left Input].Columns[CHARG]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="CHARG"
+                      cachedSortKeyPosition="4"
+                      lineageId="Package\MSLB\DB SAP.Outputs[OLE DB Source Output].Columns[CHARG]" />
+                    <inputColumn
+                      refId="Package\MSLB\Merge Join.Inputs[Merge Join Left Input].Columns[SOBKZ]"
+                      cachedDataType="wstr"
+                      cachedLength="1"
+                      cachedName="SOBKZ"
+                      cachedSortKeyPosition="5"
+                      lineageId="Package\MSLB\DB SAP.Outputs[OLE DB Source Output].Columns[SOBKZ]" />
+                    <inputColumn
+                      refId="Package\MSLB\Merge Join.Inputs[Merge Join Left Input].Columns[LIFNR]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="LIFNR"
+                      cachedSortKeyPosition="6"
+                      lineageId="Package\MSLB\DB SAP.Outputs[OLE DB Source Output].Columns[LIFNR]" />
+                    <inputColumn
+                      refId="Package\MSLB\Merge Join.Inputs[Merge Join Left Input].Columns[LBLAB]"
+                      cachedDataType="numeric"
+                      cachedName="LBLAB"
+                      cachedPrecision="13"
+                      cachedScale="3"
+                      lineageId="Package\MSLB\DB SAP.Outputs[OLE DB Source Output].Columns[LBLAB]" />
+                    <inputColumn
+                      refId="Package\MSLB\Merge Join.Inputs[Merge Join Left Input].Columns[LBINS]"
+                      cachedDataType="numeric"
+                      cachedName="LBINS"
+                      cachedPrecision="13"
+                      cachedScale="3"
+                      lineageId="Package\MSLB\DB SAP.Outputs[OLE DB Source Output].Columns[LBINS]" />
+                    <inputColumn
+                      refId="Package\MSLB\Merge Join.Inputs[Merge Join Left Input].Columns[LBEIN]"
+                      cachedDataType="numeric"
+                      cachedName="LBEIN"
+                      cachedPrecision="13"
+                      cachedScale="3"
+                      lineageId="Package\MSLB\DB SAP.Outputs[OLE DB Source Output].Columns[LBEIN]" />
+                    <inputColumn
+                      refId="Package\MSLB\Merge Join.Inputs[Merge Join Left Input].Columns[LBUML]"
+                      cachedDataType="numeric"
+                      cachedName="LBUML"
+                      cachedPrecision="13"
+                      cachedScale="3"
+                      lineageId="Package\MSLB\DB SAP.Outputs[OLE DB Source Output].Columns[LBUML]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+                <input
+                  refId="Package\MSLB\Merge Join.Inputs[Merge Join Right Input]"
+                  hasSideEffects="true"
+                  name="Merge Join Right Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\MSLB\Merge Join.Inputs[Merge Join Right Input].Columns[MANDT]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT"
+                      cachedSortKeyPosition="1"
+                      lineageId="Package\MSLB\DB PBI.Outputs[OLE DB Source Output].Columns[MANDT]" />
+                    <inputColumn
+                      refId="Package\MSLB\Merge Join.Inputs[Merge Join Right Input].Columns[MATNR]"
+                      cachedDataType="wstr"
+                      cachedLength="18"
+                      cachedName="MATNR"
+                      cachedSortKeyPosition="2"
+                      lineageId="Package\MSLB\DB PBI.Outputs[OLE DB Source Output].Columns[MATNR]" />
+                    <inputColumn
+                      refId="Package\MSLB\Merge Join.Inputs[Merge Join Right Input].Columns[WERKS]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="WERKS"
+                      cachedSortKeyPosition="3"
+                      lineageId="Package\MSLB\DB PBI.Outputs[OLE DB Source Output].Columns[WERKS]" />
+                    <inputColumn
+                      refId="Package\MSLB\Merge Join.Inputs[Merge Join Right Input].Columns[CHARG]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="CHARG"
+                      cachedSortKeyPosition="4"
+                      lineageId="Package\MSLB\DB PBI.Outputs[OLE DB Source Output].Columns[CHARG]" />
+                    <inputColumn
+                      refId="Package\MSLB\Merge Join.Inputs[Merge Join Right Input].Columns[SOBKZ]"
+                      cachedDataType="wstr"
+                      cachedLength="1"
+                      cachedName="SOBKZ"
+                      cachedSortKeyPosition="5"
+                      lineageId="Package\MSLB\DB PBI.Outputs[OLE DB Source Output].Columns[SOBKZ]" />
+                    <inputColumn
+                      refId="Package\MSLB\Merge Join.Inputs[Merge Join Right Input].Columns[LIFNR]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="LIFNR"
+                      cachedSortKeyPosition="6"
+                      lineageId="Package\MSLB\DB PBI.Outputs[OLE DB Source Output].Columns[LIFNR]" />
+                    <inputColumn
+                      refId="Package\MSLB\Merge Join.Inputs[Merge Join Right Input].Columns[LBLAB]"
+                      cachedDataType="numeric"
+                      cachedName="LBLAB"
+                      cachedPrecision="13"
+                      cachedScale="3"
+                      lineageId="Package\MSLB\DB PBI.Outputs[OLE DB Source Output].Columns[LBLAB]" />
+                    <inputColumn
+                      refId="Package\MSLB\Merge Join.Inputs[Merge Join Right Input].Columns[LBINS]"
+                      cachedDataType="numeric"
+                      cachedName="LBINS"
+                      cachedPrecision="13"
+                      cachedScale="3"
+                      lineageId="Package\MSLB\DB PBI.Outputs[OLE DB Source Output].Columns[LBINS]" />
+                    <inputColumn
+                      refId="Package\MSLB\Merge Join.Inputs[Merge Join Right Input].Columns[LBEIN]"
+                      cachedDataType="numeric"
+                      cachedName="LBEIN"
+                      cachedPrecision="13"
+                      cachedScale="3"
+                      lineageId="Package\MSLB\DB PBI.Outputs[OLE DB Source Output].Columns[LBEIN]" />
+                    <inputColumn
+                      refId="Package\MSLB\Merge Join.Inputs[Merge Join Right Input].Columns[LBUML]"
+                      cachedDataType="numeric"
+                      cachedName="LBUML"
+                      cachedPrecision="13"
+                      cachedScale="3"
+                      lineageId="Package\MSLB\DB PBI.Outputs[OLE DB Source Output].Columns[LBUML]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\MSLB\Merge Join.Outputs[Merge Join Output]"
+                  isSorted="true"
+                  name="Merge Join Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      lineageId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[MANDT]"
+                      name="MANDT"
+                      sortKeyPosition="1">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\MSLB\Merge Join.Inputs[Merge Join Left Input].Columns[MANDT]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[MATNR]"
+                      dataType="wstr"
+                      length="18"
+                      lineageId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[MATNR]"
+                      name="MATNR"
+                      sortKeyPosition="2">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\MSLB\Merge Join.Inputs[Merge Join Left Input].Columns[MATNR]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]"
+                      dataType="wstr"
+                      length="3"
+                      lineageId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]"
+                      name="MANDT (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\MSLB\Merge Join.Inputs[Merge Join Right Input].Columns[MANDT]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[MATNR (1)]"
+                      dataType="wstr"
+                      length="18"
+                      lineageId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[MATNR (1)]"
+                      name="MATNR (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\MSLB\Merge Join.Inputs[Merge Join Right Input].Columns[MATNR]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[WERKS]"
+                      dataType="wstr"
+                      length="4"
+                      lineageId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[WERKS]"
+                      name="WERKS"
+                      sortKeyPosition="3">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\MSLB\Merge Join.Inputs[Merge Join Left Input].Columns[WERKS]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[CHARG]"
+                      dataType="wstr"
+                      length="10"
+                      lineageId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[CHARG]"
+                      name="CHARG"
+                      sortKeyPosition="4">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\MSLB\Merge Join.Inputs[Merge Join Left Input].Columns[CHARG]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[SOBKZ]"
+                      dataType="wstr"
+                      length="1"
+                      lineageId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[SOBKZ]"
+                      name="SOBKZ"
+                      sortKeyPosition="5">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\MSLB\Merge Join.Inputs[Merge Join Left Input].Columns[SOBKZ]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[LIFNR]"
+                      dataType="wstr"
+                      length="10"
+                      lineageId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[LIFNR]"
+                      name="LIFNR"
+                      sortKeyPosition="6">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\MSLB\Merge Join.Inputs[Merge Join Left Input].Columns[LIFNR]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[LBLAB]"
+                      dataType="numeric"
+                      lineageId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[LBLAB]"
+                      name="LBLAB"
+                      precision="13"
+                      scale="3">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\MSLB\Merge Join.Inputs[Merge Join Left Input].Columns[LBLAB]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[LBINS]"
+                      dataType="numeric"
+                      lineageId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[LBINS]"
+                      name="LBINS"
+                      precision="13"
+                      scale="3">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\MSLB\Merge Join.Inputs[Merge Join Left Input].Columns[LBINS]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[LBEIN]"
+                      dataType="numeric"
+                      lineageId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[LBEIN]"
+                      name="LBEIN"
+                      precision="13"
+                      scale="3">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\MSLB\Merge Join.Inputs[Merge Join Left Input].Columns[LBEIN]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[LBUML]"
+                      dataType="numeric"
+                      lineageId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[LBUML]"
+                      name="LBUML"
+                      precision="13"
+                      scale="3">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\MSLB\Merge Join.Inputs[Merge Join Left Input].Columns[LBUML]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[WERKS (1)]"
+                      dataType="wstr"
+                      length="4"
+                      lineageId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[WERKS (1)]"
+                      name="WERKS (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\MSLB\Merge Join.Inputs[Merge Join Right Input].Columns[WERKS]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[CHARG (1)]"
+                      dataType="wstr"
+                      length="10"
+                      lineageId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[CHARG (1)]"
+                      name="CHARG (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\MSLB\Merge Join.Inputs[Merge Join Right Input].Columns[CHARG]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[SOBKZ (1)]"
+                      dataType="wstr"
+                      length="1"
+                      lineageId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[SOBKZ (1)]"
+                      name="SOBKZ (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\MSLB\Merge Join.Inputs[Merge Join Right Input].Columns[SOBKZ]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[LIFNR (1)]"
+                      dataType="wstr"
+                      length="10"
+                      lineageId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[LIFNR (1)]"
+                      name="LIFNR (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\MSLB\Merge Join.Inputs[Merge Join Right Input].Columns[LIFNR]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[LBLAB (1)]"
+                      dataType="numeric"
+                      lineageId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[LBLAB (1)]"
+                      name="LBLAB (1)"
+                      precision="13"
+                      scale="3">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\MSLB\Merge Join.Inputs[Merge Join Right Input].Columns[LBLAB]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[LBINS (1)]"
+                      dataType="numeric"
+                      lineageId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[LBINS (1)]"
+                      name="LBINS (1)"
+                      precision="13"
+                      scale="3">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\MSLB\Merge Join.Inputs[Merge Join Right Input].Columns[LBINS]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[LBEIN (1)]"
+                      dataType="numeric"
+                      lineageId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[LBEIN (1)]"
+                      name="LBEIN (1)"
+                      precision="13"
+                      scale="3">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\MSLB\Merge Join.Inputs[Merge Join Right Input].Columns[LBEIN]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[LBUML (1)]"
+                      dataType="numeric"
+                      lineageId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[LBUML (1)]"
+                      name="LBUML (1)"
+                      precision="13"
+                      scale="3">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\MSLB\Merge Join.Inputs[Merge Join Right Input].Columns[LBUML]}</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\MSLB\stage changed records"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="stage changed records"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[MSLB_STAGE_UPDATE]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\MSLB\stage changed records.Connections[OleDbConnection]"
+                  connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\MSLB\stage changed records.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\MSLB\stage changed records.Inputs[OLE DB Destination Input].Columns[MANDT]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT"
+                      cachedSortKeyPosition="1"
+                      externalMetadataColumnId="Package\MSLB\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      lineageId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
+                    <inputColumn
+                      refId="Package\MSLB\stage changed records.Inputs[OLE DB Destination Input].Columns[MATNR]"
+                      cachedDataType="wstr"
+                      cachedLength="18"
+                      cachedName="MATNR"
+                      cachedSortKeyPosition="2"
+                      externalMetadataColumnId="Package\MSLB\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MATNR]"
+                      lineageId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[MATNR]" />
+                    <inputColumn
+                      refId="Package\MSLB\stage changed records.Inputs[OLE DB Destination Input].Columns[WERKS]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="WERKS"
+                      cachedSortKeyPosition="3"
+                      externalMetadataColumnId="Package\MSLB\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[WERKS]"
+                      lineageId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[WERKS]" />
+                    <inputColumn
+                      refId="Package\MSLB\stage changed records.Inputs[OLE DB Destination Input].Columns[CHARG]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="CHARG"
+                      cachedSortKeyPosition="4"
+                      externalMetadataColumnId="Package\MSLB\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[CHARG]"
+                      lineageId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[CHARG]" />
+                    <inputColumn
+                      refId="Package\MSLB\stage changed records.Inputs[OLE DB Destination Input].Columns[SOBKZ]"
+                      cachedDataType="wstr"
+                      cachedLength="1"
+                      cachedName="SOBKZ"
+                      cachedSortKeyPosition="5"
+                      externalMetadataColumnId="Package\MSLB\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[SOBKZ]"
+                      lineageId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[SOBKZ]" />
+                    <inputColumn
+                      refId="Package\MSLB\stage changed records.Inputs[OLE DB Destination Input].Columns[LIFNR]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="LIFNR"
+                      cachedSortKeyPosition="6"
+                      externalMetadataColumnId="Package\MSLB\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[LIFNR]"
+                      lineageId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[LIFNR]" />
+                    <inputColumn
+                      refId="Package\MSLB\stage changed records.Inputs[OLE DB Destination Input].Columns[LBLAB]"
+                      cachedDataType="numeric"
+                      cachedName="LBLAB"
+                      cachedPrecision="13"
+                      cachedScale="3"
+                      externalMetadataColumnId="Package\MSLB\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[LBLAB]"
+                      lineageId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[LBLAB]" />
+                    <inputColumn
+                      refId="Package\MSLB\stage changed records.Inputs[OLE DB Destination Input].Columns[LBINS]"
+                      cachedDataType="numeric"
+                      cachedName="LBINS"
+                      cachedPrecision="13"
+                      cachedScale="3"
+                      externalMetadataColumnId="Package\MSLB\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[LBINS]"
+                      lineageId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[LBINS]" />
+                    <inputColumn
+                      refId="Package\MSLB\stage changed records.Inputs[OLE DB Destination Input].Columns[LBEIN]"
+                      cachedDataType="numeric"
+                      cachedName="LBEIN"
+                      cachedPrecision="13"
+                      cachedScale="3"
+                      externalMetadataColumnId="Package\MSLB\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[LBEIN]"
+                      lineageId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[LBEIN]" />
+                    <inputColumn
+                      refId="Package\MSLB\stage changed records.Inputs[OLE DB Destination Input].Columns[LBUML]"
+                      cachedDataType="numeric"
+                      cachedName="LBUML"
+                      cachedPrecision="13"
+                      cachedScale="3"
+                      externalMetadataColumnId="Package\MSLB\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[LBUML]"
+                      lineageId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[LBUML]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\MSLB\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      name="MANDT" />
+                    <externalMetadataColumn
+                      refId="Package\MSLB\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MATNR]"
+                      dataType="wstr"
+                      length="18"
+                      name="MATNR" />
+                    <externalMetadataColumn
+                      refId="Package\MSLB\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[WERKS]"
+                      dataType="wstr"
+                      length="4"
+                      name="WERKS" />
+                    <externalMetadataColumn
+                      refId="Package\MSLB\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[CHARG]"
+                      dataType="wstr"
+                      length="10"
+                      name="CHARG" />
+                    <externalMetadataColumn
+                      refId="Package\MSLB\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[SOBKZ]"
+                      dataType="wstr"
+                      length="1"
+                      name="SOBKZ" />
+                    <externalMetadataColumn
+                      refId="Package\MSLB\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[LIFNR]"
+                      dataType="wstr"
+                      length="10"
+                      name="LIFNR" />
+                    <externalMetadataColumn
+                      refId="Package\MSLB\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[LBLAB]"
+                      dataType="numeric"
+                      name="LBLAB"
+                      precision="13"
+                      scale="3" />
+                    <externalMetadataColumn
+                      refId="Package\MSLB\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[LBINS]"
+                      dataType="numeric"
+                      name="LBINS"
+                      precision="13"
+                      scale="3" />
+                    <externalMetadataColumn
+                      refId="Package\MSLB\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[LBEIN]"
+                      dataType="numeric"
+                      name="LBEIN"
+                      precision="13"
+                      scale="3" />
+                    <externalMetadataColumn
+                      refId="Package\MSLB\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[LBUML]"
+                      dataType="numeric"
+                      name="LBUML"
+                      precision="13"
+                      scale="3" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\MSLB\stage changed records.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\MSLB\stage changed records.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\MSLB\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\MSLB\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\MSLB\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\MSLB\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\MSLB\stage deleted records"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="stage deleted records"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[MSLB_STAGE_DELETE]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\MSLB\stage deleted records.Connections[OleDbConnection]"
+                  connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\MSLB\stage deleted records.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\MSLB\stage deleted records.Inputs[OLE DB Destination Input].Columns[MANDT (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT (1)"
+                      externalMetadataColumnId="Package\MSLB\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      lineageId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]" />
+                    <inputColumn
+                      refId="Package\MSLB\stage deleted records.Inputs[OLE DB Destination Input].Columns[MATNR (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="18"
+                      cachedName="MATNR (1)"
+                      externalMetadataColumnId="Package\MSLB\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MATNR]"
+                      lineageId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[MATNR (1)]" />
+                    <inputColumn
+                      refId="Package\MSLB\stage deleted records.Inputs[OLE DB Destination Input].Columns[WERKS (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="WERKS (1)"
+                      externalMetadataColumnId="Package\MSLB\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[WERKS]"
+                      lineageId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[WERKS (1)]" />
+                    <inputColumn
+                      refId="Package\MSLB\stage deleted records.Inputs[OLE DB Destination Input].Columns[CHARG (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="CHARG (1)"
+                      externalMetadataColumnId="Package\MSLB\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[CHARG]"
+                      lineageId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[CHARG (1)]" />
+                    <inputColumn
+                      refId="Package\MSLB\stage deleted records.Inputs[OLE DB Destination Input].Columns[SOBKZ (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="1"
+                      cachedName="SOBKZ (1)"
+                      externalMetadataColumnId="Package\MSLB\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[SOBKZ]"
+                      lineageId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[SOBKZ (1)]" />
+                    <inputColumn
+                      refId="Package\MSLB\stage deleted records.Inputs[OLE DB Destination Input].Columns[LIFNR (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="LIFNR (1)"
+                      externalMetadataColumnId="Package\MSLB\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[LIFNR]"
+                      lineageId="Package\MSLB\Merge Join.Outputs[Merge Join Output].Columns[LIFNR (1)]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\MSLB\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      name="MANDT" />
+                    <externalMetadataColumn
+                      refId="Package\MSLB\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MATNR]"
+                      dataType="wstr"
+                      length="18"
+                      name="MATNR" />
+                    <externalMetadataColumn
+                      refId="Package\MSLB\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[WERKS]"
+                      dataType="wstr"
+                      length="4"
+                      name="WERKS" />
+                    <externalMetadataColumn
+                      refId="Package\MSLB\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[CHARG]"
+                      dataType="wstr"
+                      length="10"
+                      name="CHARG" />
+                    <externalMetadataColumn
+                      refId="Package\MSLB\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[SOBKZ]"
+                      dataType="wstr"
+                      length="1"
+                      name="SOBKZ" />
+                    <externalMetadataColumn
+                      refId="Package\MSLB\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[LIFNR]"
+                      dataType="wstr"
+                      length="10"
+                      name="LIFNR" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\MSLB\stage deleted records.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\MSLB\stage deleted records.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\MSLB\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\MSLB\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\MSLB\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\MSLB\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\MSLB.Paths[delete]"
+              endId="Package\MSLB\stage deleted records.Inputs[OLE DB Destination Input]"
+              name="delete"
+              startId="Package\MSLB\Identity records.Outputs[delete]" />
+            <path
+              refId="Package\MSLB.Paths[insert]"
+              endId="Package\MSLB\insert new records.Inputs[OLE DB Destination Input]"
+              name="insert"
+              startId="Package\MSLB\Identity records.Outputs[insert]" />
+            <path
+              refId="Package\MSLB.Paths[Merge Join Output]"
+              endId="Package\MSLB\Identity records.Inputs[Conditional Split Input]"
+              name="Merge Join Output"
+              startId="Package\MSLB\Merge Join.Outputs[Merge Join Output]" />
+            <path
+              refId="Package\MSLB.Paths[OLE DB Source Output]"
+              endId="Package\MSLB\Merge Join.Inputs[Merge Join Left Input]"
+              name="OLE DB Source Output"
+              startId="Package\MSLB\DB SAP.Outputs[OLE DB Source Output]" />
+            <path
+              refId="Package\MSLB.Paths[OLE DB Source Output1]"
+              endId="Package\MSLB\Merge Join.Inputs[Merge Join Right Input]"
+              name="OLE DB Source Output"
+              startId="Package\MSLB\DB PBI.Outputs[OLE DB Source Output]" />
+            <path
+              refId="Package\MSLB.Paths[update]"
+              endId="Package\MSLB\Find Changed Records.Inputs[Conditional Split Input]"
+              name="update"
+              startId="Package\MSLB\Identity records.Outputs[update]" />
+            <path
+              refId="Package\MSLB.Paths[update1]"
+              endId="Package\MSLB\stage changed records.Inputs[OLE DB Destination Input]"
+              name="update"
+              startId="Package\MSLB\Find Changed Records.Outputs[update]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Sequence Container"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Sequence Container"
+      DTS:DTSID="{B2F117D0-EE69-488B-A988-40BCFC3CD828}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Sequence Container">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\Sequence Container\delete"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{53FCA7F6-F10F-4751-98CA-61D8C620E367}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="delete"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+              SQLTask:SqlStatementSource="DELETE A01&#xA;FROM [MSLB] A01&#xA;INNER JOIN [MSLB_STAGE_DELETE] B01&#xA;ON A01.[MANDT] = B01.[MANDT]&#xA;    AND A01.[MATNR] = B01.[MATNR]&#xA;    AND A01.[WERKS] = B01.[WERKS]&#xA;    AND A01.[CHARG] = B01.[CHARG]&#xA;    AND A01.[SOBKZ] = B01.[SOBKZ]&#xA;    AND A01.[LIFNR] = B01.[LIFNR]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Sequence Container\update"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{98441380-969A-4D69-9A3A-6FF95998067C}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="update"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+              SQLTask:SqlStatementSource="UPDATE A01&#xA;SET A01.[LBLAB] = B01.[LBLAB]&#xA;    ,A01.[LBINS] = B01.[LBINS]&#xA;    ,A01.[LBEIN] = B01.[LBEIN]&#xA;    ,A01.[LBUML] = B01.[LBUML]&#xA;FROM [MSLB] A01&#xA;INNER JOIN [MSLB_STAGE_UPDATE] B01&#xA;ON A01.[MANDT] = B01.[MANDT]&#xA;    AND A01.[MATNR] = B01.[MATNR]&#xA;    AND A01.[WERKS] = B01.[WERKS]&#xA;    AND A01.[CHARG] = B01.[CHARG]&#xA;    AND A01.[SOBKZ] = B01.[SOBKZ]&#xA;    AND A01.[LIFNR] = B01.[LIFNR]&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Sequence Container 1"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Sequence Container"
+      DTS:DTSID="{3743E947-94E4-48C4-A3D9-A3EA0EBA2D28}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Sequence Container 1">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\Sequence Container 1\Insert"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{577EC8A7-386C-4681-8FBC-3BD0D64FB031}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Insert"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+              SQLTask:SqlStatementSource="INSERT INTO [MSLB]&#xA;SELECT * FROM [MSLB_STAGE_INSERT]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{CEDB2AE9-E54A-4196-9A44-294A414E92E1}"
+      DTS:From="Package\MSLB"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\Sequence Container" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
+      DTS:CreationName=""
+      DTS:DTSID="{9D4E4B18-1C71-4CDA-926C-C20407ACE1EC}"
+      DTS:From="Package\clean stage"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 1"
+      DTS:To="Package\MSLB" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
+      DTS:CreationName=""
+      DTS:DTSID="{8AFEC207-8418-462C-BFC9-B22AE774917E}"
+      DTS:From="Package\Sequence Container"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 2"
+      DTS:To="Package\Sequence Container 1" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="132,42"
+          Id="Package\clean stage"
+          TopLeft="388,37" />
+        <NodeLayout
+          Size="105,42"
+          Id="Package\MSLB"
+          TopLeft="197,56" />
+        <NodeLayout
+          Size="108,42"
+          Id="Package\Sequence Container\delete"
+          TopLeft="195,39" />
+        <NodeLayout
+          Size="112,42"
+          Id="Package\Sequence Container\update"
+          TopLeft="14,42" />
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="383,139"
+          Size="383,182"
+          Id="Package\Sequence Container"
+          TopLeft="60,174" />
+        <NodeLayout
+          Size="107,42"
+          Id="Package\Sequence Container 1\Insert"
+          TopLeft="129,47" />
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="383,139"
+          Size="383,182"
+          Id="Package\Sequence Container 1"
+          TopLeft="60,416" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="250.5,98">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,76"
+              Start="0,0"
+              End="0,68.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,68.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="388,58">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-86,19"
+              Start="0,0"
+              End="-78.5,19">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="-39,0" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-39,0"
+                    Point2="-43,0"
+                    Point3="-43,4" />
+                  <mssgle:LineSegment
+                    End="-43,15" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-43,15"
+                    Point2="-43,19"
+                    Point3="-47,19" />
+                  <mssgle:LineSegment
+                    End="-78.5,19" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 2]"
+          TopLeft="251.5,356">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,60"
+              Start="0,0"
+              End="0,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\MSLB">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="166,42"
+          Id="Package\MSLB\insert new records"
+          TopLeft="159,370" />
+        <NodeLayout
+          Size="114,42"
+          Id="Package\MSLB\DB SAP"
+          TopLeft="199,46" />
+        <NodeLayout
+          Size="153,42"
+          Id="Package\MSLB\Identity records"
+          TopLeft="437,235" />
+        <NodeLayout
+          Size="180,42"
+          Id="Package\MSLB\stage deleted records"
+          TopLeft="687,371" />
+        <NodeLayout
+          Size="130,42"
+          Id="Package\MSLB\Merge Join"
+          TopLeft="451,137" />
+        <NodeLayout
+          Size="184,42"
+          Id="Package\MSLB\Find Changed Records"
+          TopLeft="420,366" />
+        <NodeLayout
+          Size="112,42"
+          Id="Package\MSLB\DB PBI"
+          TopLeft="671,48" />
+        <NodeLayout
+          Size="186,42"
+          Id="Package\MSLB\stage changed records"
+          TopLeft="418,481" />
+        <EdgeLayout
+          Id="Package\MSLB.Paths[delete]"
+          TopLeft="549.75,277">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="227.25,94"
+              Start="0,0"
+              End="227.25,86.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,28.406852248394" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,28.406852248394"
+                    Point2="0,32.406852248394"
+                    Point3="4,32.406852248394" />
+                  <mssgle:LineSegment
+                    End="223.25,32.406852248394" />
+                  <mssgle:CubicBezierSegment
+                    Point1="223.25,32.406852248394"
+                    Point2="227.25,32.406852248394"
+                    Point3="227.25,36.406852248394" />
+                  <mssgle:LineSegment
+                    End="227.25,86.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="99.42904296875,37.406852248394,28.3919140625,9.7490234375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\MSLB.Paths[update1]"
+          TopLeft="511.5,408">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,73"
+              Start="0,0"
+              End="0,65.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,65.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-15.8025,26.9453125,31.605,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\MSLB.Paths[update]"
+          TopLeft="512.75,277">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,89"
+              Start="0,0"
+              End="0,81.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,81.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-15.8025,34.9453125,31.605,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\MSLB.Paths[OLE DB Source Output1]"
+          TopLeft="727,90">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-190.666666666667,47"
+              Start="0,0"
+              End="-190.666666666667,39.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,23.8571428571429" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,23.8571428571429"
+                    Point2="0,27.8571428571429"
+                    Point3="-4,27.8571428571429" />
+                  <mssgle:LineSegment
+                    End="-186.666666666667,27.8571428571429" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-186.666666666667,27.8571428571429"
+                    Point2="-190.666666666667,27.8571428571429"
+                    Point3="-190.666666666667,31.8571428571429" />
+                  <mssgle:LineSegment
+                    End="-190.666666666667,39.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\MSLB.Paths[OLE DB Source Output]"
+          TopLeft="256,88">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="260,49"
+              Start="0,0"
+              End="260,41.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,20.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,20.5"
+                    Point2="0,24.5"
+                    Point3="4,24.5" />
+                  <mssgle:LineSegment
+                    End="256,24.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="256,24.5"
+                    Point2="260,24.5"
+                    Point3="260,28.5" />
+                  <mssgle:LineSegment
+                    End="260,41.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\MSLB.Paths[Merge Join Output]"
+          TopLeft="514.75,179">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,56"
+              Start="0,0"
+              End="0,48.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,48.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\MSLB.Paths[insert]"
+          TopLeft="477.25,277">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-235.25,93"
+              Start="0,0"
+              End="-235.25,85.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,28.0620985010707" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,28.0620985010707"
+                    Point2="0,32.0620985010707"
+                    Point3="-4,32.0620985010707" />
+                  <mssgle:LineSegment
+                    End="-231.25,32.0620985010707" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-231.25,32.0620985010707"
+                    Point2="-235.25,32.0620985010707"
+                    Point3="-235.25,36.0620985010707" />
+                  <mssgle:LineSegment
+                    End="-235.25,85.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-130.57498046875,37.0620985010707,25.8999609375,9.451171875"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\MSLB\insert new records">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\MSLB\DB SAP">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\MSLB\stage deleted records">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\MSLB\DB PBI">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\MSLB\stage changed records">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>
