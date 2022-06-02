@@ -1,18 +1,18 @@
 ﻿<?xml version="1.0"?>
 <DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
   DTS:refId="Package"
-  DTS:CreationDate="4/19/2021 12:51:19 PM"
+  DTS:CreationDate="4/19/2021 2:40:05 PM"
   DTS:CreationName="Microsoft.Package"
   DTS:CreatorComputerName="ARLPBIDEV"
   DTS:CreatorName="DOMAIN\RPETRELLA"
-  DTS:DTSID="{FD3507DE-3BF5-4820-860A-66582C1D178A}"
+  DTS:DTSID="{4C008C25-D9A6-4791-AE21-2B02ECBD58FE}"
   DTS:ExecutableType="Microsoft.Package"
   DTS:LastModifiedProductVersion="15.0.2000.180"
   DTS:LocaleID="1033"
-  DTS:ObjectName="CSKU"
+  DTS:ObjectName="ZMM_T157E"
   DTS:PackageType="5"
-  DTS:VersionBuild="10"
-  DTS:VersionGUID="{9FF69FCD-5A1B-43DC-A1FC-7B026542DA18}">
+  DTS:VersionBuild="21"
+  DTS:VersionGUID="{A191C547-6789-4781-8845-054699095F1F}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:Variables />
@@ -21,7 +21,7 @@
       DTS:refId="Package\clean stage"
       DTS:CreationName="Microsoft.ExecuteSQLTask"
       DTS:Description="Execute SQL Task"
-      DTS:DTSID="{EDC9B4E6-17BD-4477-B265-13747CB4C026}"
+      DTS:DTSID="{5A786CFF-B7D7-4795-9C03-547F377B442E}"
       DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
       DTS:ObjectName="clean stage"
@@ -31,17 +31,92 @@
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
           SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-          SQLTask:SqlStatementSource="TRUNCATE TABLE [CSKU_STAGE_UPDATE]&#xA;go&#xA;TRUNCATE TABLE [CSKU_STAGE_DELETE]&#xA;go&#xA;TRUNCATE TABLE [CSKU_STAGE_INSERT]&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          SQLTask:SqlStatementSource="TRUNCATE TABLE [ZMM_T157E_STAGE_UPDATE]&#xA;go&#xA;TRUNCATE TABLE [ZMM_T157E_STAGE_DELETE]&#xA;go&#xA;TRUNCATE TABLE [ZMM_T157E_STAGE_INSERT]&#xA;go" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
-      DTS:refId="Package\CSKU"
+      DTS:refId="Package\Sequence Container"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Sequence Container"
+      DTS:DTSID="{3D655CB5-CE53-4A1B-A0C8-1B2A111AB1E4}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Sequence Container">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\Sequence Container\delete"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{E7138B10-CC3E-44C2-911E-0FE11529EB4A}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="delete"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+              SQLTask:SqlStatementSource="DELETE A01&#xA;FROM [ZMM_T157E] A01&#xA;INNER JOIN [ZMM_T157E_STAGE_DELETE] B01&#xA;ON A01.[MANDT] = B01.[MANDT]&#xA;    AND A01.[SPRAS] = B01.[SPRAS]&#xA;    AND A01.[BWART] = B01.[BWART]&#xA;    AND A01.[GRUND] = B01.[GRUND]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Sequence Container\update"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{D49EB29A-CA97-4C6C-9FEA-544AAFEA76B9}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="update"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+              SQLTask:SqlStatementSource="UPDATE A01&#xA;SET A01.[GRTXT] = B01.[GRTXT]&#xA;FROM [ZMM_T157E] A01&#xA;INNER JOIN [ZMM_T157E_STAGE_UPDATE] B01&#xA;ON A01.[MANDT] = B01.[MANDT]&#xA;    AND A01.[SPRAS] = B01.[SPRAS]&#xA;    AND A01.[BWART] = B01.[BWART]&#xA;    AND A01.[GRUND] = B01.[GRUND]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Sequence Container 1"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Sequence Container"
+      DTS:DTSID="{9D47E05A-161A-4BE4-A64D-4F74B328FEAC}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Sequence Container 1">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\Sequence Container 1\Insert"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{4AFA8010-DB17-40D9-A77B-36230C561F50}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Insert"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+              SQLTask:SqlStatementSource="INSERT INTO [ZMM_T157E]&#xA;SELECT * FROM [ZMM_T157E_STAGE_INSERT]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\ZMM_T157E"
       DTS:CreationName="Microsoft.Pipeline"
       DTS:Description="Data Flow Task"
-      DTS:DTSID="{996F55A2-A51B-4F65-9732-B406ACB3EB41}"
+      DTS:DTSID="{58C09806-ECB1-4360-958E-21C0E1E384A1}"
       DTS:ExecutableType="Microsoft.Pipeline"
       DTS:LocaleID="-1"
-      DTS:ObjectName="CSKU"
+      DTS:ObjectName="ZMM_T157E"
       DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
       <DTS:Variables />
       <DTS:ObjectData>
@@ -49,7 +124,7 @@
           version="1">
           <components>
             <component
-              refId="Package\CSKU\DB PBI"
+              refId="Package\ZMM_T157E\DB PBI"
               componentClassID="Microsoft.OLEDBSource"
               contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
               description="OLE DB Source"
@@ -73,16 +148,18 @@
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT A01.[MANDT]
-      ,A01.[SPRAS]
-      ,A01.[KTOPL]
-      ,A01.[KSTAR]
-      ,A01.[LTEXT]
-FROM [CSKU] A01 (NOLOCK)
-ORDER BY A01.[MANDT]
-      ,A01.[SPRAS]
-      ,A01.[KTOPL]
-      ,A01.[KSTAR]</property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT [MANDT]
+    ,[SPRAS]
+    ,[BWART]
+    ,[GRUND]
+    ,[GRTXT]
+FROM [ZMM_T157E] (NOLOCK)
+WHERE MANDT = '105'
+    AND SPRAS = 'E'
+ORDER BY [MANDT]
+    ,[SPRAS]
+    ,[BWART]
+    ,[GRUND]</property>
                 <property
                   dataType="System.String"
                   description="The variable that contains the SQL command to be executed."
@@ -107,7 +184,7 @@ ORDER BY A01.[MANDT]
               </properties>
               <connections>
                 <connection
-                  refId="Package\CSKU\DB PBI.Connections[OleDbConnection]"
+                  refId="Package\ZMM_T157E\DB PBI.Connections[OleDbConnection]"
                   connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
                   connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
                   description="The OLE DB runtime connection used to access the database."
@@ -115,139 +192,139 @@ ORDER BY A01.[MANDT]
               </connections>
               <outputs>
                 <output
-                  refId="Package\CSKU\DB PBI.Outputs[OLE DB Source Output]"
+                  refId="Package\ZMM_T157E\DB PBI.Outputs[OLE DB Source Output]"
                   isSorted="true"
                   name="OLE DB Source Output">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\CSKU\DB PBI.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      refId="Package\ZMM_T157E\DB PBI.Outputs[OLE DB Source Output].Columns[MANDT]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\CSKU\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      externalMetadataColumnId="Package\ZMM_T157E\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
                       length="3"
-                      lineageId="Package\CSKU\DB PBI.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      lineageId="Package\ZMM_T157E\DB PBI.Outputs[OLE DB Source Output].Columns[MANDT]"
                       name="MANDT"
                       sortKeyPosition="1"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\CSKU\DB PBI.Outputs[OLE DB Source Output].Columns[SPRAS]"
+                      refId="Package\ZMM_T157E\DB PBI.Outputs[OLE DB Source Output].Columns[SPRAS]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\CSKU\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[SPRAS]"
+                      externalMetadataColumnId="Package\ZMM_T157E\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[SPRAS]"
                       length="1"
-                      lineageId="Package\CSKU\DB PBI.Outputs[OLE DB Source Output].Columns[SPRAS]"
+                      lineageId="Package\ZMM_T157E\DB PBI.Outputs[OLE DB Source Output].Columns[SPRAS]"
                       name="SPRAS"
                       sortKeyPosition="2"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\CSKU\DB PBI.Outputs[OLE DB Source Output].Columns[LTEXT]"
+                      refId="Package\ZMM_T157E\DB PBI.Outputs[OLE DB Source Output].Columns[BWART]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\CSKU\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[LTEXT]"
-                      length="40"
-                      lineageId="Package\CSKU\DB PBI.Outputs[OLE DB Source Output].Columns[LTEXT]"
-                      name="LTEXT"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\CSKU\DB PBI.Outputs[OLE DB Source Output].Columns[KTOPL]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\CSKU\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[KTOPL]"
-                      length="4"
-                      lineageId="Package\CSKU\DB PBI.Outputs[OLE DB Source Output].Columns[KTOPL]"
-                      name="KTOPL"
+                      externalMetadataColumnId="Package\ZMM_T157E\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[BWART]"
+                      length="3"
+                      lineageId="Package\ZMM_T157E\DB PBI.Outputs[OLE DB Source Output].Columns[BWART]"
+                      name="BWART"
                       sortKeyPosition="3"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\CSKU\DB PBI.Outputs[OLE DB Source Output].Columns[KSTAR]"
+                      refId="Package\ZMM_T157E\DB PBI.Outputs[OLE DB Source Output].Columns[GRUND]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\CSKU\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[KSTAR]"
-                      length="10"
-                      lineageId="Package\CSKU\DB PBI.Outputs[OLE DB Source Output].Columns[KSTAR]"
-                      name="KSTAR"
+                      externalMetadataColumnId="Package\ZMM_T157E\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[GRUND]"
+                      length="4"
+                      lineageId="Package\ZMM_T157E\DB PBI.Outputs[OLE DB Source Output].Columns[GRUND]"
+                      name="GRUND"
                       sortKeyPosition="4"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\ZMM_T157E\DB PBI.Outputs[OLE DB Source Output].Columns[GRTXT]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\ZMM_T157E\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[GRTXT]"
+                      length="20"
+                      lineageId="Package\ZMM_T157E\DB PBI.Outputs[OLE DB Source Output].Columns[GRTXT]"
+                      name="GRTXT"
                       truncationRowDisposition="FailComponent" />
                   </outputColumns>
                   <externalMetadataColumns
                     isUsed="True">
                     <externalMetadataColumn
-                      refId="Package\CSKU\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      refId="Package\ZMM_T157E\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
                       dataType="wstr"
                       length="3"
                       name="MANDT" />
                     <externalMetadataColumn
-                      refId="Package\CSKU\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[SPRAS]"
+                      refId="Package\ZMM_T157E\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[SPRAS]"
                       dataType="wstr"
                       length="1"
                       name="SPRAS" />
                     <externalMetadataColumn
-                      refId="Package\CSKU\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[LTEXT]"
+                      refId="Package\ZMM_T157E\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[BWART]"
                       dataType="wstr"
-                      length="40"
-                      name="LTEXT" />
+                      length="3"
+                      name="BWART" />
                     <externalMetadataColumn
-                      refId="Package\CSKU\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[KTOPL]"
+                      refId="Package\ZMM_T157E\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[GRUND]"
                       dataType="wstr"
                       length="4"
-                      name="KTOPL" />
+                      name="GRUND" />
                     <externalMetadataColumn
-                      refId="Package\CSKU\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[KSTAR]"
+                      refId="Package\ZMM_T157E\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[GRTXT]"
                       dataType="wstr"
-                      length="10"
-                      name="KSTAR" />
+                      length="20"
+                      name="GRTXT" />
                   </externalMetadataColumns>
                 </output>
                 <output
-                  refId="Package\CSKU\DB PBI.Outputs[OLE DB Source Error Output]"
+                  refId="Package\ZMM_T157E\DB PBI.Outputs[OLE DB Source Error Output]"
                   isErrorOut="true"
                   name="OLE DB Source Error Output">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\CSKU\DB PBI.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      refId="Package\ZMM_T157E\DB PBI.Outputs[OLE DB Source Error Output].Columns[MANDT]"
                       dataType="wstr"
                       length="3"
-                      lineageId="Package\CSKU\DB PBI.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      lineageId="Package\ZMM_T157E\DB PBI.Outputs[OLE DB Source Error Output].Columns[MANDT]"
                       name="MANDT" />
                     <outputColumn
-                      refId="Package\CSKU\DB PBI.Outputs[OLE DB Source Error Output].Columns[SPRAS]"
+                      refId="Package\ZMM_T157E\DB PBI.Outputs[OLE DB Source Error Output].Columns[SPRAS]"
                       dataType="wstr"
                       length="1"
-                      lineageId="Package\CSKU\DB PBI.Outputs[OLE DB Source Error Output].Columns[SPRAS]"
+                      lineageId="Package\ZMM_T157E\DB PBI.Outputs[OLE DB Source Error Output].Columns[SPRAS]"
                       name="SPRAS" />
                     <outputColumn
-                      refId="Package\CSKU\DB PBI.Outputs[OLE DB Source Error Output].Columns[KTOPL]"
+                      refId="Package\ZMM_T157E\DB PBI.Outputs[OLE DB Source Error Output].Columns[BWART]"
+                      dataType="wstr"
+                      length="3"
+                      lineageId="Package\ZMM_T157E\DB PBI.Outputs[OLE DB Source Error Output].Columns[BWART]"
+                      name="BWART" />
+                    <outputColumn
+                      refId="Package\ZMM_T157E\DB PBI.Outputs[OLE DB Source Error Output].Columns[GRUND]"
                       dataType="wstr"
                       length="4"
-                      lineageId="Package\CSKU\DB PBI.Outputs[OLE DB Source Error Output].Columns[KTOPL]"
-                      name="KTOPL" />
+                      lineageId="Package\ZMM_T157E\DB PBI.Outputs[OLE DB Source Error Output].Columns[GRUND]"
+                      name="GRUND" />
                     <outputColumn
-                      refId="Package\CSKU\DB PBI.Outputs[OLE DB Source Error Output].Columns[KSTAR]"
+                      refId="Package\ZMM_T157E\DB PBI.Outputs[OLE DB Source Error Output].Columns[GRTXT]"
                       dataType="wstr"
-                      length="10"
-                      lineageId="Package\CSKU\DB PBI.Outputs[OLE DB Source Error Output].Columns[KSTAR]"
-                      name="KSTAR" />
+                      length="20"
+                      lineageId="Package\ZMM_T157E\DB PBI.Outputs[OLE DB Source Error Output].Columns[GRTXT]"
+                      name="GRTXT" />
                     <outputColumn
-                      refId="Package\CSKU\DB PBI.Outputs[OLE DB Source Error Output].Columns[LTEXT]"
-                      dataType="wstr"
-                      length="40"
-                      lineageId="Package\CSKU\DB PBI.Outputs[OLE DB Source Error Output].Columns[LTEXT]"
-                      name="LTEXT" />
-                    <outputColumn
-                      refId="Package\CSKU\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      refId="Package\ZMM_T157E\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\CSKU\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      lineageId="Package\ZMM_T157E\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\CSKU\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      refId="Package\ZMM_T157E\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\CSKU\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\ZMM_T157E\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -256,7 +333,7 @@ ORDER BY A01.[MANDT]
               </outputs>
             </component>
             <component
-              refId="Package\CSKU\DB SAP"
+              refId="Package\ZMM_T157E\DB SAP"
               componentClassID="Microsoft.OLEDBSource"
               contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
               description="OLE DB Source"
@@ -280,16 +357,18 @@ ORDER BY A01.[MANDT]
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT A01.[MANDT]
-      ,A01.[SPRAS]
-      ,A01.[KTOPL]
-      ,A01.[KSTAR]
-      ,A01.[LTEXT]
-FROM [ecp].[CSKU] A01 (NOLOCK)
-ORDER BY A01.[MANDT]
-      ,A01.[SPRAS]
-      ,A01.[KTOPL]
-      ,A01.[KSTAR]</property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT [MANDT]
+    ,[SPRAS]
+    ,[BWART]
+    ,[GRUND]
+    ,[GRTXT]
+FROM [ecp].[ZMM_T157E] (NOLOCK)
+WHERE MANDT = '105'
+    AND SPRAS = 'E'
+ORDER BY [MANDT]
+    ,[SPRAS]
+    ,[BWART]
+    ,[GRUND]</property>
                 <property
                   dataType="System.String"
                   description="The variable that contains the SQL command to be executed."
@@ -314,7 +393,7 @@ ORDER BY A01.[MANDT]
               </properties>
               <connections>
                 <connection
-                  refId="Package\CSKU\DB SAP.Connections[OleDbConnection]"
+                  refId="Package\ZMM_T157E\DB SAP.Connections[OleDbConnection]"
                   connectionManagerID="{544CCAD9-2CB1-4D87-98D7-A7C478586195}:external"
                   connectionManagerRefId="Project.ConnectionManagers[SQL_SAP]"
                   description="The OLE DB runtime connection used to access the database."
@@ -322,139 +401,139 @@ ORDER BY A01.[MANDT]
               </connections>
               <outputs>
                 <output
-                  refId="Package\CSKU\DB SAP.Outputs[OLE DB Source Output]"
+                  refId="Package\ZMM_T157E\DB SAP.Outputs[OLE DB Source Output]"
                   isSorted="true"
                   name="OLE DB Source Output">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\CSKU\DB SAP.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      refId="Package\ZMM_T157E\DB SAP.Outputs[OLE DB Source Output].Columns[MANDT]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\CSKU\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      externalMetadataColumnId="Package\ZMM_T157E\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
                       length="3"
-                      lineageId="Package\CSKU\DB SAP.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      lineageId="Package\ZMM_T157E\DB SAP.Outputs[OLE DB Source Output].Columns[MANDT]"
                       name="MANDT"
                       sortKeyPosition="1"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\CSKU\DB SAP.Outputs[OLE DB Source Output].Columns[SPRAS]"
+                      refId="Package\ZMM_T157E\DB SAP.Outputs[OLE DB Source Output].Columns[SPRAS]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\CSKU\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[SPRAS]"
+                      externalMetadataColumnId="Package\ZMM_T157E\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[SPRAS]"
                       length="1"
-                      lineageId="Package\CSKU\DB SAP.Outputs[OLE DB Source Output].Columns[SPRAS]"
+                      lineageId="Package\ZMM_T157E\DB SAP.Outputs[OLE DB Source Output].Columns[SPRAS]"
                       name="SPRAS"
                       sortKeyPosition="2"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\CSKU\DB SAP.Outputs[OLE DB Source Output].Columns[LTEXT]"
+                      refId="Package\ZMM_T157E\DB SAP.Outputs[OLE DB Source Output].Columns[BWART]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\CSKU\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[LTEXT]"
-                      length="40"
-                      lineageId="Package\CSKU\DB SAP.Outputs[OLE DB Source Output].Columns[LTEXT]"
-                      name="LTEXT"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\CSKU\DB SAP.Outputs[OLE DB Source Output].Columns[KTOPL]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\CSKU\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[KTOPL]"
-                      length="4"
-                      lineageId="Package\CSKU\DB SAP.Outputs[OLE DB Source Output].Columns[KTOPL]"
-                      name="KTOPL"
+                      externalMetadataColumnId="Package\ZMM_T157E\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[BWART]"
+                      length="3"
+                      lineageId="Package\ZMM_T157E\DB SAP.Outputs[OLE DB Source Output].Columns[BWART]"
+                      name="BWART"
                       sortKeyPosition="3"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\CSKU\DB SAP.Outputs[OLE DB Source Output].Columns[KSTAR]"
+                      refId="Package\ZMM_T157E\DB SAP.Outputs[OLE DB Source Output].Columns[GRUND]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\CSKU\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[KSTAR]"
-                      length="10"
-                      lineageId="Package\CSKU\DB SAP.Outputs[OLE DB Source Output].Columns[KSTAR]"
-                      name="KSTAR"
+                      externalMetadataColumnId="Package\ZMM_T157E\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[GRUND]"
+                      length="4"
+                      lineageId="Package\ZMM_T157E\DB SAP.Outputs[OLE DB Source Output].Columns[GRUND]"
+                      name="GRUND"
                       sortKeyPosition="4"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\ZMM_T157E\DB SAP.Outputs[OLE DB Source Output].Columns[GRTXT]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\ZMM_T157E\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[GRTXT]"
+                      length="20"
+                      lineageId="Package\ZMM_T157E\DB SAP.Outputs[OLE DB Source Output].Columns[GRTXT]"
+                      name="GRTXT"
                       truncationRowDisposition="FailComponent" />
                   </outputColumns>
                   <externalMetadataColumns
                     isUsed="True">
                     <externalMetadataColumn
-                      refId="Package\CSKU\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      refId="Package\ZMM_T157E\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
                       dataType="wstr"
                       length="3"
                       name="MANDT" />
                     <externalMetadataColumn
-                      refId="Package\CSKU\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[SPRAS]"
+                      refId="Package\ZMM_T157E\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[SPRAS]"
                       dataType="wstr"
                       length="1"
                       name="SPRAS" />
                     <externalMetadataColumn
-                      refId="Package\CSKU\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[LTEXT]"
+                      refId="Package\ZMM_T157E\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[BWART]"
                       dataType="wstr"
-                      length="40"
-                      name="LTEXT" />
+                      length="3"
+                      name="BWART" />
                     <externalMetadataColumn
-                      refId="Package\CSKU\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[KTOPL]"
+                      refId="Package\ZMM_T157E\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[GRUND]"
                       dataType="wstr"
                       length="4"
-                      name="KTOPL" />
+                      name="GRUND" />
                     <externalMetadataColumn
-                      refId="Package\CSKU\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[KSTAR]"
+                      refId="Package\ZMM_T157E\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[GRTXT]"
                       dataType="wstr"
-                      length="10"
-                      name="KSTAR" />
+                      length="20"
+                      name="GRTXT" />
                   </externalMetadataColumns>
                 </output>
                 <output
-                  refId="Package\CSKU\DB SAP.Outputs[OLE DB Source Error Output]"
+                  refId="Package\ZMM_T157E\DB SAP.Outputs[OLE DB Source Error Output]"
                   isErrorOut="true"
                   name="OLE DB Source Error Output">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\CSKU\DB SAP.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      refId="Package\ZMM_T157E\DB SAP.Outputs[OLE DB Source Error Output].Columns[MANDT]"
                       dataType="wstr"
                       length="3"
-                      lineageId="Package\CSKU\DB SAP.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      lineageId="Package\ZMM_T157E\DB SAP.Outputs[OLE DB Source Error Output].Columns[MANDT]"
                       name="MANDT" />
                     <outputColumn
-                      refId="Package\CSKU\DB SAP.Outputs[OLE DB Source Error Output].Columns[SPRAS]"
+                      refId="Package\ZMM_T157E\DB SAP.Outputs[OLE DB Source Error Output].Columns[SPRAS]"
                       dataType="wstr"
                       length="1"
-                      lineageId="Package\CSKU\DB SAP.Outputs[OLE DB Source Error Output].Columns[SPRAS]"
+                      lineageId="Package\ZMM_T157E\DB SAP.Outputs[OLE DB Source Error Output].Columns[SPRAS]"
                       name="SPRAS" />
                     <outputColumn
-                      refId="Package\CSKU\DB SAP.Outputs[OLE DB Source Error Output].Columns[KTOPL]"
+                      refId="Package\ZMM_T157E\DB SAP.Outputs[OLE DB Source Error Output].Columns[BWART]"
+                      dataType="wstr"
+                      length="3"
+                      lineageId="Package\ZMM_T157E\DB SAP.Outputs[OLE DB Source Error Output].Columns[BWART]"
+                      name="BWART" />
+                    <outputColumn
+                      refId="Package\ZMM_T157E\DB SAP.Outputs[OLE DB Source Error Output].Columns[GRUND]"
                       dataType="wstr"
                       length="4"
-                      lineageId="Package\CSKU\DB SAP.Outputs[OLE DB Source Error Output].Columns[KTOPL]"
-                      name="KTOPL" />
+                      lineageId="Package\ZMM_T157E\DB SAP.Outputs[OLE DB Source Error Output].Columns[GRUND]"
+                      name="GRUND" />
                     <outputColumn
-                      refId="Package\CSKU\DB SAP.Outputs[OLE DB Source Error Output].Columns[KSTAR]"
+                      refId="Package\ZMM_T157E\DB SAP.Outputs[OLE DB Source Error Output].Columns[GRTXT]"
                       dataType="wstr"
-                      length="10"
-                      lineageId="Package\CSKU\DB SAP.Outputs[OLE DB Source Error Output].Columns[KSTAR]"
-                      name="KSTAR" />
+                      length="20"
+                      lineageId="Package\ZMM_T157E\DB SAP.Outputs[OLE DB Source Error Output].Columns[GRTXT]"
+                      name="GRTXT" />
                     <outputColumn
-                      refId="Package\CSKU\DB SAP.Outputs[OLE DB Source Error Output].Columns[LTEXT]"
-                      dataType="wstr"
-                      length="40"
-                      lineageId="Package\CSKU\DB SAP.Outputs[OLE DB Source Error Output].Columns[LTEXT]"
-                      name="LTEXT" />
-                    <outputColumn
-                      refId="Package\CSKU\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      refId="Package\ZMM_T157E\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\CSKU\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      lineageId="Package\ZMM_T157E\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\CSKU\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      refId="Package\ZMM_T157E\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\CSKU\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\ZMM_T157E\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -463,7 +542,7 @@ ORDER BY A01.[MANDT]
               </outputs>
             </component>
             <component
-              refId="Package\CSKU\Find Changed Records"
+              refId="Package\ZMM_T157E\Find Changed Records"
               componentClassID="Microsoft.ConditionalSplit"
               contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
               description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
@@ -471,48 +550,48 @@ ORDER BY A01.[MANDT]
               usesDispositions="true">
               <inputs>
                 <input
-                  refId="Package\CSKU\Find Changed Records.Inputs[Conditional Split Input]"
+                  refId="Package\ZMM_T157E\Find Changed Records.Inputs[Conditional Split Input]"
                   description="Input to the Conditional Split Transformation"
                   name="Conditional Split Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\CSKU\Find Changed Records.Inputs[Conditional Split Input].Columns[LTEXT]"
+                      refId="Package\ZMM_T157E\Find Changed Records.Inputs[Conditional Split Input].Columns[GRTXT]"
                       cachedDataType="wstr"
-                      cachedLength="40"
-                      cachedName="LTEXT"
-                      lineageId="Package\CSKU\Merge Join.Outputs[Merge Join Output].Columns[LTEXT]" />
+                      cachedLength="20"
+                      cachedName="GRTXT"
+                      lineageId="Package\ZMM_T157E\Merge Join.Outputs[Merge Join Output].Columns[GRTXT]" />
                     <inputColumn
-                      refId="Package\CSKU\Find Changed Records.Inputs[Conditional Split Input].Columns[LTEXT (1)]"
+                      refId="Package\ZMM_T157E\Find Changed Records.Inputs[Conditional Split Input].Columns[GRTXT (1)]"
                       cachedDataType="wstr"
-                      cachedLength="40"
-                      cachedName="LTEXT (1)"
-                      lineageId="Package\CSKU\Merge Join.Outputs[Merge Join Output].Columns[LTEXT (1)]" />
+                      cachedLength="20"
+                      cachedName="GRTXT (1)"
+                      lineageId="Package\ZMM_T157E\Merge Join.Outputs[Merge Join Output].Columns[GRTXT (1)]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\CSKU\Find Changed Records.Outputs[update]"
+                  refId="Package\ZMM_T157E\Find Changed Records.Outputs[update]"
                   description="Output 1 of the Conditional Split Transformation"
                   errorOrTruncationOperation="Computation"
                   errorRowDisposition="FailComponent"
                   exclusionGroup="1"
                   name="update"
-                  synchronousInputId="Package\CSKU\Find Changed Records.Inputs[Conditional Split Input]"
+                  synchronousInputId="Package\ZMM_T157E\Find Changed Records.Inputs[Conditional Split Input]"
                   truncationRowDisposition="FailComponent">
                   <properties>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
-                      name="Expression">#{Package\CSKU\Merge Join.Outputs[Merge Join Output].Columns[LTEXT]} != #{Package\CSKU\Merge Join.Outputs[Merge Join Output].Columns[LTEXT (1)]}</property>
+                      name="Expression">#{Package\ZMM_T157E\Merge Join.Outputs[Merge Join Output].Columns[GRTXT]} != #{Package\ZMM_T157E\Merge Join.Outputs[Merge Join Output].Columns[GRTXT (1)]}</property>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the friendly version of the expression. This expression version uses column names."
                       expressionType="Notify"
-                      name="FriendlyExpression">LTEXT != [LTEXT (1)]</property>
+                      name="FriendlyExpression">GRTXT != [GRTXT (1)]</property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
@@ -521,11 +600,11 @@ ORDER BY A01.[MANDT]
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\CSKU\Find Changed Records.Outputs[Conditional Split Default Output]"
+                  refId="Package\ZMM_T157E\Find Changed Records.Outputs[Conditional Split Default Output]"
                   description="Default Output of the Conditional Split Transformation"
                   exclusionGroup="1"
                   name="Conditional Split Default Output"
-                  synchronousInputId="Package\CSKU\Find Changed Records.Inputs[Conditional Split Input]">
+                  synchronousInputId="Package\ZMM_T157E\Find Changed Records.Inputs[Conditional Split Input]">
                   <properties>
                     <property
                       dataType="System.Boolean"
@@ -534,23 +613,23 @@ ORDER BY A01.[MANDT]
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\CSKU\Find Changed Records.Outputs[Conditional Split Error Output]"
+                  refId="Package\ZMM_T157E\Find Changed Records.Outputs[Conditional Split Error Output]"
                   description="Error Output of the Conditional Split Transformation"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="Conditional Split Error Output"
-                  synchronousInputId="Package\CSKU\Find Changed Records.Inputs[Conditional Split Input]">
+                  synchronousInputId="Package\ZMM_T157E\Find Changed Records.Inputs[Conditional Split Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\CSKU\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      refId="Package\ZMM_T157E\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\CSKU\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      lineageId="Package\ZMM_T157E\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\CSKU\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      refId="Package\ZMM_T157E\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\CSKU\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\ZMM_T157E\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -559,7 +638,7 @@ ORDER BY A01.[MANDT]
               </outputs>
             </component>
             <component
-              refId="Package\CSKU\Identity records"
+              refId="Package\ZMM_T157E\Identity records"
               componentClassID="Microsoft.ConditionalSplit"
               contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
               description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
@@ -567,43 +646,43 @@ ORDER BY A01.[MANDT]
               usesDispositions="true">
               <inputs>
                 <input
-                  refId="Package\CSKU\Identity records.Inputs[Conditional Split Input]"
+                  refId="Package\ZMM_T157E\Identity records.Inputs[Conditional Split Input]"
                   description="Input to the Conditional Split Transformation"
                   name="Conditional Split Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\CSKU\Identity records.Inputs[Conditional Split Input].Columns[MANDT]"
+                      refId="Package\ZMM_T157E\Identity records.Inputs[Conditional Split Input].Columns[MANDT]"
                       cachedDataType="wstr"
                       cachedLength="3"
                       cachedName="MANDT"
                       cachedSortKeyPosition="1"
-                      lineageId="Package\CSKU\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
+                      lineageId="Package\ZMM_T157E\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
                     <inputColumn
-                      refId="Package\CSKU\Identity records.Inputs[Conditional Split Input].Columns[MANDT (1)]"
+                      refId="Package\ZMM_T157E\Identity records.Inputs[Conditional Split Input].Columns[MANDT (1)]"
                       cachedDataType="wstr"
                       cachedLength="3"
                       cachedName="MANDT (1)"
-                      lineageId="Package\CSKU\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]" />
+                      lineageId="Package\ZMM_T157E\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\CSKU\Identity records.Outputs[update]"
+                  refId="Package\ZMM_T157E\Identity records.Outputs[update]"
                   description="Output 1 of the Conditional Split Transformation"
                   errorOrTruncationOperation="Computation"
                   errorRowDisposition="FailComponent"
                   exclusionGroup="1"
                   name="update"
-                  synchronousInputId="Package\CSKU\Identity records.Inputs[Conditional Split Input]"
+                  synchronousInputId="Package\ZMM_T157E\Identity records.Inputs[Conditional Split Input]"
                   truncationRowDisposition="FailComponent">
                   <properties>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
-                      name="Expression">![ISNULL](#{Package\CSKU\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; ![ISNULL](#{Package\CSKU\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
+                      name="Expression">![ISNULL](#{Package\ZMM_T157E\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; ![ISNULL](#{Package\ZMM_T157E\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
                     <property
                       containsID="true"
                       dataType="System.String"
@@ -618,20 +697,20 @@ ORDER BY A01.[MANDT]
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\CSKU\Identity records.Outputs[insert]"
+                  refId="Package\ZMM_T157E\Identity records.Outputs[insert]"
                   description="Output 2 of the Conditional Split Transformation"
                   errorOrTruncationOperation="Computation"
                   errorRowDisposition="FailComponent"
                   exclusionGroup="1"
                   name="insert"
-                  synchronousInputId="Package\CSKU\Identity records.Inputs[Conditional Split Input]"
+                  synchronousInputId="Package\ZMM_T157E\Identity records.Inputs[Conditional Split Input]"
                   truncationRowDisposition="FailComponent">
                   <properties>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
-                      name="Expression">![ISNULL](#{Package\CSKU\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; [ISNULL](#{Package\CSKU\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
+                      name="Expression">![ISNULL](#{Package\ZMM_T157E\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; [ISNULL](#{Package\ZMM_T157E\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
                     <property
                       containsID="true"
                       dataType="System.String"
@@ -646,20 +725,20 @@ ORDER BY A01.[MANDT]
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\CSKU\Identity records.Outputs[delete]"
+                  refId="Package\ZMM_T157E\Identity records.Outputs[delete]"
                   description="Output 3 of the Conditional Split Transformation"
                   errorOrTruncationOperation="Computation"
                   errorRowDisposition="FailComponent"
                   exclusionGroup="1"
                   name="delete"
-                  synchronousInputId="Package\CSKU\Identity records.Inputs[Conditional Split Input]"
+                  synchronousInputId="Package\ZMM_T157E\Identity records.Inputs[Conditional Split Input]"
                   truncationRowDisposition="FailComponent">
                   <properties>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
-                      name="Expression">[ISNULL](#{Package\CSKU\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; ![ISNULL](#{Package\CSKU\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
+                      name="Expression">[ISNULL](#{Package\ZMM_T157E\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; ![ISNULL](#{Package\ZMM_T157E\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
                     <property
                       containsID="true"
                       dataType="System.String"
@@ -674,11 +753,11 @@ ORDER BY A01.[MANDT]
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\CSKU\Identity records.Outputs[Conditional Split Default Output]"
+                  refId="Package\ZMM_T157E\Identity records.Outputs[Conditional Split Default Output]"
                   description="Default Output of the Conditional Split Transformation"
                   exclusionGroup="1"
                   name="Conditional Split Default Output"
-                  synchronousInputId="Package\CSKU\Identity records.Inputs[Conditional Split Input]">
+                  synchronousInputId="Package\ZMM_T157E\Identity records.Inputs[Conditional Split Input]">
                   <properties>
                     <property
                       dataType="System.Boolean"
@@ -687,23 +766,23 @@ ORDER BY A01.[MANDT]
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\CSKU\Identity records.Outputs[Conditional Split Error Output]"
+                  refId="Package\ZMM_T157E\Identity records.Outputs[Conditional Split Error Output]"
                   description="Error Output of the Conditional Split Transformation"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="Conditional Split Error Output"
-                  synchronousInputId="Package\CSKU\Identity records.Inputs[Conditional Split Input]">
+                  synchronousInputId="Package\ZMM_T157E\Identity records.Inputs[Conditional Split Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\CSKU\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      refId="Package\ZMM_T157E\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\CSKU\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      lineageId="Package\ZMM_T157E\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\CSKU\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      refId="Package\ZMM_T157E\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\CSKU\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\ZMM_T157E\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -712,7 +791,7 @@ ORDER BY A01.[MANDT]
               </outputs>
             </component>
             <component
-              refId="Package\CSKU\insert new records"
+              refId="Package\ZMM_T157E\insert new records"
               componentClassID="Microsoft.OLEDBDestination"
               contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
               description="OLE DB Destination"
@@ -727,7 +806,7 @@ ORDER BY A01.[MANDT]
                 <property
                   dataType="System.String"
                   description="Specifies the name of the database object used to open a rowset."
-                  name="OpenRowset">[dbo].[CSKU_STAGE_INSERT]</property>
+                  name="OpenRowset">[dbo].[ZMM_T157E_STAGE_INSERT]</property>
                 <property
                   dataType="System.String"
                   description="Specifies the variable that contains the name of the database object used to open a rowset."
@@ -769,7 +848,7 @@ ORDER BY A01.[MANDT]
               </properties>
               <connections>
                 <connection
-                  refId="Package\CSKU\insert new records.Connections[OleDbConnection]"
+                  refId="Package\ZMM_T157E\insert new records.Connections[OleDbConnection]"
                   connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
                   connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
                   description="The OLE DB runtime connection used to access the database."
@@ -777,100 +856,100 @@ ORDER BY A01.[MANDT]
               </connections>
               <inputs>
                 <input
-                  refId="Package\CSKU\insert new records.Inputs[OLE DB Destination Input]"
+                  refId="Package\ZMM_T157E\insert new records.Inputs[OLE DB Destination Input]"
                   errorOrTruncationOperation="Insert"
                   errorRowDisposition="FailComponent"
                   hasSideEffects="true"
                   name="OLE DB Destination Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\CSKU\insert new records.Inputs[OLE DB Destination Input].Columns[MANDT]"
+                      refId="Package\ZMM_T157E\insert new records.Inputs[OLE DB Destination Input].Columns[MANDT]"
                       cachedDataType="wstr"
                       cachedLength="3"
                       cachedName="MANDT"
                       cachedSortKeyPosition="1"
-                      externalMetadataColumnId="Package\CSKU\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
-                      lineageId="Package\CSKU\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
+                      externalMetadataColumnId="Package\ZMM_T157E\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      lineageId="Package\ZMM_T157E\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
                     <inputColumn
-                      refId="Package\CSKU\insert new records.Inputs[OLE DB Destination Input].Columns[SPRAS]"
+                      refId="Package\ZMM_T157E\insert new records.Inputs[OLE DB Destination Input].Columns[SPRAS]"
                       cachedDataType="wstr"
                       cachedLength="1"
                       cachedName="SPRAS"
                       cachedSortKeyPosition="2"
-                      externalMetadataColumnId="Package\CSKU\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[SPRAS]"
-                      lineageId="Package\CSKU\Merge Join.Outputs[Merge Join Output].Columns[SPRAS]" />
+                      externalMetadataColumnId="Package\ZMM_T157E\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[SPRAS]"
+                      lineageId="Package\ZMM_T157E\Merge Join.Outputs[Merge Join Output].Columns[SPRAS]" />
                     <inputColumn
-                      refId="Package\CSKU\insert new records.Inputs[OLE DB Destination Input].Columns[KTOPL]"
+                      refId="Package\ZMM_T157E\insert new records.Inputs[OLE DB Destination Input].Columns[BWART]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="BWART"
+                      cachedSortKeyPosition="3"
+                      externalMetadataColumnId="Package\ZMM_T157E\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[BWART]"
+                      lineageId="Package\ZMM_T157E\Merge Join.Outputs[Merge Join Output].Columns[BWART]" />
+                    <inputColumn
+                      refId="Package\ZMM_T157E\insert new records.Inputs[OLE DB Destination Input].Columns[GRUND]"
                       cachedDataType="wstr"
                       cachedLength="4"
-                      cachedName="KTOPL"
-                      cachedSortKeyPosition="3"
-                      externalMetadataColumnId="Package\CSKU\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[KTOPL]"
-                      lineageId="Package\CSKU\Merge Join.Outputs[Merge Join Output].Columns[KTOPL]" />
-                    <inputColumn
-                      refId="Package\CSKU\insert new records.Inputs[OLE DB Destination Input].Columns[KSTAR]"
-                      cachedDataType="wstr"
-                      cachedLength="10"
-                      cachedName="KSTAR"
+                      cachedName="GRUND"
                       cachedSortKeyPosition="4"
-                      externalMetadataColumnId="Package\CSKU\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[KSTAR]"
-                      lineageId="Package\CSKU\Merge Join.Outputs[Merge Join Output].Columns[KSTAR]" />
+                      externalMetadataColumnId="Package\ZMM_T157E\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[GRUND]"
+                      lineageId="Package\ZMM_T157E\Merge Join.Outputs[Merge Join Output].Columns[GRUND]" />
                     <inputColumn
-                      refId="Package\CSKU\insert new records.Inputs[OLE DB Destination Input].Columns[LTEXT]"
+                      refId="Package\ZMM_T157E\insert new records.Inputs[OLE DB Destination Input].Columns[GRTXT]"
                       cachedDataType="wstr"
-                      cachedLength="40"
-                      cachedName="LTEXT"
-                      externalMetadataColumnId="Package\CSKU\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[LTEXT]"
-                      lineageId="Package\CSKU\Merge Join.Outputs[Merge Join Output].Columns[LTEXT]" />
+                      cachedLength="20"
+                      cachedName="GRTXT"
+                      externalMetadataColumnId="Package\ZMM_T157E\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[GRTXT]"
+                      lineageId="Package\ZMM_T157E\Merge Join.Outputs[Merge Join Output].Columns[GRTXT]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
                     <externalMetadataColumn
-                      refId="Package\CSKU\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      refId="Package\ZMM_T157E\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
                       dataType="wstr"
                       length="3"
                       name="MANDT" />
                     <externalMetadataColumn
-                      refId="Package\CSKU\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[SPRAS]"
+                      refId="Package\ZMM_T157E\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[SPRAS]"
                       dataType="wstr"
                       length="1"
                       name="SPRAS" />
                     <externalMetadataColumn
-                      refId="Package\CSKU\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[KTOPL]"
+                      refId="Package\ZMM_T157E\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[BWART]"
+                      dataType="wstr"
+                      length="3"
+                      name="BWART" />
+                    <externalMetadataColumn
+                      refId="Package\ZMM_T157E\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[GRUND]"
                       dataType="wstr"
                       length="4"
-                      name="KTOPL" />
+                      name="GRUND" />
                     <externalMetadataColumn
-                      refId="Package\CSKU\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[KSTAR]"
+                      refId="Package\ZMM_T157E\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[GRTXT]"
                       dataType="wstr"
-                      length="10"
-                      name="KSTAR" />
-                    <externalMetadataColumn
-                      refId="Package\CSKU\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[LTEXT]"
-                      dataType="wstr"
-                      length="40"
-                      name="LTEXT" />
+                      length="20"
+                      name="GRTXT" />
                   </externalMetadataColumns>
                 </input>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\CSKU\insert new records.Outputs[OLE DB Destination Error Output]"
+                  refId="Package\ZMM_T157E\insert new records.Outputs[OLE DB Destination Error Output]"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="OLE DB Destination Error Output"
-                  synchronousInputId="Package\CSKU\insert new records.Inputs[OLE DB Destination Input]">
+                  synchronousInputId="Package\ZMM_T157E\insert new records.Inputs[OLE DB Destination Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\CSKU\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      refId="Package\ZMM_T157E\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\CSKU\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      lineageId="Package\ZMM_T157E\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\CSKU\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      refId="Package\ZMM_T157E\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\CSKU\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\ZMM_T157E\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -879,7 +958,7 @@ ORDER BY A01.[MANDT]
               </outputs>
             </component>
             <component
-              refId="Package\CSKU\Merge Join"
+              refId="Package\ZMM_T157E\Merge Join"
               componentClassID="Microsoft.MergeJoin"
               contactInfo="Merge Join;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
               description="Combine two sorted data flows into one using the FULL, LEFT, or INNER join. We recommend this transformation when data flows can be sorted at their sources."
@@ -906,101 +985,101 @@ ORDER BY A01.[MANDT]
               </properties>
               <inputs>
                 <input
-                  refId="Package\CSKU\Merge Join.Inputs[Merge Join Left Input]"
+                  refId="Package\ZMM_T157E\Merge Join.Inputs[Merge Join Left Input]"
                   hasSideEffects="true"
                   name="Merge Join Left Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\CSKU\Merge Join.Inputs[Merge Join Left Input].Columns[MANDT]"
+                      refId="Package\ZMM_T157E\Merge Join.Inputs[Merge Join Left Input].Columns[MANDT]"
                       cachedDataType="wstr"
                       cachedLength="3"
                       cachedName="MANDT"
                       cachedSortKeyPosition="1"
-                      lineageId="Package\CSKU\DB SAP.Outputs[OLE DB Source Output].Columns[MANDT]" />
+                      lineageId="Package\ZMM_T157E\DB SAP.Outputs[OLE DB Source Output].Columns[MANDT]" />
                     <inputColumn
-                      refId="Package\CSKU\Merge Join.Inputs[Merge Join Left Input].Columns[SPRAS]"
+                      refId="Package\ZMM_T157E\Merge Join.Inputs[Merge Join Left Input].Columns[SPRAS]"
                       cachedDataType="wstr"
                       cachedLength="1"
                       cachedName="SPRAS"
                       cachedSortKeyPosition="2"
-                      lineageId="Package\CSKU\DB SAP.Outputs[OLE DB Source Output].Columns[SPRAS]" />
+                      lineageId="Package\ZMM_T157E\DB SAP.Outputs[OLE DB Source Output].Columns[SPRAS]" />
                     <inputColumn
-                      refId="Package\CSKU\Merge Join.Inputs[Merge Join Left Input].Columns[KTOPL]"
+                      refId="Package\ZMM_T157E\Merge Join.Inputs[Merge Join Left Input].Columns[BWART]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="BWART"
+                      cachedSortKeyPosition="3"
+                      lineageId="Package\ZMM_T157E\DB SAP.Outputs[OLE DB Source Output].Columns[BWART]" />
+                    <inputColumn
+                      refId="Package\ZMM_T157E\Merge Join.Inputs[Merge Join Left Input].Columns[GRUND]"
                       cachedDataType="wstr"
                       cachedLength="4"
-                      cachedName="KTOPL"
-                      cachedSortKeyPosition="3"
-                      lineageId="Package\CSKU\DB SAP.Outputs[OLE DB Source Output].Columns[KTOPL]" />
-                    <inputColumn
-                      refId="Package\CSKU\Merge Join.Inputs[Merge Join Left Input].Columns[KSTAR]"
-                      cachedDataType="wstr"
-                      cachedLength="10"
-                      cachedName="KSTAR"
+                      cachedName="GRUND"
                       cachedSortKeyPosition="4"
-                      lineageId="Package\CSKU\DB SAP.Outputs[OLE DB Source Output].Columns[KSTAR]" />
+                      lineageId="Package\ZMM_T157E\DB SAP.Outputs[OLE DB Source Output].Columns[GRUND]" />
                     <inputColumn
-                      refId="Package\CSKU\Merge Join.Inputs[Merge Join Left Input].Columns[LTEXT]"
+                      refId="Package\ZMM_T157E\Merge Join.Inputs[Merge Join Left Input].Columns[GRTXT]"
                       cachedDataType="wstr"
-                      cachedLength="40"
-                      cachedName="LTEXT"
-                      lineageId="Package\CSKU\DB SAP.Outputs[OLE DB Source Output].Columns[LTEXT]" />
+                      cachedLength="20"
+                      cachedName="GRTXT"
+                      lineageId="Package\ZMM_T157E\DB SAP.Outputs[OLE DB Source Output].Columns[GRTXT]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
                 <input
-                  refId="Package\CSKU\Merge Join.Inputs[Merge Join Right Input]"
+                  refId="Package\ZMM_T157E\Merge Join.Inputs[Merge Join Right Input]"
                   hasSideEffects="true"
                   name="Merge Join Right Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\CSKU\Merge Join.Inputs[Merge Join Right Input].Columns[MANDT]"
+                      refId="Package\ZMM_T157E\Merge Join.Inputs[Merge Join Right Input].Columns[MANDT]"
                       cachedDataType="wstr"
                       cachedLength="3"
                       cachedName="MANDT"
                       cachedSortKeyPosition="1"
-                      lineageId="Package\CSKU\DB PBI.Outputs[OLE DB Source Output].Columns[MANDT]" />
+                      lineageId="Package\ZMM_T157E\DB PBI.Outputs[OLE DB Source Output].Columns[MANDT]" />
                     <inputColumn
-                      refId="Package\CSKU\Merge Join.Inputs[Merge Join Right Input].Columns[SPRAS]"
+                      refId="Package\ZMM_T157E\Merge Join.Inputs[Merge Join Right Input].Columns[SPRAS]"
                       cachedDataType="wstr"
                       cachedLength="1"
                       cachedName="SPRAS"
                       cachedSortKeyPosition="2"
-                      lineageId="Package\CSKU\DB PBI.Outputs[OLE DB Source Output].Columns[SPRAS]" />
+                      lineageId="Package\ZMM_T157E\DB PBI.Outputs[OLE DB Source Output].Columns[SPRAS]" />
                     <inputColumn
-                      refId="Package\CSKU\Merge Join.Inputs[Merge Join Right Input].Columns[KTOPL]"
+                      refId="Package\ZMM_T157E\Merge Join.Inputs[Merge Join Right Input].Columns[BWART]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="BWART"
+                      cachedSortKeyPosition="3"
+                      lineageId="Package\ZMM_T157E\DB PBI.Outputs[OLE DB Source Output].Columns[BWART]" />
+                    <inputColumn
+                      refId="Package\ZMM_T157E\Merge Join.Inputs[Merge Join Right Input].Columns[GRUND]"
                       cachedDataType="wstr"
                       cachedLength="4"
-                      cachedName="KTOPL"
-                      cachedSortKeyPosition="3"
-                      lineageId="Package\CSKU\DB PBI.Outputs[OLE DB Source Output].Columns[KTOPL]" />
-                    <inputColumn
-                      refId="Package\CSKU\Merge Join.Inputs[Merge Join Right Input].Columns[KSTAR]"
-                      cachedDataType="wstr"
-                      cachedLength="10"
-                      cachedName="KSTAR"
+                      cachedName="GRUND"
                       cachedSortKeyPosition="4"
-                      lineageId="Package\CSKU\DB PBI.Outputs[OLE DB Source Output].Columns[KSTAR]" />
+                      lineageId="Package\ZMM_T157E\DB PBI.Outputs[OLE DB Source Output].Columns[GRUND]" />
                     <inputColumn
-                      refId="Package\CSKU\Merge Join.Inputs[Merge Join Right Input].Columns[LTEXT]"
+                      refId="Package\ZMM_T157E\Merge Join.Inputs[Merge Join Right Input].Columns[GRTXT]"
                       cachedDataType="wstr"
-                      cachedLength="40"
-                      cachedName="LTEXT"
-                      lineageId="Package\CSKU\DB PBI.Outputs[OLE DB Source Output].Columns[LTEXT]" />
+                      cachedLength="20"
+                      cachedName="GRTXT"
+                      lineageId="Package\ZMM_T157E\DB PBI.Outputs[OLE DB Source Output].Columns[GRTXT]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\CSKU\Merge Join.Outputs[Merge Join Output]"
+                  refId="Package\ZMM_T157E\Merge Join.Outputs[Merge Join Output]"
                   isSorted="true"
                   name="Merge Join Output">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\CSKU\Merge Join.Outputs[Merge Join Output].Columns[MANDT]"
+                      refId="Package\ZMM_T157E\Merge Join.Outputs[Merge Join Output].Columns[MANDT]"
                       dataType="wstr"
                       length="3"
-                      lineageId="Package\CSKU\Merge Join.Outputs[Merge Join Output].Columns[MANDT]"
+                      lineageId="Package\ZMM_T157E\Merge Join.Outputs[Merge Join Output].Columns[MANDT]"
                       name="MANDT"
                       sortKeyPosition="1">
                       <properties>
@@ -1008,14 +1087,14 @@ ORDER BY A01.[MANDT]
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\CSKU\Merge Join.Inputs[Merge Join Left Input].Columns[MANDT]}</property>
+                          name="InputColumnID">#{Package\ZMM_T157E\Merge Join.Inputs[Merge Join Left Input].Columns[MANDT]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\CSKU\Merge Join.Outputs[Merge Join Output].Columns[SPRAS]"
+                      refId="Package\ZMM_T157E\Merge Join.Outputs[Merge Join Output].Columns[SPRAS]"
                       dataType="wstr"
                       length="1"
-                      lineageId="Package\CSKU\Merge Join.Outputs[Merge Join Output].Columns[SPRAS]"
+                      lineageId="Package\ZMM_T157E\Merge Join.Outputs[Merge Join Output].Columns[SPRAS]"
                       name="SPRAS"
                       sortKeyPosition="2">
                       <properties>
@@ -1023,121 +1102,121 @@ ORDER BY A01.[MANDT]
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\CSKU\Merge Join.Inputs[Merge Join Left Input].Columns[SPRAS]}</property>
+                          name="InputColumnID">#{Package\ZMM_T157E\Merge Join.Inputs[Merge Join Left Input].Columns[SPRAS]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\CSKU\Merge Join.Outputs[Merge Join Output].Columns[LTEXT]"
+                      refId="Package\ZMM_T157E\Merge Join.Outputs[Merge Join Output].Columns[BWART]"
                       dataType="wstr"
-                      length="40"
-                      lineageId="Package\CSKU\Merge Join.Outputs[Merge Join Output].Columns[LTEXT]"
-                      name="LTEXT">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\CSKU\Merge Join.Inputs[Merge Join Left Input].Columns[LTEXT]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\CSKU\Merge Join.Outputs[Merge Join Output].Columns[KTOPL]"
-                      dataType="wstr"
-                      length="4"
-                      lineageId="Package\CSKU\Merge Join.Outputs[Merge Join Output].Columns[KTOPL]"
-                      name="KTOPL"
+                      length="3"
+                      lineageId="Package\ZMM_T157E\Merge Join.Outputs[Merge Join Output].Columns[BWART]"
+                      name="BWART"
                       sortKeyPosition="3">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\CSKU\Merge Join.Inputs[Merge Join Left Input].Columns[KTOPL]}</property>
+                          name="InputColumnID">#{Package\ZMM_T157E\Merge Join.Inputs[Merge Join Left Input].Columns[BWART]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\CSKU\Merge Join.Outputs[Merge Join Output].Columns[KSTAR]"
+                      refId="Package\ZMM_T157E\Merge Join.Outputs[Merge Join Output].Columns[GRUND]"
                       dataType="wstr"
-                      length="10"
-                      lineageId="Package\CSKU\Merge Join.Outputs[Merge Join Output].Columns[KSTAR]"
-                      name="KSTAR"
+                      length="4"
+                      lineageId="Package\ZMM_T157E\Merge Join.Outputs[Merge Join Output].Columns[GRUND]"
+                      name="GRUND"
                       sortKeyPosition="4">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\CSKU\Merge Join.Inputs[Merge Join Left Input].Columns[KSTAR]}</property>
+                          name="InputColumnID">#{Package\ZMM_T157E\Merge Join.Inputs[Merge Join Left Input].Columns[GRUND]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\CSKU\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]"
+                      refId="Package\ZMM_T157E\Merge Join.Outputs[Merge Join Output].Columns[GRTXT]"
+                      dataType="wstr"
+                      length="20"
+                      lineageId="Package\ZMM_T157E\Merge Join.Outputs[Merge Join Output].Columns[GRTXT]"
+                      name="GRTXT">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\ZMM_T157E\Merge Join.Inputs[Merge Join Left Input].Columns[GRTXT]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\ZMM_T157E\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]"
                       dataType="wstr"
                       length="3"
-                      lineageId="Package\CSKU\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]"
+                      lineageId="Package\ZMM_T157E\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]"
                       name="MANDT (1)">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\CSKU\Merge Join.Inputs[Merge Join Right Input].Columns[MANDT]}</property>
+                          name="InputColumnID">#{Package\ZMM_T157E\Merge Join.Inputs[Merge Join Right Input].Columns[MANDT]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\CSKU\Merge Join.Outputs[Merge Join Output].Columns[SPRAS (1)]"
+                      refId="Package\ZMM_T157E\Merge Join.Outputs[Merge Join Output].Columns[SPRAS (1)]"
                       dataType="wstr"
                       length="1"
-                      lineageId="Package\CSKU\Merge Join.Outputs[Merge Join Output].Columns[SPRAS (1)]"
+                      lineageId="Package\ZMM_T157E\Merge Join.Outputs[Merge Join Output].Columns[SPRAS (1)]"
                       name="SPRAS (1)">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\CSKU\Merge Join.Inputs[Merge Join Right Input].Columns[SPRAS]}</property>
+                          name="InputColumnID">#{Package\ZMM_T157E\Merge Join.Inputs[Merge Join Right Input].Columns[SPRAS]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\CSKU\Merge Join.Outputs[Merge Join Output].Columns[LTEXT (1)]"
+                      refId="Package\ZMM_T157E\Merge Join.Outputs[Merge Join Output].Columns[BWART (1)]"
                       dataType="wstr"
-                      length="40"
-                      lineageId="Package\CSKU\Merge Join.Outputs[Merge Join Output].Columns[LTEXT (1)]"
-                      name="LTEXT (1)">
+                      length="3"
+                      lineageId="Package\ZMM_T157E\Merge Join.Outputs[Merge Join Output].Columns[BWART (1)]"
+                      name="BWART (1)">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\CSKU\Merge Join.Inputs[Merge Join Right Input].Columns[LTEXT]}</property>
+                          name="InputColumnID">#{Package\ZMM_T157E\Merge Join.Inputs[Merge Join Right Input].Columns[BWART]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\CSKU\Merge Join.Outputs[Merge Join Output].Columns[KTOPL (1)]"
+                      refId="Package\ZMM_T157E\Merge Join.Outputs[Merge Join Output].Columns[GRUND (1)]"
                       dataType="wstr"
                       length="4"
-                      lineageId="Package\CSKU\Merge Join.Outputs[Merge Join Output].Columns[KTOPL (1)]"
-                      name="KTOPL (1)">
+                      lineageId="Package\ZMM_T157E\Merge Join.Outputs[Merge Join Output].Columns[GRUND (1)]"
+                      name="GRUND (1)">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\CSKU\Merge Join.Inputs[Merge Join Right Input].Columns[KTOPL]}</property>
+                          name="InputColumnID">#{Package\ZMM_T157E\Merge Join.Inputs[Merge Join Right Input].Columns[GRUND]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\CSKU\Merge Join.Outputs[Merge Join Output].Columns[KSTAR (1)]"
+                      refId="Package\ZMM_T157E\Merge Join.Outputs[Merge Join Output].Columns[GRTXT (1)]"
                       dataType="wstr"
-                      length="10"
-                      lineageId="Package\CSKU\Merge Join.Outputs[Merge Join Output].Columns[KSTAR (1)]"
-                      name="KSTAR (1)">
+                      length="20"
+                      lineageId="Package\ZMM_T157E\Merge Join.Outputs[Merge Join Output].Columns[GRTXT (1)]"
+                      name="GRTXT (1)">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\CSKU\Merge Join.Inputs[Merge Join Right Input].Columns[KSTAR]}</property>
+                          name="InputColumnID">#{Package\ZMM_T157E\Merge Join.Inputs[Merge Join Right Input].Columns[GRTXT]}</property>
                       </properties>
                     </outputColumn>
                   </outputColumns>
@@ -1146,7 +1225,7 @@ ORDER BY A01.[MANDT]
               </outputs>
             </component>
             <component
-              refId="Package\CSKU\stage changed records"
+              refId="Package\ZMM_T157E\stage changed records"
               componentClassID="Microsoft.OLEDBDestination"
               contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
               description="OLE DB Destination"
@@ -1161,7 +1240,7 @@ ORDER BY A01.[MANDT]
                 <property
                   dataType="System.String"
                   description="Specifies the name of the database object used to open a rowset."
-                  name="OpenRowset">[dbo].[CSKU_STAGE_UPDATE]</property>
+                  name="OpenRowset">[dbo].[ZMM_T157E_STAGE_UPDATE]</property>
                 <property
                   dataType="System.String"
                   description="Specifies the variable that contains the name of the database object used to open a rowset."
@@ -1203,7 +1282,7 @@ ORDER BY A01.[MANDT]
               </properties>
               <connections>
                 <connection
-                  refId="Package\CSKU\stage changed records.Connections[OleDbConnection]"
+                  refId="Package\ZMM_T157E\stage changed records.Connections[OleDbConnection]"
                   connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
                   connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
                   description="The OLE DB runtime connection used to access the database."
@@ -1211,100 +1290,100 @@ ORDER BY A01.[MANDT]
               </connections>
               <inputs>
                 <input
-                  refId="Package\CSKU\stage changed records.Inputs[OLE DB Destination Input]"
+                  refId="Package\ZMM_T157E\stage changed records.Inputs[OLE DB Destination Input]"
                   errorOrTruncationOperation="Insert"
                   errorRowDisposition="FailComponent"
                   hasSideEffects="true"
                   name="OLE DB Destination Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\CSKU\stage changed records.Inputs[OLE DB Destination Input].Columns[MANDT]"
+                      refId="Package\ZMM_T157E\stage changed records.Inputs[OLE DB Destination Input].Columns[MANDT]"
                       cachedDataType="wstr"
                       cachedLength="3"
                       cachedName="MANDT"
                       cachedSortKeyPosition="1"
-                      externalMetadataColumnId="Package\CSKU\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
-                      lineageId="Package\CSKU\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
+                      externalMetadataColumnId="Package\ZMM_T157E\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      lineageId="Package\ZMM_T157E\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
                     <inputColumn
-                      refId="Package\CSKU\stage changed records.Inputs[OLE DB Destination Input].Columns[SPRAS]"
+                      refId="Package\ZMM_T157E\stage changed records.Inputs[OLE DB Destination Input].Columns[SPRAS]"
                       cachedDataType="wstr"
                       cachedLength="1"
                       cachedName="SPRAS"
                       cachedSortKeyPosition="2"
-                      externalMetadataColumnId="Package\CSKU\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[SPRAS]"
-                      lineageId="Package\CSKU\Merge Join.Outputs[Merge Join Output].Columns[SPRAS]" />
+                      externalMetadataColumnId="Package\ZMM_T157E\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[SPRAS]"
+                      lineageId="Package\ZMM_T157E\Merge Join.Outputs[Merge Join Output].Columns[SPRAS]" />
                     <inputColumn
-                      refId="Package\CSKU\stage changed records.Inputs[OLE DB Destination Input].Columns[LTEXT]"
+                      refId="Package\ZMM_T157E\stage changed records.Inputs[OLE DB Destination Input].Columns[BWART]"
                       cachedDataType="wstr"
-                      cachedLength="40"
-                      cachedName="LTEXT"
-                      externalMetadataColumnId="Package\CSKU\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[LTEXT]"
-                      lineageId="Package\CSKU\Merge Join.Outputs[Merge Join Output].Columns[LTEXT]" />
+                      cachedLength="3"
+                      cachedName="BWART"
+                      cachedSortKeyPosition="3"
+                      externalMetadataColumnId="Package\ZMM_T157E\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[BWART]"
+                      lineageId="Package\ZMM_T157E\Merge Join.Outputs[Merge Join Output].Columns[BWART]" />
                     <inputColumn
-                      refId="Package\CSKU\stage changed records.Inputs[OLE DB Destination Input].Columns[KTOPL]"
+                      refId="Package\ZMM_T157E\stage changed records.Inputs[OLE DB Destination Input].Columns[GRUND]"
                       cachedDataType="wstr"
                       cachedLength="4"
-                      cachedName="KTOPL"
-                      cachedSortKeyPosition="3"
-                      externalMetadataColumnId="Package\CSKU\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[KTOPL]"
-                      lineageId="Package\CSKU\Merge Join.Outputs[Merge Join Output].Columns[KTOPL]" />
-                    <inputColumn
-                      refId="Package\CSKU\stage changed records.Inputs[OLE DB Destination Input].Columns[KSTAR]"
-                      cachedDataType="wstr"
-                      cachedLength="10"
-                      cachedName="KSTAR"
+                      cachedName="GRUND"
                       cachedSortKeyPosition="4"
-                      externalMetadataColumnId="Package\CSKU\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[KSTAR]"
-                      lineageId="Package\CSKU\Merge Join.Outputs[Merge Join Output].Columns[KSTAR]" />
+                      externalMetadataColumnId="Package\ZMM_T157E\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[GRUND]"
+                      lineageId="Package\ZMM_T157E\Merge Join.Outputs[Merge Join Output].Columns[GRUND]" />
+                    <inputColumn
+                      refId="Package\ZMM_T157E\stage changed records.Inputs[OLE DB Destination Input].Columns[GRTXT]"
+                      cachedDataType="wstr"
+                      cachedLength="20"
+                      cachedName="GRTXT"
+                      externalMetadataColumnId="Package\ZMM_T157E\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[GRTXT]"
+                      lineageId="Package\ZMM_T157E\Merge Join.Outputs[Merge Join Output].Columns[GRTXT]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
                     <externalMetadataColumn
-                      refId="Package\CSKU\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      refId="Package\ZMM_T157E\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
                       dataType="wstr"
                       length="3"
                       name="MANDT" />
                     <externalMetadataColumn
-                      refId="Package\CSKU\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[SPRAS]"
+                      refId="Package\ZMM_T157E\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[SPRAS]"
                       dataType="wstr"
                       length="1"
                       name="SPRAS" />
                     <externalMetadataColumn
-                      refId="Package\CSKU\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[LTEXT]"
+                      refId="Package\ZMM_T157E\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[BWART]"
                       dataType="wstr"
-                      length="40"
-                      name="LTEXT" />
+                      length="3"
+                      name="BWART" />
                     <externalMetadataColumn
-                      refId="Package\CSKU\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[KTOPL]"
+                      refId="Package\ZMM_T157E\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[GRUND]"
                       dataType="wstr"
                       length="4"
-                      name="KTOPL" />
+                      name="GRUND" />
                     <externalMetadataColumn
-                      refId="Package\CSKU\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[KSTAR]"
+                      refId="Package\ZMM_T157E\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[GRTXT]"
                       dataType="wstr"
-                      length="10"
-                      name="KSTAR" />
+                      length="20"
+                      name="GRTXT" />
                   </externalMetadataColumns>
                 </input>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\CSKU\stage changed records.Outputs[OLE DB Destination Error Output]"
+                  refId="Package\ZMM_T157E\stage changed records.Outputs[OLE DB Destination Error Output]"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="OLE DB Destination Error Output"
-                  synchronousInputId="Package\CSKU\stage changed records.Inputs[OLE DB Destination Input]">
+                  synchronousInputId="Package\ZMM_T157E\stage changed records.Inputs[OLE DB Destination Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\CSKU\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      refId="Package\ZMM_T157E\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\CSKU\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      lineageId="Package\ZMM_T157E\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\CSKU\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      refId="Package\ZMM_T157E\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\CSKU\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\ZMM_T157E\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -1313,7 +1392,7 @@ ORDER BY A01.[MANDT]
               </outputs>
             </component>
             <component
-              refId="Package\CSKU\stage deleted records"
+              refId="Package\ZMM_T157E\stage deleted records"
               componentClassID="Microsoft.OLEDBDestination"
               contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
               description="OLE DB Destination"
@@ -1328,7 +1407,7 @@ ORDER BY A01.[MANDT]
                 <property
                   dataType="System.String"
                   description="Specifies the name of the database object used to open a rowset."
-                  name="OpenRowset">[dbo].[CSKU_STAGE_DELETE]</property>
+                  name="OpenRowset">[dbo].[ZMM_T157E_STAGE_DELETE]</property>
                 <property
                   dataType="System.String"
                   description="Specifies the variable that contains the name of the database object used to open a rowset."
@@ -1370,7 +1449,7 @@ ORDER BY A01.[MANDT]
               </properties>
               <connections>
                 <connection
-                  refId="Package\CSKU\stage deleted records.Connections[OleDbConnection]"
+                  refId="Package\ZMM_T157E\stage deleted records.Connections[OleDbConnection]"
                   connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
                   connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
                   description="The OLE DB runtime connection used to access the database."
@@ -1378,84 +1457,84 @@ ORDER BY A01.[MANDT]
               </connections>
               <inputs>
                 <input
-                  refId="Package\CSKU\stage deleted records.Inputs[OLE DB Destination Input]"
+                  refId="Package\ZMM_T157E\stage deleted records.Inputs[OLE DB Destination Input]"
                   errorOrTruncationOperation="Insert"
                   errorRowDisposition="FailComponent"
                   hasSideEffects="true"
                   name="OLE DB Destination Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\CSKU\stage deleted records.Inputs[OLE DB Destination Input].Columns[MANDT (1)]"
+                      refId="Package\ZMM_T157E\stage deleted records.Inputs[OLE DB Destination Input].Columns[MANDT (1)]"
                       cachedDataType="wstr"
                       cachedLength="3"
                       cachedName="MANDT (1)"
-                      externalMetadataColumnId="Package\CSKU\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
-                      lineageId="Package\CSKU\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]" />
+                      externalMetadataColumnId="Package\ZMM_T157E\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      lineageId="Package\ZMM_T157E\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]" />
                     <inputColumn
-                      refId="Package\CSKU\stage deleted records.Inputs[OLE DB Destination Input].Columns[SPRAS (1)]"
+                      refId="Package\ZMM_T157E\stage deleted records.Inputs[OLE DB Destination Input].Columns[SPRAS (1)]"
                       cachedDataType="wstr"
                       cachedLength="1"
                       cachedName="SPRAS (1)"
-                      externalMetadataColumnId="Package\CSKU\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[SPRAS]"
-                      lineageId="Package\CSKU\Merge Join.Outputs[Merge Join Output].Columns[SPRAS (1)]" />
+                      externalMetadataColumnId="Package\ZMM_T157E\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[SPRAS]"
+                      lineageId="Package\ZMM_T157E\Merge Join.Outputs[Merge Join Output].Columns[SPRAS (1)]" />
                     <inputColumn
-                      refId="Package\CSKU\stage deleted records.Inputs[OLE DB Destination Input].Columns[KTOPL (1)]"
+                      refId="Package\ZMM_T157E\stage deleted records.Inputs[OLE DB Destination Input].Columns[BWART (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="BWART (1)"
+                      externalMetadataColumnId="Package\ZMM_T157E\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[BWART]"
+                      lineageId="Package\ZMM_T157E\Merge Join.Outputs[Merge Join Output].Columns[BWART (1)]" />
+                    <inputColumn
+                      refId="Package\ZMM_T157E\stage deleted records.Inputs[OLE DB Destination Input].Columns[GRUND (1)]"
                       cachedDataType="wstr"
                       cachedLength="4"
-                      cachedName="KTOPL (1)"
-                      externalMetadataColumnId="Package\CSKU\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[KTOPL]"
-                      lineageId="Package\CSKU\Merge Join.Outputs[Merge Join Output].Columns[KTOPL (1)]" />
-                    <inputColumn
-                      refId="Package\CSKU\stage deleted records.Inputs[OLE DB Destination Input].Columns[KSTAR (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="10"
-                      cachedName="KSTAR (1)"
-                      externalMetadataColumnId="Package\CSKU\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[KSTAR]"
-                      lineageId="Package\CSKU\Merge Join.Outputs[Merge Join Output].Columns[KSTAR (1)]" />
+                      cachedName="GRUND (1)"
+                      externalMetadataColumnId="Package\ZMM_T157E\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[GRUND]"
+                      lineageId="Package\ZMM_T157E\Merge Join.Outputs[Merge Join Output].Columns[GRUND (1)]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
                     <externalMetadataColumn
-                      refId="Package\CSKU\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      refId="Package\ZMM_T157E\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
                       dataType="wstr"
                       length="3"
                       name="MANDT" />
                     <externalMetadataColumn
-                      refId="Package\CSKU\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[SPRAS]"
+                      refId="Package\ZMM_T157E\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[SPRAS]"
                       dataType="wstr"
                       length="1"
                       name="SPRAS" />
                     <externalMetadataColumn
-                      refId="Package\CSKU\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[KTOPL]"
+                      refId="Package\ZMM_T157E\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[BWART]"
+                      dataType="wstr"
+                      length="3"
+                      name="BWART" />
+                    <externalMetadataColumn
+                      refId="Package\ZMM_T157E\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[GRUND]"
                       dataType="wstr"
                       length="4"
-                      name="KTOPL" />
-                    <externalMetadataColumn
-                      refId="Package\CSKU\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[KSTAR]"
-                      dataType="wstr"
-                      length="10"
-                      name="KSTAR" />
+                      name="GRUND" />
                   </externalMetadataColumns>
                 </input>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\CSKU\stage deleted records.Outputs[OLE DB Destination Error Output]"
+                  refId="Package\ZMM_T157E\stage deleted records.Outputs[OLE DB Destination Error Output]"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="OLE DB Destination Error Output"
-                  synchronousInputId="Package\CSKU\stage deleted records.Inputs[OLE DB Destination Input]">
+                  synchronousInputId="Package\ZMM_T157E\stage deleted records.Inputs[OLE DB Destination Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\CSKU\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      refId="Package\ZMM_T157E\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\CSKU\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      lineageId="Package\ZMM_T157E\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\CSKU\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      refId="Package\ZMM_T157E\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\CSKU\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\ZMM_T157E\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -1466,141 +1545,66 @@ ORDER BY A01.[MANDT]
           </components>
           <paths>
             <path
-              refId="Package\CSKU.Paths[delete]"
-              endId="Package\CSKU\stage deleted records.Inputs[OLE DB Destination Input]"
+              refId="Package\ZMM_T157E.Paths[delete]"
+              endId="Package\ZMM_T157E\stage deleted records.Inputs[OLE DB Destination Input]"
               name="delete"
-              startId="Package\CSKU\Identity records.Outputs[delete]" />
+              startId="Package\ZMM_T157E\Identity records.Outputs[delete]" />
             <path
-              refId="Package\CSKU.Paths[insert]"
-              endId="Package\CSKU\insert new records.Inputs[OLE DB Destination Input]"
+              refId="Package\ZMM_T157E.Paths[insert]"
+              endId="Package\ZMM_T157E\insert new records.Inputs[OLE DB Destination Input]"
               name="insert"
-              startId="Package\CSKU\Identity records.Outputs[insert]" />
+              startId="Package\ZMM_T157E\Identity records.Outputs[insert]" />
             <path
-              refId="Package\CSKU.Paths[Merge Join Output]"
-              endId="Package\CSKU\Identity records.Inputs[Conditional Split Input]"
+              refId="Package\ZMM_T157E.Paths[Merge Join Output]"
+              endId="Package\ZMM_T157E\Identity records.Inputs[Conditional Split Input]"
               name="Merge Join Output"
-              startId="Package\CSKU\Merge Join.Outputs[Merge Join Output]" />
+              startId="Package\ZMM_T157E\Merge Join.Outputs[Merge Join Output]" />
             <path
-              refId="Package\CSKU.Paths[OLE DB Source Output]"
-              endId="Package\CSKU\Merge Join.Inputs[Merge Join Left Input]"
+              refId="Package\ZMM_T157E.Paths[OLE DB Source Output]"
+              endId="Package\ZMM_T157E\Merge Join.Inputs[Merge Join Left Input]"
               name="OLE DB Source Output"
-              startId="Package\CSKU\DB SAP.Outputs[OLE DB Source Output]" />
+              startId="Package\ZMM_T157E\DB SAP.Outputs[OLE DB Source Output]" />
             <path
-              refId="Package\CSKU.Paths[OLE DB Source Output1]"
-              endId="Package\CSKU\Merge Join.Inputs[Merge Join Right Input]"
+              refId="Package\ZMM_T157E.Paths[OLE DB Source Output1]"
+              endId="Package\ZMM_T157E\Merge Join.Inputs[Merge Join Right Input]"
               name="OLE DB Source Output"
-              startId="Package\CSKU\DB PBI.Outputs[OLE DB Source Output]" />
+              startId="Package\ZMM_T157E\DB PBI.Outputs[OLE DB Source Output]" />
             <path
-              refId="Package\CSKU.Paths[update]"
-              endId="Package\CSKU\Find Changed Records.Inputs[Conditional Split Input]"
+              refId="Package\ZMM_T157E.Paths[update]"
+              endId="Package\ZMM_T157E\Find Changed Records.Inputs[Conditional Split Input]"
               name="update"
-              startId="Package\CSKU\Identity records.Outputs[update]" />
+              startId="Package\ZMM_T157E\Identity records.Outputs[update]" />
             <path
-              refId="Package\CSKU.Paths[update1]"
-              endId="Package\CSKU\stage changed records.Inputs[OLE DB Destination Input]"
+              refId="Package\ZMM_T157E.Paths[update1]"
+              endId="Package\ZMM_T157E\stage changed records.Inputs[OLE DB Destination Input]"
               name="update"
-              startId="Package\CSKU\Find Changed Records.Outputs[update]" />
+              startId="Package\ZMM_T157E\Find Changed Records.Outputs[update]" />
           </paths>
         </pipeline>
       </DTS:ObjectData>
-    </DTS:Executable>
-    <DTS:Executable
-      DTS:refId="Package\Sequence Container"
-      DTS:CreationName="STOCK:SEQUENCE"
-      DTS:Description="Sequence Container"
-      DTS:DTSID="{F34B2F3C-357F-457E-80CE-83E6762626DE}"
-      DTS:ExecutableType="STOCK:SEQUENCE"
-      DTS:LocaleID="-1"
-      DTS:ObjectName="Sequence Container">
-      <DTS:Variables />
-      <DTS:Executables>
-        <DTS:Executable
-          DTS:refId="Package\Sequence Container\delete"
-          DTS:CreationName="Microsoft.ExecuteSQLTask"
-          DTS:Description="Execute SQL Task"
-          DTS:DTSID="{1AF10830-AE0C-4625-9FE0-9B5A4CB75E52}"
-          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
-          DTS:LocaleID="-1"
-          DTS:ObjectName="delete"
-          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="0">
-          <DTS:Variables />
-          <DTS:ObjectData>
-            <SQLTask:SqlTaskData
-              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-              SQLTask:SqlStatementSource="DELETE A01 &#xA;FROM [CSKU] A01 INNER JOIN [CSKU_STAGE_UPDATE] B01 ON ( A01.[MANDT] = B01.[MANDT]&#xA;                                                    AND A01.[SPRAS] = B01.[SPRAS]&#xA;                                                    AND A01.[KTOPL] = B01.[KTOPL]&#xA;                                                    AND A01.[KSTAR] = B01.[KSTAR])&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
-          </DTS:ObjectData>
-        </DTS:Executable>
-        <DTS:Executable
-          DTS:refId="Package\Sequence Container\update"
-          DTS:CreationName="Microsoft.ExecuteSQLTask"
-          DTS:Description="Execute SQL Task"
-          DTS:DTSID="{815AF5F6-6F02-4D54-A3FF-84F17FC4DD3D}"
-          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
-          DTS:LocaleID="-1"
-          DTS:ObjectName="update"
-          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="1">
-          <DTS:Variables />
-          <DTS:ObjectData>
-            <SQLTask:SqlTaskData
-              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-              SQLTask:SqlStatementSource="UPDATE A01&#xA;SET A01.[LTEXT] = B01.[LTEXT]&#xA;FROM [CSKU] A01 INNER JOIN [CSKU_STAGE_UPDATE] B01 ON ( A01.[MANDT] = B01.[MANDT]&#xA;                                                    AND A01.[SPRAS] = B01.[SPRAS]&#xA;                                                    AND A01.[KTOPL] = B01.[KTOPL]&#xA;                                                    AND A01.[KSTAR] = B01.[KSTAR])" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
-          </DTS:ObjectData>
-        </DTS:Executable>
-      </DTS:Executables>
-    </DTS:Executable>
-    <DTS:Executable
-      DTS:refId="Package\Sequence Container 1"
-      DTS:CreationName="STOCK:SEQUENCE"
-      DTS:Description="Sequence Container"
-      DTS:DTSID="{AAE6284E-372C-434B-A846-4425C4A7CD23}"
-      DTS:ExecutableType="STOCK:SEQUENCE"
-      DTS:LocaleID="-1"
-      DTS:ObjectName="Sequence Container 1">
-      <DTS:Variables />
-      <DTS:Executables>
-        <DTS:Executable
-          DTS:refId="Package\Sequence Container 1\Insert"
-          DTS:CreationName="Microsoft.ExecuteSQLTask"
-          DTS:Description="Execute SQL Task"
-          DTS:DTSID="{B035A849-AB2D-46D6-AEC0-39D5FADE7F38}"
-          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
-          DTS:LocaleID="-1"
-          DTS:ObjectName="Insert"
-          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="0">
-          <DTS:Variables />
-          <DTS:ObjectData>
-            <SQLTask:SqlTaskData
-              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-              SQLTask:SqlStatementSource="INSERT INTO [CSKU]&#xA;SELECT * FROM [CSKU_STAGE_INSERT]&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
-          </DTS:ObjectData>
-        </DTS:Executable>
-      </DTS:Executables>
     </DTS:Executable>
   </DTS:Executables>
   <DTS:PrecedenceConstraints>
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint]"
       DTS:CreationName=""
-      DTS:DTSID="{90295A88-214E-4392-8E44-8F35F45D4C74}"
-      DTS:From="Package\CSKU"
+      DTS:DTSID="{1F51375A-164E-4A1A-B690-445D057E1F31}"
+      DTS:From="Package\ZMM_T157E"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint"
       DTS:To="Package\Sequence Container" />
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
       DTS:CreationName=""
-      DTS:DTSID="{4BF4545C-D23B-4D50-83E9-C40CCA6E0C56}"
+      DTS:DTSID="{8E8FBC13-6187-4D8B-AD41-DE25501286AD}"
       DTS:From="Package\clean stage"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 1"
-      DTS:To="Package\CSKU" />
+      DTS:To="Package\ZMM_T157E" />
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
       DTS:CreationName=""
-      DTS:DTSID="{5AC3CB61-4F93-4B5C-8730-CA2A8D1BB8DA}"
+      DTS:DTSID="{DDAF9CCC-442C-45DD-A01D-8600906C4C00}"
       DTS:From="Package\Sequence Container"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 2"
@@ -1621,11 +1625,7 @@ ORDER BY A01.[MANDT]
         <NodeLayout
           Size="132,42"
           Id="Package\clean stage"
-          TopLeft="330,26" />
-        <NodeLayout
-          Size="105,42"
-          Id="Package\CSKU"
-          TopLeft="170,59" />
+          TopLeft="433,2" />
         <NodeLayout
           Size="108,42"
           Id="Package\Sequence Container\delete"
@@ -1644,23 +1644,27 @@ ORDER BY A01.[MANDT]
         <NodeLayout
           Size="107,42"
           Id="Package\Sequence Container 1\Insert"
-          TopLeft="131,42" />
+          TopLeft="131,54" />
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="383,139"
-          Size="383,182"
+          PanelSize="383,151"
+          Size="383,194"
           Id="Package\Sequence Container 1"
           TopLeft="60,416" />
+        <NodeLayout
+          Size="137,42"
+          Id="Package\ZMM_T157E"
+          TopLeft="163,59" />
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint]"
-          TopLeft="222.5,101">
+          TopLeft="231.5,101">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="29,73"
+              EndConnector="20,73"
               Start="0,0"
-              End="29,65.5">
+              End="20,65.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
@@ -1671,13 +1675,13 @@ ORDER BY A01.[MANDT]
                     Point2="0,36.5"
                     Point3="4,36.5" />
                   <mssgle:LineSegment
-                    End="25,36.5" />
+                    End="16,36.5" />
                   <mssgle:CubicBezierSegment
-                    Point1="25,36.5"
-                    Point2="29,36.5"
-                    Point3="29,40.5" />
+                    Point1="16,36.5"
+                    Point2="20,36.5"
+                    Point3="20,40.5" />
                   <mssgle:LineSegment
-                    End="29,65.5" />
+                    End="20,65.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -1688,30 +1692,30 @@ ORDER BY A01.[MANDT]
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 1]"
-          TopLeft="330,47">
+          TopLeft="433,23">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-55,33"
+              EndConnector="-133,57"
               Start="0,0"
-              End="-47.5,33">
+              End="-125.5,57">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="-23.5,0" />
+                    End="-62.5,0" />
                   <mssgle:CubicBezierSegment
-                    Point1="-23.5,0"
-                    Point2="-27.5,0"
-                    Point3="-27.5,4" />
+                    Point1="-62.5,0"
+                    Point2="-66.5,0"
+                    Point3="-66.5,4" />
                   <mssgle:LineSegment
-                    End="-27.5,29" />
+                    End="-66.5,53" />
                   <mssgle:CubicBezierSegment
-                    Point1="-27.5,29"
-                    Point2="-27.5,33"
-                    Point3="-31.5,33" />
+                    Point1="-66.5,53"
+                    Point2="-66.5,57"
+                    Point3="-70.5,57" />
                   <mssgle:LineSegment
-                    End="-47.5,33" />
+                    End="-125.5,57" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -1746,45 +1750,45 @@ ORDER BY A01.[MANDT]
     </LayoutInfo>
   </Package>
   <TaskHost
-    design-time-name="Package\CSKU">
+    design-time-name="Package\ZMM_T157E">
     <LayoutInfo>
       <GraphLayout
         Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
-          Size="114,42"
-          Id="Package\CSKU\DB SAP"
-          TopLeft="199,46" />
-        <NodeLayout
-          Size="180,42"
-          Id="Package\CSKU\stage deleted records"
-          TopLeft="687,371" />
-        <NodeLayout
-          Size="166,42"
-          Id="Package\CSKU\insert new records"
-          TopLeft="159,370" />
+          Size="153,42"
+          Id="Package\ZMM_T157E\Identity records"
+          TopLeft="438,237" />
         <NodeLayout
           Size="186,42"
-          Id="Package\CSKU\stage changed records"
-          TopLeft="426,479" />
+          Id="Package\ZMM_T157E\stage changed records"
+          TopLeft="417,479" />
         <NodeLayout
-          Size="153,42"
-          Id="Package\CSKU\Identity records"
-          TopLeft="434,237" />
+          Size="114,42"
+          Id="Package\ZMM_T157E\DB SAP"
+          TopLeft="199,46" />
         <NodeLayout
-          Size="130,42"
-          Id="Package\CSKU\Merge Join"
-          TopLeft="451,137" />
+          Size="166,42"
+          Id="Package\ZMM_T157E\insert new records"
+          TopLeft="159,370" />
         <NodeLayout
-          Size="112,42"
-          Id="Package\CSKU\DB PBI"
-          TopLeft="671,48" />
+          Size="180,42"
+          Id="Package\ZMM_T157E\stage deleted records"
+          TopLeft="687,371" />
         <NodeLayout
           Size="184,42"
-          Id="Package\CSKU\Find Changed Records"
-          TopLeft="420,366" />
+          Id="Package\ZMM_T157E\Find Changed Records"
+          TopLeft="425,366" />
+        <NodeLayout
+          Size="112,42"
+          Id="Package\ZMM_T157E\DB PBI"
+          TopLeft="671,48" />
+        <NodeLayout
+          Size="130,42"
+          Id="Package\ZMM_T157E\Merge Join"
+          TopLeft="451,137" />
         <EdgeLayout
-          Id="Package\CSKU.Paths[update1]"
-          TopLeft="515.5,408">
+          Id="Package\ZMM_T157E.Paths[update1]"
+          TopLeft="513.5,408">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -1807,8 +1811,8 @@ ORDER BY A01.[MANDT]
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\CSKU.Paths[update]"
-          TopLeft="511.25,279">
+          Id="Package\ZMM_T157E.Paths[update]"
+          TopLeft="515.75,279">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -1831,7 +1835,7 @@ ORDER BY A01.[MANDT]
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\CSKU.Paths[OLE DB Source Output1]"
+          Id="Package\ZMM_T157E.Paths[OLE DB Source Output1]"
           TopLeft="727,90">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -1865,7 +1869,7 @@ ORDER BY A01.[MANDT]
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\CSKU.Paths[OLE DB Source Output]"
+          Id="Package\ZMM_T157E.Paths[OLE DB Source Output]"
           TopLeft="256,88">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -1899,8 +1903,8 @@ ORDER BY A01.[MANDT]
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\CSKU.Paths[Merge Join Output]"
-          TopLeft="513.25,179">
+          Id="Package\ZMM_T157E.Paths[Merge Join Output]"
+          TopLeft="515.25,179">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -1921,14 +1925,14 @@ ORDER BY A01.[MANDT]
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\CSKU.Paths[insert]"
-          TopLeft="474.25,279">
+          Id="Package\ZMM_T157E.Paths[insert]"
+          TopLeft="478.25,279">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-232.25,91"
+              EndConnector="-236.25,91"
               Start="0,0"
-              End="-232.25,83.5">
+              End="-236.25,83.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
@@ -1939,32 +1943,32 @@ ORDER BY A01.[MANDT]
                     Point2="0,31.372591006424"
                     Point3="-4,31.372591006424" />
                   <mssgle:LineSegment
-                    End="-228.25,31.372591006424" />
+                    End="-232.25,31.372591006424" />
                   <mssgle:CubicBezierSegment
-                    Point1="-228.25,31.372591006424"
-                    Point2="-232.25,31.372591006424"
-                    Point3="-232.25,35.372591006424" />
+                    Point1="-232.25,31.372591006424"
+                    Point2="-236.25,31.372591006424"
+                    Point3="-236.25,35.372591006424" />
                   <mssgle:LineSegment
-                    End="-232.25,83.5" />
+                    End="-236.25,83.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="-129.07498046875,36.372591006424,25.8999609375,9.451171875"
+              BoundingBox="-131.07498046875,36.372591006424,25.8999609375,9.451171875"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\CSKU.Paths[delete]"
-          TopLeft="546.75,279">
+          Id="Package\ZMM_T157E.Paths[delete]"
+          TopLeft="550.75,279">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="230.25,92"
+              EndConnector="226.25,92"
               Start="0,0"
-              End="230.25,84.5">
+              End="226.25,84.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
@@ -1975,20 +1979,20 @@ ORDER BY A01.[MANDT]
                     Point2="0,31.7173447537473"
                     Point3="4,31.7173447537473" />
                   <mssgle:LineSegment
-                    End="226.25,31.7173447537473" />
+                    End="222.25,31.7173447537473" />
                   <mssgle:CubicBezierSegment
-                    Point1="226.25,31.7173447537473"
-                    Point2="230.25,31.7173447537473"
-                    Point3="230.25,35.7173447537473" />
+                    Point1="222.25,31.7173447537473"
+                    Point2="226.25,31.7173447537473"
+                    Point3="226.25,35.7173447537473" />
                   <mssgle:LineSegment
-                    End="230.25,84.5" />
+                    End="226.25,84.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="100.92904296875,36.7173447537473,28.3919140625,9.7490234375"
+              BoundingBox="98.92904296875,36.7173447537473,28.3919140625,9.7490234375"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
@@ -1996,15 +2000,7 @@ ORDER BY A01.[MANDT]
     </LayoutInfo>
   </TaskHost>
   <PipelineComponentMetadata
-    design-time-name="Package\CSKU\DB SAP">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
-    design-time-name="Package\CSKU\stage deleted records">
+    design-time-name="Package\ZMM_T157E\stage changed records">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -2017,7 +2013,15 @@ ORDER BY A01.[MANDT]
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\CSKU\insert new records">
+    design-time-name="Package\ZMM_T157E\DB SAP">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\ZMM_T157E\insert new records">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -2030,7 +2034,7 @@ ORDER BY A01.[MANDT]
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\CSKU\stage changed records">
+    design-time-name="Package\ZMM_T157E\stage deleted records">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -2043,7 +2047,7 @@ ORDER BY A01.[MANDT]
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\CSKU\DB PBI">
+    design-time-name="Package\ZMM_T157E\DB PBI">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
