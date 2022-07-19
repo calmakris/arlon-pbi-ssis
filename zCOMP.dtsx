@@ -11,8 +11,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="zCOMP"
   DTS:PackageType="5"
-  DTS:VersionBuild="205"
-  DTS:VersionGUID="{A7CF7145-3C99-48EE-83FE-F19313839574}">
+  DTS:VersionBuild="218"
+  DTS:VersionGUID="{28AC1A01-D4C2-419A-B551-07B01304FA0B}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:Variables />
@@ -3721,6 +3721,2349 @@ ORDER BY [ID]</property>
           DTS:To="Package\Daily Activities - Tasks\Full Load" />
       </DTS:PrecedenceConstraints>
     </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\First Pass Failures"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Sequence Container"
+      DTS:DTSID="{6eace4b6-42c8-4c22-abc6-7df03bcf63b4}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="First Pass Failures">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\First Pass Failures\Clean Stage"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{28223532-eadc-4cce-873b-34957dbd7912}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Clean Stage"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="3">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+              SQLTask:SqlStatementSource="TRUNCATE TABLE zCOMP_FPASSFAILS_STAGE_INSERT&#xA;GO&#xA;TRUNCATE TABLE zCOMP_FPASSFAILS_STAGE_UPDATE&#xA;GO&#xA;TRUNCATE TABLE zCOMP_FPASSFAILS_STAGE_DELETE&#xA;GO" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\First Pass Failures\DELETE Records"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{6085da16-7e34-4c0b-9cc8-fae4570a5b37}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="DELETE Records"
+          DTS:ThreadHint="3">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+              SQLTask:SqlStatementSource="DELETE A01&#xA;FROM zCOMP_FPASSFAILS A01&#xA;INNER JOIN zCOMP_FPASSFAILS_STAGE_DELETE B01&#xA;ON A01.[ID] = B01.[ID]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\First Pass Failures\INSERT Records"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{a1bceced-86ec-4d44-b4a4-6154933aba10}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="INSERT Records"
+          DTS:ThreadHint="3">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+              SQLTask:SqlStatementSource="INSERT INTO zCOMP_FPASSFAILS&#xA;SELECT *&#xA;FROM zCOMP_FPASSFAILS_STAGE_INSERT" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\First Pass Failures\Staging"
+          DTS:CreationName="Microsoft.Pipeline"
+          DTS:Description="Data Flow Task"
+          DTS:DTSID="{d8a4f09e-725c-4ee2-a2f6-ac2fd6c4e3a5}"
+          DTS:ExecutableType="Microsoft.Pipeline"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Staging"
+          DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <pipeline
+              version="1">
+              <components>
+                <component
+                  refId="Package\First Pass Failures\Staging\DB COMP_FPassFails"
+                  componentClassID="Microsoft.OLEDBSource"
+                  contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+                  description="OLE DB Source"
+                  name="DB COMP_FPassFails"
+                  usesDispositions="true"
+                  version="7">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT [ID]
+    ,[FailDate]
+    ,RIGHT('000000000000' &amp; [Shop Order], 12) AS ShopOrder 
+    ,UCASE([Part Description]) AS PartDescription
+    ,UCASE([Part Number]) AS PartNumber
+    ,UCASE(TRIM([Notes])) AS Notes
+    ,UCASE(TRIM([Theory])) AS Theory
+    ,UCASE(TRIM([Category])) AS Category
+    ,UCASE([Rework]) AS Rework
+    ,UCASE(TRIM([Action Item])) AS ActionItem
+    ,UCASE(TRIM([Status])) AS Status
+    ,UCASE(TRIM([Base])) AS Base
+FROM [tbl1stPassFailures]
+WHERE [Shop Order] IS NOT NULL
+    and [Shop Order] &lt;&gt; 0
+ORDER BY [ID]</property>
+                    <property
+                      dataType="System.String"
+                      description="The variable that contains the SQL command to be executed."
+                      name="SqlCommandVariable"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">2</property>
+                    <property
+                      dataType="System.String"
+                      description="The mappings between the parameters in the SQL command and variables."
+                      name="ParameterMapping"></property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Connections[OleDbConnection]"
+                      connectionManagerID="{048836EB-DD1F-4AF8-B228-DDEAA839581B}:external"
+                      connectionManagerRefId="Project.ConnectionManagers[COMP_FPassFailures]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <outputs>
+                    <output
+                      refId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Output]"
+                      isSorted="true"
+                      name="OLE DB Source Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Output].Columns[ID]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Output].ExternalColumns[ID]"
+                          lineageId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Output].Columns[ID]"
+                          name="ID"
+                          sortKeyPosition="1"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Output].Columns[FailDate]"
+                          dataType="date"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Output].ExternalColumns[FailDate]"
+                          lineageId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Output].Columns[FailDate]"
+                          name="FailDate"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Output].Columns[ShopOrder]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Output].ExternalColumns[ShopOrder]"
+                          length="12"
+                          lineageId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Output].Columns[ShopOrder]"
+                          name="ShopOrder"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Output].Columns[PartDescription]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Output].ExternalColumns[PartDescription]"
+                          length="255"
+                          lineageId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Output].Columns[PartDescription]"
+                          name="PartDescription"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Output].Columns[PartNumber]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Output].ExternalColumns[PartNumber]"
+                          length="18"
+                          lineageId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Output].Columns[PartNumber]"
+                          name="PartNumber"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Output].Columns[Notes]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Output].ExternalColumns[Notes]"
+                          length="255"
+                          lineageId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Output].Columns[Notes]"
+                          name="Notes"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Output].Columns[Theory]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Output].ExternalColumns[Theory]"
+                          length="255"
+                          lineageId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Output].Columns[Theory]"
+                          name="Theory"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Output].Columns[Category]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Output].ExternalColumns[Category]"
+                          length="50"
+                          lineageId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Output].Columns[Category]"
+                          name="Category"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Output].Columns[Rework]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Output].ExternalColumns[Rework]"
+                          length="255"
+                          lineageId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Output].Columns[Rework]"
+                          name="Rework"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Output].Columns[ActionItem]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Output].ExternalColumns[ActionItem]"
+                          length="255"
+                          lineageId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Output].Columns[ActionItem]"
+                          name="ActionItem"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Output].Columns[Status]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Output].ExternalColumns[Status]"
+                          length="50"
+                          lineageId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Output].Columns[Status]"
+                          name="Status"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Output].Columns[Base]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Output].ExternalColumns[Base]"
+                          length="50"
+                          lineageId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Output].Columns[Base]"
+                          name="Base"
+                          truncationRowDisposition="FailComponent" />
+                      </outputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Output].ExternalColumns[ID]"
+                          dataType="i4"
+                          name="ID" />
+                        <externalMetadataColumn
+                          refId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Output].ExternalColumns[FailDate]"
+                          dataType="date"
+                          name="FailDate" />
+                        <externalMetadataColumn
+                          refId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Output].ExternalColumns[ShopOrder]"
+                          dataType="nText"
+                          name="ShopOrder" />
+                        <externalMetadataColumn
+                          refId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Output].ExternalColumns[PartDescription]"
+                          dataType="nText"
+                          name="PartDescription" />
+                        <externalMetadataColumn
+                          refId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Output].ExternalColumns[PartNumber]"
+                          dataType="nText"
+                          name="PartNumber" />
+                        <externalMetadataColumn
+                          refId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Output].ExternalColumns[Notes]"
+                          dataType="nText"
+                          name="Notes" />
+                        <externalMetadataColumn
+                          refId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Output].ExternalColumns[Theory]"
+                          dataType="nText"
+                          name="Theory" />
+                        <externalMetadataColumn
+                          refId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Output].ExternalColumns[Category]"
+                          dataType="nText"
+                          name="Category" />
+                        <externalMetadataColumn
+                          refId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Output].ExternalColumns[Rework]"
+                          dataType="nText"
+                          name="Rework" />
+                        <externalMetadataColumn
+                          refId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Output].ExternalColumns[ActionItem]"
+                          dataType="nText"
+                          name="ActionItem" />
+                        <externalMetadataColumn
+                          refId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Output].ExternalColumns[Status]"
+                          dataType="nText"
+                          name="Status" />
+                        <externalMetadataColumn
+                          refId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Output].ExternalColumns[Base]"
+                          dataType="nText"
+                          name="Base" />
+                      </externalMetadataColumns>
+                    </output>
+                    <output
+                      refId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Error Output]"
+                      isErrorOut="true"
+                      name="OLE DB Source Error Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Error Output].Columns[ID]"
+                          dataType="i4"
+                          lineageId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Error Output].Columns[ID]"
+                          name="ID" />
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Error Output].Columns[FailDate]"
+                          dataType="date"
+                          lineageId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Error Output].Columns[FailDate]"
+                          name="FailDate" />
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Error Output].Columns[ShopOrder]"
+                          dataType="nText"
+                          lineageId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Error Output].Columns[ShopOrder]"
+                          name="ShopOrder" />
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Error Output].Columns[PartDescription]"
+                          dataType="nText"
+                          lineageId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Error Output].Columns[PartDescription]"
+                          name="PartDescription" />
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Error Output].Columns[PartNumber]"
+                          dataType="nText"
+                          lineageId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Error Output].Columns[PartNumber]"
+                          name="PartNumber" />
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Error Output].Columns[Notes]"
+                          dataType="nText"
+                          lineageId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Error Output].Columns[Notes]"
+                          name="Notes" />
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Error Output].Columns[Theory]"
+                          dataType="nText"
+                          lineageId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Error Output].Columns[Theory]"
+                          name="Theory" />
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Error Output].Columns[Category]"
+                          dataType="nText"
+                          lineageId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Error Output].Columns[Category]"
+                          name="Category" />
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Error Output].Columns[Rework]"
+                          dataType="nText"
+                          lineageId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Error Output].Columns[Rework]"
+                          name="Rework" />
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Error Output].Columns[ActionItem]"
+                          dataType="nText"
+                          lineageId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Error Output].Columns[ActionItem]"
+                          name="ActionItem" />
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Error Output].Columns[Status]"
+                          dataType="nText"
+                          lineageId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Error Output].Columns[Status]"
+                          name="Status" />
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Error Output].Columns[Base]"
+                          dataType="nText"
+                          lineageId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Error Output].Columns[Base]"
+                          name="Base" />
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\First Pass Failures\Staging\DB PBI"
+                  componentClassID="Microsoft.OLEDBSource"
+                  contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+                  description="OLE DB Source"
+                  name="DB PBI"
+                  usesDispositions="true"
+                  version="7">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT [ID]
+    ,[FailDate]
+    ,[ShopOrder]
+    ,[PartDescription]
+    ,[PartNumber]
+    ,[Notes]
+    ,[Theory]
+    ,[Category]
+    ,[Rework]
+    ,[ActionItem]
+    ,[Status]
+    ,[Base]
+FROM [zCOMP_FPASSFAILS]
+WHERE [ShopOrder] IS NOT NULL
+ORDER BY [ID]</property>
+                    <property
+                      dataType="System.String"
+                      description="The variable that contains the SQL command to be executed."
+                      name="SqlCommandVariable"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">2</property>
+                    <property
+                      dataType="System.String"
+                      description="The mappings between the parameters in the SQL command and variables."
+                      name="ParameterMapping"></property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\First Pass Failures\Staging\DB PBI.Connections[OleDbConnection]"
+                      connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
+                      connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <outputs>
+                    <output
+                      refId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Output]"
+                      isSorted="true"
+                      name="OLE DB Source Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[ID]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[ID]"
+                          lineageId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[ID]"
+                          name="ID"
+                          sortKeyPosition="1"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[ShopOrder]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[ShopOrder]"
+                          length="12"
+                          lineageId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[ShopOrder]"
+                          name="ShopOrder"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[FailDate]"
+                          dataType="dbTimeStamp"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[FailDate]"
+                          lineageId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[FailDate]"
+                          name="FailDate"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[PartDescription]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[PartDescription]"
+                          length="255"
+                          lineageId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[PartDescription]"
+                          name="PartDescription"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[PartNumber]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[PartNumber]"
+                          length="18"
+                          lineageId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[PartNumber]"
+                          name="PartNumber"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[Notes]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[Notes]"
+                          length="255"
+                          lineageId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[Notes]"
+                          name="Notes"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[Theory]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[Theory]"
+                          length="255"
+                          lineageId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[Theory]"
+                          name="Theory"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[Category]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[Category]"
+                          length="50"
+                          lineageId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[Category]"
+                          name="Category"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[Rework]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[Rework]"
+                          length="255"
+                          lineageId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[Rework]"
+                          name="Rework"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[ActionItem]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[ActionItem]"
+                          length="255"
+                          lineageId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[ActionItem]"
+                          name="ActionItem"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[Status]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[Status]"
+                          length="50"
+                          lineageId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[Status]"
+                          name="Status"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[Base]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[Base]"
+                          length="50"
+                          lineageId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[Base]"
+                          name="Base"
+                          truncationRowDisposition="FailComponent" />
+                      </outputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[ID]"
+                          dataType="i4"
+                          name="ID" />
+                        <externalMetadataColumn
+                          refId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[ShopOrder]"
+                          dataType="wstr"
+                          length="12"
+                          name="ShopOrder" />
+                        <externalMetadataColumn
+                          refId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[FailDate]"
+                          dataType="dbTimeStamp"
+                          name="FailDate" />
+                        <externalMetadataColumn
+                          refId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[PartDescription]"
+                          dataType="wstr"
+                          length="255"
+                          name="PartDescription" />
+                        <externalMetadataColumn
+                          refId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[PartNumber]"
+                          dataType="wstr"
+                          length="18"
+                          name="PartNumber" />
+                        <externalMetadataColumn
+                          refId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[Notes]"
+                          dataType="wstr"
+                          length="255"
+                          name="Notes" />
+                        <externalMetadataColumn
+                          refId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[Theory]"
+                          dataType="wstr"
+                          length="255"
+                          name="Theory" />
+                        <externalMetadataColumn
+                          refId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[Category]"
+                          dataType="wstr"
+                          length="50"
+                          name="Category" />
+                        <externalMetadataColumn
+                          refId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[Rework]"
+                          dataType="wstr"
+                          length="255"
+                          name="Rework" />
+                        <externalMetadataColumn
+                          refId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[ActionItem]"
+                          dataType="wstr"
+                          length="255"
+                          name="ActionItem" />
+                        <externalMetadataColumn
+                          refId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[Status]"
+                          dataType="wstr"
+                          length="50"
+                          name="Status" />
+                        <externalMetadataColumn
+                          refId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[Base]"
+                          dataType="wstr"
+                          length="50"
+                          name="Base" />
+                      </externalMetadataColumns>
+                    </output>
+                    <output
+                      refId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Error Output]"
+                      isErrorOut="true"
+                      name="OLE DB Source Error Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Error Output].Columns[ID]"
+                          dataType="i4"
+                          lineageId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Error Output].Columns[ID]"
+                          name="ID" />
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Error Output].Columns[FailDate]"
+                          dataType="dbTimeStamp"
+                          lineageId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Error Output].Columns[FailDate]"
+                          name="FailDate" />
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Error Output].Columns[ShopOrder]"
+                          dataType="wstr"
+                          length="12"
+                          lineageId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Error Output].Columns[ShopOrder]"
+                          name="ShopOrder" />
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Error Output].Columns[PartDescription]"
+                          dataType="wstr"
+                          length="255"
+                          lineageId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Error Output].Columns[PartDescription]"
+                          name="PartDescription" />
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Error Output].Columns[PartNumber]"
+                          dataType="wstr"
+                          length="18"
+                          lineageId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Error Output].Columns[PartNumber]"
+                          name="PartNumber" />
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Error Output].Columns[Notes]"
+                          dataType="wstr"
+                          length="255"
+                          lineageId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Error Output].Columns[Notes]"
+                          name="Notes" />
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Error Output].Columns[Theory]"
+                          dataType="wstr"
+                          length="255"
+                          lineageId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Error Output].Columns[Theory]"
+                          name="Theory" />
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Error Output].Columns[Category]"
+                          dataType="wstr"
+                          length="50"
+                          lineageId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Error Output].Columns[Category]"
+                          name="Category" />
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Error Output].Columns[Rework]"
+                          dataType="wstr"
+                          length="255"
+                          lineageId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Error Output].Columns[Rework]"
+                          name="Rework" />
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Error Output].Columns[ActionItem]"
+                          dataType="wstr"
+                          length="255"
+                          lineageId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Error Output].Columns[ActionItem]"
+                          name="ActionItem" />
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Error Output].Columns[Status]"
+                          dataType="wstr"
+                          length="50"
+                          lineageId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Error Output].Columns[Status]"
+                          name="Status" />
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Error Output].Columns[Base]"
+                          dataType="wstr"
+                          length="50"
+                          lineageId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Error Output].Columns[Base]"
+                          name="Base" />
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\First Pass Failures\Staging\DELETE Stage"
+                  componentClassID="Microsoft.OLEDBDestination"
+                  contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                  description="OLE DB Destination"
+                  name="DELETE Stage"
+                  usesDispositions="true"
+                  version="4">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset">[dbo].[zCOMP_FPASSFAILS_STAGE_DELETE]</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">3</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepIdentity">false</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                      name="FastLoadOptions">CHECK_CONSTRAINTS</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                      name="FastLoadMaxInsertCommitSize">2147483647</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\First Pass Failures\Staging\DELETE Stage.Connections[OleDbConnection]"
+                      connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
+                      connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\First Pass Failures\Staging\DELETE Stage.Inputs[OLE DB Destination Input]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="OLE DB Destination Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\DELETE Stage.Inputs[OLE DB Destination Input].Columns[ID (1)]"
+                          cachedDataType="i4"
+                          cachedName="ID (1)"
+                          externalMetadataColumnId="Package\First Pass Failures\Staging\DELETE Stage.Inputs[OLE DB Destination Input].ExternalColumns[ID]"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[ID (1)]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\First Pass Failures\Staging\DELETE Stage.Inputs[OLE DB Destination Input].ExternalColumns[ID]"
+                          dataType="i4"
+                          name="ID" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\First Pass Failures\Staging\DELETE Stage.Outputs[OLE DB Destination Error Output]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="OLE DB Destination Error Output"
+                      synchronousInputId="Package\First Pass Failures\Staging\DELETE Stage.Inputs[OLE DB Destination Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\DELETE Stage.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\First Pass Failures\Staging\DELETE Stage.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\DELETE Stage.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\First Pass Failures\Staging\DELETE Stage.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\First Pass Failures\Staging\Identify Changed Records"
+                  componentClassID="Microsoft.ConditionalSplit"
+                  contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                  description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
+                  name="Identify Changed Records"
+                  usesDispositions="true">
+                  <inputs>
+                    <input
+                      refId="Package\First Pass Failures\Staging\Identify Changed Records.Inputs[Conditional Split Input]"
+                      description="Input to the Conditional Split Transformation"
+                      name="Conditional Split Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\Identify Changed Records.Inputs[Conditional Split Input].Columns[ShopOrder]"
+                          cachedDataType="wstr"
+                          cachedLength="12"
+                          cachedName="ShopOrder"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[ShopOrder]" />
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\Identify Changed Records.Inputs[Conditional Split Input].Columns[ShopOrder (1)]"
+                          cachedDataType="wstr"
+                          cachedLength="12"
+                          cachedName="ShopOrder (1)"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[ShopOrder (1)]" />
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\Identify Changed Records.Inputs[Conditional Split Input].Columns[FailDate]"
+                          cachedDataType="date"
+                          cachedName="FailDate"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[FailDate]" />
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\Identify Changed Records.Inputs[Conditional Split Input].Columns[PartDescription]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="PartDescription"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[PartDescription]" />
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\Identify Changed Records.Inputs[Conditional Split Input].Columns[PartNumber]"
+                          cachedDataType="wstr"
+                          cachedLength="18"
+                          cachedName="PartNumber"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[PartNumber]" />
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\Identify Changed Records.Inputs[Conditional Split Input].Columns[Notes]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="Notes"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[Notes]" />
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\Identify Changed Records.Inputs[Conditional Split Input].Columns[Theory]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="Theory"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[Theory]" />
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\Identify Changed Records.Inputs[Conditional Split Input].Columns[Category]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="Category"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[Category]" />
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\Identify Changed Records.Inputs[Conditional Split Input].Columns[Rework]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="Rework"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[Rework]" />
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\Identify Changed Records.Inputs[Conditional Split Input].Columns[ActionItem]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="ActionItem"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[ActionItem]" />
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\Identify Changed Records.Inputs[Conditional Split Input].Columns[Status]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="Status"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[Status]" />
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\Identify Changed Records.Inputs[Conditional Split Input].Columns[Base]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="Base"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[Base]" />
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\Identify Changed Records.Inputs[Conditional Split Input].Columns[FailDate (1)]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="FailDate (1)"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[FailDate (1)]" />
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\Identify Changed Records.Inputs[Conditional Split Input].Columns[PartDescription (1)]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="PartDescription (1)"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[PartDescription (1)]" />
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\Identify Changed Records.Inputs[Conditional Split Input].Columns[PartNumber (1)]"
+                          cachedDataType="wstr"
+                          cachedLength="18"
+                          cachedName="PartNumber (1)"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[PartNumber (1)]" />
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\Identify Changed Records.Inputs[Conditional Split Input].Columns[Notes (1)]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="Notes (1)"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[Notes (1)]" />
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\Identify Changed Records.Inputs[Conditional Split Input].Columns[Theory (1)]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="Theory (1)"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[Theory (1)]" />
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\Identify Changed Records.Inputs[Conditional Split Input].Columns[Category (1)]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="Category (1)"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[Category (1)]" />
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\Identify Changed Records.Inputs[Conditional Split Input].Columns[Rework (1)]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="Rework (1)"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[Rework (1)]" />
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\Identify Changed Records.Inputs[Conditional Split Input].Columns[ActionItem (1)]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="ActionItem (1)"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[ActionItem (1)]" />
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\Identify Changed Records.Inputs[Conditional Split Input].Columns[Status (1)]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="Status (1)"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[Status (1)]" />
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\Identify Changed Records.Inputs[Conditional Split Input].Columns[Base (1)]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="Base (1)"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[Base (1)]" />
+                      </inputColumns>
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\First Pass Failures\Staging\Identify Changed Records.Outputs[update]"
+                      description="Output 1 of the Conditional Split Transformation"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      exclusionGroup="1"
+                      name="update"
+                      synchronousInputId="Package\First Pass Failures\Staging\Identify Changed Records.Inputs[Conditional Split Input]"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                          name="Expression">[REPLACENULL](#{Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[FailDate]},"1/1/1900") != [REPLACENULL](#{Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[FailDate (1)]},"1/1/1900") || #{Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[ShopOrder]} != #{Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[ShopOrder (1)]} || [REPLACENULL](#{Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[PartDescription]},"N/A") != [REPLACENULL](#{Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[PartDescription (1)]},"N/A") || [REPLACENULL](#{Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[PartNumber]},"N/A") != [REPLACENULL](#{Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[PartNumber (1)]},"N/A") || [REPLACENULL](#{Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[Notes]},"N/A") != [REPLACENULL](#{Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[Notes (1)]},"N/A") || [REPLACENULL](#{Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[Theory]},"N/A") != [REPLACENULL](#{Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[Theory (1)]},"N/A") || [REPLACENULL](#{Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[Category]},"N/A") != [REPLACENULL](#{Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[Category (1)]},"N/A") || [REPLACENULL](#{Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[Rework]},"N/A") != [REPLACENULL](#{Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[Rework (1)]},"N/A") || [REPLACENULL](#{Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[ActionItem]},"N/A") != [REPLACENULL](#{Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[ActionItem (1)]},"N/A") || [REPLACENULL](#{Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[Status]},"N/A") != [REPLACENULL](#{Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[Status (1)]},"N/A") || [REPLACENULL](#{Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[Base]},"N/A") != [REPLACENULL](#{Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[Base (1)]},"N/A")</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Specifies the friendly version of the expression. This expression version uses column names."
+                          expressionType="Notify"
+                          name="FriendlyExpression">REPLACENULL(FailDate,"1/1/1900") != REPLACENULL([FailDate (1)],"1/1/1900") || ShopOrder != [ShopOrder (1)] || REPLACENULL(PartDescription,"N/A") != REPLACENULL([PartDescription (1)],"N/A") || REPLACENULL(PartNumber,"N/A") != REPLACENULL([PartNumber (1)],"N/A") || REPLACENULL(Notes,"N/A") != REPLACENULL([Notes (1)],"N/A") || REPLACENULL(Theory,"N/A") != REPLACENULL([Theory (1)],"N/A") || REPLACENULL(Category,"N/A") != REPLACENULL([Category (1)],"N/A") || REPLACENULL(Rework,"N/A") != REPLACENULL([Rework (1)],"N/A") || REPLACENULL(ActionItem,"N/A") != REPLACENULL([ActionItem (1)],"N/A") || REPLACENULL(Status,"N/A") != REPLACENULL([Status (1)],"N/A") || REPLACENULL(Base,"N/A") != REPLACENULL([Base (1)],"N/A")</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                          name="EvaluationOrder">0</property>
+                      </properties>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\First Pass Failures\Staging\Identify Changed Records.Outputs[Conditional Split Default Output]"
+                      description="Default Output of the Conditional Split Transformation"
+                      exclusionGroup="1"
+                      name="Conditional Split Default Output"
+                      synchronousInputId="Package\First Pass Failures\Staging\Identify Changed Records.Inputs[Conditional Split Input]">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          name="IsDefaultOut">true</property>
+                      </properties>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\First Pass Failures\Staging\Identify Changed Records.Outputs[Conditional Split Error Output]"
+                      description="Error Output of the Conditional Split Transformation"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Conditional Split Error Output"
+                      synchronousInputId="Package\First Pass Failures\Staging\Identify Changed Records.Inputs[Conditional Split Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\Identify Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\First Pass Failures\Staging\Identify Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\Identify Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\First Pass Failures\Staging\Identify Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\First Pass Failures\Staging\Identify Stage"
+                  componentClassID="Microsoft.ConditionalSplit"
+                  contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                  description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
+                  name="Identify Stage"
+                  usesDispositions="true">
+                  <inputs>
+                    <input
+                      refId="Package\First Pass Failures\Staging\Identify Stage.Inputs[Conditional Split Input]"
+                      description="Input to the Conditional Split Transformation"
+                      name="Conditional Split Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\Identify Stage.Inputs[Conditional Split Input].Columns[ID]"
+                          cachedDataType="i4"
+                          cachedName="ID"
+                          cachedSortKeyPosition="1"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[ID]" />
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\Identify Stage.Inputs[Conditional Split Input].Columns[ID (1)]"
+                          cachedDataType="i4"
+                          cachedName="ID (1)"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[ID (1)]" />
+                      </inputColumns>
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\First Pass Failures\Staging\Identify Stage.Outputs[update]"
+                      description="Output 1 of the Conditional Split Transformation"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      exclusionGroup="1"
+                      name="update"
+                      synchronousInputId="Package\First Pass Failures\Staging\Identify Stage.Inputs[Conditional Split Input]"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                          name="Expression">![ISNULL](#{Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[ID]}) &amp;&amp; ![ISNULL](#{Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[ID (1)]})</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Specifies the friendly version of the expression. This expression version uses column names."
+                          expressionType="Notify"
+                          name="FriendlyExpression">!ISNULL(ID) &amp;&amp; !ISNULL([ID (1)])</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                          name="EvaluationOrder">0</property>
+                      </properties>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\First Pass Failures\Staging\Identify Stage.Outputs[insert]"
+                      description="Output 2 of the Conditional Split Transformation"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      exclusionGroup="1"
+                      name="insert"
+                      synchronousInputId="Package\First Pass Failures\Staging\Identify Stage.Inputs[Conditional Split Input]"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                          name="Expression">![ISNULL](#{Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[ID]}) &amp;&amp; [ISNULL](#{Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[ID (1)]})</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Specifies the friendly version of the expression. This expression version uses column names."
+                          expressionType="Notify"
+                          name="FriendlyExpression">!ISNULL(ID) &amp;&amp; ISNULL([ID (1)])</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                          name="EvaluationOrder">1</property>
+                      </properties>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\First Pass Failures\Staging\Identify Stage.Outputs[delete]"
+                      description="Output 3 of the Conditional Split Transformation"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      exclusionGroup="1"
+                      name="delete"
+                      synchronousInputId="Package\First Pass Failures\Staging\Identify Stage.Inputs[Conditional Split Input]"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                          name="Expression">[ISNULL](#{Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[ID]}) &amp;&amp; ![ISNULL](#{Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[ID (1)]})</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Specifies the friendly version of the expression. This expression version uses column names."
+                          expressionType="Notify"
+                          name="FriendlyExpression">ISNULL(ID) &amp;&amp; !ISNULL([ID (1)])</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                          name="EvaluationOrder">2</property>
+                      </properties>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\First Pass Failures\Staging\Identify Stage.Outputs[Conditional Split Default Output]"
+                      description="Default Output of the Conditional Split Transformation"
+                      exclusionGroup="1"
+                      name="Conditional Split Default Output"
+                      synchronousInputId="Package\First Pass Failures\Staging\Identify Stage.Inputs[Conditional Split Input]">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          name="IsDefaultOut">true</property>
+                      </properties>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\First Pass Failures\Staging\Identify Stage.Outputs[Conditional Split Error Output]"
+                      description="Error Output of the Conditional Split Transformation"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Conditional Split Error Output"
+                      synchronousInputId="Package\First Pass Failures\Staging\Identify Stage.Inputs[Conditional Split Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\Identify Stage.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\First Pass Failures\Staging\Identify Stage.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\Identify Stage.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\First Pass Failures\Staging\Identify Stage.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\First Pass Failures\Staging\INSERT Stage"
+                  componentClassID="Microsoft.OLEDBDestination"
+                  contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                  description="OLE DB Destination"
+                  name="INSERT Stage"
+                  usesDispositions="true"
+                  version="4">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset">[dbo].[zCOMP_FPASSFAILS_STAGE_INSERT]</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">3</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepIdentity">false</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                      name="FastLoadOptions">CHECK_CONSTRAINTS</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                      name="FastLoadMaxInsertCommitSize">2147483647</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\First Pass Failures\Staging\INSERT Stage.Connections[OleDbConnection]"
+                      connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
+                      connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\First Pass Failures\Staging\INSERT Stage.Inputs[OLE DB Destination Input]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="OLE DB Destination Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\INSERT Stage.Inputs[OLE DB Destination Input].Columns[ID]"
+                          cachedDataType="i4"
+                          cachedName="ID"
+                          cachedSortKeyPosition="1"
+                          externalMetadataColumnId="Package\First Pass Failures\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[ID]"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[ID]" />
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\INSERT Stage.Inputs[OLE DB Destination Input].Columns[ShopOrder]"
+                          cachedDataType="wstr"
+                          cachedLength="12"
+                          cachedName="ShopOrder"
+                          externalMetadataColumnId="Package\First Pass Failures\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[ShopOrder]"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[ShopOrder]" />
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\INSERT Stage.Inputs[OLE DB Destination Input].Columns[FailDate]"
+                          cachedDataType="date"
+                          cachedName="FailDate"
+                          externalMetadataColumnId="Package\First Pass Failures\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[FailDate]"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[FailDate]" />
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\INSERT Stage.Inputs[OLE DB Destination Input].Columns[PartDescription]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="PartDescription"
+                          externalMetadataColumnId="Package\First Pass Failures\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[PartDescription]"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[PartDescription]" />
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\INSERT Stage.Inputs[OLE DB Destination Input].Columns[Notes]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="Notes"
+                          externalMetadataColumnId="Package\First Pass Failures\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[Notes]"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[Notes]" />
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\INSERT Stage.Inputs[OLE DB Destination Input].Columns[PartNumber]"
+                          cachedDataType="wstr"
+                          cachedLength="18"
+                          cachedName="PartNumber"
+                          externalMetadataColumnId="Package\First Pass Failures\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[PartNumber]"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[PartNumber]" />
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\INSERT Stage.Inputs[OLE DB Destination Input].Columns[Theory]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="Theory"
+                          externalMetadataColumnId="Package\First Pass Failures\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[Theory]"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[Theory]" />
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\INSERT Stage.Inputs[OLE DB Destination Input].Columns[Category]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="Category"
+                          externalMetadataColumnId="Package\First Pass Failures\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[Category]"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[Category]" />
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\INSERT Stage.Inputs[OLE DB Destination Input].Columns[Rework]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="Rework"
+                          externalMetadataColumnId="Package\First Pass Failures\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[Rework]"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[Rework]" />
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\INSERT Stage.Inputs[OLE DB Destination Input].Columns[ActionItem]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="ActionItem"
+                          externalMetadataColumnId="Package\First Pass Failures\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[ActionItem]"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[ActionItem]" />
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\INSERT Stage.Inputs[OLE DB Destination Input].Columns[Status]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="Status"
+                          externalMetadataColumnId="Package\First Pass Failures\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[Status]"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[Status]" />
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\INSERT Stage.Inputs[OLE DB Destination Input].Columns[Base]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="Base"
+                          externalMetadataColumnId="Package\First Pass Failures\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[Base]"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[Base]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\First Pass Failures\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[ID]"
+                          dataType="i4"
+                          name="ID" />
+                        <externalMetadataColumn
+                          refId="Package\First Pass Failures\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[ShopOrder]"
+                          dataType="wstr"
+                          length="12"
+                          name="ShopOrder" />
+                        <externalMetadataColumn
+                          refId="Package\First Pass Failures\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[FailDate]"
+                          dataType="dbTimeStamp"
+                          name="FailDate" />
+                        <externalMetadataColumn
+                          refId="Package\First Pass Failures\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[PartDescription]"
+                          dataType="wstr"
+                          length="255"
+                          name="PartDescription" />
+                        <externalMetadataColumn
+                          refId="Package\First Pass Failures\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[PartNumber]"
+                          dataType="wstr"
+                          length="18"
+                          name="PartNumber" />
+                        <externalMetadataColumn
+                          refId="Package\First Pass Failures\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[Notes]"
+                          dataType="wstr"
+                          length="255"
+                          name="Notes" />
+                        <externalMetadataColumn
+                          refId="Package\First Pass Failures\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[Theory]"
+                          dataType="wstr"
+                          length="255"
+                          name="Theory" />
+                        <externalMetadataColumn
+                          refId="Package\First Pass Failures\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[Category]"
+                          dataType="wstr"
+                          length="50"
+                          name="Category" />
+                        <externalMetadataColumn
+                          refId="Package\First Pass Failures\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[Rework]"
+                          dataType="wstr"
+                          length="255"
+                          name="Rework" />
+                        <externalMetadataColumn
+                          refId="Package\First Pass Failures\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[ActionItem]"
+                          dataType="wstr"
+                          length="255"
+                          name="ActionItem" />
+                        <externalMetadataColumn
+                          refId="Package\First Pass Failures\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[Status]"
+                          dataType="wstr"
+                          length="50"
+                          name="Status" />
+                        <externalMetadataColumn
+                          refId="Package\First Pass Failures\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[Base]"
+                          dataType="wstr"
+                          length="50"
+                          name="Base" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\First Pass Failures\Staging\INSERT Stage.Outputs[OLE DB Destination Error Output]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="OLE DB Destination Error Output"
+                      synchronousInputId="Package\First Pass Failures\Staging\INSERT Stage.Inputs[OLE DB Destination Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\INSERT Stage.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\First Pass Failures\Staging\INSERT Stage.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\INSERT Stage.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\First Pass Failures\Staging\INSERT Stage.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\First Pass Failures\Staging\Merge Join"
+                  componentClassID="Microsoft.MergeJoin"
+                  contactInfo="Merge Join;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
+                  description="Combine two sorted data flows into one using the FULL, LEFT, or INNER join. We recommend this transformation when data flows can be sorted at their sources."
+                  name="Merge Join"
+                  version="1">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the type of join to perform."
+                      name="JoinType"
+                      typeConverter="JoinType">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the number of columns in the ordering key."
+                      name="NumKeyColumns">1</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the null values are treated as equal values."
+                      name="TreatNullsAsEqual">true</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Indicates the requested maximum buffers per input before blocking."
+                      name="MaxBuffersPerInput">5</property>
+                  </properties>
+                  <inputs>
+                    <input
+                      refId="Package\First Pass Failures\Staging\Merge Join.Inputs[Merge Join Left Input]"
+                      hasSideEffects="true"
+                      name="Merge Join Left Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[ID]"
+                          cachedDataType="i4"
+                          cachedName="ID"
+                          cachedSortKeyPosition="1"
+                          lineageId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Output].Columns[ID]" />
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[FailDate]"
+                          cachedDataType="date"
+                          cachedName="FailDate"
+                          lineageId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Output].Columns[FailDate]" />
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[ShopOrder]"
+                          cachedDataType="wstr"
+                          cachedLength="12"
+                          cachedName="ShopOrder"
+                          lineageId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Output].Columns[ShopOrder]" />
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[PartDescription]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="PartDescription"
+                          lineageId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Output].Columns[PartDescription]" />
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[PartNumber]"
+                          cachedDataType="wstr"
+                          cachedLength="18"
+                          cachedName="PartNumber"
+                          lineageId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Output].Columns[PartNumber]" />
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[Notes]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="Notes"
+                          lineageId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Output].Columns[Notes]" />
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[Theory]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="Theory"
+                          lineageId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Output].Columns[Theory]" />
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[Category]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="Category"
+                          lineageId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Output].Columns[Category]" />
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[Rework]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="Rework"
+                          lineageId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Output].Columns[Rework]" />
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[ActionItem]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="ActionItem"
+                          lineageId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Output].Columns[ActionItem]" />
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[Status]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="Status"
+                          lineageId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Output].Columns[Status]" />
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[Base]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="Base"
+                          lineageId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Output].Columns[Base]" />
+                      </inputColumns>
+                      <externalMetadataColumns />
+                    </input>
+                    <input
+                      refId="Package\First Pass Failures\Staging\Merge Join.Inputs[Merge Join Right Input]"
+                      hasSideEffects="true"
+                      name="Merge Join Right Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[ID]"
+                          cachedDataType="i4"
+                          cachedName="ID"
+                          cachedSortKeyPosition="1"
+                          lineageId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[ID]" />
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[ShopOrder]"
+                          cachedDataType="wstr"
+                          cachedLength="12"
+                          cachedName="ShopOrder"
+                          lineageId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[ShopOrder]" />
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[FailDate]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="FailDate"
+                          lineageId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[FailDate]" />
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[PartDescription]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="PartDescription"
+                          lineageId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[PartDescription]" />
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[PartNumber]"
+                          cachedDataType="wstr"
+                          cachedLength="18"
+                          cachedName="PartNumber"
+                          lineageId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[PartNumber]" />
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[Notes]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="Notes"
+                          lineageId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[Notes]" />
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[Theory]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="Theory"
+                          lineageId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[Theory]" />
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[Category]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="Category"
+                          lineageId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[Category]" />
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[Rework]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="Rework"
+                          lineageId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[Rework]" />
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[ActionItem]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="ActionItem"
+                          lineageId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[ActionItem]" />
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[Status]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="Status"
+                          lineageId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[Status]" />
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[Base]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="Base"
+                          lineageId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[Base]" />
+                      </inputColumns>
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output]"
+                      isSorted="true"
+                      name="Merge Join Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[ID]"
+                          dataType="i4"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[ID]"
+                          name="ID"
+                          sortKeyPosition="1">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\First Pass Failures\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[ID]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[FailDate]"
+                          dataType="date"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[FailDate]"
+                          name="FailDate">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\First Pass Failures\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[FailDate]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[ShopOrder]"
+                          dataType="wstr"
+                          length="12"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[ShopOrder]"
+                          name="ShopOrder">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\First Pass Failures\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[ShopOrder]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[PartDescription]"
+                          dataType="wstr"
+                          length="255"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[PartDescription]"
+                          name="PartDescription">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\First Pass Failures\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[PartDescription]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[PartNumber]"
+                          dataType="wstr"
+                          length="18"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[PartNumber]"
+                          name="PartNumber">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\First Pass Failures\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[PartNumber]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[Notes]"
+                          dataType="wstr"
+                          length="255"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[Notes]"
+                          name="Notes">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\First Pass Failures\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[Notes]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[Theory]"
+                          dataType="wstr"
+                          length="255"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[Theory]"
+                          name="Theory">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\First Pass Failures\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[Theory]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[Category]"
+                          dataType="wstr"
+                          length="50"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[Category]"
+                          name="Category">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\First Pass Failures\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[Category]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[Rework]"
+                          dataType="wstr"
+                          length="255"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[Rework]"
+                          name="Rework">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\First Pass Failures\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[Rework]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[ActionItem]"
+                          dataType="wstr"
+                          length="255"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[ActionItem]"
+                          name="ActionItem">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\First Pass Failures\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[ActionItem]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[Status]"
+                          dataType="wstr"
+                          length="50"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[Status]"
+                          name="Status">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\First Pass Failures\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[Status]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[Base]"
+                          dataType="wstr"
+                          length="50"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[Base]"
+                          name="Base">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\First Pass Failures\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[Base]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[ID (1)]"
+                          dataType="i4"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[ID (1)]"
+                          name="ID (1)">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\First Pass Failures\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[ID]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[ShopOrder (1)]"
+                          dataType="wstr"
+                          length="12"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[ShopOrder (1)]"
+                          name="ShopOrder (1)">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\First Pass Failures\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[ShopOrder]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[FailDate (1)]"
+                          dataType="dbTimeStamp"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[FailDate (1)]"
+                          name="FailDate (1)">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\First Pass Failures\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[FailDate]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[PartDescription (1)]"
+                          dataType="wstr"
+                          length="255"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[PartDescription (1)]"
+                          name="PartDescription (1)">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\First Pass Failures\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[PartDescription]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[PartNumber (1)]"
+                          dataType="wstr"
+                          length="18"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[PartNumber (1)]"
+                          name="PartNumber (1)">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\First Pass Failures\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[PartNumber]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[Notes (1)]"
+                          dataType="wstr"
+                          length="255"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[Notes (1)]"
+                          name="Notes (1)">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\First Pass Failures\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[Notes]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[Theory (1)]"
+                          dataType="wstr"
+                          length="255"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[Theory (1)]"
+                          name="Theory (1)">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\First Pass Failures\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[Theory]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[Category (1)]"
+                          dataType="wstr"
+                          length="50"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[Category (1)]"
+                          name="Category (1)">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\First Pass Failures\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[Category]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[Rework (1)]"
+                          dataType="wstr"
+                          length="255"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[Rework (1)]"
+                          name="Rework (1)">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\First Pass Failures\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[Rework]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[ActionItem (1)]"
+                          dataType="wstr"
+                          length="255"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[ActionItem (1)]"
+                          name="ActionItem (1)">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\First Pass Failures\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[ActionItem]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[Status (1)]"
+                          dataType="wstr"
+                          length="50"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[Status (1)]"
+                          name="Status (1)">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\First Pass Failures\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[Status]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[Base (1)]"
+                          dataType="wstr"
+                          length="50"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[Base (1)]"
+                          name="Base (1)">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\First Pass Failures\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[Base]}</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\First Pass Failures\Staging\UPDATE Stage"
+                  componentClassID="Microsoft.OLEDBDestination"
+                  contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                  description="OLE DB Destination"
+                  name="UPDATE Stage"
+                  usesDispositions="true"
+                  version="4">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset">[dbo].[zCOMP_FPASSFAILS_STAGE_UPDATE]</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">3</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepIdentity">false</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                      name="FastLoadOptions">CHECK_CONSTRAINTS</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                      name="FastLoadMaxInsertCommitSize">2147483647</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\First Pass Failures\Staging\UPDATE Stage.Connections[OleDbConnection]"
+                      connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
+                      connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\First Pass Failures\Staging\UPDATE Stage.Inputs[OLE DB Destination Input]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="OLE DB Destination Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].Columns[ID]"
+                          cachedDataType="i4"
+                          cachedName="ID"
+                          cachedSortKeyPosition="1"
+                          externalMetadataColumnId="Package\First Pass Failures\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[ID]"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[ID]" />
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].Columns[ShopOrder]"
+                          cachedDataType="wstr"
+                          cachedLength="12"
+                          cachedName="ShopOrder"
+                          externalMetadataColumnId="Package\First Pass Failures\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[ShopOrder]"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[ShopOrder]" />
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].Columns[FailDate]"
+                          cachedDataType="date"
+                          cachedName="FailDate"
+                          externalMetadataColumnId="Package\First Pass Failures\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[FailDate]"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[FailDate]" />
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].Columns[PartDescription]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="PartDescription"
+                          externalMetadataColumnId="Package\First Pass Failures\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[PartDescription]"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[PartDescription]" />
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].Columns[PartNumber]"
+                          cachedDataType="wstr"
+                          cachedLength="18"
+                          cachedName="PartNumber"
+                          externalMetadataColumnId="Package\First Pass Failures\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[PartNumber]"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[PartNumber]" />
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].Columns[Notes]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="Notes"
+                          externalMetadataColumnId="Package\First Pass Failures\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[Notes]"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[Notes]" />
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].Columns[Theory]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="Theory"
+                          externalMetadataColumnId="Package\First Pass Failures\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[Theory]"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[Theory]" />
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].Columns[Category]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="Category"
+                          externalMetadataColumnId="Package\First Pass Failures\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[Category]"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[Category]" />
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].Columns[Rework]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="Rework"
+                          externalMetadataColumnId="Package\First Pass Failures\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[Rework]"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[Rework]" />
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].Columns[ActionItem]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="ActionItem"
+                          externalMetadataColumnId="Package\First Pass Failures\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[ActionItem]"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[ActionItem]" />
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].Columns[Status]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="Status"
+                          externalMetadataColumnId="Package\First Pass Failures\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[Status]"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[Status]" />
+                        <inputColumn
+                          refId="Package\First Pass Failures\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].Columns[Base]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="Base"
+                          externalMetadataColumnId="Package\First Pass Failures\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[Base]"
+                          lineageId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output].Columns[Base]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\First Pass Failures\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[ID]"
+                          dataType="i4"
+                          name="ID" />
+                        <externalMetadataColumn
+                          refId="Package\First Pass Failures\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[ShopOrder]"
+                          dataType="wstr"
+                          length="12"
+                          name="ShopOrder" />
+                        <externalMetadataColumn
+                          refId="Package\First Pass Failures\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[FailDate]"
+                          dataType="dbTimeStamp"
+                          name="FailDate" />
+                        <externalMetadataColumn
+                          refId="Package\First Pass Failures\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[PartDescription]"
+                          dataType="wstr"
+                          length="255"
+                          name="PartDescription" />
+                        <externalMetadataColumn
+                          refId="Package\First Pass Failures\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[PartNumber]"
+                          dataType="wstr"
+                          length="18"
+                          name="PartNumber" />
+                        <externalMetadataColumn
+                          refId="Package\First Pass Failures\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[Notes]"
+                          dataType="wstr"
+                          length="255"
+                          name="Notes" />
+                        <externalMetadataColumn
+                          refId="Package\First Pass Failures\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[Theory]"
+                          dataType="wstr"
+                          length="255"
+                          name="Theory" />
+                        <externalMetadataColumn
+                          refId="Package\First Pass Failures\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[Category]"
+                          dataType="wstr"
+                          length="50"
+                          name="Category" />
+                        <externalMetadataColumn
+                          refId="Package\First Pass Failures\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[Rework]"
+                          dataType="wstr"
+                          length="255"
+                          name="Rework" />
+                        <externalMetadataColumn
+                          refId="Package\First Pass Failures\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[ActionItem]"
+                          dataType="wstr"
+                          length="255"
+                          name="ActionItem" />
+                        <externalMetadataColumn
+                          refId="Package\First Pass Failures\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[Status]"
+                          dataType="wstr"
+                          length="50"
+                          name="Status" />
+                        <externalMetadataColumn
+                          refId="Package\First Pass Failures\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[Base]"
+                          dataType="wstr"
+                          length="50"
+                          name="Base" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\First Pass Failures\Staging\UPDATE Stage.Outputs[OLE DB Destination Error Output]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="OLE DB Destination Error Output"
+                      synchronousInputId="Package\First Pass Failures\Staging\UPDATE Stage.Inputs[OLE DB Destination Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\UPDATE Stage.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\First Pass Failures\Staging\UPDATE Stage.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\First Pass Failures\Staging\UPDATE Stage.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\First Pass Failures\Staging\UPDATE Stage.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+              </components>
+              <paths>
+                <path
+                  refId="Package\First Pass Failures\Staging.Paths[delete]"
+                  endId="Package\First Pass Failures\Staging\DELETE Stage.Inputs[OLE DB Destination Input]"
+                  name="delete"
+                  startId="Package\First Pass Failures\Staging\Identify Stage.Outputs[delete]" />
+                <path
+                  refId="Package\First Pass Failures\Staging.Paths[insert]"
+                  endId="Package\First Pass Failures\Staging\INSERT Stage.Inputs[OLE DB Destination Input]"
+                  name="insert"
+                  startId="Package\First Pass Failures\Staging\Identify Stage.Outputs[insert]" />
+                <path
+                  refId="Package\First Pass Failures\Staging.Paths[Merge Join Output]"
+                  endId="Package\First Pass Failures\Staging\Identify Stage.Inputs[Conditional Split Input]"
+                  name="Merge Join Output"
+                  startId="Package\First Pass Failures\Staging\Merge Join.Outputs[Merge Join Output]" />
+                <path
+                  refId="Package\First Pass Failures\Staging.Paths[OLE DB Source Output]"
+                  endId="Package\First Pass Failures\Staging\Merge Join.Inputs[Merge Join Left Input]"
+                  name="OLE DB Source Output"
+                  startId="Package\First Pass Failures\Staging\DB COMP_FPassFails.Outputs[OLE DB Source Output]" />
+                <path
+                  refId="Package\First Pass Failures\Staging.Paths[OLE DB Source Output1]"
+                  endId="Package\First Pass Failures\Staging\Merge Join.Inputs[Merge Join Right Input]"
+                  name="OLE DB Source Output"
+                  startId="Package\First Pass Failures\Staging\DB PBI.Outputs[OLE DB Source Output]" />
+                <path
+                  refId="Package\First Pass Failures\Staging.Paths[update]"
+                  endId="Package\First Pass Failures\Staging\Identify Changed Records.Inputs[Conditional Split Input]"
+                  name="update"
+                  startId="Package\First Pass Failures\Staging\Identify Stage.Outputs[update]" />
+                <path
+                  refId="Package\First Pass Failures\Staging.Paths[update1]"
+                  endId="Package\First Pass Failures\Staging\UPDATE Stage.Inputs[OLE DB Destination Input]"
+                  name="update"
+                  startId="Package\First Pass Failures\Staging\Identify Changed Records.Outputs[update]" />
+              </paths>
+            </pipeline>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\First Pass Failures\UPDATE Records"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{0daeea0f-52a2-4e17-9a44-b0010b3caf98}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="UPDATE Records"
+          DTS:ThreadHint="3">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+              SQLTask:SqlStatementSource="UPDATE A01&#xA;SET A01.[FailDate] = B01.[FailDate]&#xA;    ,A01.[ShopOrder] = B01.[ShopOrder]&#xA;    ,A01.[PartDescription] = B01.[PartDescription]&#xA;    ,A01.[PartNumber] = B01.[PartNumber]&#xA;    ,A01.[Notes] = B01.[Notes]&#xA;    ,A01.[Theory] = B01.[Theory]&#xA;    ,A01.[Category] = B01.[Category]&#xA;    ,A01.[Rework] = B01.[Rework]&#xA;    ,A01.[ActionItem] = B01.[ActionItem]&#xA;    ,A01.[Status] = B01.[Status]&#xA;    ,A01.[Base] = B01.[Base]&#xA;FROM zCOMP_FPASSFAILS A01&#xA;INNER JOIN zCOMP_FPASSFAILS_STAGE_UPDATE B01&#xA;ON A01.[ID] = B01.[ID]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\First Pass Failures.PrecedenceConstraints[Constraint]"
+          DTS:CreationName=""
+          DTS:DTSID="{fcdd192a-ee85-4c32-a859-5805a27faaf3}"
+          DTS:From="Package\First Pass Failures\Clean Stage"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint"
+          DTS:To="Package\First Pass Failures\Staging" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\First Pass Failures.PrecedenceConstraints[Constraint 1]"
+          DTS:CreationName=""
+          DTS:DTSID="{91a54ea8-e491-476c-9dbd-aee1b7bdcf05}"
+          DTS:From="Package\First Pass Failures\Staging"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 1"
+          DTS:To="Package\First Pass Failures\DELETE Records" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\First Pass Failures.PrecedenceConstraints[Constraint 2]"
+          DTS:CreationName=""
+          DTS:DTSID="{657e0cce-4f2f-489f-80f4-61ce5d509b60}"
+          DTS:From="Package\First Pass Failures\DELETE Records"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 2"
+          DTS:To="Package\First Pass Failures\UPDATE Records" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\First Pass Failures.PrecedenceConstraints[Constraint 3]"
+          DTS:CreationName=""
+          DTS:DTSID="{817c3574-7cc4-47f8-bee1-63b7d6fc4a74}"
+          DTS:From="Package\First Pass Failures\UPDATE Records"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 3"
+          DTS:To="Package\First Pass Failures\INSERT Records" />
+      </DTS:PrecedenceConstraints>
+    </DTS:Executable>
   </DTS:Executables>
   <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
 <!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
@@ -3733,7 +6076,7 @@ ORDER BY [ID]</property>
     design-time-name="Package">
     <LayoutInfo>
       <GraphLayout
-        Capacity="32" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        Capacity="64" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
           Size="158,42"
           Id="Package\Daily Activities - Detail\Clean Stage"
@@ -3848,7 +6191,7 @@ ORDER BY [ID]</property>
           PanelSize="207,396"
           Size="207,439"
           Id="Package\Daily Activities - Detail"
-          TopLeft="493,43.5" />
+          TopLeft="489.833333333333,43.5" />
         <NodeLayout
           Size="158,42"
           Id="Package\Daily Activities - Log\Clean Stage"
@@ -3963,7 +6306,7 @@ ORDER BY [ID]</property>
           PanelSize="207,396"
           Size="207,439"
           Id="Package\Daily Activities - Log"
-          TopLeft="263.25,43.5" />
+          TopLeft="261.666666666667,43.5" />
         <NodeLayout
           Size="135,42"
           Id="Package\Daily Activities - Tasks\Clean Stage"
@@ -4001,6 +6344,121 @@ ORDER BY [ID]</property>
           Size="223,237"
           Id="Package\Daily Activities - Tasks"
           TopLeft="17.5,43.5" />
+        <NodeLayout
+          Size="158,42"
+          Id="Package\First Pass Failures\Clean Stage"
+          TopLeft="28,15" />
+        <NodeLayout
+          Size="158,42"
+          Id="Package\First Pass Failures\DELETE Records"
+          TopLeft="28,166.5" />
+        <NodeLayout
+          Size="158,42"
+          Id="Package\First Pass Failures\INSERT Records"
+          TopLeft="28,318" />
+        <NodeLayout
+          Size="158,42"
+          Id="Package\First Pass Failures\Staging"
+          TopLeft="28,90.75" />
+        <NodeLayout
+          Size="158,42"
+          Id="Package\First Pass Failures\UPDATE Records"
+          TopLeft="28,242.25" />
+        <EdgeLayout
+          Id="Package\First Pass Failures.PrecedenceConstraints[Constraint]"
+          TopLeft="107,57">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,33.75"
+              Start="0,0"
+              End="0,26.25">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,26.25" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\First Pass Failures.PrecedenceConstraints[Constraint 1]"
+          TopLeft="107,132.75">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,33.75"
+              Start="0,0"
+              End="0,26.25">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,26.25" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\First Pass Failures.PrecedenceConstraints[Constraint 2]"
+          TopLeft="107,208.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,33.75"
+              Start="0,0"
+              End="0,26.25">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,26.25" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\First Pass Failures.PrecedenceConstraints[Constraint 3]"
+          TopLeft="107,284.25">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,33.75"
+              Start="0,0"
+              End="0,26.25">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,26.25" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="207,396"
+          Size="207,439"
+          Id="Package\First Pass Failures"
+          TopLeft="718,43.5" />
       </GraphLayout>
     </LayoutInfo>
   </Package>
@@ -4683,6 +7141,311 @@ ORDER BY [ID]</property>
         <Name>TableInfoObjectType</Name>
         <Value
           type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <TaskHost
+    design-time-name="Package\First Pass Failures\Staging">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="145,42"
+          Id="Package\First Pass Failures\Staging\INSERT Stage"
+          TopLeft="122,385" />
+        <NodeLayout
+          Size="145,42"
+          Id="Package\First Pass Failures\Staging\Identify Stage"
+          TopLeft="348.291666666667,200" />
+        <NodeLayout
+          Size="201,42"
+          Id="Package\First Pass Failures\Staging\Identify Changed Records"
+          TopLeft="320.291666666667,327" />
+        <NodeLayout
+          Size="146,42"
+          Id="Package\First Pass Failures\Staging\DELETE Stage"
+          TopLeft="555,385" />
+        <NodeLayout
+          Size="148,42"
+          Id="Package\First Pass Failures\Staging\UPDATE Stage"
+          TopLeft="346.791666666667,441" />
+        <NodeLayout
+          Size="112,42"
+          Id="Package\First Pass Failures\Staging\DB PBI"
+          TopLeft="589,41" />
+        <EdgeLayout
+          Id="Package\First Pass Failures\Staging.Paths[update1]"
+          TopLeft="420.791666666667,369">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,72"
+              Start="0,0"
+              End="0,64.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,64.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-15.8025,26.4453125,31.605,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\First Pass Failures\Staging.Paths[update]"
+          TopLeft="420.791666666667,242">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,85"
+              Start="0,0"
+              End="0,77.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,77.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-15.8025,32.9453125,31.605,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\First Pass Failures\Staging.Paths[insert]"
+          TopLeft="386.541666666667,242">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-192.041666666667,143"
+              Start="0,0"
+              End="-192.041666666667,135.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,45.3882618510158" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,45.3882618510158"
+                    Point2="0,49.3882618510158"
+                    Point3="-4,49.3882618510158" />
+                  <mssgle:LineSegment
+                    End="-188.041666666667,49.3882618510158" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-188.041666666667,49.3882618510158"
+                    Point2="-192.041666666667,49.3882618510158"
+                    Point3="-192.041666666667,53.3882618510158" />
+                  <mssgle:LineSegment
+                    End="-192.041666666667,135.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-108.970813802084,54.3882618510158,25.8999609375,9.451171875"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\First Pass Failures\Staging.Paths[delete]"
+          TopLeft="455.041666666667,242">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="172.958333333333,143"
+              Start="0,0"
+              End="172.958333333333,135.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,45.3882618510158" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,45.3882618510158"
+                    Point2="0,49.3882618510158"
+                    Point3="4,49.3882618510158" />
+                  <mssgle:LineSegment
+                    End="168.958333333333,49.3882618510158" />
+                  <mssgle:CubicBezierSegment
+                    Point1="168.958333333333,49.3882618510158"
+                    Point2="172.958333333333,49.3882618510158"
+                    Point3="172.958333333333,53.3882618510158" />
+                  <mssgle:LineSegment
+                    End="172.958333333333,135.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="72.2832096354165,54.3882618510158,28.3919140625,9.7490234375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="177,42"
+          Id="Package\First Pass Failures\Staging\DB COMP_FPassFails"
+          TopLeft="122,41" />
+        <NodeLayout
+          Size="130,42"
+          Id="Package\First Pass Failures\Staging\Merge Join"
+          TopLeft="357,105" />
+        <EdgeLayout
+          Id="Package\First Pass Failures\Staging.Paths[OLE DB Source Output]"
+          TopLeft="299,62">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="58,64"
+              Start="0,0"
+              End="50.5,64">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="25,0" />
+                  <mssgle:CubicBezierSegment
+                    Point1="25,0"
+                    Point2="29,0"
+                    Point3="29,4" />
+                  <mssgle:LineSegment
+                    End="29,60" />
+                  <mssgle:CubicBezierSegment
+                    Point1="29,60"
+                    Point2="29,64"
+                    Point3="33,64" />
+                  <mssgle:LineSegment
+                    End="50.5,64" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\First Pass Failures\Staging.Paths[OLE DB Source Output1]"
+          TopLeft="589,62">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-102,64"
+              Start="0,0"
+              End="-94.5,64">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="-47,0" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-47,0"
+                    Point2="-51,0"
+                    Point3="-51,4" />
+                  <mssgle:LineSegment
+                    End="-51,60" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-51,60"
+                    Point2="-51,64"
+                    Point3="-55,64" />
+                  <mssgle:LineSegment
+                    End="-94.5,64" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\First Pass Failures\Staging.Paths[Merge Join Output]"
+          TopLeft="421.395833333333,147">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,53"
+              Start="0,0"
+              End="0,45.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,45.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\First Pass Failures\Staging\INSERT Stage">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\First Pass Failures\Staging\DELETE Stage">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\First Pass Failures\Staging\UPDATE Stage">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\First Pass Failures\Staging\DB PBI">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\First Pass Failures\Staging\DB COMP_FPassFails">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
       </Property>
     </Properties>
   </PipelineComponentMetadata>
