@@ -7,12 +7,12 @@
   DTS:CreatorName="DOMAIN\RPETRELLA"
   DTS:DTSID="{EDBF8BDF-1433-4E7B-BE49-EADFFDFF223B}"
   DTS:ExecutableType="Microsoft.Package"
-  DTS:LastModifiedProductVersion="15.0.2000.170"
+  DTS:LastModifiedProductVersion="16.0.694.0"
   DTS:LocaleID="1033"
   DTS:ObjectName="MSEG"
   DTS:PackageType="5"
-  DTS:VersionBuild="11"
-  DTS:VersionGUID="{34DFB307-A62E-4C45-9565-0628E1CC0455}">
+  DTS:VersionBuild="17"
+  DTS:VersionGUID="{594ADBDB-55F6-4BA9-89E7-1EF5022C1F2B}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:Variables />
@@ -31,7 +31,41 @@
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
           SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-          SQLTask:SqlStatementSource="TRUNCATE TABLE [MSEG_STAGE_UPDATE]&#xA;go&#xA;TRUNCATE TABLE [MSEG_STAGE_DELETE]&#xA;go&#xA;TRUNCATE TABLE [MSEG_STAGE_INSERT]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          SQLTask:SqlStatementSource="TRUNCATE TABLE [MSEG_STAGE_UPDATE]&#xA;go&#xA;TRUNCATE TABLE [MSEG_STAGE_DELETE]&#xA;go&#xA;TRUNCATE TABLE [MSEG_STAGE_INSERT]&#xA;go" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\delete"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{e18cb7b0-a925-4684-a2bd-0cf709145b7e}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="delete"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="DELETE A01&#xA;FROM [MSEG] A01 INNER JOIN [MSEG_STAGE_DELETE] B01 ON ( A01.[MANDT] = B01.[MANDT]&#xA;                                                    AND A01.[MBLNR] = B01.[MBLNR]&#xA;                                                    AND A01.[MJAHR] = B01.[MJAHR]&#xA;                                                    AND A01.[ZEILE] = B01.[ZEILE] )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Insert"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{6862c584-79da-4d03-80bd-8f205196734c}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Insert"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="INSERT INTO [MSEG]&#xA;SELECT * FROM [MSEG_STAGE_INSERT]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
@@ -73,47 +107,35 @@
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT A01.[MANDT]
-      ,A01.[MBLNR]
-      ,A01.[MJAHR]
-      ,A01.[ZEILE]
-      ,A01.[BWART]
-      ,A01.[MATNR]
-      ,A01.[WERKS]
-      ,A01.[LGORT]
-      ,A01.[CHARG]
-      ,A01.[SHKZG]
-      ,A01.[DMBTR]
-      ,A01.[MENGE]
-      ,A01.[MEINS]
-      ,A01.[ERFMG]
-      ,A01.[ERFME]
-      ,A01.[KOSTL]
-      ,A01.[AUFNR]
-      ,A01.[LGNUM]
-      ,A01.[LGTYP]
-      ,A01.[LGPLA]
-      ,A01.[GRUND]
-      ,A01.[SAKTO]
-      ,A01.[BUDAT_MKPF]
-      ,A01.[USNAM_MKPF]
-      ,A01.[HSDAT]
-      ,A01.[LIFNR]
-      ,A01.[KUNNR]
-      ,A01.[WAERS]
-      ,A01.[EBELN]
-      ,A01.[EBELP]
-      ,A01.[BUKRS]
-      ,A01.[KZBEW]
-      ,A01.[KZVBR]
-      ,A01.[KZZUG]
-      ,A01.[SOBKZ]
-      ,A01.[XAUTO]
-FROM [MSEG] A01 (NOLOCK)
-ORDER BY A01.[MANDT]
-      ,A01.[MBLNR]
-      ,A01.[MJAHR]
-      ,A01.[ZEILE]</property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT [MANDT]
+    ,[MBLNR]
+    ,[MJAHR]
+    ,[ZEILE]
+    ,[BWART]
+    ,[MATNR]
+    ,[WERKS]
+    ,[LGORT]
+    ,[CHARG]
+    ,[SHKZG]
+    ,[DMBTR]
+    ,[ERFMG]
+    ,[ERFME]
+    ,[SGTXT]
+    ,[AUFNR]
+    ,[LGTYP]
+    ,[LGPLA]
+    ,[GRUND]
+    ,[SAKTO]
+    ,[KUNNR]
+    ,[WAERS]
+    ,[KZVBR]
+    ,[XAUTO]
+FROM [MSEG] (NOLOCK)
+WHERE [MANDT] = '105'
+ORDER BY [MANDT]
+    ,[MBLNR]
+    ,[MJAHR]
+    ,[ZEILE]</property>
                 <property
                   dataType="System.String"
                   description="The variable that contains the SQL command to be executed."
@@ -266,27 +288,6 @@ ORDER BY A01.[MANDT]
                       scale="2"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].Columns[MENGE]"
-                      dataType="numeric"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[MENGE]"
-                      lineageId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].Columns[MENGE]"
-                      name="MENGE"
-                      precision="13"
-                      scale="3"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].Columns[MEINS]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[MEINS]"
-                      length="3"
-                      lineageId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].Columns[MEINS]"
-                      name="MEINS"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
                       refId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].Columns[ERFMG]"
                       dataType="numeric"
                       errorOrTruncationOperation="Conversion"
@@ -308,16 +309,6 @@ ORDER BY A01.[MANDT]
                       name="ERFME"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].Columns[KOSTL]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[KOSTL]"
-                      length="10"
-                      lineageId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].Columns[KOSTL]"
-                      name="KOSTL"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
                       refId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].Columns[AUFNR]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
@@ -326,16 +317,6 @@ ORDER BY A01.[MANDT]
                       length="12"
                       lineageId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].Columns[AUFNR]"
                       name="AUFNR"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].Columns[LGNUM]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[LGNUM]"
-                      length="3"
-                      lineageId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].Columns[LGNUM]"
-                      name="LGNUM"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
                       refId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].Columns[LGTYP]"
@@ -378,46 +359,6 @@ ORDER BY A01.[MANDT]
                       name="SAKTO"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].Columns[BUDAT_MKPF]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[BUDAT_MKPF]"
-                      length="8"
-                      lineageId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].Columns[BUDAT_MKPF]"
-                      name="BUDAT_MKPF"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].Columns[USNAM_MKPF]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[USNAM_MKPF]"
-                      length="12"
-                      lineageId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].Columns[USNAM_MKPF]"
-                      name="USNAM_MKPF"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].Columns[HSDAT]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[HSDAT]"
-                      length="8"
-                      lineageId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].Columns[HSDAT]"
-                      name="HSDAT"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].Columns[LIFNR]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[LIFNR]"
-                      length="10"
-                      lineageId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].Columns[LIFNR]"
-                      name="LIFNR"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
                       refId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].Columns[KUNNR]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
@@ -438,46 +379,6 @@ ORDER BY A01.[MANDT]
                       name="WAERS"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].Columns[EBELN]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[EBELN]"
-                      length="10"
-                      lineageId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].Columns[EBELN]"
-                      name="EBELN"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].Columns[EBELP]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[EBELP]"
-                      length="5"
-                      lineageId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].Columns[EBELP]"
-                      name="EBELP"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].Columns[BUKRS]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[BUKRS]"
-                      length="4"
-                      lineageId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].Columns[BUKRS]"
-                      name="BUKRS"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].Columns[KZBEW]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[KZBEW]"
-                      length="1"
-                      lineageId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].Columns[KZBEW]"
-                      name="KZBEW"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
                       refId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].Columns[KZVBR]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
@@ -488,26 +389,6 @@ ORDER BY A01.[MANDT]
                       name="KZVBR"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].Columns[KZZUG]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[KZZUG]"
-                      length="1"
-                      lineageId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].Columns[KZZUG]"
-                      name="KZZUG"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].Columns[SOBKZ]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[SOBKZ]"
-                      length="1"
-                      lineageId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].Columns[SOBKZ]"
-                      name="SOBKZ"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
                       refId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].Columns[XAUTO]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
@@ -516,6 +397,16 @@ ORDER BY A01.[MANDT]
                       length="1"
                       lineageId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].Columns[XAUTO]"
                       name="XAUTO"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].Columns[SGTXT]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[SGTXT]"
+                      length="50"
+                      lineageId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].Columns[SGTXT]"
+                      name="SGTXT"
                       truncationRowDisposition="FailComponent" />
                   </outputColumns>
                   <externalMetadataColumns
@@ -577,17 +468,6 @@ ORDER BY A01.[MANDT]
                       precision="13"
                       scale="2" />
                     <externalMetadataColumn
-                      refId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[MENGE]"
-                      dataType="numeric"
-                      name="MENGE"
-                      precision="13"
-                      scale="3" />
-                    <externalMetadataColumn
-                      refId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[MEINS]"
-                      dataType="wstr"
-                      length="3"
-                      name="MEINS" />
-                    <externalMetadataColumn
                       refId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[ERFMG]"
                       dataType="numeric"
                       name="ERFMG"
@@ -599,20 +479,10 @@ ORDER BY A01.[MANDT]
                       length="3"
                       name="ERFME" />
                     <externalMetadataColumn
-                      refId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[KOSTL]"
-                      dataType="wstr"
-                      length="10"
-                      name="KOSTL" />
-                    <externalMetadataColumn
                       refId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[AUFNR]"
                       dataType="wstr"
                       length="12"
                       name="AUFNR" />
-                    <externalMetadataColumn
-                      refId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[LGNUM]"
-                      dataType="wstr"
-                      length="3"
-                      name="LGNUM" />
                     <externalMetadataColumn
                       refId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[LGTYP]"
                       dataType="wstr"
@@ -634,26 +504,6 @@ ORDER BY A01.[MANDT]
                       length="10"
                       name="SAKTO" />
                     <externalMetadataColumn
-                      refId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[BUDAT_MKPF]"
-                      dataType="wstr"
-                      length="8"
-                      name="BUDAT_MKPF" />
-                    <externalMetadataColumn
-                      refId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[USNAM_MKPF]"
-                      dataType="wstr"
-                      length="12"
-                      name="USNAM_MKPF" />
-                    <externalMetadataColumn
-                      refId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[HSDAT]"
-                      dataType="wstr"
-                      length="8"
-                      name="HSDAT" />
-                    <externalMetadataColumn
-                      refId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[LIFNR]"
-                      dataType="wstr"
-                      length="10"
-                      name="LIFNR" />
-                    <externalMetadataColumn
                       refId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[KUNNR]"
                       dataType="wstr"
                       length="10"
@@ -664,45 +514,20 @@ ORDER BY A01.[MANDT]
                       length="5"
                       name="WAERS" />
                     <externalMetadataColumn
-                      refId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[EBELN]"
-                      dataType="wstr"
-                      length="10"
-                      name="EBELN" />
-                    <externalMetadataColumn
-                      refId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[EBELP]"
-                      dataType="wstr"
-                      length="5"
-                      name="EBELP" />
-                    <externalMetadataColumn
-                      refId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[BUKRS]"
-                      dataType="wstr"
-                      length="4"
-                      name="BUKRS" />
-                    <externalMetadataColumn
-                      refId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[KZBEW]"
-                      dataType="wstr"
-                      length="1"
-                      name="KZBEW" />
-                    <externalMetadataColumn
                       refId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[KZVBR]"
                       dataType="wstr"
                       length="1"
                       name="KZVBR" />
                     <externalMetadataColumn
-                      refId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[KZZUG]"
-                      dataType="wstr"
-                      length="1"
-                      name="KZZUG" />
-                    <externalMetadataColumn
-                      refId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[SOBKZ]"
-                      dataType="wstr"
-                      length="1"
-                      name="SOBKZ" />
-                    <externalMetadataColumn
                       refId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[XAUTO]"
                       dataType="wstr"
                       length="1"
                       name="XAUTO" />
+                    <externalMetadataColumn
+                      refId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[SGTXT]"
+                      dataType="wstr"
+                      length="50"
+                      name="SGTXT" />
                   </externalMetadataColumns>
                 </output>
                 <output
@@ -778,19 +603,6 @@ ORDER BY A01.[MANDT]
                       precision="13"
                       scale="2" />
                     <outputColumn
-                      refId="Package\MSEG\DB PBI.Outputs[OLE DB Source Error Output].Columns[MENGE]"
-                      dataType="numeric"
-                      lineageId="Package\MSEG\DB PBI.Outputs[OLE DB Source Error Output].Columns[MENGE]"
-                      name="MENGE"
-                      precision="13"
-                      scale="3" />
-                    <outputColumn
-                      refId="Package\MSEG\DB PBI.Outputs[OLE DB Source Error Output].Columns[MEINS]"
-                      dataType="wstr"
-                      length="3"
-                      lineageId="Package\MSEG\DB PBI.Outputs[OLE DB Source Error Output].Columns[MEINS]"
-                      name="MEINS" />
-                    <outputColumn
                       refId="Package\MSEG\DB PBI.Outputs[OLE DB Source Error Output].Columns[ERFMG]"
                       dataType="numeric"
                       lineageId="Package\MSEG\DB PBI.Outputs[OLE DB Source Error Output].Columns[ERFMG]"
@@ -804,23 +616,17 @@ ORDER BY A01.[MANDT]
                       lineageId="Package\MSEG\DB PBI.Outputs[OLE DB Source Error Output].Columns[ERFME]"
                       name="ERFME" />
                     <outputColumn
-                      refId="Package\MSEG\DB PBI.Outputs[OLE DB Source Error Output].Columns[KOSTL]"
+                      refId="Package\MSEG\DB PBI.Outputs[OLE DB Source Error Output].Columns[SGTXT]"
                       dataType="wstr"
-                      length="10"
-                      lineageId="Package\MSEG\DB PBI.Outputs[OLE DB Source Error Output].Columns[KOSTL]"
-                      name="KOSTL" />
+                      length="50"
+                      lineageId="Package\MSEG\DB PBI.Outputs[OLE DB Source Error Output].Columns[SGTXT]"
+                      name="SGTXT" />
                     <outputColumn
                       refId="Package\MSEG\DB PBI.Outputs[OLE DB Source Error Output].Columns[AUFNR]"
                       dataType="wstr"
                       length="12"
                       lineageId="Package\MSEG\DB PBI.Outputs[OLE DB Source Error Output].Columns[AUFNR]"
                       name="AUFNR" />
-                    <outputColumn
-                      refId="Package\MSEG\DB PBI.Outputs[OLE DB Source Error Output].Columns[LGNUM]"
-                      dataType="wstr"
-                      length="3"
-                      lineageId="Package\MSEG\DB PBI.Outputs[OLE DB Source Error Output].Columns[LGNUM]"
-                      name="LGNUM" />
                     <outputColumn
                       refId="Package\MSEG\DB PBI.Outputs[OLE DB Source Error Output].Columns[LGTYP]"
                       dataType="wstr"
@@ -846,30 +652,6 @@ ORDER BY A01.[MANDT]
                       lineageId="Package\MSEG\DB PBI.Outputs[OLE DB Source Error Output].Columns[SAKTO]"
                       name="SAKTO" />
                     <outputColumn
-                      refId="Package\MSEG\DB PBI.Outputs[OLE DB Source Error Output].Columns[BUDAT_MKPF]"
-                      dataType="wstr"
-                      length="8"
-                      lineageId="Package\MSEG\DB PBI.Outputs[OLE DB Source Error Output].Columns[BUDAT_MKPF]"
-                      name="BUDAT_MKPF" />
-                    <outputColumn
-                      refId="Package\MSEG\DB PBI.Outputs[OLE DB Source Error Output].Columns[USNAM_MKPF]"
-                      dataType="wstr"
-                      length="12"
-                      lineageId="Package\MSEG\DB PBI.Outputs[OLE DB Source Error Output].Columns[USNAM_MKPF]"
-                      name="USNAM_MKPF" />
-                    <outputColumn
-                      refId="Package\MSEG\DB PBI.Outputs[OLE DB Source Error Output].Columns[HSDAT]"
-                      dataType="wstr"
-                      length="8"
-                      lineageId="Package\MSEG\DB PBI.Outputs[OLE DB Source Error Output].Columns[HSDAT]"
-                      name="HSDAT" />
-                    <outputColumn
-                      refId="Package\MSEG\DB PBI.Outputs[OLE DB Source Error Output].Columns[LIFNR]"
-                      dataType="wstr"
-                      length="10"
-                      lineageId="Package\MSEG\DB PBI.Outputs[OLE DB Source Error Output].Columns[LIFNR]"
-                      name="LIFNR" />
-                    <outputColumn
                       refId="Package\MSEG\DB PBI.Outputs[OLE DB Source Error Output].Columns[KUNNR]"
                       dataType="wstr"
                       length="10"
@@ -882,47 +664,11 @@ ORDER BY A01.[MANDT]
                       lineageId="Package\MSEG\DB PBI.Outputs[OLE DB Source Error Output].Columns[WAERS]"
                       name="WAERS" />
                     <outputColumn
-                      refId="Package\MSEG\DB PBI.Outputs[OLE DB Source Error Output].Columns[EBELN]"
-                      dataType="wstr"
-                      length="10"
-                      lineageId="Package\MSEG\DB PBI.Outputs[OLE DB Source Error Output].Columns[EBELN]"
-                      name="EBELN" />
-                    <outputColumn
-                      refId="Package\MSEG\DB PBI.Outputs[OLE DB Source Error Output].Columns[EBELP]"
-                      dataType="wstr"
-                      length="5"
-                      lineageId="Package\MSEG\DB PBI.Outputs[OLE DB Source Error Output].Columns[EBELP]"
-                      name="EBELP" />
-                    <outputColumn
-                      refId="Package\MSEG\DB PBI.Outputs[OLE DB Source Error Output].Columns[BUKRS]"
-                      dataType="wstr"
-                      length="4"
-                      lineageId="Package\MSEG\DB PBI.Outputs[OLE DB Source Error Output].Columns[BUKRS]"
-                      name="BUKRS" />
-                    <outputColumn
-                      refId="Package\MSEG\DB PBI.Outputs[OLE DB Source Error Output].Columns[KZBEW]"
-                      dataType="wstr"
-                      length="1"
-                      lineageId="Package\MSEG\DB PBI.Outputs[OLE DB Source Error Output].Columns[KZBEW]"
-                      name="KZBEW" />
-                    <outputColumn
                       refId="Package\MSEG\DB PBI.Outputs[OLE DB Source Error Output].Columns[KZVBR]"
                       dataType="wstr"
                       length="1"
                       lineageId="Package\MSEG\DB PBI.Outputs[OLE DB Source Error Output].Columns[KZVBR]"
                       name="KZVBR" />
-                    <outputColumn
-                      refId="Package\MSEG\DB PBI.Outputs[OLE DB Source Error Output].Columns[KZZUG]"
-                      dataType="wstr"
-                      length="1"
-                      lineageId="Package\MSEG\DB PBI.Outputs[OLE DB Source Error Output].Columns[KZZUG]"
-                      name="KZZUG" />
-                    <outputColumn
-                      refId="Package\MSEG\DB PBI.Outputs[OLE DB Source Error Output].Columns[SOBKZ]"
-                      dataType="wstr"
-                      length="1"
-                      lineageId="Package\MSEG\DB PBI.Outputs[OLE DB Source Error Output].Columns[SOBKZ]"
-                      name="SOBKZ" />
                     <outputColumn
                       refId="Package\MSEG\DB PBI.Outputs[OLE DB Source Error Output].Columns[XAUTO]"
                       dataType="wstr"
@@ -971,47 +717,35 @@ ORDER BY A01.[MANDT]
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT A01.[MANDT]
-      ,A01.[MBLNR]
-      ,A01.[MJAHR]
-      ,A01.[ZEILE]
-      ,A01.[BWART]
-      ,A01.[MATNR]
-      ,A01.[WERKS]
-      ,A01.[LGORT]
-      ,A01.[CHARG]
-      ,A01.[SHKZG]
-      ,A01.[DMBTR]
-      ,A01.[MENGE]
-      ,A01.[MEINS]
-      ,A01.[ERFMG]
-      ,A01.[ERFME]
-      ,A01.[KOSTL]
-      ,A01.[AUFNR]
-      ,A01.[LGNUM]
-      ,A01.[LGTYP]
-      ,A01.[LGPLA]
-      ,A01.[GRUND]
-      ,A01.[SAKTO]
-      ,A01.[BUDAT_MKPF]
-      ,A01.[USNAM_MKPF]
-      ,A01.[HSDAT]
-      ,A01.[LIFNR]
-      ,A01.[KUNNR]
-      ,A01.[WAERS]
-      ,A01.[EBELN]
-      ,A01.[EBELP]
-      ,A01.[BUKRS]
-      ,A01.[KZBEW]
-      ,A01.[KZVBR]
-      ,A01.[KZZUG]
-      ,A01.[SOBKZ]
-      ,A01.[XAUTO]
-FROM [ecp].[MSEG] A01 (NOLOCK)
-ORDER BY A01.[MANDT]
-      ,A01.[MBLNR]
-      ,A01.[MJAHR]
-      ,A01.[ZEILE]</property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT [MANDT]
+    ,[MBLNR]
+    ,[MJAHR]
+    ,[ZEILE]
+    ,[BWART]
+    ,[MATNR]
+    ,[WERKS]
+    ,[LGORT]
+    ,[CHARG]
+    ,[SHKZG]
+    ,[DMBTR]
+    ,[ERFMG]
+    ,[ERFME]
+    ,[SGTXT]
+    ,[AUFNR]
+    ,[LGTYP]
+    ,[LGPLA]
+    ,[GRUND]
+    ,[SAKTO]
+    ,[KUNNR]
+    ,[WAERS]
+    ,[KZVBR]
+    ,[XAUTO]
+FROM [ecp].[MSEG] (NOLOCK)
+WHERE [MANDT] = '105'
+ORDER BY [MANDT]
+    ,[MBLNR]
+    ,[MJAHR]
+    ,[ZEILE]</property>
                 <property
                   dataType="System.String"
                   description="The variable that contains the SQL command to be executed."
@@ -1164,27 +898,6 @@ ORDER BY A01.[MANDT]
                       scale="2"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].Columns[MENGE]"
-                      dataType="numeric"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[MENGE]"
-                      lineageId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].Columns[MENGE]"
-                      name="MENGE"
-                      precision="13"
-                      scale="3"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].Columns[MEINS]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[MEINS]"
-                      length="3"
-                      lineageId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].Columns[MEINS]"
-                      name="MEINS"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
                       refId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].Columns[ERFMG]"
                       dataType="numeric"
                       errorOrTruncationOperation="Conversion"
@@ -1206,16 +919,6 @@ ORDER BY A01.[MANDT]
                       name="ERFME"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].Columns[KOSTL]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[KOSTL]"
-                      length="10"
-                      lineageId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].Columns[KOSTL]"
-                      name="KOSTL"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
                       refId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].Columns[AUFNR]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
@@ -1224,16 +927,6 @@ ORDER BY A01.[MANDT]
                       length="12"
                       lineageId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].Columns[AUFNR]"
                       name="AUFNR"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].Columns[LGNUM]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[LGNUM]"
-                      length="3"
-                      lineageId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].Columns[LGNUM]"
-                      name="LGNUM"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
                       refId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].Columns[LGTYP]"
@@ -1276,46 +969,6 @@ ORDER BY A01.[MANDT]
                       name="SAKTO"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].Columns[BUDAT_MKPF]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[BUDAT_MKPF]"
-                      length="8"
-                      lineageId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].Columns[BUDAT_MKPF]"
-                      name="BUDAT_MKPF"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].Columns[USNAM_MKPF]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[USNAM_MKPF]"
-                      length="12"
-                      lineageId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].Columns[USNAM_MKPF]"
-                      name="USNAM_MKPF"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].Columns[HSDAT]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[HSDAT]"
-                      length="8"
-                      lineageId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].Columns[HSDAT]"
-                      name="HSDAT"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].Columns[LIFNR]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[LIFNR]"
-                      length="10"
-                      lineageId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].Columns[LIFNR]"
-                      name="LIFNR"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
                       refId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].Columns[KUNNR]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
@@ -1336,46 +989,6 @@ ORDER BY A01.[MANDT]
                       name="WAERS"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].Columns[EBELN]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[EBELN]"
-                      length="10"
-                      lineageId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].Columns[EBELN]"
-                      name="EBELN"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].Columns[EBELP]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[EBELP]"
-                      length="5"
-                      lineageId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].Columns[EBELP]"
-                      name="EBELP"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].Columns[BUKRS]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[BUKRS]"
-                      length="4"
-                      lineageId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].Columns[BUKRS]"
-                      name="BUKRS"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].Columns[KZBEW]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[KZBEW]"
-                      length="1"
-                      lineageId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].Columns[KZBEW]"
-                      name="KZBEW"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
                       refId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].Columns[KZVBR]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
@@ -1386,26 +999,6 @@ ORDER BY A01.[MANDT]
                       name="KZVBR"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].Columns[KZZUG]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[KZZUG]"
-                      length="1"
-                      lineageId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].Columns[KZZUG]"
-                      name="KZZUG"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].Columns[SOBKZ]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[SOBKZ]"
-                      length="1"
-                      lineageId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].Columns[SOBKZ]"
-                      name="SOBKZ"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
                       refId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].Columns[XAUTO]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
@@ -1414,6 +1007,16 @@ ORDER BY A01.[MANDT]
                       length="1"
                       lineageId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].Columns[XAUTO]"
                       name="XAUTO"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].Columns[SGTXT]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[SGTXT]"
+                      length="50"
+                      lineageId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].Columns[SGTXT]"
+                      name="SGTXT"
                       truncationRowDisposition="FailComponent" />
                   </outputColumns>
                   <externalMetadataColumns
@@ -1475,17 +1078,6 @@ ORDER BY A01.[MANDT]
                       precision="13"
                       scale="2" />
                     <externalMetadataColumn
-                      refId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[MENGE]"
-                      dataType="numeric"
-                      name="MENGE"
-                      precision="13"
-                      scale="3" />
-                    <externalMetadataColumn
-                      refId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[MEINS]"
-                      dataType="wstr"
-                      length="3"
-                      name="MEINS" />
-                    <externalMetadataColumn
                       refId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[ERFMG]"
                       dataType="numeric"
                       name="ERFMG"
@@ -1497,20 +1089,10 @@ ORDER BY A01.[MANDT]
                       length="3"
                       name="ERFME" />
                     <externalMetadataColumn
-                      refId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[KOSTL]"
-                      dataType="wstr"
-                      length="10"
-                      name="KOSTL" />
-                    <externalMetadataColumn
                       refId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[AUFNR]"
                       dataType="wstr"
                       length="12"
                       name="AUFNR" />
-                    <externalMetadataColumn
-                      refId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[LGNUM]"
-                      dataType="wstr"
-                      length="3"
-                      name="LGNUM" />
                     <externalMetadataColumn
                       refId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[LGTYP]"
                       dataType="wstr"
@@ -1532,26 +1114,6 @@ ORDER BY A01.[MANDT]
                       length="10"
                       name="SAKTO" />
                     <externalMetadataColumn
-                      refId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[BUDAT_MKPF]"
-                      dataType="wstr"
-                      length="8"
-                      name="BUDAT_MKPF" />
-                    <externalMetadataColumn
-                      refId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[USNAM_MKPF]"
-                      dataType="wstr"
-                      length="12"
-                      name="USNAM_MKPF" />
-                    <externalMetadataColumn
-                      refId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[HSDAT]"
-                      dataType="wstr"
-                      length="8"
-                      name="HSDAT" />
-                    <externalMetadataColumn
-                      refId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[LIFNR]"
-                      dataType="wstr"
-                      length="10"
-                      name="LIFNR" />
-                    <externalMetadataColumn
                       refId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[KUNNR]"
                       dataType="wstr"
                       length="10"
@@ -1562,45 +1124,20 @@ ORDER BY A01.[MANDT]
                       length="5"
                       name="WAERS" />
                     <externalMetadataColumn
-                      refId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[EBELN]"
-                      dataType="wstr"
-                      length="10"
-                      name="EBELN" />
-                    <externalMetadataColumn
-                      refId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[EBELP]"
-                      dataType="wstr"
-                      length="5"
-                      name="EBELP" />
-                    <externalMetadataColumn
-                      refId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[BUKRS]"
-                      dataType="wstr"
-                      length="4"
-                      name="BUKRS" />
-                    <externalMetadataColumn
-                      refId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[KZBEW]"
-                      dataType="wstr"
-                      length="1"
-                      name="KZBEW" />
-                    <externalMetadataColumn
                       refId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[KZVBR]"
                       dataType="wstr"
                       length="1"
                       name="KZVBR" />
                     <externalMetadataColumn
-                      refId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[KZZUG]"
-                      dataType="wstr"
-                      length="1"
-                      name="KZZUG" />
-                    <externalMetadataColumn
-                      refId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[SOBKZ]"
-                      dataType="wstr"
-                      length="1"
-                      name="SOBKZ" />
-                    <externalMetadataColumn
                       refId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[XAUTO]"
                       dataType="wstr"
                       length="1"
                       name="XAUTO" />
+                    <externalMetadataColumn
+                      refId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[SGTXT]"
+                      dataType="wstr"
+                      length="50"
+                      name="SGTXT" />
                   </externalMetadataColumns>
                 </output>
                 <output
@@ -1676,19 +1213,6 @@ ORDER BY A01.[MANDT]
                       precision="13"
                       scale="2" />
                     <outputColumn
-                      refId="Package\MSEG\DB SAP.Outputs[OLE DB Source Error Output].Columns[MENGE]"
-                      dataType="numeric"
-                      lineageId="Package\MSEG\DB SAP.Outputs[OLE DB Source Error Output].Columns[MENGE]"
-                      name="MENGE"
-                      precision="13"
-                      scale="3" />
-                    <outputColumn
-                      refId="Package\MSEG\DB SAP.Outputs[OLE DB Source Error Output].Columns[MEINS]"
-                      dataType="wstr"
-                      length="3"
-                      lineageId="Package\MSEG\DB SAP.Outputs[OLE DB Source Error Output].Columns[MEINS]"
-                      name="MEINS" />
-                    <outputColumn
                       refId="Package\MSEG\DB SAP.Outputs[OLE DB Source Error Output].Columns[ERFMG]"
                       dataType="numeric"
                       lineageId="Package\MSEG\DB SAP.Outputs[OLE DB Source Error Output].Columns[ERFMG]"
@@ -1702,23 +1226,17 @@ ORDER BY A01.[MANDT]
                       lineageId="Package\MSEG\DB SAP.Outputs[OLE DB Source Error Output].Columns[ERFME]"
                       name="ERFME" />
                     <outputColumn
-                      refId="Package\MSEG\DB SAP.Outputs[OLE DB Source Error Output].Columns[KOSTL]"
+                      refId="Package\MSEG\DB SAP.Outputs[OLE DB Source Error Output].Columns[SGTXT]"
                       dataType="wstr"
-                      length="10"
-                      lineageId="Package\MSEG\DB SAP.Outputs[OLE DB Source Error Output].Columns[KOSTL]"
-                      name="KOSTL" />
+                      length="50"
+                      lineageId="Package\MSEG\DB SAP.Outputs[OLE DB Source Error Output].Columns[SGTXT]"
+                      name="SGTXT" />
                     <outputColumn
                       refId="Package\MSEG\DB SAP.Outputs[OLE DB Source Error Output].Columns[AUFNR]"
                       dataType="wstr"
                       length="12"
                       lineageId="Package\MSEG\DB SAP.Outputs[OLE DB Source Error Output].Columns[AUFNR]"
                       name="AUFNR" />
-                    <outputColumn
-                      refId="Package\MSEG\DB SAP.Outputs[OLE DB Source Error Output].Columns[LGNUM]"
-                      dataType="wstr"
-                      length="3"
-                      lineageId="Package\MSEG\DB SAP.Outputs[OLE DB Source Error Output].Columns[LGNUM]"
-                      name="LGNUM" />
                     <outputColumn
                       refId="Package\MSEG\DB SAP.Outputs[OLE DB Source Error Output].Columns[LGTYP]"
                       dataType="wstr"
@@ -1744,30 +1262,6 @@ ORDER BY A01.[MANDT]
                       lineageId="Package\MSEG\DB SAP.Outputs[OLE DB Source Error Output].Columns[SAKTO]"
                       name="SAKTO" />
                     <outputColumn
-                      refId="Package\MSEG\DB SAP.Outputs[OLE DB Source Error Output].Columns[BUDAT_MKPF]"
-                      dataType="wstr"
-                      length="8"
-                      lineageId="Package\MSEG\DB SAP.Outputs[OLE DB Source Error Output].Columns[BUDAT_MKPF]"
-                      name="BUDAT_MKPF" />
-                    <outputColumn
-                      refId="Package\MSEG\DB SAP.Outputs[OLE DB Source Error Output].Columns[USNAM_MKPF]"
-                      dataType="wstr"
-                      length="12"
-                      lineageId="Package\MSEG\DB SAP.Outputs[OLE DB Source Error Output].Columns[USNAM_MKPF]"
-                      name="USNAM_MKPF" />
-                    <outputColumn
-                      refId="Package\MSEG\DB SAP.Outputs[OLE DB Source Error Output].Columns[HSDAT]"
-                      dataType="wstr"
-                      length="8"
-                      lineageId="Package\MSEG\DB SAP.Outputs[OLE DB Source Error Output].Columns[HSDAT]"
-                      name="HSDAT" />
-                    <outputColumn
-                      refId="Package\MSEG\DB SAP.Outputs[OLE DB Source Error Output].Columns[LIFNR]"
-                      dataType="wstr"
-                      length="10"
-                      lineageId="Package\MSEG\DB SAP.Outputs[OLE DB Source Error Output].Columns[LIFNR]"
-                      name="LIFNR" />
-                    <outputColumn
                       refId="Package\MSEG\DB SAP.Outputs[OLE DB Source Error Output].Columns[KUNNR]"
                       dataType="wstr"
                       length="10"
@@ -1780,47 +1274,11 @@ ORDER BY A01.[MANDT]
                       lineageId="Package\MSEG\DB SAP.Outputs[OLE DB Source Error Output].Columns[WAERS]"
                       name="WAERS" />
                     <outputColumn
-                      refId="Package\MSEG\DB SAP.Outputs[OLE DB Source Error Output].Columns[EBELN]"
-                      dataType="wstr"
-                      length="10"
-                      lineageId="Package\MSEG\DB SAP.Outputs[OLE DB Source Error Output].Columns[EBELN]"
-                      name="EBELN" />
-                    <outputColumn
-                      refId="Package\MSEG\DB SAP.Outputs[OLE DB Source Error Output].Columns[EBELP]"
-                      dataType="wstr"
-                      length="5"
-                      lineageId="Package\MSEG\DB SAP.Outputs[OLE DB Source Error Output].Columns[EBELP]"
-                      name="EBELP" />
-                    <outputColumn
-                      refId="Package\MSEG\DB SAP.Outputs[OLE DB Source Error Output].Columns[BUKRS]"
-                      dataType="wstr"
-                      length="4"
-                      lineageId="Package\MSEG\DB SAP.Outputs[OLE DB Source Error Output].Columns[BUKRS]"
-                      name="BUKRS" />
-                    <outputColumn
-                      refId="Package\MSEG\DB SAP.Outputs[OLE DB Source Error Output].Columns[KZBEW]"
-                      dataType="wstr"
-                      length="1"
-                      lineageId="Package\MSEG\DB SAP.Outputs[OLE DB Source Error Output].Columns[KZBEW]"
-                      name="KZBEW" />
-                    <outputColumn
                       refId="Package\MSEG\DB SAP.Outputs[OLE DB Source Error Output].Columns[KZVBR]"
                       dataType="wstr"
                       length="1"
                       lineageId="Package\MSEG\DB SAP.Outputs[OLE DB Source Error Output].Columns[KZVBR]"
                       name="KZVBR" />
-                    <outputColumn
-                      refId="Package\MSEG\DB SAP.Outputs[OLE DB Source Error Output].Columns[KZZUG]"
-                      dataType="wstr"
-                      length="1"
-                      lineageId="Package\MSEG\DB SAP.Outputs[OLE DB Source Error Output].Columns[KZZUG]"
-                      name="KZZUG" />
-                    <outputColumn
-                      refId="Package\MSEG\DB SAP.Outputs[OLE DB Source Error Output].Columns[SOBKZ]"
-                      dataType="wstr"
-                      length="1"
-                      lineageId="Package\MSEG\DB SAP.Outputs[OLE DB Source Error Output].Columns[SOBKZ]"
-                      name="SOBKZ" />
                     <outputColumn
                       refId="Package\MSEG\DB SAP.Outputs[OLE DB Source Error Output].Columns[XAUTO]"
                       dataType="wstr"
@@ -1901,19 +1359,6 @@ ORDER BY A01.[MANDT]
                       cachedScale="2"
                       lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[DMBTR]" />
                     <inputColumn
-                      refId="Package\MSEG\Find Changed Records.Inputs[Conditional Split Input].Columns[MENGE]"
-                      cachedDataType="numeric"
-                      cachedName="MENGE"
-                      cachedPrecision="13"
-                      cachedScale="3"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[MENGE]" />
-                    <inputColumn
-                      refId="Package\MSEG\Find Changed Records.Inputs[Conditional Split Input].Columns[MEINS]"
-                      cachedDataType="wstr"
-                      cachedLength="3"
-                      cachedName="MEINS"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[MEINS]" />
-                    <inputColumn
                       refId="Package\MSEG\Find Changed Records.Inputs[Conditional Split Input].Columns[ERFMG]"
                       cachedDataType="numeric"
                       cachedName="ERFMG"
@@ -1927,23 +1372,11 @@ ORDER BY A01.[MANDT]
                       cachedName="ERFME"
                       lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[ERFME]" />
                     <inputColumn
-                      refId="Package\MSEG\Find Changed Records.Inputs[Conditional Split Input].Columns[KOSTL]"
-                      cachedDataType="wstr"
-                      cachedLength="10"
-                      cachedName="KOSTL"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[KOSTL]" />
-                    <inputColumn
                       refId="Package\MSEG\Find Changed Records.Inputs[Conditional Split Input].Columns[AUFNR]"
                       cachedDataType="wstr"
                       cachedLength="12"
                       cachedName="AUFNR"
                       lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[AUFNR]" />
-                    <inputColumn
-                      refId="Package\MSEG\Find Changed Records.Inputs[Conditional Split Input].Columns[LGNUM]"
-                      cachedDataType="wstr"
-                      cachedLength="3"
-                      cachedName="LGNUM"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[LGNUM]" />
                     <inputColumn
                       refId="Package\MSEG\Find Changed Records.Inputs[Conditional Split Input].Columns[LGTYP]"
                       cachedDataType="wstr"
@@ -1968,18 +1401,6 @@ ORDER BY A01.[MANDT]
                       cachedLength="10"
                       cachedName="SAKTO"
                       lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[SAKTO]" />
-                    <inputColumn
-                      refId="Package\MSEG\Find Changed Records.Inputs[Conditional Split Input].Columns[BUDAT_MKPF]"
-                      cachedDataType="wstr"
-                      cachedLength="8"
-                      cachedName="BUDAT_MKPF"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[BUDAT_MKPF]" />
-                    <inputColumn
-                      refId="Package\MSEG\Find Changed Records.Inputs[Conditional Split Input].Columns[USNAM_MKPF]"
-                      cachedDataType="wstr"
-                      cachedLength="12"
-                      cachedName="USNAM_MKPF"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[USNAM_MKPF]" />
                     <inputColumn
                       refId="Package\MSEG\Find Changed Records.Inputs[Conditional Split Input].Columns[BWART (1)]"
                       cachedDataType="wstr"
@@ -2024,19 +1445,6 @@ ORDER BY A01.[MANDT]
                       cachedScale="2"
                       lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[DMBTR (1)]" />
                     <inputColumn
-                      refId="Package\MSEG\Find Changed Records.Inputs[Conditional Split Input].Columns[MENGE (1)]"
-                      cachedDataType="numeric"
-                      cachedName="MENGE (1)"
-                      cachedPrecision="13"
-                      cachedScale="3"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[MENGE (1)]" />
-                    <inputColumn
-                      refId="Package\MSEG\Find Changed Records.Inputs[Conditional Split Input].Columns[MEINS (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="3"
-                      cachedName="MEINS (1)"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[MEINS (1)]" />
-                    <inputColumn
                       refId="Package\MSEG\Find Changed Records.Inputs[Conditional Split Input].Columns[ERFMG (1)]"
                       cachedDataType="numeric"
                       cachedName="ERFMG (1)"
@@ -2050,23 +1458,11 @@ ORDER BY A01.[MANDT]
                       cachedName="ERFME (1)"
                       lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[ERFME (1)]" />
                     <inputColumn
-                      refId="Package\MSEG\Find Changed Records.Inputs[Conditional Split Input].Columns[KOSTL (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="10"
-                      cachedName="KOSTL (1)"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[KOSTL (1)]" />
-                    <inputColumn
                       refId="Package\MSEG\Find Changed Records.Inputs[Conditional Split Input].Columns[AUFNR (1)]"
                       cachedDataType="wstr"
                       cachedLength="12"
                       cachedName="AUFNR (1)"
                       lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[AUFNR (1)]" />
-                    <inputColumn
-                      refId="Package\MSEG\Find Changed Records.Inputs[Conditional Split Input].Columns[LGNUM (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="3"
-                      cachedName="LGNUM (1)"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[LGNUM (1)]" />
                     <inputColumn
                       refId="Package\MSEG\Find Changed Records.Inputs[Conditional Split Input].Columns[LGTYP (1)]"
                       cachedDataType="wstr"
@@ -2092,36 +1488,6 @@ ORDER BY A01.[MANDT]
                       cachedName="SAKTO (1)"
                       lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[SAKTO (1)]" />
                     <inputColumn
-                      refId="Package\MSEG\Find Changed Records.Inputs[Conditional Split Input].Columns[BUDAT_MKPF (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="8"
-                      cachedName="BUDAT_MKPF (1)"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[BUDAT_MKPF (1)]" />
-                    <inputColumn
-                      refId="Package\MSEG\Find Changed Records.Inputs[Conditional Split Input].Columns[USNAM_MKPF (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="12"
-                      cachedName="USNAM_MKPF (1)"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[USNAM_MKPF (1)]" />
-                    <inputColumn
-                      refId="Package\MSEG\Find Changed Records.Inputs[Conditional Split Input].Columns[HSDAT]"
-                      cachedDataType="wstr"
-                      cachedLength="8"
-                      cachedName="HSDAT"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[HSDAT]" />
-                    <inputColumn
-                      refId="Package\MSEG\Find Changed Records.Inputs[Conditional Split Input].Columns[HSDAT (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="8"
-                      cachedName="HSDAT (1)"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[HSDAT (1)]" />
-                    <inputColumn
-                      refId="Package\MSEG\Find Changed Records.Inputs[Conditional Split Input].Columns[LIFNR]"
-                      cachedDataType="wstr"
-                      cachedLength="10"
-                      cachedName="LIFNR"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[LIFNR]" />
-                    <inputColumn
                       refId="Package\MSEG\Find Changed Records.Inputs[Conditional Split Input].Columns[KUNNR]"
                       cachedDataType="wstr"
                       cachedLength="10"
@@ -2134,41 +1500,11 @@ ORDER BY A01.[MANDT]
                       cachedName="WAERS"
                       lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[WAERS]" />
                     <inputColumn
-                      refId="Package\MSEG\Find Changed Records.Inputs[Conditional Split Input].Columns[EBELN]"
-                      cachedDataType="wstr"
-                      cachedLength="10"
-                      cachedName="EBELN"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[EBELN]" />
-                    <inputColumn
-                      refId="Package\MSEG\Find Changed Records.Inputs[Conditional Split Input].Columns[BUKRS]"
-                      cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="BUKRS"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[BUKRS]" />
-                    <inputColumn
-                      refId="Package\MSEG\Find Changed Records.Inputs[Conditional Split Input].Columns[KZBEW]"
-                      cachedDataType="wstr"
-                      cachedLength="1"
-                      cachedName="KZBEW"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[KZBEW]" />
-                    <inputColumn
                       refId="Package\MSEG\Find Changed Records.Inputs[Conditional Split Input].Columns[KZVBR]"
                       cachedDataType="wstr"
                       cachedLength="1"
                       cachedName="KZVBR"
                       lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[KZVBR]" />
-                    <inputColumn
-                      refId="Package\MSEG\Find Changed Records.Inputs[Conditional Split Input].Columns[KZZUG]"
-                      cachedDataType="wstr"
-                      cachedLength="1"
-                      cachedName="KZZUG"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[KZZUG]" />
-                    <inputColumn
-                      refId="Package\MSEG\Find Changed Records.Inputs[Conditional Split Input].Columns[LIFNR (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="10"
-                      cachedName="LIFNR (1)"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[LIFNR (1)]" />
                     <inputColumn
                       refId="Package\MSEG\Find Changed Records.Inputs[Conditional Split Input].Columns[KUNNR (1)]"
                       cachedDataType="wstr"
@@ -2182,47 +1518,11 @@ ORDER BY A01.[MANDT]
                       cachedName="WAERS (1)"
                       lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[WAERS (1)]" />
                     <inputColumn
-                      refId="Package\MSEG\Find Changed Records.Inputs[Conditional Split Input].Columns[EBELN (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="10"
-                      cachedName="EBELN (1)"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[EBELN (1)]" />
-                    <inputColumn
-                      refId="Package\MSEG\Find Changed Records.Inputs[Conditional Split Input].Columns[BUKRS (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="BUKRS (1)"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[BUKRS (1)]" />
-                    <inputColumn
-                      refId="Package\MSEG\Find Changed Records.Inputs[Conditional Split Input].Columns[KZBEW (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="1"
-                      cachedName="KZBEW (1)"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[KZBEW (1)]" />
-                    <inputColumn
                       refId="Package\MSEG\Find Changed Records.Inputs[Conditional Split Input].Columns[KZVBR (1)]"
                       cachedDataType="wstr"
                       cachedLength="1"
                       cachedName="KZVBR (1)"
                       lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[KZVBR (1)]" />
-                    <inputColumn
-                      refId="Package\MSEG\Find Changed Records.Inputs[Conditional Split Input].Columns[KZZUG (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="1"
-                      cachedName="KZZUG (1)"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[KZZUG (1)]" />
-                    <inputColumn
-                      refId="Package\MSEG\Find Changed Records.Inputs[Conditional Split Input].Columns[SOBKZ]"
-                      cachedDataType="wstr"
-                      cachedLength="1"
-                      cachedName="SOBKZ"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[SOBKZ]" />
-                    <inputColumn
-                      refId="Package\MSEG\Find Changed Records.Inputs[Conditional Split Input].Columns[SOBKZ (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="1"
-                      cachedName="SOBKZ (1)"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[SOBKZ (1)]" />
                     <inputColumn
                       refId="Package\MSEG\Find Changed Records.Inputs[Conditional Split Input].Columns[XAUTO]"
                       cachedDataType="wstr"
@@ -2235,6 +1535,18 @@ ORDER BY A01.[MANDT]
                       cachedLength="1"
                       cachedName="XAUTO (1)"
                       lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[XAUTO (1)]" />
+                    <inputColumn
+                      refId="Package\MSEG\Find Changed Records.Inputs[Conditional Split Input].Columns[SGTXT]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="SGTXT"
+                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[SGTXT]" />
+                    <inputColumn
+                      refId="Package\MSEG\Find Changed Records.Inputs[Conditional Split Input].Columns[SGTXT (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="SGTXT (1)"
+                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[SGTXT (1)]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
@@ -2254,13 +1566,13 @@ ORDER BY A01.[MANDT]
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
-                      name="Expression">#{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[BWART]} != #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[BWART (1)]} || #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[MATNR]} != #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[MATNR (1)]} || #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[WERKS]} != #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[WERKS (1)]} || #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[LGORT]} != #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[LGORT (1)]} || #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[CHARG]} != #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[CHARG (1)]} || #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[SHKZG]} != #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[SHKZG (1)]} || #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[DMBTR]} != #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[DMBTR (1)]} || #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[MENGE]} != #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[MENGE (1)]} || #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[MEINS]} != #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[MEINS (1)]} || #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[ERFMG]} != #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[ERFMG (1)]} || #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[ERFME]} != #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[ERFME (1)]} || #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[KOSTL]} != #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[KOSTL (1)]} || #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[AUFNR]} != #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[AUFNR (1)]} || #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[LGNUM]} != #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[LGNUM (1)]} || #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[LGTYP]} != #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[LGTYP (1)]} || #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[LGPLA]} != #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[LGPLA (1)]} || #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[GRUND]} != #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[GRUND (1)]} || #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[SAKTO]} != #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[SAKTO (1)]} || #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[BUDAT_MKPF]} != #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[BUDAT_MKPF (1)]} || #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[USNAM_MKPF]} != #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[USNAM_MKPF (1)]} || #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[HSDAT]} != #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[HSDAT (1)]} || #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[LIFNR]} != #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[LIFNR (1)]} || #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[KUNNR]} != #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[KUNNR (1)]} || #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[WAERS]} != #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[WAERS (1)]} || #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[EBELN]} != #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[EBELN (1)]} || #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[BUKRS]} != #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[BUKRS (1)]} || #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[KZBEW]} != #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[KZBEW (1)]} || #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[KZVBR]} != #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[KZVBR (1)]} || #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[KZZUG]} != #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[KZZUG (1)]} || #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[SOBKZ]} != #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[SOBKZ (1)]} || #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[XAUTO]} != #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[XAUTO (1)]}</property>
+                      name="Expression">#{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[BWART]} != #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[BWART (1)]} || #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[MATNR]} != #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[MATNR (1)]} || #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[WERKS]} != #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[WERKS (1)]} || #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[LGORT]} != #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[LGORT (1)]} || #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[CHARG]} != #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[CHARG (1)]} || #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[SHKZG]} != #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[SHKZG (1)]} || #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[DMBTR]} != #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[DMBTR (1)]} || #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[ERFMG]} != #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[ERFMG (1)]} || #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[ERFME]} != #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[ERFME (1)]} || #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[AUFNR]} != #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[AUFNR (1)]} || #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[LGTYP]} != #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[LGTYP (1)]} || #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[LGPLA]} != #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[LGPLA (1)]} || #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[GRUND]} != #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[GRUND (1)]} || #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[SAKTO]} != #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[SAKTO (1)]} || #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[KUNNR]} != #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[KUNNR (1)]} || #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[WAERS]} != #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[WAERS (1)]} || #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[KZVBR]} != #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[KZVBR (1)]} || #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[XAUTO]} != #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[XAUTO (1)]} || #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[SGTXT]} != #{Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[SGTXT (1)]}</property>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the friendly version of the expression. This expression version uses column names."
                       expressionType="Notify"
-                      name="FriendlyExpression">BWART != [BWART (1)] || MATNR != [MATNR (1)] || WERKS != [WERKS (1)] || LGORT != [LGORT (1)] || CHARG != [CHARG (1)] || SHKZG != [SHKZG (1)] || DMBTR != [DMBTR (1)] || MENGE != [MENGE (1)] || MEINS != [MEINS (1)] || ERFMG != [ERFMG (1)] || ERFME != [ERFME (1)] || KOSTL != [KOSTL (1)] || AUFNR != [AUFNR (1)] || LGNUM != [LGNUM (1)] || LGTYP != [LGTYP (1)] || LGPLA != [LGPLA (1)] || GRUND != [GRUND (1)] || SAKTO != [SAKTO (1)] || BUDAT_MKPF != [BUDAT_MKPF (1)] || USNAM_MKPF != [USNAM_MKPF (1)] || HSDAT != [HSDAT (1)] || LIFNR != [LIFNR (1)] || KUNNR != [KUNNR (1)] || WAERS != [WAERS (1)] || EBELN != [EBELN (1)] || BUKRS != [BUKRS (1)] || KZBEW != [KZBEW (1)] || KZVBR != [KZVBR (1)] || KZZUG != [KZZUG (1)] || SOBKZ != [SOBKZ (1)] || XAUTO != [XAUTO (1)]</property>
+                      name="FriendlyExpression">BWART != [BWART (1)] || MATNR != [MATNR (1)] || WERKS != [WERKS (1)] || LGORT != [LGORT (1)] || CHARG != [CHARG (1)] || SHKZG != [SHKZG (1)] || DMBTR != [DMBTR (1)] || ERFMG != [ERFMG (1)] || ERFME != [ERFME (1)] || AUFNR != [AUFNR (1)] || LGTYP != [LGTYP (1)] || LGPLA != [LGPLA (1)] || GRUND != [GRUND (1)] || SAKTO != [SAKTO (1)] || KUNNR != [KUNNR (1)] || WAERS != [WAERS (1)] || KZVBR != [KZVBR (1)] || XAUTO != [XAUTO (1)] || SGTXT != [SGTXT (1)]</property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
@@ -2484,7 +1796,7 @@ ORDER BY A01.[MANDT]
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                 <property
                   dataType="System.Int32"
                   description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -2614,21 +1926,6 @@ ORDER BY A01.[MANDT]
                       externalMetadataColumnId="Package\MSEG\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[DMBTR]"
                       lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[DMBTR]" />
                     <inputColumn
-                      refId="Package\MSEG\insert new records.Inputs[OLE DB Destination Input].Columns[MENGE]"
-                      cachedDataType="numeric"
-                      cachedName="MENGE"
-                      cachedPrecision="13"
-                      cachedScale="3"
-                      externalMetadataColumnId="Package\MSEG\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MENGE]"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[MENGE]" />
-                    <inputColumn
-                      refId="Package\MSEG\insert new records.Inputs[OLE DB Destination Input].Columns[MEINS]"
-                      cachedDataType="wstr"
-                      cachedLength="3"
-                      cachedName="MEINS"
-                      externalMetadataColumnId="Package\MSEG\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MEINS]"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[MEINS]" />
-                    <inputColumn
                       refId="Package\MSEG\insert new records.Inputs[OLE DB Destination Input].Columns[ERFMG]"
                       cachedDataType="numeric"
                       cachedName="ERFMG"
@@ -2644,26 +1941,12 @@ ORDER BY A01.[MANDT]
                       externalMetadataColumnId="Package\MSEG\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[ERFME]"
                       lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[ERFME]" />
                     <inputColumn
-                      refId="Package\MSEG\insert new records.Inputs[OLE DB Destination Input].Columns[KOSTL]"
-                      cachedDataType="wstr"
-                      cachedLength="10"
-                      cachedName="KOSTL"
-                      externalMetadataColumnId="Package\MSEG\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[KOSTL]"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[KOSTL]" />
-                    <inputColumn
                       refId="Package\MSEG\insert new records.Inputs[OLE DB Destination Input].Columns[AUFNR]"
                       cachedDataType="wstr"
                       cachedLength="12"
                       cachedName="AUFNR"
                       externalMetadataColumnId="Package\MSEG\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[AUFNR]"
                       lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[AUFNR]" />
-                    <inputColumn
-                      refId="Package\MSEG\insert new records.Inputs[OLE DB Destination Input].Columns[LGNUM]"
-                      cachedDataType="wstr"
-                      cachedLength="3"
-                      cachedName="LGNUM"
-                      externalMetadataColumnId="Package\MSEG\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[LGNUM]"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[LGNUM]" />
                     <inputColumn
                       refId="Package\MSEG\insert new records.Inputs[OLE DB Destination Input].Columns[LGTYP]"
                       cachedDataType="wstr"
@@ -2693,34 +1976,6 @@ ORDER BY A01.[MANDT]
                       externalMetadataColumnId="Package\MSEG\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[SAKTO]"
                       lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[SAKTO]" />
                     <inputColumn
-                      refId="Package\MSEG\insert new records.Inputs[OLE DB Destination Input].Columns[BUDAT_MKPF]"
-                      cachedDataType="wstr"
-                      cachedLength="8"
-                      cachedName="BUDAT_MKPF"
-                      externalMetadataColumnId="Package\MSEG\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[BUDAT_MKPF]"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[BUDAT_MKPF]" />
-                    <inputColumn
-                      refId="Package\MSEG\insert new records.Inputs[OLE DB Destination Input].Columns[USNAM_MKPF]"
-                      cachedDataType="wstr"
-                      cachedLength="12"
-                      cachedName="USNAM_MKPF"
-                      externalMetadataColumnId="Package\MSEG\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[USNAM_MKPF]"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[USNAM_MKPF]" />
-                    <inputColumn
-                      refId="Package\MSEG\insert new records.Inputs[OLE DB Destination Input].Columns[HSDAT]"
-                      cachedDataType="wstr"
-                      cachedLength="8"
-                      cachedName="HSDAT"
-                      externalMetadataColumnId="Package\MSEG\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[HSDAT]"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[HSDAT]" />
-                    <inputColumn
-                      refId="Package\MSEG\insert new records.Inputs[OLE DB Destination Input].Columns[LIFNR]"
-                      cachedDataType="wstr"
-                      cachedLength="10"
-                      cachedName="LIFNR"
-                      externalMetadataColumnId="Package\MSEG\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[LIFNR]"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[LIFNR]" />
-                    <inputColumn
                       refId="Package\MSEG\insert new records.Inputs[OLE DB Destination Input].Columns[KUNNR]"
                       cachedDataType="wstr"
                       cachedLength="10"
@@ -2735,34 +1990,6 @@ ORDER BY A01.[MANDT]
                       externalMetadataColumnId="Package\MSEG\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[WAERS]"
                       lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[WAERS]" />
                     <inputColumn
-                      refId="Package\MSEG\insert new records.Inputs[OLE DB Destination Input].Columns[EBELN]"
-                      cachedDataType="wstr"
-                      cachedLength="10"
-                      cachedName="EBELN"
-                      externalMetadataColumnId="Package\MSEG\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[EBELN]"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[EBELN]" />
-                    <inputColumn
-                      refId="Package\MSEG\insert new records.Inputs[OLE DB Destination Input].Columns[EBELP]"
-                      cachedDataType="wstr"
-                      cachedLength="5"
-                      cachedName="EBELP"
-                      externalMetadataColumnId="Package\MSEG\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[EBELP]"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[EBELP]" />
-                    <inputColumn
-                      refId="Package\MSEG\insert new records.Inputs[OLE DB Destination Input].Columns[BUKRS]"
-                      cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="BUKRS"
-                      externalMetadataColumnId="Package\MSEG\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[BUKRS]"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[BUKRS]" />
-                    <inputColumn
-                      refId="Package\MSEG\insert new records.Inputs[OLE DB Destination Input].Columns[KZBEW]"
-                      cachedDataType="wstr"
-                      cachedLength="1"
-                      cachedName="KZBEW"
-                      externalMetadataColumnId="Package\MSEG\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[KZBEW]"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[KZBEW]" />
-                    <inputColumn
                       refId="Package\MSEG\insert new records.Inputs[OLE DB Destination Input].Columns[KZVBR]"
                       cachedDataType="wstr"
                       cachedLength="1"
@@ -2770,26 +1997,19 @@ ORDER BY A01.[MANDT]
                       externalMetadataColumnId="Package\MSEG\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[KZVBR]"
                       lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[KZVBR]" />
                     <inputColumn
-                      refId="Package\MSEG\insert new records.Inputs[OLE DB Destination Input].Columns[KZZUG]"
-                      cachedDataType="wstr"
-                      cachedLength="1"
-                      cachedName="KZZUG"
-                      externalMetadataColumnId="Package\MSEG\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[KZZUG]"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[KZZUG]" />
-                    <inputColumn
-                      refId="Package\MSEG\insert new records.Inputs[OLE DB Destination Input].Columns[SOBKZ]"
-                      cachedDataType="wstr"
-                      cachedLength="1"
-                      cachedName="SOBKZ"
-                      externalMetadataColumnId="Package\MSEG\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[SOBKZ]"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[SOBKZ]" />
-                    <inputColumn
                       refId="Package\MSEG\insert new records.Inputs[OLE DB Destination Input].Columns[XAUTO]"
                       cachedDataType="wstr"
                       cachedLength="1"
                       cachedName="XAUTO"
                       externalMetadataColumnId="Package\MSEG\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[XAUTO]"
                       lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[XAUTO]" />
+                    <inputColumn
+                      refId="Package\MSEG\insert new records.Inputs[OLE DB Destination Input].Columns[SGTXT]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="SGTXT"
+                      externalMetadataColumnId="Package\MSEG\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[SGTXT]"
+                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[SGTXT]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -2850,17 +2070,6 @@ ORDER BY A01.[MANDT]
                       precision="13"
                       scale="2" />
                     <externalMetadataColumn
-                      refId="Package\MSEG\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MENGE]"
-                      dataType="numeric"
-                      name="MENGE"
-                      precision="13"
-                      scale="3" />
-                    <externalMetadataColumn
-                      refId="Package\MSEG\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MEINS]"
-                      dataType="wstr"
-                      length="3"
-                      name="MEINS" />
-                    <externalMetadataColumn
                       refId="Package\MSEG\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[ERFMG]"
                       dataType="numeric"
                       name="ERFMG"
@@ -2872,20 +2081,10 @@ ORDER BY A01.[MANDT]
                       length="3"
                       name="ERFME" />
                     <externalMetadataColumn
-                      refId="Package\MSEG\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[KOSTL]"
-                      dataType="wstr"
-                      length="10"
-                      name="KOSTL" />
-                    <externalMetadataColumn
                       refId="Package\MSEG\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[AUFNR]"
                       dataType="wstr"
                       length="12"
                       name="AUFNR" />
-                    <externalMetadataColumn
-                      refId="Package\MSEG\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[LGNUM]"
-                      dataType="wstr"
-                      length="3"
-                      name="LGNUM" />
                     <externalMetadataColumn
                       refId="Package\MSEG\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[LGTYP]"
                       dataType="wstr"
@@ -2907,26 +2106,6 @@ ORDER BY A01.[MANDT]
                       length="10"
                       name="SAKTO" />
                     <externalMetadataColumn
-                      refId="Package\MSEG\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[BUDAT_MKPF]"
-                      dataType="wstr"
-                      length="8"
-                      name="BUDAT_MKPF" />
-                    <externalMetadataColumn
-                      refId="Package\MSEG\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[USNAM_MKPF]"
-                      dataType="wstr"
-                      length="12"
-                      name="USNAM_MKPF" />
-                    <externalMetadataColumn
-                      refId="Package\MSEG\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[HSDAT]"
-                      dataType="wstr"
-                      length="8"
-                      name="HSDAT" />
-                    <externalMetadataColumn
-                      refId="Package\MSEG\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[LIFNR]"
-                      dataType="wstr"
-                      length="10"
-                      name="LIFNR" />
-                    <externalMetadataColumn
                       refId="Package\MSEG\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[KUNNR]"
                       dataType="wstr"
                       length="10"
@@ -2937,45 +2116,20 @@ ORDER BY A01.[MANDT]
                       length="5"
                       name="WAERS" />
                     <externalMetadataColumn
-                      refId="Package\MSEG\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[EBELN]"
-                      dataType="wstr"
-                      length="10"
-                      name="EBELN" />
-                    <externalMetadataColumn
-                      refId="Package\MSEG\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[EBELP]"
-                      dataType="wstr"
-                      length="5"
-                      name="EBELP" />
-                    <externalMetadataColumn
-                      refId="Package\MSEG\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[BUKRS]"
-                      dataType="wstr"
-                      length="4"
-                      name="BUKRS" />
-                    <externalMetadataColumn
-                      refId="Package\MSEG\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[KZBEW]"
-                      dataType="wstr"
-                      length="1"
-                      name="KZBEW" />
-                    <externalMetadataColumn
                       refId="Package\MSEG\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[KZVBR]"
                       dataType="wstr"
                       length="1"
                       name="KZVBR" />
                     <externalMetadataColumn
-                      refId="Package\MSEG\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[KZZUG]"
-                      dataType="wstr"
-                      length="1"
-                      name="KZZUG" />
-                    <externalMetadataColumn
-                      refId="Package\MSEG\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[SOBKZ]"
-                      dataType="wstr"
-                      length="1"
-                      name="SOBKZ" />
-                    <externalMetadataColumn
                       refId="Package\MSEG\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[XAUTO]"
                       dataType="wstr"
                       length="1"
                       name="XAUTO" />
+                    <externalMetadataColumn
+                      refId="Package\MSEG\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[SGTXT]"
+                      dataType="wstr"
+                      length="50"
+                      name="SGTXT" />
                   </externalMetadataColumns>
                 </input>
               </inputs>
@@ -3108,19 +2262,6 @@ ORDER BY A01.[MANDT]
                       cachedScale="2"
                       lineageId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].Columns[DMBTR]" />
                     <inputColumn
-                      refId="Package\MSEG\Merge Join.Inputs[Merge Join Left Input].Columns[MENGE]"
-                      cachedDataType="numeric"
-                      cachedName="MENGE"
-                      cachedPrecision="13"
-                      cachedScale="3"
-                      lineageId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].Columns[MENGE]" />
-                    <inputColumn
-                      refId="Package\MSEG\Merge Join.Inputs[Merge Join Left Input].Columns[MEINS]"
-                      cachedDataType="wstr"
-                      cachedLength="3"
-                      cachedName="MEINS"
-                      lineageId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].Columns[MEINS]" />
-                    <inputColumn
                       refId="Package\MSEG\Merge Join.Inputs[Merge Join Left Input].Columns[ERFMG]"
                       cachedDataType="numeric"
                       cachedName="ERFMG"
@@ -3134,23 +2275,11 @@ ORDER BY A01.[MANDT]
                       cachedName="ERFME"
                       lineageId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].Columns[ERFME]" />
                     <inputColumn
-                      refId="Package\MSEG\Merge Join.Inputs[Merge Join Left Input].Columns[KOSTL]"
-                      cachedDataType="wstr"
-                      cachedLength="10"
-                      cachedName="KOSTL"
-                      lineageId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].Columns[KOSTL]" />
-                    <inputColumn
                       refId="Package\MSEG\Merge Join.Inputs[Merge Join Left Input].Columns[AUFNR]"
                       cachedDataType="wstr"
                       cachedLength="12"
                       cachedName="AUFNR"
                       lineageId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].Columns[AUFNR]" />
-                    <inputColumn
-                      refId="Package\MSEG\Merge Join.Inputs[Merge Join Left Input].Columns[LGNUM]"
-                      cachedDataType="wstr"
-                      cachedLength="3"
-                      cachedName="LGNUM"
-                      lineageId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].Columns[LGNUM]" />
                     <inputColumn
                       refId="Package\MSEG\Merge Join.Inputs[Merge Join Left Input].Columns[LGTYP]"
                       cachedDataType="wstr"
@@ -3176,30 +2305,6 @@ ORDER BY A01.[MANDT]
                       cachedName="SAKTO"
                       lineageId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].Columns[SAKTO]" />
                     <inputColumn
-                      refId="Package\MSEG\Merge Join.Inputs[Merge Join Left Input].Columns[BUDAT_MKPF]"
-                      cachedDataType="wstr"
-                      cachedLength="8"
-                      cachedName="BUDAT_MKPF"
-                      lineageId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].Columns[BUDAT_MKPF]" />
-                    <inputColumn
-                      refId="Package\MSEG\Merge Join.Inputs[Merge Join Left Input].Columns[USNAM_MKPF]"
-                      cachedDataType="wstr"
-                      cachedLength="12"
-                      cachedName="USNAM_MKPF"
-                      lineageId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].Columns[USNAM_MKPF]" />
-                    <inputColumn
-                      refId="Package\MSEG\Merge Join.Inputs[Merge Join Left Input].Columns[HSDAT]"
-                      cachedDataType="wstr"
-                      cachedLength="8"
-                      cachedName="HSDAT"
-                      lineageId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].Columns[HSDAT]" />
-                    <inputColumn
-                      refId="Package\MSEG\Merge Join.Inputs[Merge Join Left Input].Columns[LIFNR]"
-                      cachedDataType="wstr"
-                      cachedLength="10"
-                      cachedName="LIFNR"
-                      lineageId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].Columns[LIFNR]" />
-                    <inputColumn
                       refId="Package\MSEG\Merge Join.Inputs[Merge Join Left Input].Columns[KUNNR]"
                       cachedDataType="wstr"
                       cachedLength="10"
@@ -3212,53 +2317,23 @@ ORDER BY A01.[MANDT]
                       cachedName="WAERS"
                       lineageId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].Columns[WAERS]" />
                     <inputColumn
-                      refId="Package\MSEG\Merge Join.Inputs[Merge Join Left Input].Columns[EBELN]"
-                      cachedDataType="wstr"
-                      cachedLength="10"
-                      cachedName="EBELN"
-                      lineageId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].Columns[EBELN]" />
-                    <inputColumn
-                      refId="Package\MSEG\Merge Join.Inputs[Merge Join Left Input].Columns[EBELP]"
-                      cachedDataType="wstr"
-                      cachedLength="5"
-                      cachedName="EBELP"
-                      lineageId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].Columns[EBELP]" />
-                    <inputColumn
-                      refId="Package\MSEG\Merge Join.Inputs[Merge Join Left Input].Columns[BUKRS]"
-                      cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="BUKRS"
-                      lineageId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].Columns[BUKRS]" />
-                    <inputColumn
-                      refId="Package\MSEG\Merge Join.Inputs[Merge Join Left Input].Columns[KZBEW]"
-                      cachedDataType="wstr"
-                      cachedLength="1"
-                      cachedName="KZBEW"
-                      lineageId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].Columns[KZBEW]" />
-                    <inputColumn
                       refId="Package\MSEG\Merge Join.Inputs[Merge Join Left Input].Columns[KZVBR]"
                       cachedDataType="wstr"
                       cachedLength="1"
                       cachedName="KZVBR"
                       lineageId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].Columns[KZVBR]" />
                     <inputColumn
-                      refId="Package\MSEG\Merge Join.Inputs[Merge Join Left Input].Columns[KZZUG]"
-                      cachedDataType="wstr"
-                      cachedLength="1"
-                      cachedName="KZZUG"
-                      lineageId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].Columns[KZZUG]" />
-                    <inputColumn
-                      refId="Package\MSEG\Merge Join.Inputs[Merge Join Left Input].Columns[SOBKZ]"
-                      cachedDataType="wstr"
-                      cachedLength="1"
-                      cachedName="SOBKZ"
-                      lineageId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].Columns[SOBKZ]" />
-                    <inputColumn
                       refId="Package\MSEG\Merge Join.Inputs[Merge Join Left Input].Columns[XAUTO]"
                       cachedDataType="wstr"
                       cachedLength="1"
                       cachedName="XAUTO"
                       lineageId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].Columns[XAUTO]" />
+                    <inputColumn
+                      refId="Package\MSEG\Merge Join.Inputs[Merge Join Left Input].Columns[SGTXT]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="SGTXT"
+                      lineageId="Package\MSEG\DB SAP.Outputs[OLE DB Source Output].Columns[SGTXT]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
@@ -3339,19 +2414,6 @@ ORDER BY A01.[MANDT]
                       cachedScale="2"
                       lineageId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].Columns[DMBTR]" />
                     <inputColumn
-                      refId="Package\MSEG\Merge Join.Inputs[Merge Join Right Input].Columns[MENGE]"
-                      cachedDataType="numeric"
-                      cachedName="MENGE"
-                      cachedPrecision="13"
-                      cachedScale="3"
-                      lineageId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].Columns[MENGE]" />
-                    <inputColumn
-                      refId="Package\MSEG\Merge Join.Inputs[Merge Join Right Input].Columns[MEINS]"
-                      cachedDataType="wstr"
-                      cachedLength="3"
-                      cachedName="MEINS"
-                      lineageId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].Columns[MEINS]" />
-                    <inputColumn
                       refId="Package\MSEG\Merge Join.Inputs[Merge Join Right Input].Columns[ERFMG]"
                       cachedDataType="numeric"
                       cachedName="ERFMG"
@@ -3365,23 +2427,11 @@ ORDER BY A01.[MANDT]
                       cachedName="ERFME"
                       lineageId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].Columns[ERFME]" />
                     <inputColumn
-                      refId="Package\MSEG\Merge Join.Inputs[Merge Join Right Input].Columns[KOSTL]"
-                      cachedDataType="wstr"
-                      cachedLength="10"
-                      cachedName="KOSTL"
-                      lineageId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].Columns[KOSTL]" />
-                    <inputColumn
                       refId="Package\MSEG\Merge Join.Inputs[Merge Join Right Input].Columns[AUFNR]"
                       cachedDataType="wstr"
                       cachedLength="12"
                       cachedName="AUFNR"
                       lineageId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].Columns[AUFNR]" />
-                    <inputColumn
-                      refId="Package\MSEG\Merge Join.Inputs[Merge Join Right Input].Columns[LGNUM]"
-                      cachedDataType="wstr"
-                      cachedLength="3"
-                      cachedName="LGNUM"
-                      lineageId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].Columns[LGNUM]" />
                     <inputColumn
                       refId="Package\MSEG\Merge Join.Inputs[Merge Join Right Input].Columns[LGTYP]"
                       cachedDataType="wstr"
@@ -3407,30 +2457,6 @@ ORDER BY A01.[MANDT]
                       cachedName="SAKTO"
                       lineageId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].Columns[SAKTO]" />
                     <inputColumn
-                      refId="Package\MSEG\Merge Join.Inputs[Merge Join Right Input].Columns[BUDAT_MKPF]"
-                      cachedDataType="wstr"
-                      cachedLength="8"
-                      cachedName="BUDAT_MKPF"
-                      lineageId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].Columns[BUDAT_MKPF]" />
-                    <inputColumn
-                      refId="Package\MSEG\Merge Join.Inputs[Merge Join Right Input].Columns[USNAM_MKPF]"
-                      cachedDataType="wstr"
-                      cachedLength="12"
-                      cachedName="USNAM_MKPF"
-                      lineageId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].Columns[USNAM_MKPF]" />
-                    <inputColumn
-                      refId="Package\MSEG\Merge Join.Inputs[Merge Join Right Input].Columns[HSDAT]"
-                      cachedDataType="wstr"
-                      cachedLength="8"
-                      cachedName="HSDAT"
-                      lineageId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].Columns[HSDAT]" />
-                    <inputColumn
-                      refId="Package\MSEG\Merge Join.Inputs[Merge Join Right Input].Columns[LIFNR]"
-                      cachedDataType="wstr"
-                      cachedLength="10"
-                      cachedName="LIFNR"
-                      lineageId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].Columns[LIFNR]" />
-                    <inputColumn
                       refId="Package\MSEG\Merge Join.Inputs[Merge Join Right Input].Columns[KUNNR]"
                       cachedDataType="wstr"
                       cachedLength="10"
@@ -3443,53 +2469,23 @@ ORDER BY A01.[MANDT]
                       cachedName="WAERS"
                       lineageId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].Columns[WAERS]" />
                     <inputColumn
-                      refId="Package\MSEG\Merge Join.Inputs[Merge Join Right Input].Columns[EBELN]"
-                      cachedDataType="wstr"
-                      cachedLength="10"
-                      cachedName="EBELN"
-                      lineageId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].Columns[EBELN]" />
-                    <inputColumn
-                      refId="Package\MSEG\Merge Join.Inputs[Merge Join Right Input].Columns[EBELP]"
-                      cachedDataType="wstr"
-                      cachedLength="5"
-                      cachedName="EBELP"
-                      lineageId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].Columns[EBELP]" />
-                    <inputColumn
-                      refId="Package\MSEG\Merge Join.Inputs[Merge Join Right Input].Columns[BUKRS]"
-                      cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="BUKRS"
-                      lineageId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].Columns[BUKRS]" />
-                    <inputColumn
-                      refId="Package\MSEG\Merge Join.Inputs[Merge Join Right Input].Columns[KZBEW]"
-                      cachedDataType="wstr"
-                      cachedLength="1"
-                      cachedName="KZBEW"
-                      lineageId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].Columns[KZBEW]" />
-                    <inputColumn
                       refId="Package\MSEG\Merge Join.Inputs[Merge Join Right Input].Columns[KZVBR]"
                       cachedDataType="wstr"
                       cachedLength="1"
                       cachedName="KZVBR"
                       lineageId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].Columns[KZVBR]" />
                     <inputColumn
-                      refId="Package\MSEG\Merge Join.Inputs[Merge Join Right Input].Columns[KZZUG]"
-                      cachedDataType="wstr"
-                      cachedLength="1"
-                      cachedName="KZZUG"
-                      lineageId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].Columns[KZZUG]" />
-                    <inputColumn
-                      refId="Package\MSEG\Merge Join.Inputs[Merge Join Right Input].Columns[SOBKZ]"
-                      cachedDataType="wstr"
-                      cachedLength="1"
-                      cachedName="SOBKZ"
-                      lineageId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].Columns[SOBKZ]" />
-                    <inputColumn
                       refId="Package\MSEG\Merge Join.Inputs[Merge Join Right Input].Columns[XAUTO]"
                       cachedDataType="wstr"
                       cachedLength="1"
                       cachedName="XAUTO"
                       lineageId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].Columns[XAUTO]" />
+                    <inputColumn
+                      refId="Package\MSEG\Merge Join.Inputs[Merge Join Right Input].Columns[SGTXT]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="SGTXT"
+                      lineageId="Package\MSEG\DB PBI.Outputs[OLE DB Source Output].Columns[SGTXT]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
@@ -3660,35 +2656,6 @@ ORDER BY A01.[MANDT]
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[MENGE]"
-                      dataType="numeric"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[MENGE]"
-                      name="MENGE"
-                      precision="13"
-                      scale="3">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\MSEG\Merge Join.Inputs[Merge Join Left Input].Columns[MENGE]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[MEINS]"
-                      dataType="wstr"
-                      length="3"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[MEINS]"
-                      name="MEINS">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\MSEG\Merge Join.Inputs[Merge Join Left Input].Columns[MEINS]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
                       refId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[ERFMG]"
                       dataType="numeric"
                       lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[ERFMG]"
@@ -3718,20 +2685,6 @@ ORDER BY A01.[MANDT]
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[KOSTL]"
-                      dataType="wstr"
-                      length="10"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[KOSTL]"
-                      name="KOSTL">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\MSEG\Merge Join.Inputs[Merge Join Left Input].Columns[KOSTL]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
                       refId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[AUFNR]"
                       dataType="wstr"
                       length="12"
@@ -3743,20 +2696,6 @@ ORDER BY A01.[MANDT]
                           dataType="System.Int32"
                           description="The input column associated with this output column"
                           name="InputColumnID">#{Package\MSEG\Merge Join.Inputs[Merge Join Left Input].Columns[AUFNR]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[LGNUM]"
-                      dataType="wstr"
-                      length="3"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[LGNUM]"
-                      name="LGNUM">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\MSEG\Merge Join.Inputs[Merge Join Left Input].Columns[LGNUM]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -3813,34 +2752,6 @@ ORDER BY A01.[MANDT]
                           dataType="System.Int32"
                           description="The input column associated with this output column"
                           name="InputColumnID">#{Package\MSEG\Merge Join.Inputs[Merge Join Left Input].Columns[SAKTO]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[BUDAT_MKPF]"
-                      dataType="wstr"
-                      length="8"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[BUDAT_MKPF]"
-                      name="BUDAT_MKPF">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\MSEG\Merge Join.Inputs[Merge Join Left Input].Columns[BUDAT_MKPF]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[USNAM_MKPF]"
-                      dataType="wstr"
-                      length="12"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[USNAM_MKPF]"
-                      name="USNAM_MKPF">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\MSEG\Merge Join.Inputs[Merge Join Left Input].Columns[USNAM_MKPF]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -3999,35 +2910,6 @@ ORDER BY A01.[MANDT]
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[MENGE (1)]"
-                      dataType="numeric"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[MENGE (1)]"
-                      name="MENGE (1)"
-                      precision="13"
-                      scale="3">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\MSEG\Merge Join.Inputs[Merge Join Right Input].Columns[MENGE]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[MEINS (1)]"
-                      dataType="wstr"
-                      length="3"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[MEINS (1)]"
-                      name="MEINS (1)">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\MSEG\Merge Join.Inputs[Merge Join Right Input].Columns[MEINS]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
                       refId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[ERFMG (1)]"
                       dataType="numeric"
                       lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[ERFMG (1)]"
@@ -4057,20 +2939,6 @@ ORDER BY A01.[MANDT]
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[KOSTL (1)]"
-                      dataType="wstr"
-                      length="10"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[KOSTL (1)]"
-                      name="KOSTL (1)">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\MSEG\Merge Join.Inputs[Merge Join Right Input].Columns[KOSTL]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
                       refId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[AUFNR (1)]"
                       dataType="wstr"
                       length="12"
@@ -4082,20 +2950,6 @@ ORDER BY A01.[MANDT]
                           dataType="System.Int32"
                           description="The input column associated with this output column"
                           name="InputColumnID">#{Package\MSEG\Merge Join.Inputs[Merge Join Right Input].Columns[AUFNR]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[LGNUM (1)]"
-                      dataType="wstr"
-                      length="3"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[LGNUM (1)]"
-                      name="LGNUM (1)">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\MSEG\Merge Join.Inputs[Merge Join Right Input].Columns[LGNUM]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -4155,76 +3009,6 @@ ORDER BY A01.[MANDT]
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[BUDAT_MKPF (1)]"
-                      dataType="wstr"
-                      length="8"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[BUDAT_MKPF (1)]"
-                      name="BUDAT_MKPF (1)">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\MSEG\Merge Join.Inputs[Merge Join Right Input].Columns[BUDAT_MKPF]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[USNAM_MKPF (1)]"
-                      dataType="wstr"
-                      length="12"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[USNAM_MKPF (1)]"
-                      name="USNAM_MKPF (1)">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\MSEG\Merge Join.Inputs[Merge Join Right Input].Columns[USNAM_MKPF]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[HSDAT]"
-                      dataType="wstr"
-                      length="8"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[HSDAT]"
-                      name="HSDAT">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\MSEG\Merge Join.Inputs[Merge Join Left Input].Columns[HSDAT]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[HSDAT (1)]"
-                      dataType="wstr"
-                      length="8"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[HSDAT (1)]"
-                      name="HSDAT (1)">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\MSEG\Merge Join.Inputs[Merge Join Right Input].Columns[HSDAT]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[LIFNR]"
-                      dataType="wstr"
-                      length="10"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[LIFNR]"
-                      name="LIFNR">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\MSEG\Merge Join.Inputs[Merge Join Left Input].Columns[LIFNR]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
                       refId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[KUNNR]"
                       dataType="wstr"
                       length="10"
@@ -4253,62 +3037,6 @@ ORDER BY A01.[MANDT]
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[EBELN]"
-                      dataType="wstr"
-                      length="10"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[EBELN]"
-                      name="EBELN">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\MSEG\Merge Join.Inputs[Merge Join Left Input].Columns[EBELN]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[EBELP]"
-                      dataType="wstr"
-                      length="5"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[EBELP]"
-                      name="EBELP">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\MSEG\Merge Join.Inputs[Merge Join Left Input].Columns[EBELP]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[BUKRS]"
-                      dataType="wstr"
-                      length="4"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[BUKRS]"
-                      name="BUKRS">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\MSEG\Merge Join.Inputs[Merge Join Left Input].Columns[BUKRS]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[KZBEW]"
-                      dataType="wstr"
-                      length="1"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[KZBEW]"
-                      name="KZBEW">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\MSEG\Merge Join.Inputs[Merge Join Left Input].Columns[KZBEW]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
                       refId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[KZVBR]"
                       dataType="wstr"
                       length="1"
@@ -4320,34 +3048,6 @@ ORDER BY A01.[MANDT]
                           dataType="System.Int32"
                           description="The input column associated with this output column"
                           name="InputColumnID">#{Package\MSEG\Merge Join.Inputs[Merge Join Left Input].Columns[KZVBR]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[KZZUG]"
-                      dataType="wstr"
-                      length="1"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[KZZUG]"
-                      name="KZZUG">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\MSEG\Merge Join.Inputs[Merge Join Left Input].Columns[KZZUG]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[LIFNR (1)]"
-                      dataType="wstr"
-                      length="10"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[LIFNR (1)]"
-                      name="LIFNR (1)">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\MSEG\Merge Join.Inputs[Merge Join Right Input].Columns[LIFNR]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -4379,62 +3079,6 @@ ORDER BY A01.[MANDT]
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[EBELN (1)]"
-                      dataType="wstr"
-                      length="10"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[EBELN (1)]"
-                      name="EBELN (1)">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\MSEG\Merge Join.Inputs[Merge Join Right Input].Columns[EBELN]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[EBELP (1)]"
-                      dataType="wstr"
-                      length="5"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[EBELP (1)]"
-                      name="EBELP (1)">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\MSEG\Merge Join.Inputs[Merge Join Right Input].Columns[EBELP]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[BUKRS (1)]"
-                      dataType="wstr"
-                      length="4"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[BUKRS (1)]"
-                      name="BUKRS (1)">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\MSEG\Merge Join.Inputs[Merge Join Right Input].Columns[BUKRS]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[KZBEW (1)]"
-                      dataType="wstr"
-                      length="1"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[KZBEW (1)]"
-                      name="KZBEW (1)">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\MSEG\Merge Join.Inputs[Merge Join Right Input].Columns[KZBEW]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
                       refId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[KZVBR (1)]"
                       dataType="wstr"
                       length="1"
@@ -4446,48 +3090,6 @@ ORDER BY A01.[MANDT]
                           dataType="System.Int32"
                           description="The input column associated with this output column"
                           name="InputColumnID">#{Package\MSEG\Merge Join.Inputs[Merge Join Right Input].Columns[KZVBR]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[KZZUG (1)]"
-                      dataType="wstr"
-                      length="1"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[KZZUG (1)]"
-                      name="KZZUG (1)">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\MSEG\Merge Join.Inputs[Merge Join Right Input].Columns[KZZUG]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[SOBKZ]"
-                      dataType="wstr"
-                      length="1"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[SOBKZ]"
-                      name="SOBKZ">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\MSEG\Merge Join.Inputs[Merge Join Left Input].Columns[SOBKZ]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[SOBKZ (1)]"
-                      dataType="wstr"
-                      length="1"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[SOBKZ (1)]"
-                      name="SOBKZ (1)">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\MSEG\Merge Join.Inputs[Merge Join Right Input].Columns[SOBKZ]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -4516,6 +3118,34 @@ ORDER BY A01.[MANDT]
                           dataType="System.Int32"
                           description="The input column associated with this output column"
                           name="InputColumnID">#{Package\MSEG\Merge Join.Inputs[Merge Join Right Input].Columns[XAUTO]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[SGTXT]"
+                      dataType="wstr"
+                      length="50"
+                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[SGTXT]"
+                      name="SGTXT">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\MSEG\Merge Join.Inputs[Merge Join Left Input].Columns[SGTXT]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[SGTXT (1)]"
+                      dataType="wstr"
+                      length="50"
+                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[SGTXT (1)]"
+                      name="SGTXT (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\MSEG\Merge Join.Inputs[Merge Join Right Input].Columns[SGTXT]}</property>
                       </properties>
                     </outputColumn>
                   </outputColumns>
@@ -4548,7 +3178,7 @@ ORDER BY A01.[MANDT]
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                 <property
                   dataType="System.Int32"
                   description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -4678,21 +3308,6 @@ ORDER BY A01.[MANDT]
                       externalMetadataColumnId="Package\MSEG\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[DMBTR]"
                       lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[DMBTR]" />
                     <inputColumn
-                      refId="Package\MSEG\stage changed records.Inputs[OLE DB Destination Input].Columns[MENGE]"
-                      cachedDataType="numeric"
-                      cachedName="MENGE"
-                      cachedPrecision="13"
-                      cachedScale="3"
-                      externalMetadataColumnId="Package\MSEG\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MENGE]"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[MENGE]" />
-                    <inputColumn
-                      refId="Package\MSEG\stage changed records.Inputs[OLE DB Destination Input].Columns[MEINS]"
-                      cachedDataType="wstr"
-                      cachedLength="3"
-                      cachedName="MEINS"
-                      externalMetadataColumnId="Package\MSEG\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MEINS]"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[MEINS]" />
-                    <inputColumn
                       refId="Package\MSEG\stage changed records.Inputs[OLE DB Destination Input].Columns[ERFMG]"
                       cachedDataType="numeric"
                       cachedName="ERFMG"
@@ -4708,26 +3323,12 @@ ORDER BY A01.[MANDT]
                       externalMetadataColumnId="Package\MSEG\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[ERFME]"
                       lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[ERFME]" />
                     <inputColumn
-                      refId="Package\MSEG\stage changed records.Inputs[OLE DB Destination Input].Columns[KOSTL]"
-                      cachedDataType="wstr"
-                      cachedLength="10"
-                      cachedName="KOSTL"
-                      externalMetadataColumnId="Package\MSEG\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[KOSTL]"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[KOSTL]" />
-                    <inputColumn
                       refId="Package\MSEG\stage changed records.Inputs[OLE DB Destination Input].Columns[AUFNR]"
                       cachedDataType="wstr"
                       cachedLength="12"
                       cachedName="AUFNR"
                       externalMetadataColumnId="Package\MSEG\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[AUFNR]"
                       lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[AUFNR]" />
-                    <inputColumn
-                      refId="Package\MSEG\stage changed records.Inputs[OLE DB Destination Input].Columns[LGNUM]"
-                      cachedDataType="wstr"
-                      cachedLength="3"
-                      cachedName="LGNUM"
-                      externalMetadataColumnId="Package\MSEG\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[LGNUM]"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[LGNUM]" />
                     <inputColumn
                       refId="Package\MSEG\stage changed records.Inputs[OLE DB Destination Input].Columns[LGTYP]"
                       cachedDataType="wstr"
@@ -4757,34 +3358,6 @@ ORDER BY A01.[MANDT]
                       externalMetadataColumnId="Package\MSEG\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[SAKTO]"
                       lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[SAKTO]" />
                     <inputColumn
-                      refId="Package\MSEG\stage changed records.Inputs[OLE DB Destination Input].Columns[BUDAT_MKPF]"
-                      cachedDataType="wstr"
-                      cachedLength="8"
-                      cachedName="BUDAT_MKPF"
-                      externalMetadataColumnId="Package\MSEG\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[BUDAT_MKPF]"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[BUDAT_MKPF]" />
-                    <inputColumn
-                      refId="Package\MSEG\stage changed records.Inputs[OLE DB Destination Input].Columns[USNAM_MKPF]"
-                      cachedDataType="wstr"
-                      cachedLength="12"
-                      cachedName="USNAM_MKPF"
-                      externalMetadataColumnId="Package\MSEG\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[USNAM_MKPF]"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[USNAM_MKPF]" />
-                    <inputColumn
-                      refId="Package\MSEG\stage changed records.Inputs[OLE DB Destination Input].Columns[HSDAT]"
-                      cachedDataType="wstr"
-                      cachedLength="8"
-                      cachedName="HSDAT"
-                      externalMetadataColumnId="Package\MSEG\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[HSDAT]"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[HSDAT]" />
-                    <inputColumn
-                      refId="Package\MSEG\stage changed records.Inputs[OLE DB Destination Input].Columns[LIFNR]"
-                      cachedDataType="wstr"
-                      cachedLength="10"
-                      cachedName="LIFNR"
-                      externalMetadataColumnId="Package\MSEG\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[LIFNR]"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[LIFNR]" />
-                    <inputColumn
                       refId="Package\MSEG\stage changed records.Inputs[OLE DB Destination Input].Columns[KUNNR]"
                       cachedDataType="wstr"
                       cachedLength="10"
@@ -4799,34 +3372,6 @@ ORDER BY A01.[MANDT]
                       externalMetadataColumnId="Package\MSEG\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[WAERS]"
                       lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[WAERS]" />
                     <inputColumn
-                      refId="Package\MSEG\stage changed records.Inputs[OLE DB Destination Input].Columns[EBELN]"
-                      cachedDataType="wstr"
-                      cachedLength="10"
-                      cachedName="EBELN"
-                      externalMetadataColumnId="Package\MSEG\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[EBELN]"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[EBELN]" />
-                    <inputColumn
-                      refId="Package\MSEG\stage changed records.Inputs[OLE DB Destination Input].Columns[EBELP]"
-                      cachedDataType="wstr"
-                      cachedLength="5"
-                      cachedName="EBELP"
-                      externalMetadataColumnId="Package\MSEG\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[EBELP]"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[EBELP]" />
-                    <inputColumn
-                      refId="Package\MSEG\stage changed records.Inputs[OLE DB Destination Input].Columns[BUKRS]"
-                      cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="BUKRS"
-                      externalMetadataColumnId="Package\MSEG\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[BUKRS]"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[BUKRS]" />
-                    <inputColumn
-                      refId="Package\MSEG\stage changed records.Inputs[OLE DB Destination Input].Columns[KZBEW]"
-                      cachedDataType="wstr"
-                      cachedLength="1"
-                      cachedName="KZBEW"
-                      externalMetadataColumnId="Package\MSEG\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[KZBEW]"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[KZBEW]" />
-                    <inputColumn
                       refId="Package\MSEG\stage changed records.Inputs[OLE DB Destination Input].Columns[KZVBR]"
                       cachedDataType="wstr"
                       cachedLength="1"
@@ -4834,26 +3379,19 @@ ORDER BY A01.[MANDT]
                       externalMetadataColumnId="Package\MSEG\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[KZVBR]"
                       lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[KZVBR]" />
                     <inputColumn
-                      refId="Package\MSEG\stage changed records.Inputs[OLE DB Destination Input].Columns[KZZUG]"
-                      cachedDataType="wstr"
-                      cachedLength="1"
-                      cachedName="KZZUG"
-                      externalMetadataColumnId="Package\MSEG\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[KZZUG]"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[KZZUG]" />
-                    <inputColumn
-                      refId="Package\MSEG\stage changed records.Inputs[OLE DB Destination Input].Columns[SOBKZ]"
-                      cachedDataType="wstr"
-                      cachedLength="1"
-                      cachedName="SOBKZ"
-                      externalMetadataColumnId="Package\MSEG\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[SOBKZ]"
-                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[SOBKZ]" />
-                    <inputColumn
                       refId="Package\MSEG\stage changed records.Inputs[OLE DB Destination Input].Columns[XAUTO]"
                       cachedDataType="wstr"
                       cachedLength="1"
                       cachedName="XAUTO"
                       externalMetadataColumnId="Package\MSEG\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[XAUTO]"
                       lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[XAUTO]" />
+                    <inputColumn
+                      refId="Package\MSEG\stage changed records.Inputs[OLE DB Destination Input].Columns[SGTXT]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="SGTXT"
+                      externalMetadataColumnId="Package\MSEG\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[SGTXT]"
+                      lineageId="Package\MSEG\Merge Join.Outputs[Merge Join Output].Columns[SGTXT]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -4914,17 +3452,6 @@ ORDER BY A01.[MANDT]
                       precision="13"
                       scale="2" />
                     <externalMetadataColumn
-                      refId="Package\MSEG\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MENGE]"
-                      dataType="numeric"
-                      name="MENGE"
-                      precision="13"
-                      scale="3" />
-                    <externalMetadataColumn
-                      refId="Package\MSEG\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MEINS]"
-                      dataType="wstr"
-                      length="3"
-                      name="MEINS" />
-                    <externalMetadataColumn
                       refId="Package\MSEG\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[ERFMG]"
                       dataType="numeric"
                       name="ERFMG"
@@ -4936,20 +3463,10 @@ ORDER BY A01.[MANDT]
                       length="3"
                       name="ERFME" />
                     <externalMetadataColumn
-                      refId="Package\MSEG\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[KOSTL]"
-                      dataType="wstr"
-                      length="10"
-                      name="KOSTL" />
-                    <externalMetadataColumn
                       refId="Package\MSEG\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[AUFNR]"
                       dataType="wstr"
                       length="12"
                       name="AUFNR" />
-                    <externalMetadataColumn
-                      refId="Package\MSEG\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[LGNUM]"
-                      dataType="wstr"
-                      length="3"
-                      name="LGNUM" />
                     <externalMetadataColumn
                       refId="Package\MSEG\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[LGTYP]"
                       dataType="wstr"
@@ -4971,26 +3488,6 @@ ORDER BY A01.[MANDT]
                       length="10"
                       name="SAKTO" />
                     <externalMetadataColumn
-                      refId="Package\MSEG\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[BUDAT_MKPF]"
-                      dataType="wstr"
-                      length="8"
-                      name="BUDAT_MKPF" />
-                    <externalMetadataColumn
-                      refId="Package\MSEG\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[USNAM_MKPF]"
-                      dataType="wstr"
-                      length="12"
-                      name="USNAM_MKPF" />
-                    <externalMetadataColumn
-                      refId="Package\MSEG\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[HSDAT]"
-                      dataType="wstr"
-                      length="8"
-                      name="HSDAT" />
-                    <externalMetadataColumn
-                      refId="Package\MSEG\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[LIFNR]"
-                      dataType="wstr"
-                      length="10"
-                      name="LIFNR" />
-                    <externalMetadataColumn
                       refId="Package\MSEG\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[KUNNR]"
                       dataType="wstr"
                       length="10"
@@ -5001,45 +3498,20 @@ ORDER BY A01.[MANDT]
                       length="5"
                       name="WAERS" />
                     <externalMetadataColumn
-                      refId="Package\MSEG\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[EBELN]"
-                      dataType="wstr"
-                      length="10"
-                      name="EBELN" />
-                    <externalMetadataColumn
-                      refId="Package\MSEG\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[EBELP]"
-                      dataType="wstr"
-                      length="5"
-                      name="EBELP" />
-                    <externalMetadataColumn
-                      refId="Package\MSEG\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[BUKRS]"
-                      dataType="wstr"
-                      length="4"
-                      name="BUKRS" />
-                    <externalMetadataColumn
-                      refId="Package\MSEG\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[KZBEW]"
-                      dataType="wstr"
-                      length="1"
-                      name="KZBEW" />
-                    <externalMetadataColumn
                       refId="Package\MSEG\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[KZVBR]"
                       dataType="wstr"
                       length="1"
                       name="KZVBR" />
                     <externalMetadataColumn
-                      refId="Package\MSEG\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[KZZUG]"
-                      dataType="wstr"
-                      length="1"
-                      name="KZZUG" />
-                    <externalMetadataColumn
-                      refId="Package\MSEG\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[SOBKZ]"
-                      dataType="wstr"
-                      length="1"
-                      name="SOBKZ" />
-                    <externalMetadataColumn
                       refId="Package\MSEG\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[XAUTO]"
                       dataType="wstr"
                       length="1"
                       name="XAUTO" />
+                    <externalMetadataColumn
+                      refId="Package\MSEG\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[SGTXT]"
+                      dataType="wstr"
+                      length="50"
+                      name="SGTXT" />
                   </externalMetadataColumns>
                 </input>
               </inputs>
@@ -5093,7 +3565,7 @@ ORDER BY A01.[MANDT]
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                 <property
                   dataType="System.Int32"
                   description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -5261,90 +3733,32 @@ ORDER BY A01.[MANDT]
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
-      DTS:refId="Package\Sequence Container"
-      DTS:CreationName="STOCK:SEQUENCE"
-      DTS:Description="Sequence Container"
-      DTS:DTSID="{e1dd629d-303f-4232-aac6-0a0a61b7e290}"
-      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:refId="Package\update"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{56abd0ea-042d-4811-91d8-d0fc033ae8ef}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
-      DTS:ObjectName="Sequence Container">
+      DTS:ObjectName="update"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
       <DTS:Variables />
-      <DTS:Executables>
-        <DTS:Executable
-          DTS:refId="Package\Sequence Container\delete"
-          DTS:CreationName="Microsoft.ExecuteSQLTask"
-          DTS:Description="Execute SQL Task"
-          DTS:DTSID="{e18cb7b0-a925-4684-a2bd-0cf709145b7e}"
-          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
-          DTS:LocaleID="-1"
-          DTS:ObjectName="delete"
-          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="0">
-          <DTS:Variables />
-          <DTS:ObjectData>
-            <SQLTask:SqlTaskData
-              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-              SQLTask:SqlStatementSource="DELETE A01&#xA;FROM [MSEG] A01 INNER JOIN [MSEG_STAGE_DELETE] B01 ON ( A01.[MANDT] = B01.[MANDT]&#xA;                                                    AND A01.[MBLNR] = B01.[MBLNR]&#xA;                                                    AND A01.[MJAHR] = B01.[MJAHR]&#xA;                                                    AND A01.[ZEILE] = B01.[ZEILE] )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
-          </DTS:ObjectData>
-        </DTS:Executable>
-        <DTS:Executable
-          DTS:refId="Package\Sequence Container\update"
-          DTS:CreationName="Microsoft.ExecuteSQLTask"
-          DTS:Description="Execute SQL Task"
-          DTS:DTSID="{56abd0ea-042d-4811-91d8-d0fc033ae8ef}"
-          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
-          DTS:LocaleID="-1"
-          DTS:ObjectName="update"
-          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="1">
-          <DTS:Variables />
-          <DTS:ObjectData>
-            <SQLTask:SqlTaskData
-              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-              SQLTask:SqlStatementSource="UPDATE A01&#xA;SET A01.[BWART] = B01.[BWART]&#xA;   ,A01.[MATNR] = B01.[MATNR]&#xA;   ,A01.[WERKS] = B01.[WERKS]&#xA;   ,A01.[LGORT] = B01.[LGORT]&#xA;   ,A01.[CHARG] = B01.[CHARG]&#xA;   ,A01.[SHKZG] = B01.[SHKZG]&#xA;   ,A01.[DMBTR] = B01.[DMBTR]&#xA;   ,A01.[MENGE] = B01.[MENGE]&#xA;   ,A01.[MEINS] = B01.[MEINS]&#xA;   ,A01.[ERFMG] = B01.[ERFMG]&#xA;   ,A01.[ERFME] = B01.[ERFME]&#xA;   ,A01.[KOSTL] = B01.[KOSTL]&#xA;   ,A01.[AUFNR] = B01.[AUFNR]&#xA;   ,A01.[LGNUM] = B01.[LGNUM]&#xA;   ,A01.[LGTYP] = B01.[LGTYP]&#xA;   ,A01.[LGPLA] = B01.[LGPLA]&#xA;   ,A01.[GRUND] = B01.[GRUND]&#xA;   ,A01.[SAKTO] = B01.[SAKTO]&#xA;   ,A01.[BUDAT_MKPF] = B01.[BUDAT_MKPF]&#xA;   ,A01.[USNAM_MKPF] = B01.[USNAM_MKPF]&#xA;   ,A01.[HSDAT] = B01.[HSDAT]&#xA;   ,A01.[LIFNR]=B01.[LIFNR]&#xA;   ,A01.[KUNNR]=B01.[KUNNR]&#xA;   ,A01.[WAERS]=B01.[WAERS]&#xA;   ,A01.[EBELN]=B01.[EBELN]&#xA;   ,A01.[EBELP]=B01.[EBELP]&#xA;   ,A01.[BUKRS]=B01.[BUKRS]&#xA;   ,A01.[KZBEW]=B01.[KZBEW]&#xA;   ,A01.[KZVBR]=B01.[KZVBR]&#xA;   ,A01.[KZZUG]=B01.[KZZUG]&#xA;FROM [MSEG] A01 INNER JOIN [MSEG_STAGE_UPDATE] B01 ON ( A01.[MANDT] = B01.[MANDT]&#xA;                                                    AND A01.[MBLNR] = B01.[MBLNR]&#xA;                                                    AND A01.[MJAHR] = B01.[MJAHR]&#xA;                                                    AND A01.[ZEILE] = B01.[ZEILE] )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
-          </DTS:ObjectData>
-        </DTS:Executable>
-      </DTS:Executables>
-    </DTS:Executable>
-    <DTS:Executable
-      DTS:refId="Package\Sequence Container 1"
-      DTS:CreationName="STOCK:SEQUENCE"
-      DTS:Description="Sequence Container"
-      DTS:DTSID="{54c89952-f261-4187-b8ad-d3154691192c}"
-      DTS:ExecutableType="STOCK:SEQUENCE"
-      DTS:LocaleID="-1"
-      DTS:ObjectName="Sequence Container 1">
-      <DTS:Variables />
-      <DTS:Executables>
-        <DTS:Executable
-          DTS:refId="Package\Sequence Container 1\Insert"
-          DTS:CreationName="Microsoft.ExecuteSQLTask"
-          DTS:Description="Execute SQL Task"
-          DTS:DTSID="{6862c584-79da-4d03-80bd-8f205196734c}"
-          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
-          DTS:LocaleID="-1"
-          DTS:ObjectName="Insert"
-          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="0">
-          <DTS:Variables />
-          <DTS:ObjectData>
-            <SQLTask:SqlTaskData
-              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-              SQLTask:SqlStatementSource="INSERT INTO [MSEG]&#xA;SELECT * FROM [MSEG_STAGE_INSERT]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
-          </DTS:ObjectData>
-        </DTS:Executable>
-      </DTS:Executables>
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="UPDATE A01&#xA;SET A01.[BWART] = B01.[BWART]&#xA;    ,A01.[MATNR] = B01.[MATNR]&#xA;    ,A01.[WERKS] = B01.[WERKS]&#xA;    ,A01.[LGORT] = B01.[LGORT]&#xA;    ,A01.[CHARG] = B01.[CHARG]&#xA;    ,A01.[SHKZG] = B01.[SHKZG]&#xA;    ,A01.[DMBTR] = B01.[DMBTR]&#xA;    ,A01.[ERFMG] = B01.[ERFMG]&#xA;    ,A01.[ERFME] = B01.[ERFME]&#xA;    ,A01.[SGTXT] = B01.[SGTXT]&#xA;    ,A01.[AUFNR] = B01.[AUFNR]&#xA;    ,A01.[LGTYP] = B01.[LGTYP]&#xA;    ,A01.[LGPLA] = B01.[LGPLA]&#xA;    ,A01.[GRUND] = B01.[GRUND]&#xA;    ,A01.[SAKTO] = B01.[SAKTO]&#xA;    ,A01.[KUNNR] = B01.[KUNNR]&#xA;    ,A01.[WAERS] = B01.[WAERS]&#xA;    ,A01.[KZVBR] = B01.[KZVBR]&#xA;    ,A01.[XAUTO] = B01.[XAUTO]&#xA;FROM [MSEG] A01 INNER JOIN [MSEG_STAGE_UPDATE] B01 ON ( A01.[MANDT] = B01.[MANDT]&#xA;                                                    AND A01.[MBLNR] = B01.[MBLNR]&#xA;                                                    AND A01.[MJAHR] = B01.[MJAHR]&#xA;                                                    AND A01.[ZEILE] = B01.[ZEILE] )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
     </DTS:Executable>
   </DTS:Executables>
   <DTS:PrecedenceConstraints>
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint]"
       DTS:CreationName=""
-      DTS:DTSID="{016e9a4b-ae8a-434c-ae3f-e8364f4ca2a8}"
+      DTS:DTSID="{11D3560E-075C-4A06-8727-51BBEEEB00E8}"
       DTS:From="Package\MSEG"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint"
-      DTS:To="Package\Sequence Container" />
+      DTS:To="Package\update" />
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
       DTS:CreationName=""
@@ -5356,11 +3770,19 @@ ORDER BY A01.[MANDT]
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
       DTS:CreationName=""
-      DTS:DTSID="{1D16D9C0-295B-4F70-953C-063B0B7AD3E8}"
-      DTS:From="Package\Sequence Container"
+      DTS:DTSID="{0D3FF970-30E3-4ABD-8CC6-150A7DBD5892}"
+      DTS:From="Package\update"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 2"
-      DTS:To="Package\Sequence Container 1" />
+      DTS:To="Package\delete" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 3]"
+      DTS:CreationName=""
+      DTS:DTSID="{27F8EB50-B563-4BEA-9448-E02BA11B4339}"
+      DTS:From="Package\delete"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 3"
+      DTS:To="Package\Insert" />
   </DTS:PrecedenceConstraints>
   <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
 <!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
@@ -5379,49 +3801,35 @@ ORDER BY A01.[MANDT]
           Id="Package\clean stage"
           TopLeft="394,22" />
         <NodeLayout
-          Size="106,42"
+          Size="112,42"
+          Id="Package\delete"
+          TopLeft="204,265.666666666667" />
+        <NodeLayout
+          Size="112,42"
+          Id="Package\Insert"
+          TopLeft="204,370" />
+        <NodeLayout
+          Size="112,42"
           Id="Package\MSEG"
           TopLeft="204,57" />
         <NodeLayout
-          Size="108,42"
-          Id="Package\Sequence Container\delete"
-          TopLeft="195,39" />
-        <NodeLayout
           Size="112,42"
-          Id="Package\Sequence Container\update"
-          TopLeft="17,42" />
-        <ContainerLayout
-          HeaderHeight="43"
-          IsExpanded="True"
-          PanelSize="383,139"
-          Size="383,182"
-          Id="Package\Sequence Container"
-          TopLeft="60,174" />
-        <NodeLayout
-          Size="107,42"
-          Id="Package\Sequence Container 1\Insert"
-          TopLeft="128,43" />
-        <ContainerLayout
-          HeaderHeight="43"
-          IsExpanded="True"
-          PanelSize="383,139"
-          Size="383,182"
-          Id="Package\Sequence Container 1"
-          TopLeft="60,416" />
+          Id="Package\update"
+          TopLeft="204,161.333333333333" />
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint]"
-          TopLeft="254.25,99">
+          TopLeft="260,99">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,75"
+              EndConnector="0,62.3333333333333"
               Start="0,0"
-              End="0,67.5">
+              End="0,54.8333333333333">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,67.5" />
+                    End="0,54.8333333333333" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -5436,26 +3844,26 @@ ORDER BY A01.[MANDT]
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-84,35"
+              EndConnector="-78,35"
               Start="0,0"
-              End="-76.5,35">
+              End="-70.5,35">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="-38,0" />
+                    End="-35,0" />
                   <mssgle:CubicBezierSegment
-                    Point1="-38,0"
-                    Point2="-42,0"
-                    Point3="-42,4" />
+                    Point1="-35,0"
+                    Point2="-39,0"
+                    Point3="-39,4" />
                   <mssgle:LineSegment
-                    End="-42,31" />
+                    End="-39,31" />
                   <mssgle:CubicBezierSegment
-                    Point1="-42,31"
-                    Point2="-42,35"
-                    Point3="-46,35" />
+                    Point1="-39,31"
+                    Point2="-39,35"
+                    Point3="-43,35" />
                   <mssgle:LineSegment
-                    End="-76.5,35" />
+                    End="-70.5,35" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -5466,18 +3874,40 @@ ORDER BY A01.[MANDT]
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 2]"
-          TopLeft="251.5,356">
+          TopLeft="260,203.333333333333">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,60"
+              EndConnector="0,62.3333333333333"
               Start="0,0"
-              End="0,52.5">
+              End="0,54.8333333333333">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,52.5" />
+                    End="0,54.8333333333333" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 3]"
+          TopLeft="260,307.666666666667">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,62.3333333333333"
+              Start="0,0"
+              End="0,54.8333333333333">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,54.8333333333333" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -5495,17 +3925,13 @@ ORDER BY A01.[MANDT]
       <GraphLayout
         Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
-          Size="130,42"
-          Id="Package\MSEG\Merge Join"
-          TopLeft="451,137" />
+          Size="114,42"
+          Id="Package\MSEG\DB SAP"
+          TopLeft="199,46" />
         <NodeLayout
-          Size="180,42"
-          Id="Package\MSEG\stage deleted records"
-          TopLeft="687,371" />
-        <NodeLayout
-          Size="166,42"
-          Id="Package\MSEG\insert new records"
-          TopLeft="159,370" />
+          Size="184,42"
+          Id="Package\MSEG\Find Changed Records"
+          TopLeft="420,366" />
         <NodeLayout
           Size="186,42"
           Id="Package\MSEG\stage changed records"
@@ -5515,17 +3941,21 @@ ORDER BY A01.[MANDT]
           Id="Package\MSEG\Identity records"
           TopLeft="434,236" />
         <NodeLayout
-          Size="184,42"
-          Id="Package\MSEG\Find Changed Records"
-          TopLeft="420,366" />
+          Size="130,42"
+          Id="Package\MSEG\Merge Join"
+          TopLeft="451,137" />
         <NodeLayout
-          Size="114,42"
-          Id="Package\MSEG\DB SAP"
-          TopLeft="199,46" />
+          Size="166,42"
+          Id="Package\MSEG\insert new records"
+          TopLeft="159,371" />
         <NodeLayout
           Size="112,42"
           Id="Package\MSEG\DB PBI"
           TopLeft="671,48" />
+        <NodeLayout
+          Size="180,42"
+          Id="Package\MSEG\stage deleted records"
+          TopLeft="687,371" />
         <EdgeLayout
           Id="Package\MSEG.Paths[update1]"
           TopLeft="512,408">
@@ -5666,37 +4096,37 @@ ORDER BY A01.[MANDT]
         </EdgeLayout>
         <EdgeLayout
           Id="Package\MSEG.Paths[insert]"
-          TopLeft="510.5,278">
+          TopLeft="474.25,278">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-268.5,92"
+              EndConnector="-232.25,93"
               Start="0,0"
-              End="-268.5,84.5">
+              End="-232.25,85.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,42" />
+                    End="0,28.0620985010707" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,42"
-                    Point2="0,46"
-                    Point3="-4,46" />
+                    Point1="0,28.0620985010707"
+                    Point2="0,32.0620985010707"
+                    Point3="-4,32.0620985010707" />
                   <mssgle:LineSegment
-                    End="-264.5,46" />
+                    End="-228.25,32.0620985010707" />
                   <mssgle:CubicBezierSegment
-                    Point1="-264.5,46"
-                    Point2="-268.5,46"
-                    Point3="-268.5,50" />
+                    Point1="-228.25,32.0620985010707"
+                    Point2="-232.25,32.0620985010707"
+                    Point3="-232.25,36.0620985010707" />
                   <mssgle:LineSegment
-                    End="-268.5,84.5" />
+                    End="-232.25,85.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="-147.19998046875,51,25.8999609375,9.451171875"
+              BoundingBox="-129.07498046875,37.0620985010707,25.8999609375,9.451171875"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
@@ -5740,7 +4170,15 @@ ORDER BY A01.[MANDT]
     </LayoutInfo>
   </TaskHost>
   <PipelineComponentMetadata
-    design-time-name="Package\MSEG\stage deleted records">
+    design-time-name="Package\MSEG\DB SAP">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\MSEG\stage changed records">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -5766,7 +4204,15 @@ ORDER BY A01.[MANDT]
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\MSEG\stage changed records">
+    design-time-name="Package\MSEG\DB PBI">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\MSEG\stage deleted records">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -5775,22 +4221,6 @@ ORDER BY A01.[MANDT]
         <Name>TableInfoObjectType</Name>
         <Value
           type="q2:string">Table</Value>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
-    design-time-name="Package\MSEG\DB SAP">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
-    design-time-name="Package\MSEG\DB PBI">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
       </Property>
     </Properties>
   </PipelineComponentMetadata>

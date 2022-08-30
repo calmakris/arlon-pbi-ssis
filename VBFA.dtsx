@@ -7,12 +7,12 @@
   DTS:CreatorName="DOMAIN\RPETRELLA"
   DTS:DTSID="{94D6A666-230B-4F8D-BCB0-05393E43675E}"
   DTS:ExecutableType="Microsoft.Package"
-  DTS:LastModifiedProductVersion="15.0.2000.152"
+  DTS:LastModifiedProductVersion="15.0.2000.180"
   DTS:LocaleID="1033"
   DTS:ObjectName="VBFA"
   DTS:PackageType="5"
-  DTS:VersionBuild="8"
-  DTS:VersionGUID="{37EDD527-C2A7-4878-AB3B-A2F0F35F1F02}">
+  DTS:VersionBuild="10"
+  DTS:VersionGUID="{8476D227-CF6E-4887-9651-020F33FCCB17}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:Variables />
@@ -31,7 +31,7 @@
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
           SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-          SQLTask:SqlStatementSource="TRUNCATE TABLE [VBFA_STAGE_UPDATE]&#xA;go&#xA;TRUNCATE TABLE [VBFA_STAGE_DELETE]&#xA;go&#xA;TRUNCATE TABLE [VBFA_STAGE_INSERT]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          SQLTask:SqlStatementSource="TRUNCATE TABLE [VBFA_STAGE_UPDATE]&#xA;go&#xA;TRUNCATE TABLE [VBFA_STAGE_DELETE]&#xA;go&#xA;TRUNCATE TABLE [VBFA_STAGE_INSERT]&#xA;go" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
@@ -75,7 +75,7 @@
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
               SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-              SQLTask:SqlStatementSource="UPDATE A01&#xA;SET A01.[ERDAT] = B01.[ERDAT]&#xA;FROM [VBFA] A01 INNER JOIN [VBFA_STAGE_UPDATE] B01 ON ( A01.[MANDT] = B01.[MANDT]&#xA;                                                    AND A01.[VBELV] = B01.[VBELV]&#xA;                                                    AND A01.[POSNV] = B01.[POSNV]&#xA;                                                    AND A01.[VBELN] = B01.[VBELN]&#xA;                                                    AND A01.[POSNN] = B01.[POSNN]&#xA;                                                    AND A01.[VBTYP_N] = B01.[VBTYP_N] )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+              SQLTask:SqlStatementSource="UPDATE A01&#xA;SET A01.[ERDAT] = B01.[ERDAT]&#xA;    ,A01.[VBTYP_V] = B01.[VBTYP_V]&#xA;FROM [VBFA] A01&#xA;INNER JOIN [VBFA_STAGE_UPDATE] B01&#xA;ON A01.[MANDT] = B01.[MANDT]&#xA;    AND A01.[VBELV] = B01.[VBELV]&#xA;    AND A01.[POSNV] = B01.[POSNV]&#xA;    AND A01.[VBELN] = B01.[VBELN]&#xA;    AND A01.[POSNN] = B01.[POSNN]&#xA;    AND A01.[VBTYP_N] = B01.[VBTYP_N]&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
           </DTS:ObjectData>
         </DTS:Executable>
       </DTS:Executables>
@@ -154,6 +154,7 @@
       ,A01.[VBELN]
       ,A01.[POSNN]
       ,A01.[VBTYP_N]
+      ,A01.[VBTYP_V]
       ,A01.[ERDAT]
 FROM [VBFA] A01 (NOLOCK)
 ORDER BY A01.[MANDT]
@@ -274,6 +275,16 @@ ORDER BY A01.[MANDT]
                       lineageId="Package\VBFA\DB PBI.Outputs[OLE DB Source Output].Columns[ERDAT]"
                       name="ERDAT"
                       truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\VBFA\DB PBI.Outputs[OLE DB Source Output].Columns[VBTYP_V]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\VBFA\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[VBTYP_V]"
+                      length="1"
+                      lineageId="Package\VBFA\DB PBI.Outputs[OLE DB Source Output].Columns[VBTYP_V]"
+                      name="VBTYP_V"
+                      truncationRowDisposition="FailComponent" />
                   </outputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -312,6 +323,11 @@ ORDER BY A01.[MANDT]
                       dataType="wstr"
                       length="8"
                       name="ERDAT" />
+                    <externalMetadataColumn
+                      refId="Package\VBFA\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[VBTYP_V]"
+                      dataType="wstr"
+                      length="1"
+                      name="VBTYP_V" />
                   </externalMetadataColumns>
                 </output>
                 <output
@@ -355,6 +371,12 @@ ORDER BY A01.[MANDT]
                       length="1"
                       lineageId="Package\VBFA\DB PBI.Outputs[OLE DB Source Error Output].Columns[VBTYP_N]"
                       name="VBTYP_N" />
+                    <outputColumn
+                      refId="Package\VBFA\DB PBI.Outputs[OLE DB Source Error Output].Columns[VBTYP_V]"
+                      dataType="wstr"
+                      length="1"
+                      lineageId="Package\VBFA\DB PBI.Outputs[OLE DB Source Error Output].Columns[VBTYP_V]"
+                      name="VBTYP_V" />
                     <outputColumn
                       refId="Package\VBFA\DB PBI.Outputs[OLE DB Source Error Output].Columns[ERDAT]"
                       dataType="wstr"
@@ -409,6 +431,7 @@ ORDER BY A01.[MANDT]
       ,A01.[VBELN]
       ,A01.[POSNN]
       ,A01.[VBTYP_N]
+      ,A01.[VBTYP_V]
       ,A01.[ERDAT]
 FROM [ecp].[VBFA] A01 (NOLOCK)
 ORDER BY A01.[MANDT]
@@ -529,6 +552,16 @@ ORDER BY A01.[MANDT]
                       lineageId="Package\VBFA\DB SAP.Outputs[OLE DB Source Output].Columns[ERDAT]"
                       name="ERDAT"
                       truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\VBFA\DB SAP.Outputs[OLE DB Source Output].Columns[VBTYP_V]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\VBFA\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[VBTYP_V]"
+                      length="1"
+                      lineageId="Package\VBFA\DB SAP.Outputs[OLE DB Source Output].Columns[VBTYP_V]"
+                      name="VBTYP_V"
+                      truncationRowDisposition="FailComponent" />
                   </outputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -567,6 +600,11 @@ ORDER BY A01.[MANDT]
                       dataType="wstr"
                       length="8"
                       name="ERDAT" />
+                    <externalMetadataColumn
+                      refId="Package\VBFA\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[VBTYP_V]"
+                      dataType="wstr"
+                      length="1"
+                      name="VBTYP_V" />
                   </externalMetadataColumns>
                 </output>
                 <output
@@ -610,6 +648,12 @@ ORDER BY A01.[MANDT]
                       length="1"
                       lineageId="Package\VBFA\DB SAP.Outputs[OLE DB Source Error Output].Columns[VBTYP_N]"
                       name="VBTYP_N" />
+                    <outputColumn
+                      refId="Package\VBFA\DB SAP.Outputs[OLE DB Source Error Output].Columns[VBTYP_V]"
+                      dataType="wstr"
+                      length="1"
+                      lineageId="Package\VBFA\DB SAP.Outputs[OLE DB Source Error Output].Columns[VBTYP_V]"
+                      name="VBTYP_V" />
                     <outputColumn
                       refId="Package\VBFA\DB SAP.Outputs[OLE DB Source Error Output].Columns[ERDAT]"
                       dataType="wstr"
@@ -658,6 +702,18 @@ ORDER BY A01.[MANDT]
                       cachedLength="8"
                       cachedName="ERDAT (1)"
                       lineageId="Package\VBFA\Merge Join.Outputs[Merge Join Output].Columns[ERDAT (1)]" />
+                    <inputColumn
+                      refId="Package\VBFA\Find Changed Records.Inputs[Conditional Split Input].Columns[VBTYP_V]"
+                      cachedDataType="wstr"
+                      cachedLength="1"
+                      cachedName="VBTYP_V"
+                      lineageId="Package\VBFA\Merge Join.Outputs[Merge Join Output].Columns[VBTYP_V]" />
+                    <inputColumn
+                      refId="Package\VBFA\Find Changed Records.Inputs[Conditional Split Input].Columns[VBTYP_V (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="1"
+                      cachedName="VBTYP_V (1)"
+                      lineageId="Package\VBFA\Merge Join.Outputs[Merge Join Output].Columns[VBTYP_V (1)]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
@@ -677,13 +733,13 @@ ORDER BY A01.[MANDT]
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
-                      name="Expression">#{Package\VBFA\Merge Join.Outputs[Merge Join Output].Columns[ERDAT]} != #{Package\VBFA\Merge Join.Outputs[Merge Join Output].Columns[ERDAT (1)]}</property>
+                      name="Expression">#{Package\VBFA\Merge Join.Outputs[Merge Join Output].Columns[ERDAT]} != #{Package\VBFA\Merge Join.Outputs[Merge Join Output].Columns[ERDAT (1)]} || #{Package\VBFA\Merge Join.Outputs[Merge Join Output].Columns[VBTYP_V]} != #{Package\VBFA\Merge Join.Outputs[Merge Join Output].Columns[VBTYP_V (1)]}</property>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the friendly version of the expression. This expression version uses column names."
                       expressionType="Notify"
-                      name="FriendlyExpression">ERDAT != [ERDAT (1)]</property>
+                      name="FriendlyExpression">ERDAT != [ERDAT (1)] || VBTYP_V != [VBTYP_V (1)]</property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
@@ -1009,6 +1065,13 @@ ORDER BY A01.[MANDT]
                       cachedName="ERDAT"
                       externalMetadataColumnId="Package\VBFA\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[ERDAT]"
                       lineageId="Package\VBFA\Merge Join.Outputs[Merge Join Output].Columns[ERDAT]" />
+                    <inputColumn
+                      refId="Package\VBFA\insert new records.Inputs[OLE DB Destination Input].Columns[VBTYP_V]"
+                      cachedDataType="wstr"
+                      cachedLength="1"
+                      cachedName="VBTYP_V"
+                      externalMetadataColumnId="Package\VBFA\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[VBTYP_V]"
+                      lineageId="Package\VBFA\Merge Join.Outputs[Merge Join Output].Columns[VBTYP_V]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -1047,6 +1110,11 @@ ORDER BY A01.[MANDT]
                       dataType="wstr"
                       length="8"
                       name="ERDAT" />
+                    <externalMetadataColumn
+                      refId="Package\VBFA\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[VBTYP_V]"
+                      dataType="wstr"
+                      length="1"
+                      name="VBTYP_V" />
                   </externalMetadataColumns>
                 </input>
               </inputs>
@@ -1155,6 +1223,12 @@ ORDER BY A01.[MANDT]
                       cachedLength="8"
                       cachedName="ERDAT"
                       lineageId="Package\VBFA\DB SAP.Outputs[OLE DB Source Output].Columns[ERDAT]" />
+                    <inputColumn
+                      refId="Package\VBFA\Merge Join.Inputs[Merge Join Left Input].Columns[VBTYP_V]"
+                      cachedDataType="wstr"
+                      cachedLength="1"
+                      cachedName="VBTYP_V"
+                      lineageId="Package\VBFA\DB SAP.Outputs[OLE DB Source Output].Columns[VBTYP_V]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
@@ -1211,6 +1285,12 @@ ORDER BY A01.[MANDT]
                       cachedLength="8"
                       cachedName="ERDAT"
                       lineageId="Package\VBFA\DB PBI.Outputs[OLE DB Source Output].Columns[ERDAT]" />
+                    <inputColumn
+                      refId="Package\VBFA\Merge Join.Inputs[Merge Join Right Input].Columns[VBTYP_V]"
+                      cachedDataType="wstr"
+                      cachedLength="1"
+                      cachedName="VBTYP_V"
+                      lineageId="Package\VBFA\DB PBI.Outputs[OLE DB Source Output].Columns[VBTYP_V]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
@@ -1423,6 +1503,34 @@ ORDER BY A01.[MANDT]
                           name="InputColumnID">#{Package\VBFA\Merge Join.Inputs[Merge Join Right Input].Columns[ERDAT]}</property>
                       </properties>
                     </outputColumn>
+                    <outputColumn
+                      refId="Package\VBFA\Merge Join.Outputs[Merge Join Output].Columns[VBTYP_V]"
+                      dataType="wstr"
+                      length="1"
+                      lineageId="Package\VBFA\Merge Join.Outputs[Merge Join Output].Columns[VBTYP_V]"
+                      name="VBTYP_V">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\VBFA\Merge Join.Inputs[Merge Join Left Input].Columns[VBTYP_V]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\VBFA\Merge Join.Outputs[Merge Join Output].Columns[VBTYP_V (1)]"
+                      dataType="wstr"
+                      length="1"
+                      lineageId="Package\VBFA\Merge Join.Outputs[Merge Join Output].Columns[VBTYP_V (1)]"
+                      name="VBTYP_V (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\VBFA\Merge Join.Inputs[Merge Join Right Input].Columns[VBTYP_V]}</property>
+                      </properties>
+                    </outputColumn>
                   </outputColumns>
                   <externalMetadataColumns />
                 </output>
@@ -1555,6 +1663,13 @@ ORDER BY A01.[MANDT]
                       cachedName="ERDAT"
                       externalMetadataColumnId="Package\VBFA\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[ERDAT]"
                       lineageId="Package\VBFA\Merge Join.Outputs[Merge Join Output].Columns[ERDAT]" />
+                    <inputColumn
+                      refId="Package\VBFA\stage changed records.Inputs[OLE DB Destination Input].Columns[VBTYP_V]"
+                      cachedDataType="wstr"
+                      cachedLength="1"
+                      cachedName="VBTYP_V"
+                      externalMetadataColumnId="Package\VBFA\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[VBTYP_V]"
+                      lineageId="Package\VBFA\Merge Join.Outputs[Merge Join Output].Columns[VBTYP_V]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -1593,6 +1708,11 @@ ORDER BY A01.[MANDT]
                       dataType="wstr"
                       length="8"
                       name="ERDAT" />
+                    <externalMetadataColumn
+                      refId="Package\VBFA\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[VBTYP_V]"
+                      dataType="wstr"
+                      length="1"
+                      name="VBTYP_V" />
                   </externalMetadataColumns>
                 </input>
               </inputs>
