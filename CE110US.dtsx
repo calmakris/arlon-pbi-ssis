@@ -7,12 +7,12 @@
   DTS:CreatorName="DOMAIN\RPETRELLA"
   DTS:DTSID="{316D09E0-7E75-4E45-99FF-D52FC5A93DD7}"
   DTS:ExecutableType="Microsoft.Package"
-  DTS:LastModifiedProductVersion="16.0.694.0"
+  DTS:LastModifiedProductVersion="16.0.845.0"
   DTS:LocaleID="1033"
   DTS:ObjectName="CE110US"
   DTS:PackageType="5"
-  DTS:VersionBuild="19"
-  DTS:VersionGUID="{87EDFEF7-06D7-4DE0-90AB-587B502AEAAB}">
+  DTS:VersionBuild="22"
+  DTS:VersionGUID="{F7805D6A-5857-4833-B492-FAB00F60F8A9}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:Variables />
@@ -87,11 +87,6 @@
     ,[ERLOS]
     ,[KWKDRB]
 FROM [CE110US] (NOLOCK)
-WHERE [BUDAT] &gt;= '20160101'
-    AND [PALEDGER] = '01'
-    AND [VRGAR] = 'F'
-    AND [FKART] NOT IN ('IV', 'IVS')
-    AND [RBELN] LIKE '009%'
 ORDER BY [MANDT]
     ,[PALEDGER]
     ,[VRGAR]
@@ -874,7 +869,6 @@ FROM [ecp].[CE110US] (NOLOCK)
 WHERE [BUDAT] &gt;= '20160101'
     AND [PALEDGER] = '01'
     AND [VRGAR] = 'F'
-    AND [FKART] NOT IN ('IV', 'IVS')
     AND [RBELN] LIKE '009%'
 ORDER BY [MANDT]
     ,[PALEDGER]
@@ -4729,9 +4723,21 @@ ORDER BY [MANDT]
           Size="132,42"
           Id="Package\clean stage"
           TopLeft="214,15" />
+        <NodeLayout
+          Size="132,42"
+          Id="Package\delete"
+          TopLeft="214,249.75" />
+        <NodeLayout
+          Size="132,42"
+          Id="Package\Insert"
+          TopLeft="214,328" />
+        <NodeLayout
+          Size="132,42"
+          Id="Package\update"
+          TopLeft="214,171.5" />
         <EdgeLayout
-          Id="Package.PrecedenceConstraints[Constraint 1]"
-          TopLeft="280,57">
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="280,135.25">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -4751,21 +4757,9 @@ ORDER BY [MANDT]
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
-        <NodeLayout
-          Size="132,42"
-          Id="Package\update"
-          TopLeft="214,171.5" />
-        <NodeLayout
-          Size="132,42"
-          Id="Package\delete"
-          TopLeft="214,249.75" />
-        <NodeLayout
-          Size="132,42"
-          Id="Package\Insert"
-          TopLeft="214,328" />
         <EdgeLayout
-          Id="Package.PrecedenceConstraints[Constraint]"
-          TopLeft="280,135.25">
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="280,57">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -4838,37 +4832,61 @@ ORDER BY [MANDT]
       <GraphLayout
         Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
-          Size="114,42"
-          Id="Package\CE110US\DB SAP"
-          TopLeft="199,46" />
-        <NodeLayout
-          Size="184,42"
-          Id="Package\CE110US\Find Changed Records"
-          TopLeft="420,366" />
+          Size="180,42"
+          Id="Package\CE110US\stage deleted records"
+          TopLeft="687,371" />
         <NodeLayout
           Size="166,42"
           Id="Package\CE110US\insert new records"
           TopLeft="159,370" />
         <NodeLayout
-          Size="180,42"
-          Id="Package\CE110US\stage deleted records"
-          TopLeft="687,371" />
-        <NodeLayout
           Size="153,42"
           Id="Package\CE110US\Identity records"
           TopLeft="436,234" />
+        <NodeLayout
+          Size="184,42"
+          Id="Package\CE110US\Find Changed Records"
+          TopLeft="420,366" />
         <NodeLayout
           Size="186,42"
           Id="Package\CE110US\stage changed records"
           TopLeft="413,479" />
         <NodeLayout
-          Size="112,42"
-          Id="Package\CE110US\DB PBI"
-          TopLeft="671,48" />
-        <NodeLayout
           Size="130,42"
           Id="Package\CE110US\Merge Join"
           TopLeft="451,137" />
+        <NodeLayout
+          Size="114,42"
+          Id="Package\CE110US\DB SAP"
+          TopLeft="199,46" />
+        <NodeLayout
+          Size="112,42"
+          Id="Package\CE110US\DB PBI"
+          TopLeft="671,48" />
+        <EdgeLayout
+          Id="Package\CE110US.Paths[update1]"
+          TopLeft="509,408">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,71"
+              Start="0,0"
+              End="0,63.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,63.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-15.8025,25.9453125,31.605,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
         <EdgeLayout
           Id="Package\CE110US.Paths[update]"
           TopLeft="512.25,276">
@@ -5055,43 +5073,11 @@ ORDER BY [MANDT]
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
-        <EdgeLayout
-          Id="Package\CE110US.Paths[update1]"
-          TopLeft="509,408">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,71"
-              Start="0,0"
-              End="0,63.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,63.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-15.8025,25.9453125,31.605,11.609375"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
       </GraphLayout>
     </LayoutInfo>
   </TaskHost>
   <PipelineComponentMetadata
-    design-time-name="Package\CE110US\DB SAP">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
-    design-time-name="Package\CE110US\insert new records">
+    design-time-name="Package\CE110US\stage deleted records">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -5104,7 +5090,7 @@ ORDER BY [MANDT]
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\CE110US\stage deleted records">
+    design-time-name="Package\CE110US\insert new records">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -5126,6 +5112,14 @@ ORDER BY [MANDT]
         <Name>TableInfoObjectType</Name>
         <Value
           type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\CE110US\DB SAP">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
       </Property>
     </Properties>
   </PipelineComponentMetadata>
