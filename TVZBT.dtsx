@@ -1,0 +1,1893 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="3/6/2021 5:13:20 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="ARLPBIDEV"
+  DTS:CreatorName="DOMAIN\RPETRELLA"
+  DTS:DTSID="{D1545089-68F5-475D-99AF-BC250F73924F}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="16.0.845.0"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="TVZBT"
+  DTS:PackageType="5"
+  DTS:VersionBuild="17"
+  DTS:VersionGUID="{1A579610-1EC7-499A-B4FC-D2040DF5080C}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Clean Stage"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{604A3DC0-E8C2-4DE1-B91A-0A9579C5381D}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Clean Stage"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="TRUNCATE TABLE [TVZBT_STAGE_UPDATE]&#xA;go&#xA;TRUNCATE TABLE [TVZBT_STAGE_DELETE]&#xA;go&#xA;TRUNCATE TABLE [TVZBT_STAGE_INSERT]&#xA;go" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\DELETE"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{9243C97B-47FF-4E22-AE8D-8BF3D45143D2}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="DELETE"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="DELETE A01&#xA;FROM [TVZBT] A01&#xA;INNER JOIN [TVZBT_STAGE_DELETE] B01&#xA;ON ( A01.[MANDT] = B01.[MANDT]&#xA;    AND A01.[SPRAS] = B01.[SPRAS]&#xA;    AND A01.[ZTERM] = B01.[ZTERM] )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\INSERT"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{3F568E1C-046B-41E3-8332-61D1E996F18C}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="INSERT"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="INSERT INTO [TVZBT]&#xA;SELECT * FROM [TVZBT_STAGE_INSERT]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\TVZBT"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{60F71090-CA49-41A9-AD7C-49B7E2C04844}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="TVZBT"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\TVZBT\Changed records"
+              componentClassID="Microsoft.ConditionalSplit"
+              contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
+              name="Changed records"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\TVZBT\Changed records.Inputs[Conditional Split Input]"
+                  description="Input to the Conditional Split Transformation"
+                  name="Conditional Split Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\TVZBT\Changed records.Inputs[Conditional Split Input].Columns[VTEXT]"
+                      cachedDataType="wstr"
+                      cachedLength="30"
+                      cachedName="VTEXT"
+                      lineageId="Package\TVZBT\Merge Join.Outputs[Merge Join Output].Columns[VTEXT]" />
+                    <inputColumn
+                      refId="Package\TVZBT\Changed records.Inputs[Conditional Split Input].Columns[VTEXT (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="30"
+                      cachedName="VTEXT (1)"
+                      lineageId="Package\TVZBT\Merge Join.Outputs[Merge Join Output].Columns[VTEXT (1)]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\TVZBT\Changed records.Outputs[update]"
+                  description="Output 1 of the Conditional Split Transformation"
+                  errorOrTruncationOperation="Computation"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="update"
+                  synchronousInputId="Package\TVZBT\Changed records.Inputs[Conditional Split Input]"
+                  truncationRowDisposition="FailComponent">
+                  <properties>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                      name="Expression">#{Package\TVZBT\Merge Join.Outputs[Merge Join Output].Columns[VTEXT]} != #{Package\TVZBT\Merge Join.Outputs[Merge Join Output].Columns[VTEXT (1)]}</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the friendly version of the expression. This expression version uses column names."
+                      expressionType="Notify"
+                      name="FriendlyExpression">VTEXT != [VTEXT (1)]</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                      name="EvaluationOrder">0</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\TVZBT\Changed records.Outputs[Conditional Split Default Output]"
+                  description="Default Output of the Conditional Split Transformation"
+                  exclusionGroup="1"
+                  name="Conditional Split Default Output"
+                  synchronousInputId="Package\TVZBT\Changed records.Inputs[Conditional Split Input]">
+                  <properties>
+                    <property
+                      dataType="System.Boolean"
+                      name="IsDefaultOut">true</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\TVZBT\Changed records.Outputs[Conditional Split Error Output]"
+                  description="Error Output of the Conditional Split Transformation"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Conditional Split Error Output"
+                  synchronousInputId="Package\TVZBT\Changed records.Inputs[Conditional Split Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\TVZBT\Changed records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\TVZBT\Changed records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\TVZBT\Changed records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\TVZBT\Changed records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\TVZBT\DB PBI TVZBT"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="DB PBI TVZBT"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT [MANDT]
+    ,[SPRAS]
+    ,[ZTERM]
+    ,[VTEXT]
+FROM [TVZBT] (NOLOCK)
+ORDER BY [MANDT]
+    ,[SPRAS]
+    ,[ZTERM]</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\TVZBT\DB PBI TVZBT.Connections[OleDbConnection]"
+                  connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\TVZBT\DB PBI TVZBT.Outputs[OLE DB Source Output]"
+                  isSorted="true"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\TVZBT\DB PBI TVZBT.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\TVZBT\DB PBI TVZBT.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      length="3"
+                      lineageId="Package\TVZBT\DB PBI TVZBT.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      name="MANDT"
+                      sortKeyPosition="1"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\TVZBT\DB PBI TVZBT.Outputs[OLE DB Source Output].Columns[SPRAS]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\TVZBT\DB PBI TVZBT.Outputs[OLE DB Source Output].ExternalColumns[SPRAS]"
+                      length="1"
+                      lineageId="Package\TVZBT\DB PBI TVZBT.Outputs[OLE DB Source Output].Columns[SPRAS]"
+                      name="SPRAS"
+                      sortKeyPosition="2"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\TVZBT\DB PBI TVZBT.Outputs[OLE DB Source Output].Columns[ZTERM]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\TVZBT\DB PBI TVZBT.Outputs[OLE DB Source Output].ExternalColumns[ZTERM]"
+                      length="4"
+                      lineageId="Package\TVZBT\DB PBI TVZBT.Outputs[OLE DB Source Output].Columns[ZTERM]"
+                      name="ZTERM"
+                      sortKeyPosition="3"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\TVZBT\DB PBI TVZBT.Outputs[OLE DB Source Output].Columns[VTEXT]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\TVZBT\DB PBI TVZBT.Outputs[OLE DB Source Output].ExternalColumns[VTEXT]"
+                      length="30"
+                      lineageId="Package\TVZBT\DB PBI TVZBT.Outputs[OLE DB Source Output].Columns[VTEXT]"
+                      name="VTEXT"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\TVZBT\DB PBI TVZBT.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      name="MANDT" />
+                    <externalMetadataColumn
+                      refId="Package\TVZBT\DB PBI TVZBT.Outputs[OLE DB Source Output].ExternalColumns[SPRAS]"
+                      dataType="wstr"
+                      length="1"
+                      name="SPRAS" />
+                    <externalMetadataColumn
+                      refId="Package\TVZBT\DB PBI TVZBT.Outputs[OLE DB Source Output].ExternalColumns[ZTERM]"
+                      dataType="wstr"
+                      length="4"
+                      name="ZTERM" />
+                    <externalMetadataColumn
+                      refId="Package\TVZBT\DB PBI TVZBT.Outputs[OLE DB Source Output].ExternalColumns[VTEXT]"
+                      dataType="wstr"
+                      length="30"
+                      name="VTEXT" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\TVZBT\DB PBI TVZBT.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\TVZBT\DB PBI TVZBT.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      lineageId="Package\TVZBT\DB PBI TVZBT.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      name="MANDT" />
+                    <outputColumn
+                      refId="Package\TVZBT\DB PBI TVZBT.Outputs[OLE DB Source Error Output].Columns[SPRAS]"
+                      dataType="wstr"
+                      length="1"
+                      lineageId="Package\TVZBT\DB PBI TVZBT.Outputs[OLE DB Source Error Output].Columns[SPRAS]"
+                      name="SPRAS" />
+                    <outputColumn
+                      refId="Package\TVZBT\DB PBI TVZBT.Outputs[OLE DB Source Error Output].Columns[ZTERM]"
+                      dataType="wstr"
+                      length="4"
+                      lineageId="Package\TVZBT\DB PBI TVZBT.Outputs[OLE DB Source Error Output].Columns[ZTERM]"
+                      name="ZTERM" />
+                    <outputColumn
+                      refId="Package\TVZBT\DB PBI TVZBT.Outputs[OLE DB Source Error Output].Columns[VTEXT]"
+                      dataType="wstr"
+                      length="30"
+                      lineageId="Package\TVZBT\DB PBI TVZBT.Outputs[OLE DB Source Error Output].Columns[VTEXT]"
+                      name="VTEXT" />
+                    <outputColumn
+                      refId="Package\TVZBT\DB PBI TVZBT.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\TVZBT\DB PBI TVZBT.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\TVZBT\DB PBI TVZBT.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\TVZBT\DB PBI TVZBT.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\TVZBT\DB SAP TVZBT"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="DB SAP TVZBT"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT [MANDT]
+    ,[SPRAS]
+    ,[ZTERM]
+    ,[VTEXT]
+FROM [ecp].[TVZBT] (NOLOCK)
+ORDER BY [MANDT]
+    ,[SPRAS]
+    ,[ZTERM]</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\TVZBT\DB SAP TVZBT.Connections[OleDbConnection]"
+                  connectionManagerID="{544CCAD9-2CB1-4D87-98D7-A7C478586195}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[SQL_SAP]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\TVZBT\DB SAP TVZBT.Outputs[OLE DB Source Output]"
+                  isSorted="true"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\TVZBT\DB SAP TVZBT.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\TVZBT\DB SAP TVZBT.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      length="3"
+                      lineageId="Package\TVZBT\DB SAP TVZBT.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      name="MANDT"
+                      sortKeyPosition="1"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\TVZBT\DB SAP TVZBT.Outputs[OLE DB Source Output].Columns[SPRAS]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\TVZBT\DB SAP TVZBT.Outputs[OLE DB Source Output].ExternalColumns[SPRAS]"
+                      length="1"
+                      lineageId="Package\TVZBT\DB SAP TVZBT.Outputs[OLE DB Source Output].Columns[SPRAS]"
+                      name="SPRAS"
+                      sortKeyPosition="2"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\TVZBT\DB SAP TVZBT.Outputs[OLE DB Source Output].Columns[ZTERM]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\TVZBT\DB SAP TVZBT.Outputs[OLE DB Source Output].ExternalColumns[ZTERM]"
+                      length="4"
+                      lineageId="Package\TVZBT\DB SAP TVZBT.Outputs[OLE DB Source Output].Columns[ZTERM]"
+                      name="ZTERM"
+                      sortKeyPosition="3"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\TVZBT\DB SAP TVZBT.Outputs[OLE DB Source Output].Columns[VTEXT]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\TVZBT\DB SAP TVZBT.Outputs[OLE DB Source Output].ExternalColumns[VTEXT]"
+                      length="30"
+                      lineageId="Package\TVZBT\DB SAP TVZBT.Outputs[OLE DB Source Output].Columns[VTEXT]"
+                      name="VTEXT"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\TVZBT\DB SAP TVZBT.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      name="MANDT" />
+                    <externalMetadataColumn
+                      refId="Package\TVZBT\DB SAP TVZBT.Outputs[OLE DB Source Output].ExternalColumns[SPRAS]"
+                      dataType="wstr"
+                      length="1"
+                      name="SPRAS" />
+                    <externalMetadataColumn
+                      refId="Package\TVZBT\DB SAP TVZBT.Outputs[OLE DB Source Output].ExternalColumns[ZTERM]"
+                      dataType="wstr"
+                      length="4"
+                      name="ZTERM" />
+                    <externalMetadataColumn
+                      refId="Package\TVZBT\DB SAP TVZBT.Outputs[OLE DB Source Output].ExternalColumns[VTEXT]"
+                      dataType="wstr"
+                      length="30"
+                      name="VTEXT" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\TVZBT\DB SAP TVZBT.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\TVZBT\DB SAP TVZBT.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      lineageId="Package\TVZBT\DB SAP TVZBT.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      name="MANDT" />
+                    <outputColumn
+                      refId="Package\TVZBT\DB SAP TVZBT.Outputs[OLE DB Source Error Output].Columns[SPRAS]"
+                      dataType="wstr"
+                      length="1"
+                      lineageId="Package\TVZBT\DB SAP TVZBT.Outputs[OLE DB Source Error Output].Columns[SPRAS]"
+                      name="SPRAS" />
+                    <outputColumn
+                      refId="Package\TVZBT\DB SAP TVZBT.Outputs[OLE DB Source Error Output].Columns[ZTERM]"
+                      dataType="wstr"
+                      length="4"
+                      lineageId="Package\TVZBT\DB SAP TVZBT.Outputs[OLE DB Source Error Output].Columns[ZTERM]"
+                      name="ZTERM" />
+                    <outputColumn
+                      refId="Package\TVZBT\DB SAP TVZBT.Outputs[OLE DB Source Error Output].Columns[VTEXT]"
+                      dataType="wstr"
+                      length="30"
+                      lineageId="Package\TVZBT\DB SAP TVZBT.Outputs[OLE DB Source Error Output].Columns[VTEXT]"
+                      name="VTEXT" />
+                    <outputColumn
+                      refId="Package\TVZBT\DB SAP TVZBT.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\TVZBT\DB SAP TVZBT.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\TVZBT\DB SAP TVZBT.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\TVZBT\DB SAP TVZBT.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\TVZBT\Identify records"
+              componentClassID="Microsoft.ConditionalSplit"
+              contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
+              name="Identify records"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\TVZBT\Identify records.Inputs[Conditional Split Input]"
+                  description="Input to the Conditional Split Transformation"
+                  name="Conditional Split Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\TVZBT\Identify records.Inputs[Conditional Split Input].Columns[MANDT]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT"
+                      cachedSortKeyPosition="1"
+                      lineageId="Package\TVZBT\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
+                    <inputColumn
+                      refId="Package\TVZBT\Identify records.Inputs[Conditional Split Input].Columns[MANDT (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT (1)"
+                      lineageId="Package\TVZBT\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\TVZBT\Identify records.Outputs[update]"
+                  description="Output 1 of the Conditional Split Transformation"
+                  errorOrTruncationOperation="Computation"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="update"
+                  synchronousInputId="Package\TVZBT\Identify records.Inputs[Conditional Split Input]"
+                  truncationRowDisposition="FailComponent">
+                  <properties>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                      name="Expression">![ISNULL](#{Package\TVZBT\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; ![ISNULL](#{Package\TVZBT\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the friendly version of the expression. This expression version uses column names."
+                      expressionType="Notify"
+                      name="FriendlyExpression">!ISNULL(MANDT) &amp;&amp; !ISNULL([MANDT (1)])</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                      name="EvaluationOrder">0</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\TVZBT\Identify records.Outputs[insert]"
+                  description="Output 2 of the Conditional Split Transformation"
+                  errorOrTruncationOperation="Computation"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="insert"
+                  synchronousInputId="Package\TVZBT\Identify records.Inputs[Conditional Split Input]"
+                  truncationRowDisposition="FailComponent">
+                  <properties>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                      name="Expression">![ISNULL](#{Package\TVZBT\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; [ISNULL](#{Package\TVZBT\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the friendly version of the expression. This expression version uses column names."
+                      expressionType="Notify"
+                      name="FriendlyExpression">!ISNULL(MANDT) &amp;&amp; ISNULL([MANDT (1)])</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                      name="EvaluationOrder">1</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\TVZBT\Identify records.Outputs[delete]"
+                  description="Output 3 of the Conditional Split Transformation"
+                  errorOrTruncationOperation="Computation"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="delete"
+                  synchronousInputId="Package\TVZBT\Identify records.Inputs[Conditional Split Input]"
+                  truncationRowDisposition="FailComponent">
+                  <properties>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                      name="Expression">[ISNULL](#{Package\TVZBT\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; ![ISNULL](#{Package\TVZBT\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the friendly version of the expression. This expression version uses column names."
+                      expressionType="Notify"
+                      name="FriendlyExpression">ISNULL(MANDT) &amp;&amp; !ISNULL([MANDT (1)])</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                      name="EvaluationOrder">2</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\TVZBT\Identify records.Outputs[Conditional Split Default Output]"
+                  description="Default Output of the Conditional Split Transformation"
+                  exclusionGroup="1"
+                  name="Conditional Split Default Output"
+                  synchronousInputId="Package\TVZBT\Identify records.Inputs[Conditional Split Input]">
+                  <properties>
+                    <property
+                      dataType="System.Boolean"
+                      name="IsDefaultOut">true</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\TVZBT\Identify records.Outputs[Conditional Split Error Output]"
+                  description="Error Output of the Conditional Split Transformation"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Conditional Split Error Output"
+                  synchronousInputId="Package\TVZBT\Identify records.Inputs[Conditional Split Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\TVZBT\Identify records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\TVZBT\Identify records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\TVZBT\Identify records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\TVZBT\Identify records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\TVZBT\insert new records"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="insert new records"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[TVZBT_STAGE_INSERT]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\TVZBT\insert new records.Connections[OleDbConnection]"
+                  connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\TVZBT\insert new records.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\TVZBT\insert new records.Inputs[OLE DB Destination Input].Columns[MANDT]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT"
+                      cachedSortKeyPosition="1"
+                      externalMetadataColumnId="Package\TVZBT\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      lineageId="Package\TVZBT\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
+                    <inputColumn
+                      refId="Package\TVZBT\insert new records.Inputs[OLE DB Destination Input].Columns[SPRAS]"
+                      cachedDataType="wstr"
+                      cachedLength="1"
+                      cachedName="SPRAS"
+                      cachedSortKeyPosition="2"
+                      externalMetadataColumnId="Package\TVZBT\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[SPRAS]"
+                      lineageId="Package\TVZBT\Merge Join.Outputs[Merge Join Output].Columns[SPRAS]" />
+                    <inputColumn
+                      refId="Package\TVZBT\insert new records.Inputs[OLE DB Destination Input].Columns[ZTERM]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="ZTERM"
+                      cachedSortKeyPosition="3"
+                      externalMetadataColumnId="Package\TVZBT\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[ZTERM]"
+                      lineageId="Package\TVZBT\Merge Join.Outputs[Merge Join Output].Columns[ZTERM]" />
+                    <inputColumn
+                      refId="Package\TVZBT\insert new records.Inputs[OLE DB Destination Input].Columns[VTEXT]"
+                      cachedDataType="wstr"
+                      cachedLength="30"
+                      cachedName="VTEXT"
+                      externalMetadataColumnId="Package\TVZBT\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[VTEXT]"
+                      lineageId="Package\TVZBT\Merge Join.Outputs[Merge Join Output].Columns[VTEXT]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\TVZBT\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      name="MANDT" />
+                    <externalMetadataColumn
+                      refId="Package\TVZBT\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[SPRAS]"
+                      dataType="wstr"
+                      length="1"
+                      name="SPRAS" />
+                    <externalMetadataColumn
+                      refId="Package\TVZBT\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[ZTERM]"
+                      dataType="wstr"
+                      length="4"
+                      name="ZTERM" />
+                    <externalMetadataColumn
+                      refId="Package\TVZBT\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[VTEXT]"
+                      dataType="wstr"
+                      length="30"
+                      name="VTEXT" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\TVZBT\insert new records.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\TVZBT\insert new records.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\TVZBT\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\TVZBT\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\TVZBT\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\TVZBT\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\TVZBT\Merge Join"
+              componentClassID="Microsoft.MergeJoin"
+              contactInfo="Merge Join;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
+              description="Combine two sorted data flows into one using the FULL, LEFT, or INNER join. We recommend this transformation when data flows can be sorted at their sources."
+              name="Merge Join"
+              version="1">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the type of join to perform."
+                  name="JoinType"
+                  typeConverter="JoinType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the number of columns in the ordering key."
+                  name="NumKeyColumns">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the null values are treated as equal values."
+                  name="TreatNullsAsEqual">true</property>
+                <property
+                  dataType="System.Int32"
+                  description="Indicates the requested maximum buffers per input before blocking."
+                  name="MaxBuffersPerInput">5</property>
+              </properties>
+              <inputs>
+                <input
+                  refId="Package\TVZBT\Merge Join.Inputs[Merge Join Left Input]"
+                  hasSideEffects="true"
+                  name="Merge Join Left Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\TVZBT\Merge Join.Inputs[Merge Join Left Input].Columns[MANDT]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT"
+                      cachedSortKeyPosition="1"
+                      lineageId="Package\TVZBT\DB SAP TVZBT.Outputs[OLE DB Source Output].Columns[MANDT]" />
+                    <inputColumn
+                      refId="Package\TVZBT\Merge Join.Inputs[Merge Join Left Input].Columns[SPRAS]"
+                      cachedDataType="wstr"
+                      cachedLength="1"
+                      cachedName="SPRAS"
+                      cachedSortKeyPosition="2"
+                      lineageId="Package\TVZBT\DB SAP TVZBT.Outputs[OLE DB Source Output].Columns[SPRAS]" />
+                    <inputColumn
+                      refId="Package\TVZBT\Merge Join.Inputs[Merge Join Left Input].Columns[ZTERM]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="ZTERM"
+                      cachedSortKeyPosition="3"
+                      lineageId="Package\TVZBT\DB SAP TVZBT.Outputs[OLE DB Source Output].Columns[ZTERM]" />
+                    <inputColumn
+                      refId="Package\TVZBT\Merge Join.Inputs[Merge Join Left Input].Columns[VTEXT]"
+                      cachedDataType="wstr"
+                      cachedLength="30"
+                      cachedName="VTEXT"
+                      lineageId="Package\TVZBT\DB SAP TVZBT.Outputs[OLE DB Source Output].Columns[VTEXT]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+                <input
+                  refId="Package\TVZBT\Merge Join.Inputs[Merge Join Right Input]"
+                  hasSideEffects="true"
+                  name="Merge Join Right Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\TVZBT\Merge Join.Inputs[Merge Join Right Input].Columns[SPRAS]"
+                      cachedDataType="wstr"
+                      cachedLength="1"
+                      cachedName="SPRAS"
+                      cachedSortKeyPosition="2"
+                      lineageId="Package\TVZBT\DB PBI TVZBT.Outputs[OLE DB Source Output].Columns[SPRAS]" />
+                    <inputColumn
+                      refId="Package\TVZBT\Merge Join.Inputs[Merge Join Right Input].Columns[MANDT]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT"
+                      cachedSortKeyPosition="1"
+                      lineageId="Package\TVZBT\DB PBI TVZBT.Outputs[OLE DB Source Output].Columns[MANDT]" />
+                    <inputColumn
+                      refId="Package\TVZBT\Merge Join.Inputs[Merge Join Right Input].Columns[ZTERM]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="ZTERM"
+                      cachedSortKeyPosition="3"
+                      lineageId="Package\TVZBT\DB PBI TVZBT.Outputs[OLE DB Source Output].Columns[ZTERM]" />
+                    <inputColumn
+                      refId="Package\TVZBT\Merge Join.Inputs[Merge Join Right Input].Columns[VTEXT]"
+                      cachedDataType="wstr"
+                      cachedLength="30"
+                      cachedName="VTEXT"
+                      lineageId="Package\TVZBT\DB PBI TVZBT.Outputs[OLE DB Source Output].Columns[VTEXT]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\TVZBT\Merge Join.Outputs[Merge Join Output]"
+                  isSorted="true"
+                  name="Merge Join Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\TVZBT\Merge Join.Outputs[Merge Join Output].Columns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      lineageId="Package\TVZBT\Merge Join.Outputs[Merge Join Output].Columns[MANDT]"
+                      name="MANDT"
+                      sortKeyPosition="1">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\TVZBT\Merge Join.Inputs[Merge Join Left Input].Columns[MANDT]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\TVZBT\Merge Join.Outputs[Merge Join Output].Columns[SPRAS]"
+                      dataType="wstr"
+                      length="1"
+                      lineageId="Package\TVZBT\Merge Join.Outputs[Merge Join Output].Columns[SPRAS]"
+                      name="SPRAS"
+                      sortKeyPosition="2">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\TVZBT\Merge Join.Inputs[Merge Join Left Input].Columns[SPRAS]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\TVZBT\Merge Join.Outputs[Merge Join Output].Columns[SPRAS (1)]"
+                      dataType="wstr"
+                      length="1"
+                      lineageId="Package\TVZBT\Merge Join.Outputs[Merge Join Output].Columns[SPRAS (1)]"
+                      name="SPRAS (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\TVZBT\Merge Join.Inputs[Merge Join Right Input].Columns[SPRAS]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\TVZBT\Merge Join.Outputs[Merge Join Output].Columns[ZTERM]"
+                      dataType="wstr"
+                      length="4"
+                      lineageId="Package\TVZBT\Merge Join.Outputs[Merge Join Output].Columns[ZTERM]"
+                      name="ZTERM"
+                      sortKeyPosition="3">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\TVZBT\Merge Join.Inputs[Merge Join Left Input].Columns[ZTERM]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\TVZBT\Merge Join.Outputs[Merge Join Output].Columns[VTEXT]"
+                      dataType="wstr"
+                      length="30"
+                      lineageId="Package\TVZBT\Merge Join.Outputs[Merge Join Output].Columns[VTEXT]"
+                      name="VTEXT">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\TVZBT\Merge Join.Inputs[Merge Join Left Input].Columns[VTEXT]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\TVZBT\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]"
+                      dataType="wstr"
+                      length="3"
+                      lineageId="Package\TVZBT\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]"
+                      name="MANDT (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\TVZBT\Merge Join.Inputs[Merge Join Right Input].Columns[MANDT]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\TVZBT\Merge Join.Outputs[Merge Join Output].Columns[ZTERM (1)]"
+                      dataType="wstr"
+                      length="4"
+                      lineageId="Package\TVZBT\Merge Join.Outputs[Merge Join Output].Columns[ZTERM (1)]"
+                      name="ZTERM (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\TVZBT\Merge Join.Inputs[Merge Join Right Input].Columns[ZTERM]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\TVZBT\Merge Join.Outputs[Merge Join Output].Columns[VTEXT (1)]"
+                      dataType="wstr"
+                      length="30"
+                      lineageId="Package\TVZBT\Merge Join.Outputs[Merge Join Output].Columns[VTEXT (1)]"
+                      name="VTEXT (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\TVZBT\Merge Join.Inputs[Merge Join Right Input].Columns[VTEXT]}</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\TVZBT\stage delete records"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="stage delete records"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[TVZBT_STAGE_DELETE]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\TVZBT\stage delete records.Connections[OleDbConnection]"
+                  connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\TVZBT\stage delete records.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\TVZBT\stage delete records.Inputs[OLE DB Destination Input].Columns[MANDT (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT (1)"
+                      externalMetadataColumnId="Package\TVZBT\stage delete records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      lineageId="Package\TVZBT\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]" />
+                    <inputColumn
+                      refId="Package\TVZBT\stage delete records.Inputs[OLE DB Destination Input].Columns[SPRAS (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="1"
+                      cachedName="SPRAS (1)"
+                      externalMetadataColumnId="Package\TVZBT\stage delete records.Inputs[OLE DB Destination Input].ExternalColumns[SPRAS]"
+                      lineageId="Package\TVZBT\Merge Join.Outputs[Merge Join Output].Columns[SPRAS (1)]" />
+                    <inputColumn
+                      refId="Package\TVZBT\stage delete records.Inputs[OLE DB Destination Input].Columns[ZTERM (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="ZTERM (1)"
+                      externalMetadataColumnId="Package\TVZBT\stage delete records.Inputs[OLE DB Destination Input].ExternalColumns[ZTERM]"
+                      lineageId="Package\TVZBT\Merge Join.Outputs[Merge Join Output].Columns[ZTERM (1)]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\TVZBT\stage delete records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      name="MANDT" />
+                    <externalMetadataColumn
+                      refId="Package\TVZBT\stage delete records.Inputs[OLE DB Destination Input].ExternalColumns[SPRAS]"
+                      dataType="wstr"
+                      length="1"
+                      name="SPRAS" />
+                    <externalMetadataColumn
+                      refId="Package\TVZBT\stage delete records.Inputs[OLE DB Destination Input].ExternalColumns[ZTERM]"
+                      dataType="wstr"
+                      length="4"
+                      name="ZTERM" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\TVZBT\stage delete records.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\TVZBT\stage delete records.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\TVZBT\stage delete records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\TVZBT\stage delete records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\TVZBT\stage delete records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\TVZBT\stage delete records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\TVZBT\stage update records"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="stage update records"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[TVZBT_STAGE_UPDATE]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\TVZBT\stage update records.Connections[OleDbConnection]"
+                  connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\TVZBT\stage update records.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\TVZBT\stage update records.Inputs[OLE DB Destination Input].Columns[MANDT]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT"
+                      cachedSortKeyPosition="1"
+                      externalMetadataColumnId="Package\TVZBT\stage update records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      lineageId="Package\TVZBT\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
+                    <inputColumn
+                      refId="Package\TVZBT\stage update records.Inputs[OLE DB Destination Input].Columns[SPRAS]"
+                      cachedDataType="wstr"
+                      cachedLength="1"
+                      cachedName="SPRAS"
+                      cachedSortKeyPosition="2"
+                      externalMetadataColumnId="Package\TVZBT\stage update records.Inputs[OLE DB Destination Input].ExternalColumns[SPRAS]"
+                      lineageId="Package\TVZBT\Merge Join.Outputs[Merge Join Output].Columns[SPRAS]" />
+                    <inputColumn
+                      refId="Package\TVZBT\stage update records.Inputs[OLE DB Destination Input].Columns[ZTERM]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="ZTERM"
+                      cachedSortKeyPosition="3"
+                      externalMetadataColumnId="Package\TVZBT\stage update records.Inputs[OLE DB Destination Input].ExternalColumns[ZTERM]"
+                      lineageId="Package\TVZBT\Merge Join.Outputs[Merge Join Output].Columns[ZTERM]" />
+                    <inputColumn
+                      refId="Package\TVZBT\stage update records.Inputs[OLE DB Destination Input].Columns[VTEXT]"
+                      cachedDataType="wstr"
+                      cachedLength="30"
+                      cachedName="VTEXT"
+                      externalMetadataColumnId="Package\TVZBT\stage update records.Inputs[OLE DB Destination Input].ExternalColumns[VTEXT]"
+                      lineageId="Package\TVZBT\Merge Join.Outputs[Merge Join Output].Columns[VTEXT]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\TVZBT\stage update records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      name="MANDT" />
+                    <externalMetadataColumn
+                      refId="Package\TVZBT\stage update records.Inputs[OLE DB Destination Input].ExternalColumns[SPRAS]"
+                      dataType="wstr"
+                      length="1"
+                      name="SPRAS" />
+                    <externalMetadataColumn
+                      refId="Package\TVZBT\stage update records.Inputs[OLE DB Destination Input].ExternalColumns[ZTERM]"
+                      dataType="wstr"
+                      length="4"
+                      name="ZTERM" />
+                    <externalMetadataColumn
+                      refId="Package\TVZBT\stage update records.Inputs[OLE DB Destination Input].ExternalColumns[VTEXT]"
+                      dataType="wstr"
+                      length="30"
+                      name="VTEXT" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\TVZBT\stage update records.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\TVZBT\stage update records.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\TVZBT\stage update records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\TVZBT\stage update records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\TVZBT\stage update records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\TVZBT\stage update records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\TVZBT.Paths[delete]"
+              endId="Package\TVZBT\stage delete records.Inputs[OLE DB Destination Input]"
+              name="delete"
+              startId="Package\TVZBT\Identify records.Outputs[delete]" />
+            <path
+              refId="Package\TVZBT.Paths[insert]"
+              endId="Package\TVZBT\insert new records.Inputs[OLE DB Destination Input]"
+              name="insert"
+              startId="Package\TVZBT\Identify records.Outputs[insert]" />
+            <path
+              refId="Package\TVZBT.Paths[Merge Join Output]"
+              endId="Package\TVZBT\Identify records.Inputs[Conditional Split Input]"
+              name="Merge Join Output"
+              startId="Package\TVZBT\Merge Join.Outputs[Merge Join Output]" />
+            <path
+              refId="Package\TVZBT.Paths[OLE DB Source Output]"
+              endId="Package\TVZBT\Merge Join.Inputs[Merge Join Left Input]"
+              name="OLE DB Source Output"
+              startId="Package\TVZBT\DB SAP TVZBT.Outputs[OLE DB Source Output]" />
+            <path
+              refId="Package\TVZBT.Paths[OLE DB Source Output1]"
+              endId="Package\TVZBT\Merge Join.Inputs[Merge Join Right Input]"
+              name="OLE DB Source Output"
+              startId="Package\TVZBT\DB PBI TVZBT.Outputs[OLE DB Source Output]" />
+            <path
+              refId="Package\TVZBT.Paths[update]"
+              endId="Package\TVZBT\Changed records.Inputs[Conditional Split Input]"
+              name="update"
+              startId="Package\TVZBT\Identify records.Outputs[update]" />
+            <path
+              refId="Package\TVZBT.Paths[update1]"
+              endId="Package\TVZBT\stage update records.Inputs[OLE DB Destination Input]"
+              name="update"
+              startId="Package\TVZBT\Changed records.Outputs[update]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\UPDATE"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{81B7DDC1-3D61-4474-9865-2FBD96C86440}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="UPDATE"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="UPDATE A01&#xA;SET A01.[VTEXT] = B01.[VTEXT]&#xA;FROM [TVZBT] A01&#xA;INNER JOIN [TVZBT_STAGE_UPDATE] B01&#xA;ON ( A01.[MANDT] = B01.[MANDT]&#xA;    AND A01.[SPRAS] = B01.[SPRAS]&#xA;    AND A01.[ZTERM] = B01.[ZTERM] )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{7B746702-A2BD-43E9-AB7C-56CB6C7A83B6}"
+      DTS:From="Package\TVZBT"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\UPDATE" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
+      DTS:CreationName=""
+      DTS:DTSID="{CF608428-CC7F-4BCB-972E-BF68F06FF710}"
+      DTS:From="Package\Clean Stage"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 1"
+      DTS:To="Package\TVZBT" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
+      DTS:CreationName=""
+      DTS:DTSID="{6E444233-7948-4D3B-8B94-268212B5A8E9}"
+      DTS:From="Package\UPDATE"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 2"
+      DTS:To="Package\DELETE" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 3]"
+      DTS:CreationName=""
+      DTS:DTSID="{6E2E991D-CF4C-43A6-9E2A-A39EE11FED73}"
+      DTS:From="Package\DELETE"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 3"
+      DTS:To="Package\INSERT" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="135,42"
+          Id="Package\Clean Stage"
+          TopLeft="23,14" />
+        <NodeLayout
+          Size="135,42"
+          Id="Package\TVZBT"
+          TopLeft="23,84" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="90.5,56">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,28"
+              Start="0,0"
+              End="0,20.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,20.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="135,42"
+          Id="Package\UPDATE"
+          TopLeft="23,154" />
+        <NodeLayout
+          Size="135,42"
+          Id="Package\DELETE"
+          TopLeft="23,224" />
+        <NodeLayout
+          Size="135,42"
+          Id="Package\INSERT"
+          TopLeft="23,294" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="90.5,126">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,28"
+              Start="0,0"
+              End="0,20.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,20.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 2]"
+          TopLeft="90.5,196">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,28"
+              Start="0,0"
+              End="0,20.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,20.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 3]"
+          TopLeft="90.5,266">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,28"
+              Start="0,0"
+              End="0,20.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,20.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\TVZBT">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="146,42"
+          Id="Package\TVZBT\DB PBI TVZBT"
+          TopLeft="670,15" />
+        <NodeLayout
+          Size="130,42"
+          Id="Package\TVZBT\Merge Join"
+          TopLeft="409,96" />
+        <NodeLayout
+          Size="175,42"
+          Id="Package\TVZBT\stage delete records"
+          TopLeft="673,293" />
+        <NodeLayout
+          Size="148,42"
+          Id="Package\TVZBT\DB SAP TVZBT"
+          TopLeft="139,17" />
+        <NodeLayout
+          Size="166,42"
+          Id="Package\TVZBT\insert new records"
+          TopLeft="91,309" />
+        <NodeLayout
+          Size="158,42"
+          Id="Package\TVZBT\Changed records"
+          TopLeft="393,309" />
+        <NodeLayout
+          Size="153,42"
+          Id="Package\TVZBT\Identify records"
+          TopLeft="401,178" />
+        <NodeLayout
+          Size="178,42"
+          Id="Package\TVZBT\stage update records"
+          TopLeft="383,431" />
+        <EdgeLayout
+          Id="Package\TVZBT.Paths[update1]"
+          TopLeft="472,351">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,80"
+              Start="0,0"
+              End="0,72.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,72.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-15.8025,30.4453125,31.605,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\TVZBT.Paths[update]"
+          TopLeft="474.75,220">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,89"
+              Start="0,0"
+              End="0,81.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,81.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-15.8025,34.9453125,31.605,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\TVZBT.Paths[OLE DB Source Output1]"
+          TopLeft="743,57">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-248.666666666667,39"
+              Start="0,0"
+              End="-248.666666666667,31.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,19.1155015197568" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,19.1155015197568"
+                    Point2="0,23.1155015197568"
+                    Point3="-4,23.1155015197568" />
+                  <mssgle:LineSegment
+                    End="-244.666666666667,23.1155015197568" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-244.666666666667,23.1155015197568"
+                    Point2="-248.666666666667,23.1155015197568"
+                    Point3="-248.666666666667,27.1155015197568" />
+                  <mssgle:LineSegment
+                    End="-248.666666666667,31.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\TVZBT.Paths[OLE DB Source Output]"
+          TopLeft="213,59">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="240.666666666667,37"
+              Start="0,0"
+              End="240.666666666667,29.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,17.9300911854103" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,17.9300911854103"
+                    Point2="0,21.9300911854103"
+                    Point3="4,21.9300911854103" />
+                  <mssgle:LineSegment
+                    End="236.666666666667,21.9300911854103" />
+                  <mssgle:CubicBezierSegment
+                    Point1="236.666666666667,21.9300911854103"
+                    Point2="240.666666666667,21.9300911854103"
+                    Point3="240.666666666667,25.9300911854103" />
+                  <mssgle:LineSegment
+                    End="240.666666666667,29.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\TVZBT.Paths[Merge Join Output]"
+          TopLeft="475.75,138">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,40"
+              Start="0,0"
+              End="0,32.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,32.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\TVZBT.Paths[insert]"
+          TopLeft="453.333333333333,220">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-279.333333333333,89"
+              Start="0,0"
+              End="-279.333333333333,81.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,32.1526520051746" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,32.1526520051746"
+                    Point2="0,36.1526520051746"
+                    Point3="-4,36.1526520051746" />
+                  <mssgle:LineSegment
+                    End="-275.333333333333,36.1526520051746" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-275.333333333333,36.1526520051746"
+                    Point2="-279.333333333333,36.1526520051746"
+                    Point3="-279.333333333333,40.1526520051746" />
+                  <mssgle:LineSegment
+                    End="-279.333333333333,81.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-152.616647135416,41.1526520051746,25.8999609375,9.451171875"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\TVZBT.Paths[delete]"
+          TopLeft="513.75,220">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="246.75,73"
+              Start="0,0"
+              End="246.75,65.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,21.1670235546039" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,21.1670235546039"
+                    Point2="0,25.1670235546039"
+                    Point3="4,25.1670235546039" />
+                  <mssgle:LineSegment
+                    End="242.75,25.1670235546039" />
+                  <mssgle:CubicBezierSegment
+                    Point1="242.75,25.1670235546039"
+                    Point2="246.75,25.1670235546039"
+                    Point3="246.75,29.1670235546039" />
+                  <mssgle:LineSegment
+                    End="246.75,65.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="109.17904296875,30.1670235546039,28.3919140625,9.7490234375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\TVZBT\DB PBI TVZBT">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\TVZBT\stage delete records">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\TVZBT\DB SAP TVZBT">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\TVZBT\insert new records">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\TVZBT\stage update records">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>
