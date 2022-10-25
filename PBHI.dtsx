@@ -1,0 +1,2287 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="3/6/2021 5:13:20 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="ARLPBIDEV"
+  DTS:CreatorName="DOMAIN\RPETRELLA"
+  DTS:DTSID="{4EB0AD4D-C882-4DE0-848F-7A11A7E0ABB6}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="16.0.845.0"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="PBHI"
+  DTS:PackageType="5"
+  DTS:VersionBuild="25"
+  DTS:VersionGUID="{BAAD650B-DAFA-4195-B7DC-DF2199C08A2D}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Clean Stage"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{42E4EE11-59DD-4B49-BAD1-0A64A7A243C3}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Clean Stage"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="TRUNCATE TABLE [PBHI_STAGE_UPDATE]&#xA;go&#xA;TRUNCATE TABLE [PBHI_STAGE_DELETE]&#xA;go&#xA;TRUNCATE TABLE [PBHI_STAGE_INSERT]&#xA;go" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\DELETE"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{407F581F-4561-40C7-8EF8-FECE81721CE7}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="DELETE"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="DELETE A&#xA;FROM [PBHI] A&#xA;INNER JOIN [PBHI_STAGE_DELETE] B&#xA;ON A.MANDT = B.MANDT&#xA;    AND A.BDZEI = B.BDZEI&#xA;    AND A.PDATU = B.PDATU&#xA;    AND A.LAEDA = B.LAEDA&#xA;    AND A.UZEIT = B.UZEIT" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\INSERT"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{FE15A37D-1135-4FC1-935F-5961BDC1F070}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="INSERT"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="INSERT INTO [PBHI]&#xA;SELECT * FROM [PBHI_STAGE_INSERT]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\PBHI"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{9C120BDA-443E-46E2-809B-66D09428033F}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="PBHI"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\PBHI\Changed records"
+              componentClassID="Microsoft.ConditionalSplit"
+              contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
+              name="Changed records"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\PBHI\Changed records.Inputs[Conditional Split Input]"
+                  description="Input to the Conditional Split Transformation"
+                  name="Conditional Split Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\PBHI\Changed records.Inputs[Conditional Split Input].Columns[AENAM]"
+                      cachedDataType="wstr"
+                      cachedLength="12"
+                      cachedName="AENAM"
+                      lineageId="Package\PBHI\Merge Join.Outputs[Merge Join Output].Columns[AENAM]" />
+                    <inputColumn
+                      refId="Package\PBHI\Changed records.Inputs[Conditional Split Input].Columns[PLNMG]"
+                      cachedDataType="numeric"
+                      cachedName="PLNMG"
+                      cachedPrecision="13"
+                      cachedScale="3"
+                      lineageId="Package\PBHI\Merge Join.Outputs[Merge Join Output].Columns[PLNMG]" />
+                    <inputColumn
+                      refId="Package\PBHI\Changed records.Inputs[Conditional Split Input].Columns[AENAM (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="12"
+                      cachedName="AENAM (1)"
+                      lineageId="Package\PBHI\Merge Join.Outputs[Merge Join Output].Columns[AENAM (1)]" />
+                    <inputColumn
+                      refId="Package\PBHI\Changed records.Inputs[Conditional Split Input].Columns[PLNMG (1)]"
+                      cachedDataType="numeric"
+                      cachedName="PLNMG (1)"
+                      cachedPrecision="13"
+                      cachedScale="3"
+                      lineageId="Package\PBHI\Merge Join.Outputs[Merge Join Output].Columns[PLNMG (1)]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\PBHI\Changed records.Outputs[update]"
+                  description="Output 1 of the Conditional Split Transformation"
+                  errorOrTruncationOperation="Computation"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="update"
+                  synchronousInputId="Package\PBHI\Changed records.Inputs[Conditional Split Input]"
+                  truncationRowDisposition="FailComponent">
+                  <properties>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                      name="Expression">#{Package\PBHI\Merge Join.Outputs[Merge Join Output].Columns[AENAM]} != #{Package\PBHI\Merge Join.Outputs[Merge Join Output].Columns[AENAM (1)]} || #{Package\PBHI\Merge Join.Outputs[Merge Join Output].Columns[PLNMG]} != #{Package\PBHI\Merge Join.Outputs[Merge Join Output].Columns[PLNMG (1)]}</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the friendly version of the expression. This expression version uses column names."
+                      expressionType="Notify"
+                      name="FriendlyExpression">AENAM != [AENAM (1)] || PLNMG != [PLNMG (1)]</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                      name="EvaluationOrder">0</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\PBHI\Changed records.Outputs[Conditional Split Default Output]"
+                  description="Default Output of the Conditional Split Transformation"
+                  exclusionGroup="1"
+                  name="Conditional Split Default Output"
+                  synchronousInputId="Package\PBHI\Changed records.Inputs[Conditional Split Input]">
+                  <properties>
+                    <property
+                      dataType="System.Boolean"
+                      name="IsDefaultOut">true</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\PBHI\Changed records.Outputs[Conditional Split Error Output]"
+                  description="Error Output of the Conditional Split Transformation"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Conditional Split Error Output"
+                  synchronousInputId="Package\PBHI\Changed records.Inputs[Conditional Split Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\PBHI\Changed records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\PBHI\Changed records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\PBHI\Changed records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\PBHI\Changed records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\PBHI\DB PBI PBHI"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="DB PBI PBHI"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT [MANDT]
+    ,[BDZEI]
+    ,[PDATU]
+    ,[LAEDA]
+    ,[UZEIT]
+    ,[AENAM]
+    ,[PLNMG]
+FROM [PBHI] (NOLOCK)
+ORDER BY [MANDT]
+    ,[BDZEI]
+    ,[PDATU]
+    ,[LAEDA]
+    ,[UZEIT]</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\PBHI\DB PBI PBHI.Connections[OleDbConnection]"
+                  connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\PBHI\DB PBI PBHI.Outputs[OLE DB Source Output]"
+                  isSorted="true"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\PBHI\DB PBI PBHI.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\PBHI\DB PBI PBHI.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      length="3"
+                      lineageId="Package\PBHI\DB PBI PBHI.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      name="MANDT"
+                      sortKeyPosition="1"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\PBHI\DB PBI PBHI.Outputs[OLE DB Source Output].Columns[BDZEI]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\PBHI\DB PBI PBHI.Outputs[OLE DB Source Output].ExternalColumns[BDZEI]"
+                      length="12"
+                      lineageId="Package\PBHI\DB PBI PBHI.Outputs[OLE DB Source Output].Columns[BDZEI]"
+                      name="BDZEI"
+                      sortKeyPosition="2"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\PBHI\DB PBI PBHI.Outputs[OLE DB Source Output].Columns[PDATU]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\PBHI\DB PBI PBHI.Outputs[OLE DB Source Output].ExternalColumns[PDATU]"
+                      length="8"
+                      lineageId="Package\PBHI\DB PBI PBHI.Outputs[OLE DB Source Output].Columns[PDATU]"
+                      name="PDATU"
+                      sortKeyPosition="3"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\PBHI\DB PBI PBHI.Outputs[OLE DB Source Output].Columns[LAEDA]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\PBHI\DB PBI PBHI.Outputs[OLE DB Source Output].ExternalColumns[LAEDA]"
+                      length="8"
+                      lineageId="Package\PBHI\DB PBI PBHI.Outputs[OLE DB Source Output].Columns[LAEDA]"
+                      name="LAEDA"
+                      sortKeyPosition="4"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\PBHI\DB PBI PBHI.Outputs[OLE DB Source Output].Columns[UZEIT]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\PBHI\DB PBI PBHI.Outputs[OLE DB Source Output].ExternalColumns[UZEIT]"
+                      length="6"
+                      lineageId="Package\PBHI\DB PBI PBHI.Outputs[OLE DB Source Output].Columns[UZEIT]"
+                      name="UZEIT"
+                      sortKeyPosition="5"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\PBHI\DB PBI PBHI.Outputs[OLE DB Source Output].Columns[AENAM]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\PBHI\DB PBI PBHI.Outputs[OLE DB Source Output].ExternalColumns[AENAM]"
+                      length="12"
+                      lineageId="Package\PBHI\DB PBI PBHI.Outputs[OLE DB Source Output].Columns[AENAM]"
+                      name="AENAM"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\PBHI\DB PBI PBHI.Outputs[OLE DB Source Output].Columns[PLNMG]"
+                      dataType="numeric"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\PBHI\DB PBI PBHI.Outputs[OLE DB Source Output].ExternalColumns[PLNMG]"
+                      lineageId="Package\PBHI\DB PBI PBHI.Outputs[OLE DB Source Output].Columns[PLNMG]"
+                      name="PLNMG"
+                      precision="13"
+                      scale="3"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\PBHI\DB PBI PBHI.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      name="MANDT" />
+                    <externalMetadataColumn
+                      refId="Package\PBHI\DB PBI PBHI.Outputs[OLE DB Source Output].ExternalColumns[BDZEI]"
+                      dataType="wstr"
+                      length="12"
+                      name="BDZEI" />
+                    <externalMetadataColumn
+                      refId="Package\PBHI\DB PBI PBHI.Outputs[OLE DB Source Output].ExternalColumns[PDATU]"
+                      dataType="wstr"
+                      length="8"
+                      name="PDATU" />
+                    <externalMetadataColumn
+                      refId="Package\PBHI\DB PBI PBHI.Outputs[OLE DB Source Output].ExternalColumns[LAEDA]"
+                      dataType="wstr"
+                      length="8"
+                      name="LAEDA" />
+                    <externalMetadataColumn
+                      refId="Package\PBHI\DB PBI PBHI.Outputs[OLE DB Source Output].ExternalColumns[UZEIT]"
+                      dataType="wstr"
+                      length="6"
+                      name="UZEIT" />
+                    <externalMetadataColumn
+                      refId="Package\PBHI\DB PBI PBHI.Outputs[OLE DB Source Output].ExternalColumns[AENAM]"
+                      dataType="wstr"
+                      length="12"
+                      name="AENAM" />
+                    <externalMetadataColumn
+                      refId="Package\PBHI\DB PBI PBHI.Outputs[OLE DB Source Output].ExternalColumns[PLNMG]"
+                      dataType="numeric"
+                      name="PLNMG"
+                      precision="13"
+                      scale="3" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\PBHI\DB PBI PBHI.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\PBHI\DB PBI PBHI.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      lineageId="Package\PBHI\DB PBI PBHI.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      name="MANDT" />
+                    <outputColumn
+                      refId="Package\PBHI\DB PBI PBHI.Outputs[OLE DB Source Error Output].Columns[BDZEI]"
+                      dataType="wstr"
+                      length="12"
+                      lineageId="Package\PBHI\DB PBI PBHI.Outputs[OLE DB Source Error Output].Columns[BDZEI]"
+                      name="BDZEI" />
+                    <outputColumn
+                      refId="Package\PBHI\DB PBI PBHI.Outputs[OLE DB Source Error Output].Columns[PDATU]"
+                      dataType="wstr"
+                      length="8"
+                      lineageId="Package\PBHI\DB PBI PBHI.Outputs[OLE DB Source Error Output].Columns[PDATU]"
+                      name="PDATU" />
+                    <outputColumn
+                      refId="Package\PBHI\DB PBI PBHI.Outputs[OLE DB Source Error Output].Columns[LAEDA]"
+                      dataType="wstr"
+                      length="8"
+                      lineageId="Package\PBHI\DB PBI PBHI.Outputs[OLE DB Source Error Output].Columns[LAEDA]"
+                      name="LAEDA" />
+                    <outputColumn
+                      refId="Package\PBHI\DB PBI PBHI.Outputs[OLE DB Source Error Output].Columns[UZEIT]"
+                      dataType="wstr"
+                      length="6"
+                      lineageId="Package\PBHI\DB PBI PBHI.Outputs[OLE DB Source Error Output].Columns[UZEIT]"
+                      name="UZEIT" />
+                    <outputColumn
+                      refId="Package\PBHI\DB PBI PBHI.Outputs[OLE DB Source Error Output].Columns[AENAM]"
+                      dataType="wstr"
+                      length="12"
+                      lineageId="Package\PBHI\DB PBI PBHI.Outputs[OLE DB Source Error Output].Columns[AENAM]"
+                      name="AENAM" />
+                    <outputColumn
+                      refId="Package\PBHI\DB PBI PBHI.Outputs[OLE DB Source Error Output].Columns[PLNMG]"
+                      dataType="numeric"
+                      lineageId="Package\PBHI\DB PBI PBHI.Outputs[OLE DB Source Error Output].Columns[PLNMG]"
+                      name="PLNMG"
+                      precision="13"
+                      scale="3" />
+                    <outputColumn
+                      refId="Package\PBHI\DB PBI PBHI.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\PBHI\DB PBI PBHI.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\PBHI\DB PBI PBHI.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\PBHI\DB PBI PBHI.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\PBHI\DB SAP PBHI"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="DB SAP PBHI"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT [MANDT]
+    ,[BDZEI]
+    ,[PDATU]
+    ,[LAEDA]
+    ,[UZEIT]
+    ,[AENAM]
+    ,[PLNMG]
+FROM [ecp].[PBHI] (NOLOCK)
+ORDER BY [MANDT]
+    ,[BDZEI]
+    ,[PDATU]
+    ,[LAEDA]
+    ,[UZEIT]</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\PBHI\DB SAP PBHI.Connections[OleDbConnection]"
+                  connectionManagerID="{544CCAD9-2CB1-4D87-98D7-A7C478586195}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[SQL_SAP]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\PBHI\DB SAP PBHI.Outputs[OLE DB Source Output]"
+                  isSorted="true"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\PBHI\DB SAP PBHI.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\PBHI\DB SAP PBHI.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      length="3"
+                      lineageId="Package\PBHI\DB SAP PBHI.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      name="MANDT"
+                      sortKeyPosition="1"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\PBHI\DB SAP PBHI.Outputs[OLE DB Source Output].Columns[BDZEI]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\PBHI\DB SAP PBHI.Outputs[OLE DB Source Output].ExternalColumns[BDZEI]"
+                      length="12"
+                      lineageId="Package\PBHI\DB SAP PBHI.Outputs[OLE DB Source Output].Columns[BDZEI]"
+                      name="BDZEI"
+                      sortKeyPosition="2"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\PBHI\DB SAP PBHI.Outputs[OLE DB Source Output].Columns[PDATU]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\PBHI\DB SAP PBHI.Outputs[OLE DB Source Output].ExternalColumns[PDATU]"
+                      length="8"
+                      lineageId="Package\PBHI\DB SAP PBHI.Outputs[OLE DB Source Output].Columns[PDATU]"
+                      name="PDATU"
+                      sortKeyPosition="3"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\PBHI\DB SAP PBHI.Outputs[OLE DB Source Output].Columns[LAEDA]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\PBHI\DB SAP PBHI.Outputs[OLE DB Source Output].ExternalColumns[LAEDA]"
+                      length="8"
+                      lineageId="Package\PBHI\DB SAP PBHI.Outputs[OLE DB Source Output].Columns[LAEDA]"
+                      name="LAEDA"
+                      sortKeyPosition="4"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\PBHI\DB SAP PBHI.Outputs[OLE DB Source Output].Columns[UZEIT]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\PBHI\DB SAP PBHI.Outputs[OLE DB Source Output].ExternalColumns[UZEIT]"
+                      length="6"
+                      lineageId="Package\PBHI\DB SAP PBHI.Outputs[OLE DB Source Output].Columns[UZEIT]"
+                      name="UZEIT"
+                      sortKeyPosition="5"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\PBHI\DB SAP PBHI.Outputs[OLE DB Source Output].Columns[AENAM]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\PBHI\DB SAP PBHI.Outputs[OLE DB Source Output].ExternalColumns[AENAM]"
+                      length="12"
+                      lineageId="Package\PBHI\DB SAP PBHI.Outputs[OLE DB Source Output].Columns[AENAM]"
+                      name="AENAM"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\PBHI\DB SAP PBHI.Outputs[OLE DB Source Output].Columns[PLNMG]"
+                      dataType="numeric"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\PBHI\DB SAP PBHI.Outputs[OLE DB Source Output].ExternalColumns[PLNMG]"
+                      lineageId="Package\PBHI\DB SAP PBHI.Outputs[OLE DB Source Output].Columns[PLNMG]"
+                      name="PLNMG"
+                      precision="13"
+                      scale="3"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\PBHI\DB SAP PBHI.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      name="MANDT" />
+                    <externalMetadataColumn
+                      refId="Package\PBHI\DB SAP PBHI.Outputs[OLE DB Source Output].ExternalColumns[BDZEI]"
+                      dataType="wstr"
+                      length="12"
+                      name="BDZEI" />
+                    <externalMetadataColumn
+                      refId="Package\PBHI\DB SAP PBHI.Outputs[OLE DB Source Output].ExternalColumns[PDATU]"
+                      dataType="wstr"
+                      length="8"
+                      name="PDATU" />
+                    <externalMetadataColumn
+                      refId="Package\PBHI\DB SAP PBHI.Outputs[OLE DB Source Output].ExternalColumns[LAEDA]"
+                      dataType="wstr"
+                      length="8"
+                      name="LAEDA" />
+                    <externalMetadataColumn
+                      refId="Package\PBHI\DB SAP PBHI.Outputs[OLE DB Source Output].ExternalColumns[UZEIT]"
+                      dataType="wstr"
+                      length="6"
+                      name="UZEIT" />
+                    <externalMetadataColumn
+                      refId="Package\PBHI\DB SAP PBHI.Outputs[OLE DB Source Output].ExternalColumns[AENAM]"
+                      dataType="wstr"
+                      length="12"
+                      name="AENAM" />
+                    <externalMetadataColumn
+                      refId="Package\PBHI\DB SAP PBHI.Outputs[OLE DB Source Output].ExternalColumns[PLNMG]"
+                      dataType="numeric"
+                      name="PLNMG"
+                      precision="13"
+                      scale="3" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\PBHI\DB SAP PBHI.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\PBHI\DB SAP PBHI.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      lineageId="Package\PBHI\DB SAP PBHI.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      name="MANDT" />
+                    <outputColumn
+                      refId="Package\PBHI\DB SAP PBHI.Outputs[OLE DB Source Error Output].Columns[BDZEI]"
+                      dataType="wstr"
+                      length="12"
+                      lineageId="Package\PBHI\DB SAP PBHI.Outputs[OLE DB Source Error Output].Columns[BDZEI]"
+                      name="BDZEI" />
+                    <outputColumn
+                      refId="Package\PBHI\DB SAP PBHI.Outputs[OLE DB Source Error Output].Columns[PDATU]"
+                      dataType="wstr"
+                      length="8"
+                      lineageId="Package\PBHI\DB SAP PBHI.Outputs[OLE DB Source Error Output].Columns[PDATU]"
+                      name="PDATU" />
+                    <outputColumn
+                      refId="Package\PBHI\DB SAP PBHI.Outputs[OLE DB Source Error Output].Columns[LAEDA]"
+                      dataType="wstr"
+                      length="8"
+                      lineageId="Package\PBHI\DB SAP PBHI.Outputs[OLE DB Source Error Output].Columns[LAEDA]"
+                      name="LAEDA" />
+                    <outputColumn
+                      refId="Package\PBHI\DB SAP PBHI.Outputs[OLE DB Source Error Output].Columns[UZEIT]"
+                      dataType="wstr"
+                      length="6"
+                      lineageId="Package\PBHI\DB SAP PBHI.Outputs[OLE DB Source Error Output].Columns[UZEIT]"
+                      name="UZEIT" />
+                    <outputColumn
+                      refId="Package\PBHI\DB SAP PBHI.Outputs[OLE DB Source Error Output].Columns[AENAM]"
+                      dataType="wstr"
+                      length="12"
+                      lineageId="Package\PBHI\DB SAP PBHI.Outputs[OLE DB Source Error Output].Columns[AENAM]"
+                      name="AENAM" />
+                    <outputColumn
+                      refId="Package\PBHI\DB SAP PBHI.Outputs[OLE DB Source Error Output].Columns[PLNMG]"
+                      dataType="numeric"
+                      lineageId="Package\PBHI\DB SAP PBHI.Outputs[OLE DB Source Error Output].Columns[PLNMG]"
+                      name="PLNMG"
+                      precision="13"
+                      scale="3" />
+                    <outputColumn
+                      refId="Package\PBHI\DB SAP PBHI.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\PBHI\DB SAP PBHI.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\PBHI\DB SAP PBHI.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\PBHI\DB SAP PBHI.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\PBHI\Identify records"
+              componentClassID="Microsoft.ConditionalSplit"
+              contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
+              name="Identify records"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\PBHI\Identify records.Inputs[Conditional Split Input]"
+                  description="Input to the Conditional Split Transformation"
+                  name="Conditional Split Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\PBHI\Identify records.Inputs[Conditional Split Input].Columns[MANDT]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT"
+                      cachedSortKeyPosition="1"
+                      lineageId="Package\PBHI\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
+                    <inputColumn
+                      refId="Package\PBHI\Identify records.Inputs[Conditional Split Input].Columns[MANDT (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT (1)"
+                      lineageId="Package\PBHI\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\PBHI\Identify records.Outputs[update]"
+                  description="Output 1 of the Conditional Split Transformation"
+                  errorOrTruncationOperation="Computation"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="update"
+                  synchronousInputId="Package\PBHI\Identify records.Inputs[Conditional Split Input]"
+                  truncationRowDisposition="FailComponent">
+                  <properties>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                      name="Expression">![ISNULL](#{Package\PBHI\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; ![ISNULL](#{Package\PBHI\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the friendly version of the expression. This expression version uses column names."
+                      expressionType="Notify"
+                      name="FriendlyExpression">!ISNULL(MANDT) &amp;&amp; !ISNULL([MANDT (1)])</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                      name="EvaluationOrder">0</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\PBHI\Identify records.Outputs[insert]"
+                  description="Output 2 of the Conditional Split Transformation"
+                  errorOrTruncationOperation="Computation"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="insert"
+                  synchronousInputId="Package\PBHI\Identify records.Inputs[Conditional Split Input]"
+                  truncationRowDisposition="FailComponent">
+                  <properties>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                      name="Expression">![ISNULL](#{Package\PBHI\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; [ISNULL](#{Package\PBHI\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the friendly version of the expression. This expression version uses column names."
+                      expressionType="Notify"
+                      name="FriendlyExpression">!ISNULL(MANDT) &amp;&amp; ISNULL([MANDT (1)])</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                      name="EvaluationOrder">1</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\PBHI\Identify records.Outputs[delete]"
+                  description="Output 3 of the Conditional Split Transformation"
+                  errorOrTruncationOperation="Computation"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="delete"
+                  synchronousInputId="Package\PBHI\Identify records.Inputs[Conditional Split Input]"
+                  truncationRowDisposition="FailComponent">
+                  <properties>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                      name="Expression">[ISNULL](#{Package\PBHI\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; ![ISNULL](#{Package\PBHI\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the friendly version of the expression. This expression version uses column names."
+                      expressionType="Notify"
+                      name="FriendlyExpression">ISNULL(MANDT) &amp;&amp; !ISNULL([MANDT (1)])</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                      name="EvaluationOrder">2</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\PBHI\Identify records.Outputs[Conditional Split Default Output]"
+                  description="Default Output of the Conditional Split Transformation"
+                  exclusionGroup="1"
+                  name="Conditional Split Default Output"
+                  synchronousInputId="Package\PBHI\Identify records.Inputs[Conditional Split Input]">
+                  <properties>
+                    <property
+                      dataType="System.Boolean"
+                      name="IsDefaultOut">true</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\PBHI\Identify records.Outputs[Conditional Split Error Output]"
+                  description="Error Output of the Conditional Split Transformation"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Conditional Split Error Output"
+                  synchronousInputId="Package\PBHI\Identify records.Inputs[Conditional Split Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\PBHI\Identify records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\PBHI\Identify records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\PBHI\Identify records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\PBHI\Identify records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\PBHI\insert new records"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="insert new records"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[PBHI_STAGE_INSERT]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\PBHI\insert new records.Connections[OleDbConnection]"
+                  connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\PBHI\insert new records.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\PBHI\insert new records.Inputs[OLE DB Destination Input].Columns[MANDT]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT"
+                      cachedSortKeyPosition="1"
+                      externalMetadataColumnId="Package\PBHI\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      lineageId="Package\PBHI\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
+                    <inputColumn
+                      refId="Package\PBHI\insert new records.Inputs[OLE DB Destination Input].Columns[BDZEI]"
+                      cachedDataType="wstr"
+                      cachedLength="12"
+                      cachedName="BDZEI"
+                      cachedSortKeyPosition="2"
+                      externalMetadataColumnId="Package\PBHI\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[BDZEI]"
+                      lineageId="Package\PBHI\Merge Join.Outputs[Merge Join Output].Columns[BDZEI]" />
+                    <inputColumn
+                      refId="Package\PBHI\insert new records.Inputs[OLE DB Destination Input].Columns[PDATU]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="PDATU"
+                      cachedSortKeyPosition="3"
+                      externalMetadataColumnId="Package\PBHI\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[PDATU]"
+                      lineageId="Package\PBHI\Merge Join.Outputs[Merge Join Output].Columns[PDATU]" />
+                    <inputColumn
+                      refId="Package\PBHI\insert new records.Inputs[OLE DB Destination Input].Columns[LAEDA]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="LAEDA"
+                      cachedSortKeyPosition="4"
+                      externalMetadataColumnId="Package\PBHI\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[LAEDA]"
+                      lineageId="Package\PBHI\Merge Join.Outputs[Merge Join Output].Columns[LAEDA]" />
+                    <inputColumn
+                      refId="Package\PBHI\insert new records.Inputs[OLE DB Destination Input].Columns[UZEIT]"
+                      cachedDataType="wstr"
+                      cachedLength="6"
+                      cachedName="UZEIT"
+                      cachedSortKeyPosition="5"
+                      externalMetadataColumnId="Package\PBHI\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[UZEIT]"
+                      lineageId="Package\PBHI\Merge Join.Outputs[Merge Join Output].Columns[UZEIT]" />
+                    <inputColumn
+                      refId="Package\PBHI\insert new records.Inputs[OLE DB Destination Input].Columns[AENAM]"
+                      cachedDataType="wstr"
+                      cachedLength="12"
+                      cachedName="AENAM"
+                      externalMetadataColumnId="Package\PBHI\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[AENAM]"
+                      lineageId="Package\PBHI\Merge Join.Outputs[Merge Join Output].Columns[AENAM]" />
+                    <inputColumn
+                      refId="Package\PBHI\insert new records.Inputs[OLE DB Destination Input].Columns[PLNMG]"
+                      cachedDataType="numeric"
+                      cachedName="PLNMG"
+                      cachedPrecision="13"
+                      cachedScale="3"
+                      externalMetadataColumnId="Package\PBHI\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[PLNMG]"
+                      lineageId="Package\PBHI\Merge Join.Outputs[Merge Join Output].Columns[PLNMG]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\PBHI\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      name="MANDT" />
+                    <externalMetadataColumn
+                      refId="Package\PBHI\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[BDZEI]"
+                      dataType="wstr"
+                      length="12"
+                      name="BDZEI" />
+                    <externalMetadataColumn
+                      refId="Package\PBHI\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[PDATU]"
+                      dataType="wstr"
+                      length="8"
+                      name="PDATU" />
+                    <externalMetadataColumn
+                      refId="Package\PBHI\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[LAEDA]"
+                      dataType="wstr"
+                      length="8"
+                      name="LAEDA" />
+                    <externalMetadataColumn
+                      refId="Package\PBHI\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[UZEIT]"
+                      dataType="wstr"
+                      length="6"
+                      name="UZEIT" />
+                    <externalMetadataColumn
+                      refId="Package\PBHI\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[AENAM]"
+                      dataType="wstr"
+                      length="12"
+                      name="AENAM" />
+                    <externalMetadataColumn
+                      refId="Package\PBHI\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[PLNMG]"
+                      dataType="numeric"
+                      name="PLNMG"
+                      precision="13"
+                      scale="3" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\PBHI\insert new records.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\PBHI\insert new records.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\PBHI\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\PBHI\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\PBHI\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\PBHI\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\PBHI\Merge Join"
+              componentClassID="Microsoft.MergeJoin"
+              contactInfo="Merge Join;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
+              description="Combine two sorted data flows into one using the FULL, LEFT, or INNER join. We recommend this transformation when data flows can be sorted at their sources."
+              name="Merge Join"
+              version="1">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the type of join to perform."
+                  name="JoinType"
+                  typeConverter="JoinType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the number of columns in the ordering key."
+                  name="NumKeyColumns">5</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the null values are treated as equal values."
+                  name="TreatNullsAsEqual">true</property>
+                <property
+                  dataType="System.Int32"
+                  description="Indicates the requested maximum buffers per input before blocking."
+                  name="MaxBuffersPerInput">5</property>
+              </properties>
+              <inputs>
+                <input
+                  refId="Package\PBHI\Merge Join.Inputs[Merge Join Left Input]"
+                  hasSideEffects="true"
+                  name="Merge Join Left Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\PBHI\Merge Join.Inputs[Merge Join Left Input].Columns[MANDT]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT"
+                      cachedSortKeyPosition="1"
+                      lineageId="Package\PBHI\DB SAP PBHI.Outputs[OLE DB Source Output].Columns[MANDT]" />
+                    <inputColumn
+                      refId="Package\PBHI\Merge Join.Inputs[Merge Join Left Input].Columns[BDZEI]"
+                      cachedDataType="wstr"
+                      cachedLength="12"
+                      cachedName="BDZEI"
+                      cachedSortKeyPosition="2"
+                      lineageId="Package\PBHI\DB SAP PBHI.Outputs[OLE DB Source Output].Columns[BDZEI]" />
+                    <inputColumn
+                      refId="Package\PBHI\Merge Join.Inputs[Merge Join Left Input].Columns[PDATU]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="PDATU"
+                      cachedSortKeyPosition="3"
+                      lineageId="Package\PBHI\DB SAP PBHI.Outputs[OLE DB Source Output].Columns[PDATU]" />
+                    <inputColumn
+                      refId="Package\PBHI\Merge Join.Inputs[Merge Join Left Input].Columns[LAEDA]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="LAEDA"
+                      cachedSortKeyPosition="4"
+                      lineageId="Package\PBHI\DB SAP PBHI.Outputs[OLE DB Source Output].Columns[LAEDA]" />
+                    <inputColumn
+                      refId="Package\PBHI\Merge Join.Inputs[Merge Join Left Input].Columns[UZEIT]"
+                      cachedDataType="wstr"
+                      cachedLength="6"
+                      cachedName="UZEIT"
+                      cachedSortKeyPosition="5"
+                      lineageId="Package\PBHI\DB SAP PBHI.Outputs[OLE DB Source Output].Columns[UZEIT]" />
+                    <inputColumn
+                      refId="Package\PBHI\Merge Join.Inputs[Merge Join Left Input].Columns[AENAM]"
+                      cachedDataType="wstr"
+                      cachedLength="12"
+                      cachedName="AENAM"
+                      lineageId="Package\PBHI\DB SAP PBHI.Outputs[OLE DB Source Output].Columns[AENAM]" />
+                    <inputColumn
+                      refId="Package\PBHI\Merge Join.Inputs[Merge Join Left Input].Columns[PLNMG]"
+                      cachedDataType="numeric"
+                      cachedName="PLNMG"
+                      cachedPrecision="13"
+                      cachedScale="3"
+                      lineageId="Package\PBHI\DB SAP PBHI.Outputs[OLE DB Source Output].Columns[PLNMG]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+                <input
+                  refId="Package\PBHI\Merge Join.Inputs[Merge Join Right Input]"
+                  hasSideEffects="true"
+                  name="Merge Join Right Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\PBHI\Merge Join.Inputs[Merge Join Right Input].Columns[MANDT]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT"
+                      cachedSortKeyPosition="1"
+                      lineageId="Package\PBHI\DB PBI PBHI.Outputs[OLE DB Source Output].Columns[MANDT]" />
+                    <inputColumn
+                      refId="Package\PBHI\Merge Join.Inputs[Merge Join Right Input].Columns[BDZEI]"
+                      cachedDataType="wstr"
+                      cachedLength="12"
+                      cachedName="BDZEI"
+                      cachedSortKeyPosition="2"
+                      lineageId="Package\PBHI\DB PBI PBHI.Outputs[OLE DB Source Output].Columns[BDZEI]" />
+                    <inputColumn
+                      refId="Package\PBHI\Merge Join.Inputs[Merge Join Right Input].Columns[PDATU]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="PDATU"
+                      cachedSortKeyPosition="3"
+                      lineageId="Package\PBHI\DB PBI PBHI.Outputs[OLE DB Source Output].Columns[PDATU]" />
+                    <inputColumn
+                      refId="Package\PBHI\Merge Join.Inputs[Merge Join Right Input].Columns[LAEDA]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="LAEDA"
+                      cachedSortKeyPosition="4"
+                      lineageId="Package\PBHI\DB PBI PBHI.Outputs[OLE DB Source Output].Columns[LAEDA]" />
+                    <inputColumn
+                      refId="Package\PBHI\Merge Join.Inputs[Merge Join Right Input].Columns[UZEIT]"
+                      cachedDataType="wstr"
+                      cachedLength="6"
+                      cachedName="UZEIT"
+                      cachedSortKeyPosition="5"
+                      lineageId="Package\PBHI\DB PBI PBHI.Outputs[OLE DB Source Output].Columns[UZEIT]" />
+                    <inputColumn
+                      refId="Package\PBHI\Merge Join.Inputs[Merge Join Right Input].Columns[AENAM]"
+                      cachedDataType="wstr"
+                      cachedLength="12"
+                      cachedName="AENAM"
+                      lineageId="Package\PBHI\DB PBI PBHI.Outputs[OLE DB Source Output].Columns[AENAM]" />
+                    <inputColumn
+                      refId="Package\PBHI\Merge Join.Inputs[Merge Join Right Input].Columns[PLNMG]"
+                      cachedDataType="numeric"
+                      cachedName="PLNMG"
+                      cachedPrecision="13"
+                      cachedScale="3"
+                      lineageId="Package\PBHI\DB PBI PBHI.Outputs[OLE DB Source Output].Columns[PLNMG]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\PBHI\Merge Join.Outputs[Merge Join Output]"
+                  isSorted="true"
+                  name="Merge Join Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\PBHI\Merge Join.Outputs[Merge Join Output].Columns[BDZEI]"
+                      dataType="wstr"
+                      length="12"
+                      lineageId="Package\PBHI\Merge Join.Outputs[Merge Join Output].Columns[BDZEI]"
+                      name="BDZEI"
+                      sortKeyPosition="2">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\PBHI\Merge Join.Inputs[Merge Join Left Input].Columns[BDZEI]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\PBHI\Merge Join.Outputs[Merge Join Output].Columns[PDATU]"
+                      dataType="wstr"
+                      length="8"
+                      lineageId="Package\PBHI\Merge Join.Outputs[Merge Join Output].Columns[PDATU]"
+                      name="PDATU"
+                      sortKeyPosition="3">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\PBHI\Merge Join.Inputs[Merge Join Left Input].Columns[PDATU]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\PBHI\Merge Join.Outputs[Merge Join Output].Columns[LAEDA]"
+                      dataType="wstr"
+                      length="8"
+                      lineageId="Package\PBHI\Merge Join.Outputs[Merge Join Output].Columns[LAEDA]"
+                      name="LAEDA"
+                      sortKeyPosition="4">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\PBHI\Merge Join.Inputs[Merge Join Left Input].Columns[LAEDA]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\PBHI\Merge Join.Outputs[Merge Join Output].Columns[UZEIT]"
+                      dataType="wstr"
+                      length="6"
+                      lineageId="Package\PBHI\Merge Join.Outputs[Merge Join Output].Columns[UZEIT]"
+                      name="UZEIT"
+                      sortKeyPosition="5">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\PBHI\Merge Join.Inputs[Merge Join Left Input].Columns[UZEIT]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\PBHI\Merge Join.Outputs[Merge Join Output].Columns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      lineageId="Package\PBHI\Merge Join.Outputs[Merge Join Output].Columns[MANDT]"
+                      name="MANDT"
+                      sortKeyPosition="1">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\PBHI\Merge Join.Inputs[Merge Join Left Input].Columns[MANDT]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\PBHI\Merge Join.Outputs[Merge Join Output].Columns[AENAM]"
+                      dataType="wstr"
+                      length="12"
+                      lineageId="Package\PBHI\Merge Join.Outputs[Merge Join Output].Columns[AENAM]"
+                      name="AENAM">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\PBHI\Merge Join.Inputs[Merge Join Left Input].Columns[AENAM]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\PBHI\Merge Join.Outputs[Merge Join Output].Columns[PLNMG]"
+                      dataType="numeric"
+                      lineageId="Package\PBHI\Merge Join.Outputs[Merge Join Output].Columns[PLNMG]"
+                      name="PLNMG"
+                      precision="13"
+                      scale="3">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\PBHI\Merge Join.Inputs[Merge Join Left Input].Columns[PLNMG]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\PBHI\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]"
+                      dataType="wstr"
+                      length="3"
+                      lineageId="Package\PBHI\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]"
+                      name="MANDT (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\PBHI\Merge Join.Inputs[Merge Join Right Input].Columns[MANDT]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\PBHI\Merge Join.Outputs[Merge Join Output].Columns[BDZEI (1)]"
+                      dataType="wstr"
+                      length="12"
+                      lineageId="Package\PBHI\Merge Join.Outputs[Merge Join Output].Columns[BDZEI (1)]"
+                      name="BDZEI (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\PBHI\Merge Join.Inputs[Merge Join Right Input].Columns[BDZEI]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\PBHI\Merge Join.Outputs[Merge Join Output].Columns[PDATU (1)]"
+                      dataType="wstr"
+                      length="8"
+                      lineageId="Package\PBHI\Merge Join.Outputs[Merge Join Output].Columns[PDATU (1)]"
+                      name="PDATU (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\PBHI\Merge Join.Inputs[Merge Join Right Input].Columns[PDATU]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\PBHI\Merge Join.Outputs[Merge Join Output].Columns[LAEDA (1)]"
+                      dataType="wstr"
+                      length="8"
+                      lineageId="Package\PBHI\Merge Join.Outputs[Merge Join Output].Columns[LAEDA (1)]"
+                      name="LAEDA (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\PBHI\Merge Join.Inputs[Merge Join Right Input].Columns[LAEDA]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\PBHI\Merge Join.Outputs[Merge Join Output].Columns[UZEIT (1)]"
+                      dataType="wstr"
+                      length="6"
+                      lineageId="Package\PBHI\Merge Join.Outputs[Merge Join Output].Columns[UZEIT (1)]"
+                      name="UZEIT (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\PBHI\Merge Join.Inputs[Merge Join Right Input].Columns[UZEIT]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\PBHI\Merge Join.Outputs[Merge Join Output].Columns[AENAM (1)]"
+                      dataType="wstr"
+                      length="12"
+                      lineageId="Package\PBHI\Merge Join.Outputs[Merge Join Output].Columns[AENAM (1)]"
+                      name="AENAM (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\PBHI\Merge Join.Inputs[Merge Join Right Input].Columns[AENAM]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\PBHI\Merge Join.Outputs[Merge Join Output].Columns[PLNMG (1)]"
+                      dataType="numeric"
+                      lineageId="Package\PBHI\Merge Join.Outputs[Merge Join Output].Columns[PLNMG (1)]"
+                      name="PLNMG (1)"
+                      precision="13"
+                      scale="3">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\PBHI\Merge Join.Inputs[Merge Join Right Input].Columns[PLNMG]}</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\PBHI\stage delete records"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="stage delete records"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[PBHI_STAGE_DELETE]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\PBHI\stage delete records.Connections[OleDbConnection]"
+                  connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\PBHI\stage delete records.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\PBHI\stage delete records.Inputs[OLE DB Destination Input].Columns[MANDT (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT (1)"
+                      externalMetadataColumnId="Package\PBHI\stage delete records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      lineageId="Package\PBHI\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]" />
+                    <inputColumn
+                      refId="Package\PBHI\stage delete records.Inputs[OLE DB Destination Input].Columns[BDZEI (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="12"
+                      cachedName="BDZEI (1)"
+                      externalMetadataColumnId="Package\PBHI\stage delete records.Inputs[OLE DB Destination Input].ExternalColumns[BDZEI]"
+                      lineageId="Package\PBHI\Merge Join.Outputs[Merge Join Output].Columns[BDZEI (1)]" />
+                    <inputColumn
+                      refId="Package\PBHI\stage delete records.Inputs[OLE DB Destination Input].Columns[PDATU (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="PDATU (1)"
+                      externalMetadataColumnId="Package\PBHI\stage delete records.Inputs[OLE DB Destination Input].ExternalColumns[PDATU]"
+                      lineageId="Package\PBHI\Merge Join.Outputs[Merge Join Output].Columns[PDATU (1)]" />
+                    <inputColumn
+                      refId="Package\PBHI\stage delete records.Inputs[OLE DB Destination Input].Columns[LAEDA (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="LAEDA (1)"
+                      externalMetadataColumnId="Package\PBHI\stage delete records.Inputs[OLE DB Destination Input].ExternalColumns[LAEDA]"
+                      lineageId="Package\PBHI\Merge Join.Outputs[Merge Join Output].Columns[LAEDA (1)]" />
+                    <inputColumn
+                      refId="Package\PBHI\stage delete records.Inputs[OLE DB Destination Input].Columns[UZEIT (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="6"
+                      cachedName="UZEIT (1)"
+                      externalMetadataColumnId="Package\PBHI\stage delete records.Inputs[OLE DB Destination Input].ExternalColumns[UZEIT]"
+                      lineageId="Package\PBHI\Merge Join.Outputs[Merge Join Output].Columns[UZEIT (1)]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\PBHI\stage delete records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      name="MANDT" />
+                    <externalMetadataColumn
+                      refId="Package\PBHI\stage delete records.Inputs[OLE DB Destination Input].ExternalColumns[BDZEI]"
+                      dataType="wstr"
+                      length="12"
+                      name="BDZEI" />
+                    <externalMetadataColumn
+                      refId="Package\PBHI\stage delete records.Inputs[OLE DB Destination Input].ExternalColumns[PDATU]"
+                      dataType="wstr"
+                      length="8"
+                      name="PDATU" />
+                    <externalMetadataColumn
+                      refId="Package\PBHI\stage delete records.Inputs[OLE DB Destination Input].ExternalColumns[LAEDA]"
+                      dataType="wstr"
+                      length="8"
+                      name="LAEDA" />
+                    <externalMetadataColumn
+                      refId="Package\PBHI\stage delete records.Inputs[OLE DB Destination Input].ExternalColumns[UZEIT]"
+                      dataType="wstr"
+                      length="6"
+                      name="UZEIT" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\PBHI\stage delete records.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\PBHI\stage delete records.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\PBHI\stage delete records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\PBHI\stage delete records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\PBHI\stage delete records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\PBHI\stage delete records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\PBHI\stage update records"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="stage update records"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[PBHI_STAGE_UPDATE]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\PBHI\stage update records.Connections[OleDbConnection]"
+                  connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\PBHI\stage update records.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\PBHI\stage update records.Inputs[OLE DB Destination Input].Columns[MANDT]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT"
+                      cachedSortKeyPosition="1"
+                      externalMetadataColumnId="Package\PBHI\stage update records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      lineageId="Package\PBHI\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
+                    <inputColumn
+                      refId="Package\PBHI\stage update records.Inputs[OLE DB Destination Input].Columns[BDZEI]"
+                      cachedDataType="wstr"
+                      cachedLength="12"
+                      cachedName="BDZEI"
+                      cachedSortKeyPosition="2"
+                      externalMetadataColumnId="Package\PBHI\stage update records.Inputs[OLE DB Destination Input].ExternalColumns[BDZEI]"
+                      lineageId="Package\PBHI\Merge Join.Outputs[Merge Join Output].Columns[BDZEI]" />
+                    <inputColumn
+                      refId="Package\PBHI\stage update records.Inputs[OLE DB Destination Input].Columns[PDATU]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="PDATU"
+                      cachedSortKeyPosition="3"
+                      externalMetadataColumnId="Package\PBHI\stage update records.Inputs[OLE DB Destination Input].ExternalColumns[PDATU]"
+                      lineageId="Package\PBHI\Merge Join.Outputs[Merge Join Output].Columns[PDATU]" />
+                    <inputColumn
+                      refId="Package\PBHI\stage update records.Inputs[OLE DB Destination Input].Columns[LAEDA]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="LAEDA"
+                      cachedSortKeyPosition="4"
+                      externalMetadataColumnId="Package\PBHI\stage update records.Inputs[OLE DB Destination Input].ExternalColumns[LAEDA]"
+                      lineageId="Package\PBHI\Merge Join.Outputs[Merge Join Output].Columns[LAEDA]" />
+                    <inputColumn
+                      refId="Package\PBHI\stage update records.Inputs[OLE DB Destination Input].Columns[UZEIT]"
+                      cachedDataType="wstr"
+                      cachedLength="6"
+                      cachedName="UZEIT"
+                      cachedSortKeyPosition="5"
+                      externalMetadataColumnId="Package\PBHI\stage update records.Inputs[OLE DB Destination Input].ExternalColumns[UZEIT]"
+                      lineageId="Package\PBHI\Merge Join.Outputs[Merge Join Output].Columns[UZEIT]" />
+                    <inputColumn
+                      refId="Package\PBHI\stage update records.Inputs[OLE DB Destination Input].Columns[AENAM]"
+                      cachedDataType="wstr"
+                      cachedLength="12"
+                      cachedName="AENAM"
+                      externalMetadataColumnId="Package\PBHI\stage update records.Inputs[OLE DB Destination Input].ExternalColumns[AENAM]"
+                      lineageId="Package\PBHI\Merge Join.Outputs[Merge Join Output].Columns[AENAM]" />
+                    <inputColumn
+                      refId="Package\PBHI\stage update records.Inputs[OLE DB Destination Input].Columns[PLNMG]"
+                      cachedDataType="numeric"
+                      cachedName="PLNMG"
+                      cachedPrecision="13"
+                      cachedScale="3"
+                      externalMetadataColumnId="Package\PBHI\stage update records.Inputs[OLE DB Destination Input].ExternalColumns[PLNMG]"
+                      lineageId="Package\PBHI\Merge Join.Outputs[Merge Join Output].Columns[PLNMG]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\PBHI\stage update records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      name="MANDT" />
+                    <externalMetadataColumn
+                      refId="Package\PBHI\stage update records.Inputs[OLE DB Destination Input].ExternalColumns[BDZEI]"
+                      dataType="wstr"
+                      length="12"
+                      name="BDZEI" />
+                    <externalMetadataColumn
+                      refId="Package\PBHI\stage update records.Inputs[OLE DB Destination Input].ExternalColumns[PDATU]"
+                      dataType="wstr"
+                      length="8"
+                      name="PDATU" />
+                    <externalMetadataColumn
+                      refId="Package\PBHI\stage update records.Inputs[OLE DB Destination Input].ExternalColumns[LAEDA]"
+                      dataType="wstr"
+                      length="8"
+                      name="LAEDA" />
+                    <externalMetadataColumn
+                      refId="Package\PBHI\stage update records.Inputs[OLE DB Destination Input].ExternalColumns[UZEIT]"
+                      dataType="wstr"
+                      length="6"
+                      name="UZEIT" />
+                    <externalMetadataColumn
+                      refId="Package\PBHI\stage update records.Inputs[OLE DB Destination Input].ExternalColumns[AENAM]"
+                      dataType="wstr"
+                      length="12"
+                      name="AENAM" />
+                    <externalMetadataColumn
+                      refId="Package\PBHI\stage update records.Inputs[OLE DB Destination Input].ExternalColumns[PLNMG]"
+                      dataType="numeric"
+                      name="PLNMG"
+                      precision="13"
+                      scale="3" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\PBHI\stage update records.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\PBHI\stage update records.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\PBHI\stage update records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\PBHI\stage update records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\PBHI\stage update records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\PBHI\stage update records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\PBHI.Paths[delete]"
+              endId="Package\PBHI\stage delete records.Inputs[OLE DB Destination Input]"
+              name="delete"
+              startId="Package\PBHI\Identify records.Outputs[delete]" />
+            <path
+              refId="Package\PBHI.Paths[insert]"
+              endId="Package\PBHI\insert new records.Inputs[OLE DB Destination Input]"
+              name="insert"
+              startId="Package\PBHI\Identify records.Outputs[insert]" />
+            <path
+              refId="Package\PBHI.Paths[Merge Join Output]"
+              endId="Package\PBHI\Identify records.Inputs[Conditional Split Input]"
+              name="Merge Join Output"
+              startId="Package\PBHI\Merge Join.Outputs[Merge Join Output]" />
+            <path
+              refId="Package\PBHI.Paths[OLE DB Source Output]"
+              endId="Package\PBHI\Merge Join.Inputs[Merge Join Left Input]"
+              name="OLE DB Source Output"
+              startId="Package\PBHI\DB SAP PBHI.Outputs[OLE DB Source Output]" />
+            <path
+              refId="Package\PBHI.Paths[OLE DB Source Output1]"
+              endId="Package\PBHI\Merge Join.Inputs[Merge Join Right Input]"
+              name="OLE DB Source Output"
+              startId="Package\PBHI\DB PBI PBHI.Outputs[OLE DB Source Output]" />
+            <path
+              refId="Package\PBHI.Paths[update]"
+              endId="Package\PBHI\Changed records.Inputs[Conditional Split Input]"
+              name="update"
+              startId="Package\PBHI\Identify records.Outputs[update]" />
+            <path
+              refId="Package\PBHI.Paths[update1]"
+              endId="Package\PBHI\stage update records.Inputs[OLE DB Destination Input]"
+              name="update"
+              startId="Package\PBHI\Changed records.Outputs[update]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\UPDATE"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{D86D1C37-F2D4-443C-B04C-750B14F8338F}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="UPDATE"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="UPDATE A&#xA;SET A.AENAM = B.AENAM&#xA;    ,A.PLNMG = B.PLNMG&#xA;FROM [PBHI] A&#xA;INNER JOIN [PBHI_STAGE_UPDATE] B&#xA;ON A.MANDT = B.MANDT&#xA;    AND A.BDZEI = B.BDZEI&#xA;    AND A.PDATU = B.PDATU&#xA;    AND A.LAEDA = B.LAEDA&#xA;    AND A.UZEIT = B.UZEIT" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{EA9E3794-EFD3-4251-8CD3-5D5D44BF4007}"
+      DTS:From="Package\PBHI"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\UPDATE" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
+      DTS:CreationName=""
+      DTS:DTSID="{14C4D57B-A033-469B-8D36-91406E55520D}"
+      DTS:From="Package\Clean Stage"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 1"
+      DTS:To="Package\PBHI" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
+      DTS:CreationName=""
+      DTS:DTSID="{B03BC1F5-49A4-42FD-821B-D85B65F7BA82}"
+      DTS:From="Package\UPDATE"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 2"
+      DTS:To="Package\DELETE" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 3]"
+      DTS:CreationName=""
+      DTS:DTSID="{17CCFBF4-76E4-4635-9818-C45E8F5FB1E8}"
+      DTS:From="Package\DELETE"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 3"
+      DTS:To="Package\INSERT" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="135,42"
+          Id="Package\Clean Stage"
+          TopLeft="23,14" />
+        <NodeLayout
+          Size="135,42"
+          Id="Package\DELETE"
+          TopLeft="23,224" />
+        <NodeLayout
+          Size="135,42"
+          Id="Package\INSERT"
+          TopLeft="23,294" />
+        <NodeLayout
+          Size="135,42"
+          Id="Package\PBHI"
+          TopLeft="23,84" />
+        <NodeLayout
+          Size="135,42"
+          Id="Package\UPDATE"
+          TopLeft="23,154" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="90.5,126">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,28"
+              Start="0,0"
+              End="0,20.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,20.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="90.5,56">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,28"
+              Start="0,0"
+              End="0,20.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,20.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 2]"
+          TopLeft="90.5,196">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,28"
+              Start="0,0"
+              End="0,20.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,20.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 3]"
+          TopLeft="90.5,266">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,28"
+              Start="0,0"
+              End="0,20.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,20.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\PBHI">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="178,42"
+          Id="Package\PBHI\stage update records"
+          TopLeft="383,431" />
+        <NodeLayout
+          Size="141,42"
+          Id="Package\PBHI\DB SAP PBHI"
+          TopLeft="139,17" />
+        <NodeLayout
+          Size="130,42"
+          Id="Package\PBHI\Merge Join"
+          TopLeft="409,96" />
+        <NodeLayout
+          Size="166,42"
+          Id="Package\PBHI\insert new records"
+          TopLeft="91,309" />
+        <NodeLayout
+          Size="175,42"
+          Id="Package\PBHI\stage delete records"
+          TopLeft="672,305" />
+        <NodeLayout
+          Size="158,42"
+          Id="Package\PBHI\Changed records"
+          TopLeft="393,309" />
+        <NodeLayout
+          Size="153,42"
+          Id="Package\PBHI\Identify records"
+          TopLeft="401,178" />
+        <NodeLayout
+          Size="139,42"
+          Id="Package\PBHI\DB PBI PBHI"
+          TopLeft="670,15" />
+        <EdgeLayout
+          Id="Package\PBHI.Paths[OLE DB Source Output]"
+          TopLeft="209.5,59">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="244.166666666667,37"
+              Start="0,0"
+              End="244.166666666667,29.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,17.9300911854103" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,17.9300911854103"
+                    Point2="0,21.9300911854103"
+                    Point3="4,21.9300911854103" />
+                  <mssgle:LineSegment
+                    End="240.166666666667,21.9300911854103" />
+                  <mssgle:CubicBezierSegment
+                    Point1="240.166666666667,21.9300911854103"
+                    Point2="244.166666666667,21.9300911854103"
+                    Point3="244.166666666667,25.9300911854103" />
+                  <mssgle:LineSegment
+                    End="244.166666666667,29.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\PBHI.Paths[Merge Join Output]"
+          TopLeft="475.75,138">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,40"
+              Start="0,0"
+              End="0,32.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,32.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\PBHI.Paths[insert]"
+          TopLeft="453.333333333333,220">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-279.333333333333,89"
+              Start="0,0"
+              End="-279.333333333333,81.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,32.1526520051746" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,32.1526520051746"
+                    Point2="0,36.1526520051746"
+                    Point3="-4,36.1526520051746" />
+                  <mssgle:LineSegment
+                    End="-275.333333333333,36.1526520051746" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-275.333333333333,36.1526520051746"
+                    Point2="-279.333333333333,36.1526520051746"
+                    Point3="-279.333333333333,40.1526520051746" />
+                  <mssgle:LineSegment
+                    End="-279.333333333333,81.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-152.616647135416,41.1526520051746,25.8999609375,9.451171875"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\PBHI.Paths[delete]"
+          TopLeft="513.75,220">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="245.75,85"
+              Start="0,0"
+              End="245.75,77.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,25.3040685224839" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,25.3040685224839"
+                    Point2="0,29.3040685224839"
+                    Point3="4,29.3040685224839" />
+                  <mssgle:LineSegment
+                    End="241.75,29.3040685224839" />
+                  <mssgle:CubicBezierSegment
+                    Point1="241.75,29.3040685224839"
+                    Point2="245.75,29.3040685224839"
+                    Point3="245.75,33.3040685224839" />
+                  <mssgle:LineSegment
+                    End="245.75,77.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="108.67904296875,34.3040685224839,28.3919140625,9.7490234375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\PBHI.Paths[update1]"
+          TopLeft="472,351">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,80"
+              Start="0,0"
+              End="0,72.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,72.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-15.8025,30.4453125,31.605,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\PBHI.Paths[update]"
+          TopLeft="474.75,220">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,89"
+              Start="0,0"
+              End="0,81.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,81.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-15.8025,34.9453125,31.605,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\PBHI.Paths[OLE DB Source Output1]"
+          TopLeft="739.5,57">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-245.166666666667,39"
+              Start="0,0"
+              End="-245.166666666667,31.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,19.1155015197568" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,19.1155015197568"
+                    Point2="0,23.1155015197568"
+                    Point3="-4,23.1155015197568" />
+                  <mssgle:LineSegment
+                    End="-241.166666666667,23.1155015197568" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-241.166666666667,23.1155015197568"
+                    Point2="-245.166666666667,23.1155015197568"
+                    Point3="-245.166666666667,27.1155015197568" />
+                  <mssgle:LineSegment
+                    End="-245.166666666667,31.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\PBHI\stage update records">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\PBHI\DB SAP PBHI">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\PBHI\insert new records">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\PBHI\stage delete records">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\PBHI\DB PBI PBHI">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>
