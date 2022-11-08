@@ -1,0 +1,2504 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="4/19/2021 1:21:19 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="ARLPBIDEV"
+  DTS:CreatorName="DOMAIN\RPETRELLA"
+  DTS:DTSID="{AAC702CB-793D-45A6-B132-E606CD63710C}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="16.0.948.0"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="EORD"
+  DTS:PackageType="5"
+  DTS:VersionBuild="26"
+  DTS:VersionGUID="{488A02B1-1A5F-41C6-B20F-19DEF377A1AF}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Clean Stage"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{6FAF59C2-F3E0-4AB6-B9DA-76F2D21AA60B}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Clean Stage"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="TRUNCATE TABLE [EORD_STAGE_UPDATE]&#xA;go&#xA;TRUNCATE TABLE [EORD_STAGE_DELETE]&#xA;go&#xA;TRUNCATE TABLE [EORD_STAGE_INSERT]&#xA;go" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\DELETE"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{DAF0978C-3E4B-41FB-A704-1061C8F61F55}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="DELETE"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="DELETE a&#xA;FROM [EORD] a&#xA;INNER JOIN [EORD_STAGE_DELETE] b&#xA;ON a.[MANDT] = b.[MANDT]&#xA;    AND a.[MATNR] = b.[MATNR]&#xA;    AND a.[WERKS] = b.[WERKS]&#xA;    AND a.[ZEORD] = b.[ZEORD]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\EORD"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{B1C6101F-D7D4-4D4A-96A2-D0F0F6BBAF89}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="EORD"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\EORD\DB PBI"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="DB PBI"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT [MANDT]
+    ,[MATNR]
+    ,[WERKS]
+    ,[ZEORD]
+    ,[ERDAT]
+    ,[ERNAM]
+    ,[VDATU]
+    ,[BDATU]
+    ,[LIFNR]
+FROM [EORD] (NOLOCK)
+WHERE MANDT = '105'
+ORDER BY [MANDT]
+    ,[MATNR]
+    ,[WERKS]
+    ,[ZEORD]</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\EORD\DB PBI.Connections[OleDbConnection]"
+                  connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\EORD\DB PBI.Outputs[OLE DB Source Output]"
+                  isSorted="true"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\EORD\DB PBI.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\EORD\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      length="3"
+                      lineageId="Package\EORD\DB PBI.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      name="MANDT"
+                      sortKeyPosition="1"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\EORD\DB PBI.Outputs[OLE DB Source Output].Columns[MATNR]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\EORD\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[MATNR]"
+                      length="18"
+                      lineageId="Package\EORD\DB PBI.Outputs[OLE DB Source Output].Columns[MATNR]"
+                      name="MATNR"
+                      sortKeyPosition="2"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\EORD\DB PBI.Outputs[OLE DB Source Output].Columns[WERKS]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\EORD\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[WERKS]"
+                      length="4"
+                      lineageId="Package\EORD\DB PBI.Outputs[OLE DB Source Output].Columns[WERKS]"
+                      name="WERKS"
+                      sortKeyPosition="3"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\EORD\DB PBI.Outputs[OLE DB Source Output].Columns[ZEORD]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\EORD\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[ZEORD]"
+                      length="5"
+                      lineageId="Package\EORD\DB PBI.Outputs[OLE DB Source Output].Columns[ZEORD]"
+                      name="ZEORD"
+                      sortKeyPosition="4"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\EORD\DB PBI.Outputs[OLE DB Source Output].Columns[ERDAT]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\EORD\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[ERDAT]"
+                      length="8"
+                      lineageId="Package\EORD\DB PBI.Outputs[OLE DB Source Output].Columns[ERDAT]"
+                      name="ERDAT"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\EORD\DB PBI.Outputs[OLE DB Source Output].Columns[ERNAM]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\EORD\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[ERNAM]"
+                      length="12"
+                      lineageId="Package\EORD\DB PBI.Outputs[OLE DB Source Output].Columns[ERNAM]"
+                      name="ERNAM"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\EORD\DB PBI.Outputs[OLE DB Source Output].Columns[VDATU]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\EORD\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[VDATU]"
+                      length="8"
+                      lineageId="Package\EORD\DB PBI.Outputs[OLE DB Source Output].Columns[VDATU]"
+                      name="VDATU"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\EORD\DB PBI.Outputs[OLE DB Source Output].Columns[BDATU]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\EORD\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[BDATU]"
+                      length="8"
+                      lineageId="Package\EORD\DB PBI.Outputs[OLE DB Source Output].Columns[BDATU]"
+                      name="BDATU"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\EORD\DB PBI.Outputs[OLE DB Source Output].Columns[LIFNR]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\EORD\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[LIFNR]"
+                      length="10"
+                      lineageId="Package\EORD\DB PBI.Outputs[OLE DB Source Output].Columns[LIFNR]"
+                      name="LIFNR"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\EORD\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      name="MANDT" />
+                    <externalMetadataColumn
+                      refId="Package\EORD\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[MATNR]"
+                      dataType="wstr"
+                      length="18"
+                      name="MATNR" />
+                    <externalMetadataColumn
+                      refId="Package\EORD\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[WERKS]"
+                      dataType="wstr"
+                      length="4"
+                      name="WERKS" />
+                    <externalMetadataColumn
+                      refId="Package\EORD\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[ZEORD]"
+                      dataType="wstr"
+                      length="5"
+                      name="ZEORD" />
+                    <externalMetadataColumn
+                      refId="Package\EORD\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[ERDAT]"
+                      dataType="wstr"
+                      length="8"
+                      name="ERDAT" />
+                    <externalMetadataColumn
+                      refId="Package\EORD\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[ERNAM]"
+                      dataType="wstr"
+                      length="12"
+                      name="ERNAM" />
+                    <externalMetadataColumn
+                      refId="Package\EORD\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[VDATU]"
+                      dataType="wstr"
+                      length="8"
+                      name="VDATU" />
+                    <externalMetadataColumn
+                      refId="Package\EORD\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[BDATU]"
+                      dataType="wstr"
+                      length="8"
+                      name="BDATU" />
+                    <externalMetadataColumn
+                      refId="Package\EORD\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[LIFNR]"
+                      dataType="wstr"
+                      length="10"
+                      name="LIFNR" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\EORD\DB PBI.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\EORD\DB PBI.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      lineageId="Package\EORD\DB PBI.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      name="MANDT" />
+                    <outputColumn
+                      refId="Package\EORD\DB PBI.Outputs[OLE DB Source Error Output].Columns[MATNR]"
+                      dataType="wstr"
+                      length="18"
+                      lineageId="Package\EORD\DB PBI.Outputs[OLE DB Source Error Output].Columns[MATNR]"
+                      name="MATNR" />
+                    <outputColumn
+                      refId="Package\EORD\DB PBI.Outputs[OLE DB Source Error Output].Columns[WERKS]"
+                      dataType="wstr"
+                      length="4"
+                      lineageId="Package\EORD\DB PBI.Outputs[OLE DB Source Error Output].Columns[WERKS]"
+                      name="WERKS" />
+                    <outputColumn
+                      refId="Package\EORD\DB PBI.Outputs[OLE DB Source Error Output].Columns[ZEORD]"
+                      dataType="wstr"
+                      length="5"
+                      lineageId="Package\EORD\DB PBI.Outputs[OLE DB Source Error Output].Columns[ZEORD]"
+                      name="ZEORD" />
+                    <outputColumn
+                      refId="Package\EORD\DB PBI.Outputs[OLE DB Source Error Output].Columns[ERDAT]"
+                      dataType="wstr"
+                      length="8"
+                      lineageId="Package\EORD\DB PBI.Outputs[OLE DB Source Error Output].Columns[ERDAT]"
+                      name="ERDAT" />
+                    <outputColumn
+                      refId="Package\EORD\DB PBI.Outputs[OLE DB Source Error Output].Columns[ERNAM]"
+                      dataType="wstr"
+                      length="12"
+                      lineageId="Package\EORD\DB PBI.Outputs[OLE DB Source Error Output].Columns[ERNAM]"
+                      name="ERNAM" />
+                    <outputColumn
+                      refId="Package\EORD\DB PBI.Outputs[OLE DB Source Error Output].Columns[VDATU]"
+                      dataType="wstr"
+                      length="8"
+                      lineageId="Package\EORD\DB PBI.Outputs[OLE DB Source Error Output].Columns[VDATU]"
+                      name="VDATU" />
+                    <outputColumn
+                      refId="Package\EORD\DB PBI.Outputs[OLE DB Source Error Output].Columns[BDATU]"
+                      dataType="wstr"
+                      length="8"
+                      lineageId="Package\EORD\DB PBI.Outputs[OLE DB Source Error Output].Columns[BDATU]"
+                      name="BDATU" />
+                    <outputColumn
+                      refId="Package\EORD\DB PBI.Outputs[OLE DB Source Error Output].Columns[LIFNR]"
+                      dataType="wstr"
+                      length="10"
+                      lineageId="Package\EORD\DB PBI.Outputs[OLE DB Source Error Output].Columns[LIFNR]"
+                      name="LIFNR" />
+                    <outputColumn
+                      refId="Package\EORD\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\EORD\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\EORD\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\EORD\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\EORD\DB SAP"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="DB SAP"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT [MANDT]
+    ,[MATNR]
+    ,[WERKS]
+    ,[ZEORD]
+    ,[ERDAT]
+    ,[ERNAM]
+    ,[VDATU]
+    ,[BDATU]
+    ,[LIFNR]
+FROM [ecp].[EORD] (NOLOCK)
+WHERE MANDT = '105'
+ORDER BY [MANDT]
+    ,[MATNR]
+    ,[WERKS]
+    ,[ZEORD]</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\EORD\DB SAP.Connections[OleDbConnection]"
+                  connectionManagerID="{544CCAD9-2CB1-4D87-98D7-A7C478586195}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[SQL_SAP]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\EORD\DB SAP.Outputs[OLE DB Source Output]"
+                  isSorted="true"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\EORD\DB SAP.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\EORD\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      length="3"
+                      lineageId="Package\EORD\DB SAP.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      name="MANDT"
+                      sortKeyPosition="1"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\EORD\DB SAP.Outputs[OLE DB Source Output].Columns[MATNR]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\EORD\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[MATNR]"
+                      length="18"
+                      lineageId="Package\EORD\DB SAP.Outputs[OLE DB Source Output].Columns[MATNR]"
+                      name="MATNR"
+                      sortKeyPosition="2"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\EORD\DB SAP.Outputs[OLE DB Source Output].Columns[WERKS]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\EORD\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[WERKS]"
+                      length="4"
+                      lineageId="Package\EORD\DB SAP.Outputs[OLE DB Source Output].Columns[WERKS]"
+                      name="WERKS"
+                      sortKeyPosition="3"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\EORD\DB SAP.Outputs[OLE DB Source Output].Columns[ZEORD]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\EORD\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[ZEORD]"
+                      length="5"
+                      lineageId="Package\EORD\DB SAP.Outputs[OLE DB Source Output].Columns[ZEORD]"
+                      name="ZEORD"
+                      sortKeyPosition="4"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\EORD\DB SAP.Outputs[OLE DB Source Output].Columns[ERDAT]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\EORD\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[ERDAT]"
+                      length="8"
+                      lineageId="Package\EORD\DB SAP.Outputs[OLE DB Source Output].Columns[ERDAT]"
+                      name="ERDAT"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\EORD\DB SAP.Outputs[OLE DB Source Output].Columns[ERNAM]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\EORD\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[ERNAM]"
+                      length="12"
+                      lineageId="Package\EORD\DB SAP.Outputs[OLE DB Source Output].Columns[ERNAM]"
+                      name="ERNAM"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\EORD\DB SAP.Outputs[OLE DB Source Output].Columns[VDATU]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\EORD\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[VDATU]"
+                      length="8"
+                      lineageId="Package\EORD\DB SAP.Outputs[OLE DB Source Output].Columns[VDATU]"
+                      name="VDATU"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\EORD\DB SAP.Outputs[OLE DB Source Output].Columns[BDATU]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\EORD\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[BDATU]"
+                      length="8"
+                      lineageId="Package\EORD\DB SAP.Outputs[OLE DB Source Output].Columns[BDATU]"
+                      name="BDATU"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\EORD\DB SAP.Outputs[OLE DB Source Output].Columns[LIFNR]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\EORD\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[LIFNR]"
+                      length="10"
+                      lineageId="Package\EORD\DB SAP.Outputs[OLE DB Source Output].Columns[LIFNR]"
+                      name="LIFNR"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\EORD\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      name="MANDT" />
+                    <externalMetadataColumn
+                      refId="Package\EORD\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[MATNR]"
+                      dataType="wstr"
+                      length="18"
+                      name="MATNR" />
+                    <externalMetadataColumn
+                      refId="Package\EORD\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[WERKS]"
+                      dataType="wstr"
+                      length="4"
+                      name="WERKS" />
+                    <externalMetadataColumn
+                      refId="Package\EORD\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[ZEORD]"
+                      dataType="wstr"
+                      length="5"
+                      name="ZEORD" />
+                    <externalMetadataColumn
+                      refId="Package\EORD\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[ERDAT]"
+                      dataType="wstr"
+                      length="8"
+                      name="ERDAT" />
+                    <externalMetadataColumn
+                      refId="Package\EORD\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[ERNAM]"
+                      dataType="wstr"
+                      length="12"
+                      name="ERNAM" />
+                    <externalMetadataColumn
+                      refId="Package\EORD\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[VDATU]"
+                      dataType="wstr"
+                      length="8"
+                      name="VDATU" />
+                    <externalMetadataColumn
+                      refId="Package\EORD\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[BDATU]"
+                      dataType="wstr"
+                      length="8"
+                      name="BDATU" />
+                    <externalMetadataColumn
+                      refId="Package\EORD\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[LIFNR]"
+                      dataType="wstr"
+                      length="10"
+                      name="LIFNR" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\EORD\DB SAP.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\EORD\DB SAP.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      lineageId="Package\EORD\DB SAP.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      name="MANDT" />
+                    <outputColumn
+                      refId="Package\EORD\DB SAP.Outputs[OLE DB Source Error Output].Columns[MATNR]"
+                      dataType="wstr"
+                      length="18"
+                      lineageId="Package\EORD\DB SAP.Outputs[OLE DB Source Error Output].Columns[MATNR]"
+                      name="MATNR" />
+                    <outputColumn
+                      refId="Package\EORD\DB SAP.Outputs[OLE DB Source Error Output].Columns[WERKS]"
+                      dataType="wstr"
+                      length="4"
+                      lineageId="Package\EORD\DB SAP.Outputs[OLE DB Source Error Output].Columns[WERKS]"
+                      name="WERKS" />
+                    <outputColumn
+                      refId="Package\EORD\DB SAP.Outputs[OLE DB Source Error Output].Columns[ZEORD]"
+                      dataType="wstr"
+                      length="5"
+                      lineageId="Package\EORD\DB SAP.Outputs[OLE DB Source Error Output].Columns[ZEORD]"
+                      name="ZEORD" />
+                    <outputColumn
+                      refId="Package\EORD\DB SAP.Outputs[OLE DB Source Error Output].Columns[ERDAT]"
+                      dataType="wstr"
+                      length="8"
+                      lineageId="Package\EORD\DB SAP.Outputs[OLE DB Source Error Output].Columns[ERDAT]"
+                      name="ERDAT" />
+                    <outputColumn
+                      refId="Package\EORD\DB SAP.Outputs[OLE DB Source Error Output].Columns[ERNAM]"
+                      dataType="wstr"
+                      length="12"
+                      lineageId="Package\EORD\DB SAP.Outputs[OLE DB Source Error Output].Columns[ERNAM]"
+                      name="ERNAM" />
+                    <outputColumn
+                      refId="Package\EORD\DB SAP.Outputs[OLE DB Source Error Output].Columns[VDATU]"
+                      dataType="wstr"
+                      length="8"
+                      lineageId="Package\EORD\DB SAP.Outputs[OLE DB Source Error Output].Columns[VDATU]"
+                      name="VDATU" />
+                    <outputColumn
+                      refId="Package\EORD\DB SAP.Outputs[OLE DB Source Error Output].Columns[BDATU]"
+                      dataType="wstr"
+                      length="8"
+                      lineageId="Package\EORD\DB SAP.Outputs[OLE DB Source Error Output].Columns[BDATU]"
+                      name="BDATU" />
+                    <outputColumn
+                      refId="Package\EORD\DB SAP.Outputs[OLE DB Source Error Output].Columns[LIFNR]"
+                      dataType="wstr"
+                      length="10"
+                      lineageId="Package\EORD\DB SAP.Outputs[OLE DB Source Error Output].Columns[LIFNR]"
+                      name="LIFNR" />
+                    <outputColumn
+                      refId="Package\EORD\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\EORD\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\EORD\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\EORD\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\EORD\Find Changed Records"
+              componentClassID="Microsoft.ConditionalSplit"
+              contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
+              name="Find Changed Records"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\EORD\Find Changed Records.Inputs[Conditional Split Input]"
+                  description="Input to the Conditional Split Transformation"
+                  name="Conditional Split Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\EORD\Find Changed Records.Inputs[Conditional Split Input].Columns[ERDAT]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="ERDAT"
+                      lineageId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[ERDAT]" />
+                    <inputColumn
+                      refId="Package\EORD\Find Changed Records.Inputs[Conditional Split Input].Columns[ERNAM]"
+                      cachedDataType="wstr"
+                      cachedLength="12"
+                      cachedName="ERNAM"
+                      lineageId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[ERNAM]" />
+                    <inputColumn
+                      refId="Package\EORD\Find Changed Records.Inputs[Conditional Split Input].Columns[VDATU]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="VDATU"
+                      lineageId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[VDATU]" />
+                    <inputColumn
+                      refId="Package\EORD\Find Changed Records.Inputs[Conditional Split Input].Columns[BDATU]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="BDATU"
+                      lineageId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[BDATU]" />
+                    <inputColumn
+                      refId="Package\EORD\Find Changed Records.Inputs[Conditional Split Input].Columns[LIFNR]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="LIFNR"
+                      lineageId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[LIFNR]" />
+                    <inputColumn
+                      refId="Package\EORD\Find Changed Records.Inputs[Conditional Split Input].Columns[ERDAT (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="ERDAT (1)"
+                      lineageId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[ERDAT (1)]" />
+                    <inputColumn
+                      refId="Package\EORD\Find Changed Records.Inputs[Conditional Split Input].Columns[ERNAM (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="12"
+                      cachedName="ERNAM (1)"
+                      lineageId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[ERNAM (1)]" />
+                    <inputColumn
+                      refId="Package\EORD\Find Changed Records.Inputs[Conditional Split Input].Columns[VDATU (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="VDATU (1)"
+                      lineageId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[VDATU (1)]" />
+                    <inputColumn
+                      refId="Package\EORD\Find Changed Records.Inputs[Conditional Split Input].Columns[BDATU (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="BDATU (1)"
+                      lineageId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[BDATU (1)]" />
+                    <inputColumn
+                      refId="Package\EORD\Find Changed Records.Inputs[Conditional Split Input].Columns[LIFNR (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="LIFNR (1)"
+                      lineageId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[LIFNR (1)]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\EORD\Find Changed Records.Outputs[update]"
+                  description="Output 1 of the Conditional Split Transformation"
+                  errorOrTruncationOperation="Computation"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="update"
+                  synchronousInputId="Package\EORD\Find Changed Records.Inputs[Conditional Split Input]"
+                  truncationRowDisposition="FailComponent">
+                  <properties>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                      name="Expression">#{Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[ERDAT]} != #{Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[ERDAT (1)]} || #{Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[ERNAM]} != #{Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[ERNAM (1)]} || #{Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[VDATU]} != #{Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[VDATU (1)]} || #{Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[BDATU]} != #{Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[BDATU (1)]} || #{Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[LIFNR]} != #{Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[LIFNR (1)]}</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the friendly version of the expression. This expression version uses column names."
+                      expressionType="Notify"
+                      name="FriendlyExpression">ERDAT != [ERDAT (1)] || ERNAM != [ERNAM (1)] || VDATU != [VDATU (1)] || BDATU != [BDATU (1)] || LIFNR != [LIFNR (1)]</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                      name="EvaluationOrder">0</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\EORD\Find Changed Records.Outputs[Conditional Split Default Output]"
+                  description="Default Output of the Conditional Split Transformation"
+                  exclusionGroup="1"
+                  name="Conditional Split Default Output"
+                  synchronousInputId="Package\EORD\Find Changed Records.Inputs[Conditional Split Input]">
+                  <properties>
+                    <property
+                      dataType="System.Boolean"
+                      name="IsDefaultOut">true</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\EORD\Find Changed Records.Outputs[Conditional Split Error Output]"
+                  description="Error Output of the Conditional Split Transformation"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Conditional Split Error Output"
+                  synchronousInputId="Package\EORD\Find Changed Records.Inputs[Conditional Split Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\EORD\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\EORD\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\EORD\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\EORD\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\EORD\Identity records"
+              componentClassID="Microsoft.ConditionalSplit"
+              contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
+              name="Identity records"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\EORD\Identity records.Inputs[Conditional Split Input]"
+                  description="Input to the Conditional Split Transformation"
+                  name="Conditional Split Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\EORD\Identity records.Inputs[Conditional Split Input].Columns[MANDT]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT"
+                      cachedSortKeyPosition="1"
+                      lineageId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
+                    <inputColumn
+                      refId="Package\EORD\Identity records.Inputs[Conditional Split Input].Columns[MANDT (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT (1)"
+                      lineageId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\EORD\Identity records.Outputs[update]"
+                  description="Output 1 of the Conditional Split Transformation"
+                  errorOrTruncationOperation="Computation"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="update"
+                  synchronousInputId="Package\EORD\Identity records.Inputs[Conditional Split Input]"
+                  truncationRowDisposition="FailComponent">
+                  <properties>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                      name="Expression">![ISNULL](#{Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; ![ISNULL](#{Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the friendly version of the expression. This expression version uses column names."
+                      expressionType="Notify"
+                      name="FriendlyExpression">!ISNULL(MANDT) &amp;&amp; !ISNULL([MANDT (1)])</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                      name="EvaluationOrder">0</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\EORD\Identity records.Outputs[insert]"
+                  description="Output 2 of the Conditional Split Transformation"
+                  errorOrTruncationOperation="Computation"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="insert"
+                  synchronousInputId="Package\EORD\Identity records.Inputs[Conditional Split Input]"
+                  truncationRowDisposition="FailComponent">
+                  <properties>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                      name="Expression">![ISNULL](#{Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; [ISNULL](#{Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the friendly version of the expression. This expression version uses column names."
+                      expressionType="Notify"
+                      name="FriendlyExpression">!ISNULL(MANDT) &amp;&amp; ISNULL([MANDT (1)])</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                      name="EvaluationOrder">1</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\EORD\Identity records.Outputs[delete]"
+                  description="Output 3 of the Conditional Split Transformation"
+                  errorOrTruncationOperation="Computation"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="delete"
+                  synchronousInputId="Package\EORD\Identity records.Inputs[Conditional Split Input]"
+                  truncationRowDisposition="FailComponent">
+                  <properties>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                      name="Expression">[ISNULL](#{Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; ![ISNULL](#{Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the friendly version of the expression. This expression version uses column names."
+                      expressionType="Notify"
+                      name="FriendlyExpression">ISNULL(MANDT) &amp;&amp; !ISNULL([MANDT (1)])</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                      name="EvaluationOrder">2</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\EORD\Identity records.Outputs[Conditional Split Default Output]"
+                  description="Default Output of the Conditional Split Transformation"
+                  exclusionGroup="1"
+                  name="Conditional Split Default Output"
+                  synchronousInputId="Package\EORD\Identity records.Inputs[Conditional Split Input]">
+                  <properties>
+                    <property
+                      dataType="System.Boolean"
+                      name="IsDefaultOut">true</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\EORD\Identity records.Outputs[Conditional Split Error Output]"
+                  description="Error Output of the Conditional Split Transformation"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Conditional Split Error Output"
+                  synchronousInputId="Package\EORD\Identity records.Inputs[Conditional Split Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\EORD\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\EORD\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\EORD\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\EORD\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\EORD\insert new records"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="insert new records"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[EORD_STAGE_INSERT]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\EORD\insert new records.Connections[OleDbConnection]"
+                  connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\EORD\insert new records.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\EORD\insert new records.Inputs[OLE DB Destination Input].Columns[MANDT]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT"
+                      cachedSortKeyPosition="1"
+                      externalMetadataColumnId="Package\EORD\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      lineageId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
+                    <inputColumn
+                      refId="Package\EORD\insert new records.Inputs[OLE DB Destination Input].Columns[MATNR]"
+                      cachedDataType="wstr"
+                      cachedLength="18"
+                      cachedName="MATNR"
+                      cachedSortKeyPosition="2"
+                      externalMetadataColumnId="Package\EORD\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MATNR]"
+                      lineageId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[MATNR]" />
+                    <inputColumn
+                      refId="Package\EORD\insert new records.Inputs[OLE DB Destination Input].Columns[WERKS]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="WERKS"
+                      cachedSortKeyPosition="3"
+                      externalMetadataColumnId="Package\EORD\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[WERKS]"
+                      lineageId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[WERKS]" />
+                    <inputColumn
+                      refId="Package\EORD\insert new records.Inputs[OLE DB Destination Input].Columns[ZEORD]"
+                      cachedDataType="wstr"
+                      cachedLength="5"
+                      cachedName="ZEORD"
+                      cachedSortKeyPosition="4"
+                      externalMetadataColumnId="Package\EORD\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[ZEORD]"
+                      lineageId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[ZEORD]" />
+                    <inputColumn
+                      refId="Package\EORD\insert new records.Inputs[OLE DB Destination Input].Columns[ERDAT]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="ERDAT"
+                      externalMetadataColumnId="Package\EORD\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[ERDAT]"
+                      lineageId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[ERDAT]" />
+                    <inputColumn
+                      refId="Package\EORD\insert new records.Inputs[OLE DB Destination Input].Columns[ERNAM]"
+                      cachedDataType="wstr"
+                      cachedLength="12"
+                      cachedName="ERNAM"
+                      externalMetadataColumnId="Package\EORD\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[ERNAM]"
+                      lineageId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[ERNAM]" />
+                    <inputColumn
+                      refId="Package\EORD\insert new records.Inputs[OLE DB Destination Input].Columns[VDATU]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="VDATU"
+                      externalMetadataColumnId="Package\EORD\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[VDATU]"
+                      lineageId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[VDATU]" />
+                    <inputColumn
+                      refId="Package\EORD\insert new records.Inputs[OLE DB Destination Input].Columns[BDATU]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="BDATU"
+                      externalMetadataColumnId="Package\EORD\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[BDATU]"
+                      lineageId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[BDATU]" />
+                    <inputColumn
+                      refId="Package\EORD\insert new records.Inputs[OLE DB Destination Input].Columns[LIFNR]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="LIFNR"
+                      externalMetadataColumnId="Package\EORD\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[LIFNR]"
+                      lineageId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[LIFNR]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\EORD\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      name="MANDT" />
+                    <externalMetadataColumn
+                      refId="Package\EORD\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MATNR]"
+                      dataType="wstr"
+                      length="18"
+                      name="MATNR" />
+                    <externalMetadataColumn
+                      refId="Package\EORD\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[WERKS]"
+                      dataType="wstr"
+                      length="4"
+                      name="WERKS" />
+                    <externalMetadataColumn
+                      refId="Package\EORD\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[ZEORD]"
+                      dataType="wstr"
+                      length="5"
+                      name="ZEORD" />
+                    <externalMetadataColumn
+                      refId="Package\EORD\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[ERDAT]"
+                      dataType="wstr"
+                      length="8"
+                      name="ERDAT" />
+                    <externalMetadataColumn
+                      refId="Package\EORD\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[ERNAM]"
+                      dataType="wstr"
+                      length="12"
+                      name="ERNAM" />
+                    <externalMetadataColumn
+                      refId="Package\EORD\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[VDATU]"
+                      dataType="wstr"
+                      length="8"
+                      name="VDATU" />
+                    <externalMetadataColumn
+                      refId="Package\EORD\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[BDATU]"
+                      dataType="wstr"
+                      length="8"
+                      name="BDATU" />
+                    <externalMetadataColumn
+                      refId="Package\EORD\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[LIFNR]"
+                      dataType="wstr"
+                      length="10"
+                      name="LIFNR" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\EORD\insert new records.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\EORD\insert new records.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\EORD\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\EORD\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\EORD\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\EORD\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\EORD\Merge Join"
+              componentClassID="Microsoft.MergeJoin"
+              contactInfo="Merge Join;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
+              description="Combine two sorted data flows into one using the FULL, LEFT, or INNER join. We recommend this transformation when data flows can be sorted at their sources."
+              name="Merge Join"
+              version="1">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the type of join to perform."
+                  name="JoinType"
+                  typeConverter="JoinType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the number of columns in the ordering key."
+                  name="NumKeyColumns">4</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the null values are treated as equal values."
+                  name="TreatNullsAsEqual">true</property>
+                <property
+                  dataType="System.Int32"
+                  description="Indicates the requested maximum buffers per input before blocking."
+                  name="MaxBuffersPerInput">5</property>
+              </properties>
+              <inputs>
+                <input
+                  refId="Package\EORD\Merge Join.Inputs[Merge Join Left Input]"
+                  hasSideEffects="true"
+                  name="Merge Join Left Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\EORD\Merge Join.Inputs[Merge Join Left Input].Columns[MANDT]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT"
+                      cachedSortKeyPosition="1"
+                      lineageId="Package\EORD\DB SAP.Outputs[OLE DB Source Output].Columns[MANDT]" />
+                    <inputColumn
+                      refId="Package\EORD\Merge Join.Inputs[Merge Join Left Input].Columns[MATNR]"
+                      cachedDataType="wstr"
+                      cachedLength="18"
+                      cachedName="MATNR"
+                      cachedSortKeyPosition="2"
+                      lineageId="Package\EORD\DB SAP.Outputs[OLE DB Source Output].Columns[MATNR]" />
+                    <inputColumn
+                      refId="Package\EORD\Merge Join.Inputs[Merge Join Left Input].Columns[WERKS]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="WERKS"
+                      cachedSortKeyPosition="3"
+                      lineageId="Package\EORD\DB SAP.Outputs[OLE DB Source Output].Columns[WERKS]" />
+                    <inputColumn
+                      refId="Package\EORD\Merge Join.Inputs[Merge Join Left Input].Columns[ZEORD]"
+                      cachedDataType="wstr"
+                      cachedLength="5"
+                      cachedName="ZEORD"
+                      cachedSortKeyPosition="4"
+                      lineageId="Package\EORD\DB SAP.Outputs[OLE DB Source Output].Columns[ZEORD]" />
+                    <inputColumn
+                      refId="Package\EORD\Merge Join.Inputs[Merge Join Left Input].Columns[ERDAT]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="ERDAT"
+                      lineageId="Package\EORD\DB SAP.Outputs[OLE DB Source Output].Columns[ERDAT]" />
+                    <inputColumn
+                      refId="Package\EORD\Merge Join.Inputs[Merge Join Left Input].Columns[ERNAM]"
+                      cachedDataType="wstr"
+                      cachedLength="12"
+                      cachedName="ERNAM"
+                      lineageId="Package\EORD\DB SAP.Outputs[OLE DB Source Output].Columns[ERNAM]" />
+                    <inputColumn
+                      refId="Package\EORD\Merge Join.Inputs[Merge Join Left Input].Columns[VDATU]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="VDATU"
+                      lineageId="Package\EORD\DB SAP.Outputs[OLE DB Source Output].Columns[VDATU]" />
+                    <inputColumn
+                      refId="Package\EORD\Merge Join.Inputs[Merge Join Left Input].Columns[BDATU]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="BDATU"
+                      lineageId="Package\EORD\DB SAP.Outputs[OLE DB Source Output].Columns[BDATU]" />
+                    <inputColumn
+                      refId="Package\EORD\Merge Join.Inputs[Merge Join Left Input].Columns[LIFNR]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="LIFNR"
+                      lineageId="Package\EORD\DB SAP.Outputs[OLE DB Source Output].Columns[LIFNR]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+                <input
+                  refId="Package\EORD\Merge Join.Inputs[Merge Join Right Input]"
+                  hasSideEffects="true"
+                  name="Merge Join Right Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\EORD\Merge Join.Inputs[Merge Join Right Input].Columns[MANDT]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT"
+                      cachedSortKeyPosition="1"
+                      lineageId="Package\EORD\DB PBI.Outputs[OLE DB Source Output].Columns[MANDT]" />
+                    <inputColumn
+                      refId="Package\EORD\Merge Join.Inputs[Merge Join Right Input].Columns[MATNR]"
+                      cachedDataType="wstr"
+                      cachedLength="18"
+                      cachedName="MATNR"
+                      cachedSortKeyPosition="2"
+                      lineageId="Package\EORD\DB PBI.Outputs[OLE DB Source Output].Columns[MATNR]" />
+                    <inputColumn
+                      refId="Package\EORD\Merge Join.Inputs[Merge Join Right Input].Columns[WERKS]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="WERKS"
+                      cachedSortKeyPosition="3"
+                      lineageId="Package\EORD\DB PBI.Outputs[OLE DB Source Output].Columns[WERKS]" />
+                    <inputColumn
+                      refId="Package\EORD\Merge Join.Inputs[Merge Join Right Input].Columns[ZEORD]"
+                      cachedDataType="wstr"
+                      cachedLength="5"
+                      cachedName="ZEORD"
+                      cachedSortKeyPosition="4"
+                      lineageId="Package\EORD\DB PBI.Outputs[OLE DB Source Output].Columns[ZEORD]" />
+                    <inputColumn
+                      refId="Package\EORD\Merge Join.Inputs[Merge Join Right Input].Columns[ERDAT]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="ERDAT"
+                      lineageId="Package\EORD\DB PBI.Outputs[OLE DB Source Output].Columns[ERDAT]" />
+                    <inputColumn
+                      refId="Package\EORD\Merge Join.Inputs[Merge Join Right Input].Columns[ERNAM]"
+                      cachedDataType="wstr"
+                      cachedLength="12"
+                      cachedName="ERNAM"
+                      lineageId="Package\EORD\DB PBI.Outputs[OLE DB Source Output].Columns[ERNAM]" />
+                    <inputColumn
+                      refId="Package\EORD\Merge Join.Inputs[Merge Join Right Input].Columns[VDATU]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="VDATU"
+                      lineageId="Package\EORD\DB PBI.Outputs[OLE DB Source Output].Columns[VDATU]" />
+                    <inputColumn
+                      refId="Package\EORD\Merge Join.Inputs[Merge Join Right Input].Columns[BDATU]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="BDATU"
+                      lineageId="Package\EORD\DB PBI.Outputs[OLE DB Source Output].Columns[BDATU]" />
+                    <inputColumn
+                      refId="Package\EORD\Merge Join.Inputs[Merge Join Right Input].Columns[LIFNR]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="LIFNR"
+                      lineageId="Package\EORD\DB PBI.Outputs[OLE DB Source Output].Columns[LIFNR]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\EORD\Merge Join.Outputs[Merge Join Output]"
+                  isSorted="true"
+                  name="Merge Join Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      lineageId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[MANDT]"
+                      name="MANDT"
+                      sortKeyPosition="1">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\EORD\Merge Join.Inputs[Merge Join Left Input].Columns[MANDT]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[MATNR]"
+                      dataType="wstr"
+                      length="18"
+                      lineageId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[MATNR]"
+                      name="MATNR"
+                      sortKeyPosition="2">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\EORD\Merge Join.Inputs[Merge Join Left Input].Columns[MATNR]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[WERKS]"
+                      dataType="wstr"
+                      length="4"
+                      lineageId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[WERKS]"
+                      name="WERKS"
+                      sortKeyPosition="3">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\EORD\Merge Join.Inputs[Merge Join Left Input].Columns[WERKS]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]"
+                      dataType="wstr"
+                      length="3"
+                      lineageId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]"
+                      name="MANDT (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\EORD\Merge Join.Inputs[Merge Join Right Input].Columns[MANDT]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[MATNR (1)]"
+                      dataType="wstr"
+                      length="18"
+                      lineageId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[MATNR (1)]"
+                      name="MATNR (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\EORD\Merge Join.Inputs[Merge Join Right Input].Columns[MATNR]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[WERKS (1)]"
+                      dataType="wstr"
+                      length="4"
+                      lineageId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[WERKS (1)]"
+                      name="WERKS (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\EORD\Merge Join.Inputs[Merge Join Right Input].Columns[WERKS]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[ZEORD]"
+                      dataType="wstr"
+                      length="5"
+                      lineageId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[ZEORD]"
+                      name="ZEORD"
+                      sortKeyPosition="4">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\EORD\Merge Join.Inputs[Merge Join Left Input].Columns[ZEORD]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[ERDAT]"
+                      dataType="wstr"
+                      length="8"
+                      lineageId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[ERDAT]"
+                      name="ERDAT">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\EORD\Merge Join.Inputs[Merge Join Left Input].Columns[ERDAT]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[ERNAM]"
+                      dataType="wstr"
+                      length="12"
+                      lineageId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[ERNAM]"
+                      name="ERNAM">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\EORD\Merge Join.Inputs[Merge Join Left Input].Columns[ERNAM]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[VDATU]"
+                      dataType="wstr"
+                      length="8"
+                      lineageId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[VDATU]"
+                      name="VDATU">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\EORD\Merge Join.Inputs[Merge Join Left Input].Columns[VDATU]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[BDATU]"
+                      dataType="wstr"
+                      length="8"
+                      lineageId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[BDATU]"
+                      name="BDATU">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\EORD\Merge Join.Inputs[Merge Join Left Input].Columns[BDATU]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[LIFNR]"
+                      dataType="wstr"
+                      length="10"
+                      lineageId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[LIFNR]"
+                      name="LIFNR">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\EORD\Merge Join.Inputs[Merge Join Left Input].Columns[LIFNR]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[ZEORD (1)]"
+                      dataType="wstr"
+                      length="5"
+                      lineageId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[ZEORD (1)]"
+                      name="ZEORD (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\EORD\Merge Join.Inputs[Merge Join Right Input].Columns[ZEORD]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[ERDAT (1)]"
+                      dataType="wstr"
+                      length="8"
+                      lineageId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[ERDAT (1)]"
+                      name="ERDAT (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\EORD\Merge Join.Inputs[Merge Join Right Input].Columns[ERDAT]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[ERNAM (1)]"
+                      dataType="wstr"
+                      length="12"
+                      lineageId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[ERNAM (1)]"
+                      name="ERNAM (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\EORD\Merge Join.Inputs[Merge Join Right Input].Columns[ERNAM]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[VDATU (1)]"
+                      dataType="wstr"
+                      length="8"
+                      lineageId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[VDATU (1)]"
+                      name="VDATU (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\EORD\Merge Join.Inputs[Merge Join Right Input].Columns[VDATU]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[BDATU (1)]"
+                      dataType="wstr"
+                      length="8"
+                      lineageId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[BDATU (1)]"
+                      name="BDATU (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\EORD\Merge Join.Inputs[Merge Join Right Input].Columns[BDATU]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[LIFNR (1)]"
+                      dataType="wstr"
+                      length="10"
+                      lineageId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[LIFNR (1)]"
+                      name="LIFNR (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\EORD\Merge Join.Inputs[Merge Join Right Input].Columns[LIFNR]}</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\EORD\stage changed records"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="stage changed records"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[EORD_STAGE_UPDATE]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\EORD\stage changed records.Connections[OleDbConnection]"
+                  connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\EORD\stage changed records.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\EORD\stage changed records.Inputs[OLE DB Destination Input].Columns[MANDT]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT"
+                      cachedSortKeyPosition="1"
+                      externalMetadataColumnId="Package\EORD\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      lineageId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
+                    <inputColumn
+                      refId="Package\EORD\stage changed records.Inputs[OLE DB Destination Input].Columns[MATNR]"
+                      cachedDataType="wstr"
+                      cachedLength="18"
+                      cachedName="MATNR"
+                      cachedSortKeyPosition="2"
+                      externalMetadataColumnId="Package\EORD\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MATNR]"
+                      lineageId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[MATNR]" />
+                    <inputColumn
+                      refId="Package\EORD\stage changed records.Inputs[OLE DB Destination Input].Columns[WERKS]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="WERKS"
+                      cachedSortKeyPosition="3"
+                      externalMetadataColumnId="Package\EORD\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[WERKS]"
+                      lineageId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[WERKS]" />
+                    <inputColumn
+                      refId="Package\EORD\stage changed records.Inputs[OLE DB Destination Input].Columns[ZEORD]"
+                      cachedDataType="wstr"
+                      cachedLength="5"
+                      cachedName="ZEORD"
+                      cachedSortKeyPosition="4"
+                      externalMetadataColumnId="Package\EORD\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[ZEORD]"
+                      lineageId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[ZEORD]" />
+                    <inputColumn
+                      refId="Package\EORD\stage changed records.Inputs[OLE DB Destination Input].Columns[ERDAT]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="ERDAT"
+                      externalMetadataColumnId="Package\EORD\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[ERDAT]"
+                      lineageId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[ERDAT]" />
+                    <inputColumn
+                      refId="Package\EORD\stage changed records.Inputs[OLE DB Destination Input].Columns[ERNAM]"
+                      cachedDataType="wstr"
+                      cachedLength="12"
+                      cachedName="ERNAM"
+                      externalMetadataColumnId="Package\EORD\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[ERNAM]"
+                      lineageId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[ERNAM]" />
+                    <inputColumn
+                      refId="Package\EORD\stage changed records.Inputs[OLE DB Destination Input].Columns[VDATU]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="VDATU"
+                      externalMetadataColumnId="Package\EORD\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[VDATU]"
+                      lineageId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[VDATU]" />
+                    <inputColumn
+                      refId="Package\EORD\stage changed records.Inputs[OLE DB Destination Input].Columns[BDATU]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="BDATU"
+                      externalMetadataColumnId="Package\EORD\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[BDATU]"
+                      lineageId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[BDATU]" />
+                    <inputColumn
+                      refId="Package\EORD\stage changed records.Inputs[OLE DB Destination Input].Columns[LIFNR]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="LIFNR"
+                      externalMetadataColumnId="Package\EORD\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[LIFNR]"
+                      lineageId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[LIFNR]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\EORD\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      name="MANDT" />
+                    <externalMetadataColumn
+                      refId="Package\EORD\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MATNR]"
+                      dataType="wstr"
+                      length="18"
+                      name="MATNR" />
+                    <externalMetadataColumn
+                      refId="Package\EORD\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[WERKS]"
+                      dataType="wstr"
+                      length="4"
+                      name="WERKS" />
+                    <externalMetadataColumn
+                      refId="Package\EORD\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[ZEORD]"
+                      dataType="wstr"
+                      length="5"
+                      name="ZEORD" />
+                    <externalMetadataColumn
+                      refId="Package\EORD\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[ERDAT]"
+                      dataType="wstr"
+                      length="8"
+                      name="ERDAT" />
+                    <externalMetadataColumn
+                      refId="Package\EORD\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[ERNAM]"
+                      dataType="wstr"
+                      length="12"
+                      name="ERNAM" />
+                    <externalMetadataColumn
+                      refId="Package\EORD\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[VDATU]"
+                      dataType="wstr"
+                      length="8"
+                      name="VDATU" />
+                    <externalMetadataColumn
+                      refId="Package\EORD\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[BDATU]"
+                      dataType="wstr"
+                      length="8"
+                      name="BDATU" />
+                    <externalMetadataColumn
+                      refId="Package\EORD\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[LIFNR]"
+                      dataType="wstr"
+                      length="10"
+                      name="LIFNR" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\EORD\stage changed records.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\EORD\stage changed records.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\EORD\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\EORD\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\EORD\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\EORD\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\EORD\stage deleted records"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="stage deleted records"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[EORD_STAGE_DELETE]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\EORD\stage deleted records.Connections[OleDbConnection]"
+                  connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\EORD\stage deleted records.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\EORD\stage deleted records.Inputs[OLE DB Destination Input].Columns[MANDT (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT (1)"
+                      externalMetadataColumnId="Package\EORD\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      lineageId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]" />
+                    <inputColumn
+                      refId="Package\EORD\stage deleted records.Inputs[OLE DB Destination Input].Columns[MATNR (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="18"
+                      cachedName="MATNR (1)"
+                      externalMetadataColumnId="Package\EORD\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MATNR]"
+                      lineageId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[MATNR (1)]" />
+                    <inputColumn
+                      refId="Package\EORD\stage deleted records.Inputs[OLE DB Destination Input].Columns[WERKS (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="WERKS (1)"
+                      externalMetadataColumnId="Package\EORD\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[WERKS]"
+                      lineageId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[WERKS (1)]" />
+                    <inputColumn
+                      refId="Package\EORD\stage deleted records.Inputs[OLE DB Destination Input].Columns[ZEORD (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="5"
+                      cachedName="ZEORD (1)"
+                      externalMetadataColumnId="Package\EORD\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[ZEORD]"
+                      lineageId="Package\EORD\Merge Join.Outputs[Merge Join Output].Columns[ZEORD (1)]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\EORD\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      name="MANDT" />
+                    <externalMetadataColumn
+                      refId="Package\EORD\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MATNR]"
+                      dataType="wstr"
+                      length="18"
+                      name="MATNR" />
+                    <externalMetadataColumn
+                      refId="Package\EORD\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[WERKS]"
+                      dataType="wstr"
+                      length="4"
+                      name="WERKS" />
+                    <externalMetadataColumn
+                      refId="Package\EORD\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[ZEORD]"
+                      dataType="wstr"
+                      length="5"
+                      name="ZEORD" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\EORD\stage deleted records.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\EORD\stage deleted records.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\EORD\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\EORD\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\EORD\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\EORD\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\EORD.Paths[delete]"
+              endId="Package\EORD\stage deleted records.Inputs[OLE DB Destination Input]"
+              name="delete"
+              startId="Package\EORD\Identity records.Outputs[delete]" />
+            <path
+              refId="Package\EORD.Paths[insert]"
+              endId="Package\EORD\insert new records.Inputs[OLE DB Destination Input]"
+              name="insert"
+              startId="Package\EORD\Identity records.Outputs[insert]" />
+            <path
+              refId="Package\EORD.Paths[Merge Join Output]"
+              endId="Package\EORD\Identity records.Inputs[Conditional Split Input]"
+              name="Merge Join Output"
+              startId="Package\EORD\Merge Join.Outputs[Merge Join Output]" />
+            <path
+              refId="Package\EORD.Paths[OLE DB Source Output]"
+              endId="Package\EORD\Merge Join.Inputs[Merge Join Left Input]"
+              name="OLE DB Source Output"
+              startId="Package\EORD\DB SAP.Outputs[OLE DB Source Output]" />
+            <path
+              refId="Package\EORD.Paths[OLE DB Source Output1]"
+              endId="Package\EORD\Merge Join.Inputs[Merge Join Right Input]"
+              name="OLE DB Source Output"
+              startId="Package\EORD\DB PBI.Outputs[OLE DB Source Output]" />
+            <path
+              refId="Package\EORD.Paths[update]"
+              endId="Package\EORD\Find Changed Records.Inputs[Conditional Split Input]"
+              name="update"
+              startId="Package\EORD\Identity records.Outputs[update]" />
+            <path
+              refId="Package\EORD.Paths[update1]"
+              endId="Package\EORD\stage changed records.Inputs[OLE DB Destination Input]"
+              name="update"
+              startId="Package\EORD\Find Changed Records.Outputs[update]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\INSERT"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{B45FEB24-B41E-4B07-8334-6EFF08DD6100}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="INSERT"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="INSERT INTO [EORD]&#xA;SELECT * FROM [EORD_STAGE_INSERT]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\UPDATE"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{662AE446-23D8-4D20-8680-16DD59EE034B}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="UPDATE"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="UPDATE a&#xA;SET a.[ERDAT] = b.[ERDAT]&#xA;    ,a.[ERNAM] = b.[ERNAM]&#xA;    ,a.[VDATU] = b.[VDATU]&#xA;    ,a.[BDATU] = b.[BDATU]&#xA;    ,a.[LIFNR] = b.[LIFNR]&#xA;FROM [EORD] a&#xA;INNER JOIN [EORD_STAGE_UPDATE] b&#xA;ON a.[MANDT] = b.[MANDT]&#xA;    AND a.[MATNR] = b.[MATNR]&#xA;    AND a.[WERKS] = b.[WERKS]&#xA;    AND a.[ZEORD] = b.[ZEORD]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{C0936F41-10DC-4432-9395-CDC3E7598B40}"
+      DTS:From="Package\EORD"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\DELETE" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
+      DTS:CreationName=""
+      DTS:DTSID="{7CC6AE75-644A-49C7-BA71-1E87FDD43C04}"
+      DTS:From="Package\Clean Stage"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 1"
+      DTS:To="Package\EORD" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
+      DTS:CreationName=""
+      DTS:DTSID="{D3B2E00A-4C0C-4D96-83F9-BA68ECF4B33C}"
+      DTS:From="Package\DELETE"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 2"
+      DTS:To="Package\UPDATE" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 3]"
+      DTS:CreationName=""
+      DTS:DTSID="{CA9A69FA-87D4-4BF3-BDCD-48F444A41D90}"
+      DTS:From="Package\UPDATE"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 3"
+      DTS:To="Package\INSERT" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="135,42"
+          Id="Package\Clean Stage"
+          TopLeft="53,29" />
+        <NodeLayout
+          Size="135,42"
+          Id="Package\DELETE"
+          TopLeft="53,253.5" />
+        <NodeLayout
+          Size="135,42"
+          Id="Package\INSERT"
+          TopLeft="53,478" />
+        <NodeLayout
+          Size="135,42"
+          Id="Package\EORD"
+          TopLeft="53,141.25" />
+        <NodeLayout
+          Size="135,42"
+          Id="Package\UPDATE"
+          TopLeft="53,365.75" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="120.5,183.25">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,70.25"
+              Start="0,0"
+              End="0,62.75">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,62.75" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="120.5,71">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,70.25"
+              Start="0,0"
+              End="0,62.75">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,62.75" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 2]"
+          TopLeft="120.5,295.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,70.25"
+              Start="0,0"
+              End="0,62.75">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,62.75" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 3]"
+          TopLeft="120.5,407.75">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,70.25"
+              Start="0,0"
+              End="0,62.75">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,62.75" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\EORD">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="153,42"
+          Id="Package\EORD\Identity records"
+          TopLeft="431.625,233" />
+        <NodeLayout
+          Size="112,42"
+          Id="Package\EORD\DB PBI"
+          TopLeft="671,48" />
+        <NodeLayout
+          Size="114,42"
+          Id="Package\EORD\DB SAP"
+          TopLeft="199,46" />
+        <NodeLayout
+          Size="184,42"
+          Id="Package\EORD\Find Changed Records"
+          TopLeft="416.125,366" />
+        <NodeLayout
+          Size="130,42"
+          Id="Package\EORD\Merge Join"
+          TopLeft="443.125,137" />
+        <NodeLayout
+          Size="186,42"
+          Id="Package\EORD\stage changed records"
+          TopLeft="415.125,478" />
+        <NodeLayout
+          Size="166,42"
+          Id="Package\EORD\insert new records"
+          TopLeft="159,370" />
+        <NodeLayout
+          Size="180,42"
+          Id="Package\EORD\stage deleted records"
+          TopLeft="640,368" />
+        <EdgeLayout
+          Id="Package\EORD.Paths[Merge Join Output]"
+          TopLeft="508.125,179">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,54"
+              Start="0,0"
+              End="0,46.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,46.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\EORD.Paths[insert]"
+          TopLeft="471.875,275">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-229.875,95"
+              Start="0,0"
+              End="-229.875,87.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,28.7516059957173" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,28.7516059957173"
+                    Point2="0,32.7516059957173"
+                    Point3="-4,32.7516059957173" />
+                  <mssgle:LineSegment
+                    End="-225.875,32.7516059957173" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-225.875,32.7516059957173"
+                    Point2="-229.875,32.7516059957173"
+                    Point3="-229.875,36.7516059957173" />
+                  <mssgle:LineSegment
+                    End="-229.875,87.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-127.88748046875,37.7516059957173,25.8999609375,9.451171875"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\EORD.Paths[delete]"
+          TopLeft="544.375,275">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="185.625,93"
+              Start="0,0"
+              End="185.625,85.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,28.0620985010707" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,28.0620985010707"
+                    Point2="0,32.0620985010707"
+                    Point3="4,32.0620985010707" />
+                  <mssgle:LineSegment
+                    End="181.625,32.0620985010707" />
+                  <mssgle:CubicBezierSegment
+                    Point1="181.625,32.0620985010707"
+                    Point2="185.625,32.0620985010707"
+                    Point3="185.625,36.0620985010707" />
+                  <mssgle:LineSegment
+                    End="185.625,85.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="78.61654296875,37.0620985010707,28.3919140625,9.7490234375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\EORD.Paths[update1]"
+          TopLeft="508.125,408">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,70"
+              Start="0,0"
+              End="0,62.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,62.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-15.8025,25.4453125,31.605,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\EORD.Paths[update]"
+          TopLeft="508.125,275">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,91"
+              Start="0,0"
+              End="0,83.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,83.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-15.8025,35.9453125,31.605,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\EORD.Paths[OLE DB Source Output1]"
+          TopLeft="727,90">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-198.541666666667,47"
+              Start="0,0"
+              End="-198.541666666667,39.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,23.8571428571429" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,23.8571428571429"
+                    Point2="0,27.8571428571429"
+                    Point3="-4,27.8571428571429" />
+                  <mssgle:LineSegment
+                    End="-194.541666666667,27.8571428571429" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-194.541666666667,27.8571428571429"
+                    Point2="-198.541666666667,27.8571428571429"
+                    Point3="-198.541666666667,31.8571428571429" />
+                  <mssgle:LineSegment
+                    End="-198.541666666667,39.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\EORD.Paths[OLE DB Source Output]"
+          TopLeft="256,88">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="231.791666666667,49"
+              Start="0,0"
+              End="231.791666666667,41.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,25.0425531914894" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,25.0425531914894"
+                    Point2="0,29.0425531914894"
+                    Point3="4,29.0425531914894" />
+                  <mssgle:LineSegment
+                    End="227.791666666667,29.0425531914894" />
+                  <mssgle:CubicBezierSegment
+                    Point1="227.791666666667,29.0425531914894"
+                    Point2="231.791666666667,29.0425531914894"
+                    Point3="231.791666666667,33.0425531914894" />
+                  <mssgle:LineSegment
+                    End="231.791666666667,41.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\EORD\DB PBI">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\EORD\DB SAP">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\EORD\stage changed records">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\EORD\insert new records">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\EORD\stage deleted records">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>
