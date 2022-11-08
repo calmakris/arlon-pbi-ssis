@@ -7,24 +7,24 @@
   DTS:CreatorName="DOMAIN\RPETRELLA"
   DTS:DTSID="{55E39127-FAB5-475C-804A-6A2CE92B2E9B}"
   DTS:ExecutableType="Microsoft.Package"
-  DTS:LastModifiedProductVersion="15.0.2000.180"
+  DTS:LastModifiedProductVersion="16.0.948.0"
   DTS:LocaleID="1033"
   DTS:ObjectName="MARC"
   DTS:PackageType="5"
-  DTS:VersionBuild="9"
-  DTS:VersionGUID="{B283CD57-8D84-4539-9A07-1493A6FCCD4D}">
+  DTS:VersionBuild="15"
+  DTS:VersionGUID="{1B2A3B12-61D5-42E0-8043-EAFA282CC6EB}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:Variables />
   <DTS:Executables>
     <DTS:Executable
-      DTS:refId="Package\clean stage"
+      DTS:refId="Package\Clean Stage"
       DTS:CreationName="Microsoft.ExecuteSQLTask"
       DTS:Description="Execute SQL Task"
       DTS:DTSID="{f35136ee-715b-4f5f-abc1-ca994a5bf1de}"
       DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
-      DTS:ObjectName="clean stage"
+      DTS:ObjectName="Clean Stage"
       DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
       DTS:ThreadHint="0">
       <DTS:Variables />
@@ -32,6 +32,40 @@
         <SQLTask:SqlTaskData
           SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
           SQLTask:SqlStatementSource="TRUNCATE TABLE [MARC_STAGE_UPDATE]&#xA;go&#xA;TRUNCATE TABLE [MARC_STAGE_DELETE]&#xA;go&#xA;TRUNCATE TABLE [MARC_STAGE_INSERT]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\DELETE"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{c61acf60-61d8-4498-9c54-bc2c5afee5e9}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="DELETE"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="DELETE A01&#xA;FROM [MARC] A01 INNER JOIN [MARC_STAGE_DELETE] B01 ON ( A01.[MANDT] = B01.[MANDT]&#xA;                                                    AND A01.[MATNR] = B01.[MATNR]&#xA;                                                    AND A01.[WERKS] = B01.[WERKS] )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\INSERT"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{c205ea28-8ca9-4df0-bef0-f7e3073009d4}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="INSERT"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="INSERT INTO [MARC]&#xA;SELECT * FROM [MARC_STAGE_INSERT]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
@@ -73,11 +107,12 @@
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT A01.[MANDT]
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT A01.[MANDT]
       ,A01.[MATNR]
       ,A01.[WERKS]
       ,A01.[MMSTD]
       ,A01.[MAABC]
+      ,A01.[EKGRP]
       ,A01.[DISMM]
       ,A01.[DISPO]
       ,A01.[EISBE]
@@ -217,6 +252,16 @@ ORDER BY A01.[MANDT]
                       precision="5"
                       scale="2"
                       truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\MARC\DB PBI.Outputs[OLE DB Source Output].Columns[EKGRP]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\MARC\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[EKGRP]"
+                      length="3"
+                      lineageId="Package\MARC\DB PBI.Outputs[OLE DB Source Output].Columns[EKGRP]"
+                      name="EKGRP"
+                      truncationRowDisposition="FailComponent" />
                   </outputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -267,6 +312,11 @@ ORDER BY A01.[MANDT]
                       name="KAUSF"
                       precision="5"
                       scale="2" />
+                    <externalMetadataColumn
+                      refId="Package\MARC\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[EKGRP]"
+                      dataType="wstr"
+                      length="3"
+                      name="EKGRP" />
                   </externalMetadataColumns>
                 </output>
                 <output
@@ -304,6 +354,12 @@ ORDER BY A01.[MANDT]
                       length="1"
                       lineageId="Package\MARC\DB PBI.Outputs[OLE DB Source Error Output].Columns[MAABC]"
                       name="MAABC" />
+                    <outputColumn
+                      refId="Package\MARC\DB PBI.Outputs[OLE DB Source Error Output].Columns[EKGRP]"
+                      dataType="wstr"
+                      length="3"
+                      lineageId="Package\MARC\DB PBI.Outputs[OLE DB Source Error Output].Columns[EKGRP]"
+                      name="EKGRP" />
                     <outputColumn
                       refId="Package\MARC\DB PBI.Outputs[OLE DB Source Error Output].Columns[DISMM]"
                       dataType="wstr"
@@ -372,11 +428,12 @@ ORDER BY A01.[MANDT]
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT A01.[MANDT]
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT A01.[MANDT]
       ,A01.[MATNR]
       ,A01.[WERKS]
       ,A01.[MMSTD]
       ,A01.[MAABC]
+      ,A01.[EKGRP]
       ,A01.[DISMM]
       ,A01.[DISPO]
       ,A01.[EISBE]
@@ -516,6 +573,16 @@ ORDER BY A01.[MANDT]
                       precision="5"
                       scale="2"
                       truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\MARC\DB SAP.Outputs[OLE DB Source Output].Columns[EKGRP]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\MARC\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[EKGRP]"
+                      length="3"
+                      lineageId="Package\MARC\DB SAP.Outputs[OLE DB Source Output].Columns[EKGRP]"
+                      name="EKGRP"
+                      truncationRowDisposition="FailComponent" />
                   </outputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -566,6 +633,11 @@ ORDER BY A01.[MANDT]
                       name="KAUSF"
                       precision="5"
                       scale="2" />
+                    <externalMetadataColumn
+                      refId="Package\MARC\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[EKGRP]"
+                      dataType="wstr"
+                      length="3"
+                      name="EKGRP" />
                   </externalMetadataColumns>
                 </output>
                 <output
@@ -603,6 +675,12 @@ ORDER BY A01.[MANDT]
                       length="1"
                       lineageId="Package\MARC\DB SAP.Outputs[OLE DB Source Error Output].Columns[MAABC]"
                       name="MAABC" />
+                    <outputColumn
+                      refId="Package\MARC\DB SAP.Outputs[OLE DB Source Error Output].Columns[EKGRP]"
+                      dataType="wstr"
+                      length="3"
+                      lineageId="Package\MARC\DB SAP.Outputs[OLE DB Source Error Output].Columns[EKGRP]"
+                      name="EKGRP" />
                     <outputColumn
                       refId="Package\MARC\DB SAP.Outputs[OLE DB Source Error Output].Columns[DISMM]"
                       dataType="wstr"
@@ -735,6 +813,18 @@ ORDER BY A01.[MANDT]
                       cachedPrecision="5"
                       cachedScale="2"
                       lineageId="Package\MARC\Merge Join.Outputs[Merge Join Output].Columns[KAUSF (1)]" />
+                    <inputColumn
+                      refId="Package\MARC\Find Changed Records.Inputs[Conditional Split Input].Columns[EKGRP]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="EKGRP"
+                      lineageId="Package\MARC\Merge Join.Outputs[Merge Join Output].Columns[EKGRP]" />
+                    <inputColumn
+                      refId="Package\MARC\Find Changed Records.Inputs[Conditional Split Input].Columns[EKGRP (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="EKGRP (1)"
+                      lineageId="Package\MARC\Merge Join.Outputs[Merge Join Output].Columns[EKGRP (1)]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
@@ -754,13 +844,13 @@ ORDER BY A01.[MANDT]
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
-                      name="Expression">#{Package\MARC\Merge Join.Outputs[Merge Join Output].Columns[MMSTD]} != #{Package\MARC\Merge Join.Outputs[Merge Join Output].Columns[MMSTD (1)]} || #{Package\MARC\Merge Join.Outputs[Merge Join Output].Columns[MAABC]} != #{Package\MARC\Merge Join.Outputs[Merge Join Output].Columns[MAABC (1)]} || #{Package\MARC\Merge Join.Outputs[Merge Join Output].Columns[DISMM]} != #{Package\MARC\Merge Join.Outputs[Merge Join Output].Columns[DISMM (1)]} || #{Package\MARC\Merge Join.Outputs[Merge Join Output].Columns[DISPO]} != #{Package\MARC\Merge Join.Outputs[Merge Join Output].Columns[DISPO (1)]} || #{Package\MARC\Merge Join.Outputs[Merge Join Output].Columns[EISBE]} != #{Package\MARC\Merge Join.Outputs[Merge Join Output].Columns[EISBE (1)]} || #{Package\MARC\Merge Join.Outputs[Merge Join Output].Columns[KAUSF]} != #{Package\MARC\Merge Join.Outputs[Merge Join Output].Columns[KAUSF (1)]}</property>
+                      name="Expression">#{Package\MARC\Merge Join.Outputs[Merge Join Output].Columns[MMSTD]} != #{Package\MARC\Merge Join.Outputs[Merge Join Output].Columns[MMSTD (1)]} || #{Package\MARC\Merge Join.Outputs[Merge Join Output].Columns[MAABC]} != #{Package\MARC\Merge Join.Outputs[Merge Join Output].Columns[MAABC (1)]} || #{Package\MARC\Merge Join.Outputs[Merge Join Output].Columns[DISMM]} != #{Package\MARC\Merge Join.Outputs[Merge Join Output].Columns[DISMM (1)]} || #{Package\MARC\Merge Join.Outputs[Merge Join Output].Columns[DISPO]} != #{Package\MARC\Merge Join.Outputs[Merge Join Output].Columns[DISPO (1)]} || #{Package\MARC\Merge Join.Outputs[Merge Join Output].Columns[EISBE]} != #{Package\MARC\Merge Join.Outputs[Merge Join Output].Columns[EISBE (1)]} || #{Package\MARC\Merge Join.Outputs[Merge Join Output].Columns[KAUSF]} != #{Package\MARC\Merge Join.Outputs[Merge Join Output].Columns[KAUSF (1)]} || #{Package\MARC\Merge Join.Outputs[Merge Join Output].Columns[EKGRP]} != #{Package\MARC\Merge Join.Outputs[Merge Join Output].Columns[EKGRP (1)]}</property>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the friendly version of the expression. This expression version uses column names."
                       expressionType="Notify"
-                      name="FriendlyExpression">MMSTD != [MMSTD (1)] || MAABC != [MAABC (1)] || DISMM != [DISMM (1)] || DISPO != [DISPO (1)] || EISBE != [EISBE (1)] || KAUSF != [KAUSF (1)]</property>
+                      name="FriendlyExpression">MMSTD != [MMSTD (1)] || MAABC != [MAABC (1)] || DISMM != [DISMM (1)] || DISPO != [DISPO (1)] || EISBE != [EISBE (1)] || KAUSF != [KAUSF (1)] || EKGRP != [EKGRP (1)]</property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
@@ -984,7 +1074,7 @@ ORDER BY A01.[MANDT]
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                 <property
                   dataType="System.Int32"
                   description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -1099,6 +1189,13 @@ ORDER BY A01.[MANDT]
                       cachedScale="2"
                       externalMetadataColumnId="Package\MARC\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[KAUSF]"
                       lineageId="Package\MARC\Merge Join.Outputs[Merge Join Output].Columns[KAUSF]" />
+                    <inputColumn
+                      refId="Package\MARC\insert new records.Inputs[OLE DB Destination Input].Columns[EKGRP]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="EKGRP"
+                      externalMetadataColumnId="Package\MARC\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[EKGRP]"
+                      lineageId="Package\MARC\Merge Join.Outputs[Merge Join Output].Columns[EKGRP]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -1149,6 +1246,11 @@ ORDER BY A01.[MANDT]
                       name="KAUSF"
                       precision="5"
                       scale="2" />
+                    <externalMetadataColumn
+                      refId="Package\MARC\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[EKGRP]"
+                      dataType="wstr"
+                      length="3"
+                      name="EKGRP" />
                   </externalMetadataColumns>
                 </input>
               </inputs>
@@ -1268,6 +1370,12 @@ ORDER BY A01.[MANDT]
                       cachedPrecision="5"
                       cachedScale="2"
                       lineageId="Package\MARC\DB SAP.Outputs[OLE DB Source Output].Columns[KAUSF]" />
+                    <inputColumn
+                      refId="Package\MARC\Merge Join.Inputs[Merge Join Left Input].Columns[EKGRP]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="EKGRP"
+                      lineageId="Package\MARC\DB SAP.Outputs[OLE DB Source Output].Columns[EKGRP]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
@@ -1335,6 +1443,12 @@ ORDER BY A01.[MANDT]
                       cachedPrecision="5"
                       cachedScale="2"
                       lineageId="Package\MARC\DB PBI.Outputs[OLE DB Source Output].Columns[KAUSF]" />
+                    <inputColumn
+                      refId="Package\MARC\Merge Join.Inputs[Merge Join Right Input].Columns[EKGRP]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="EKGRP"
+                      lineageId="Package\MARC\DB PBI.Outputs[OLE DB Source Output].Columns[EKGRP]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
@@ -1604,6 +1718,34 @@ ORDER BY A01.[MANDT]
                           name="InputColumnID">#{Package\MARC\Merge Join.Inputs[Merge Join Right Input].Columns[KAUSF]}</property>
                       </properties>
                     </outputColumn>
+                    <outputColumn
+                      refId="Package\MARC\Merge Join.Outputs[Merge Join Output].Columns[EKGRP]"
+                      dataType="wstr"
+                      length="3"
+                      lineageId="Package\MARC\Merge Join.Outputs[Merge Join Output].Columns[EKGRP]"
+                      name="EKGRP">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\MARC\Merge Join.Inputs[Merge Join Left Input].Columns[EKGRP]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\MARC\Merge Join.Outputs[Merge Join Output].Columns[EKGRP (1)]"
+                      dataType="wstr"
+                      length="3"
+                      lineageId="Package\MARC\Merge Join.Outputs[Merge Join Output].Columns[EKGRP (1)]"
+                      name="EKGRP (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\MARC\Merge Join.Inputs[Merge Join Right Input].Columns[EKGRP]}</property>
+                      </properties>
+                    </outputColumn>
                   </outputColumns>
                   <externalMetadataColumns />
                 </output>
@@ -1634,7 +1776,7 @@ ORDER BY A01.[MANDT]
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                 <property
                   dataType="System.Int32"
                   description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -1749,6 +1891,13 @@ ORDER BY A01.[MANDT]
                       cachedScale="2"
                       externalMetadataColumnId="Package\MARC\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[KAUSF]"
                       lineageId="Package\MARC\Merge Join.Outputs[Merge Join Output].Columns[KAUSF]" />
+                    <inputColumn
+                      refId="Package\MARC\stage changed records.Inputs[OLE DB Destination Input].Columns[EKGRP]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="EKGRP"
+                      externalMetadataColumnId="Package\MARC\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[EKGRP]"
+                      lineageId="Package\MARC\Merge Join.Outputs[Merge Join Output].Columns[EKGRP]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -1799,6 +1948,11 @@ ORDER BY A01.[MANDT]
                       name="KAUSF"
                       precision="5"
                       scale="2" />
+                    <externalMetadataColumn
+                      refId="Package\MARC\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[EKGRP]"
+                      dataType="wstr"
+                      length="3"
+                      name="EKGRP" />
                   </externalMetadataColumns>
                 </input>
               </inputs>
@@ -1852,7 +2006,7 @@ ORDER BY A01.[MANDT]
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                 <property
                   dataType="System.Int32"
                   description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -2008,106 +2162,56 @@ ORDER BY A01.[MANDT]
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
-      DTS:refId="Package\Sequence Container"
-      DTS:CreationName="STOCK:SEQUENCE"
-      DTS:Description="Sequence Container"
-      DTS:DTSID="{ed4c4323-014c-415a-8cf6-cd9babee62a2}"
-      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:refId="Package\UPDATE"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{f46f2946-faae-4523-8c83-21d84933de3e}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
-      DTS:ObjectName="Sequence Container">
+      DTS:ObjectName="UPDATE"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
       <DTS:Variables />
-      <DTS:Executables>
-        <DTS:Executable
-          DTS:refId="Package\Sequence Container\delete"
-          DTS:CreationName="Microsoft.ExecuteSQLTask"
-          DTS:Description="Execute SQL Task"
-          DTS:DTSID="{c61acf60-61d8-4498-9c54-bc2c5afee5e9}"
-          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
-          DTS:LocaleID="-1"
-          DTS:ObjectName="delete"
-          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="1">
-          <DTS:Variables />
-          <DTS:ObjectData>
-            <SQLTask:SqlTaskData
-              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-              SQLTask:SqlStatementSource="DELETE A01&#xA;FROM [MARC] A01 INNER JOIN [MARC_STAGE_DELETE] B01 ON ( A01.[MANDT] = B01.[MANDT]&#xA;                                                    AND A01.[MATNR] = B01.[MATNR]&#xA;                                                    AND A01.[WERKS] = B01.[WERKS] )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
-          </DTS:ObjectData>
-        </DTS:Executable>
-        <DTS:Executable
-          DTS:refId="Package\Sequence Container\update"
-          DTS:CreationName="Microsoft.ExecuteSQLTask"
-          DTS:Description="Execute SQL Task"
-          DTS:DTSID="{f46f2946-faae-4523-8c83-21d84933de3e}"
-          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
-          DTS:LocaleID="-1"
-          DTS:ObjectName="update"
-          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="0">
-          <DTS:Variables />
-          <DTS:ObjectData>
-            <SQLTask:SqlTaskData
-              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-              SQLTask:SqlStatementSource="UPDATE A01&#xA;SET A01.[MMSTD] = B01.[MMSTD]&#xA;   ,A01.[MAABC] = B01.[MAABC]&#xA;   ,A01.[DISMM] = B01.[DISMM]&#xA;   ,A01.[DISPO] = B01.[DISPO]&#xA;   ,A01.[EISBE] = B01.[EISBE]&#xA;   ,A01.[KAUSF] = B01.[KAUSF]&#xA;FROM [MARC] A01 INNER JOIN [MARC_STAGE_UPDATE] B01 ON ( A01.[MANDT] = B01.[MANDT]&#xA;                                                    AND A01.[MATNR] = B01.[MATNR]&#xA;                                                    AND A01.[WERKS] = B01.[WERKS] )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
-          </DTS:ObjectData>
-        </DTS:Executable>
-      </DTS:Executables>
-    </DTS:Executable>
-    <DTS:Executable
-      DTS:refId="Package\Sequence Container 1"
-      DTS:CreationName="STOCK:SEQUENCE"
-      DTS:Description="Sequence Container"
-      DTS:DTSID="{dd294152-be2f-46cb-a1a3-e226fa01c454}"
-      DTS:ExecutableType="STOCK:SEQUENCE"
-      DTS:LocaleID="-1"
-      DTS:ObjectName="Sequence Container 1">
-      <DTS:Variables />
-      <DTS:Executables>
-        <DTS:Executable
-          DTS:refId="Package\Sequence Container 1\Insert"
-          DTS:CreationName="Microsoft.ExecuteSQLTask"
-          DTS:Description="Execute SQL Task"
-          DTS:DTSID="{c205ea28-8ca9-4df0-bef0-f7e3073009d4}"
-          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
-          DTS:LocaleID="-1"
-          DTS:ObjectName="Insert"
-          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="0">
-          <DTS:Variables />
-          <DTS:ObjectData>
-            <SQLTask:SqlTaskData
-              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-              SQLTask:SqlStatementSource="INSERT INTO [MARC]&#xA;SELECT * FROM [MARC_STAGE_INSERT]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
-          </DTS:ObjectData>
-        </DTS:Executable>
-      </DTS:Executables>
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="UPDATE A01&#xA;SET A01.[MMSTD] = B01.[MMSTD]&#xA;   ,A01.[MAABC] = B01.[MAABC]&#xA;   ,A01.[EKGRP] = B01.[EKGRP]&#xA;   ,A01.[DISMM] = B01.[DISMM]&#xA;   ,A01.[DISPO] = B01.[DISPO]&#xA;   ,A01.[EISBE] = B01.[EISBE]&#xA;   ,A01.[KAUSF] = B01.[KAUSF]&#xA;FROM [MARC] A01&#xA;INNER JOIN [MARC_STAGE_UPDATE] B01&#xA;ON A01.[MANDT] = B01.[MANDT]&#xA;   AND A01.[MATNR] = B01.[MATNR]&#xA;   AND A01.[WERKS] = B01.[WERKS]&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
     </DTS:Executable>
   </DTS:Executables>
   <DTS:PrecedenceConstraints>
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint]"
       DTS:CreationName=""
-      DTS:DTSID="{c9d17f82-9aa7-425e-98f3-7448acd995df}"
+      DTS:DTSID="{6FF7F858-93EA-4509-8C61-DDB10A1129B9}"
       DTS:From="Package\MARC"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint"
-      DTS:To="Package\Sequence Container" />
+      DTS:To="Package\DELETE" />
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
       DTS:CreationName=""
       DTS:DTSID="{E966689F-420F-40A1-B279-045B394C0C7D}"
-      DTS:From="Package\clean stage"
+      DTS:From="Package\Clean Stage"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 1"
       DTS:To="Package\MARC" />
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
       DTS:CreationName=""
-      DTS:DTSID="{F77136D1-6AC2-4861-9E83-1E1A0AC5A46C}"
-      DTS:From="Package\Sequence Container"
+      DTS:DTSID="{9EEA0EB8-9F87-496D-AE13-572B0686DBA2}"
+      DTS:From="Package\DELETE"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 2"
-      DTS:To="Package\Sequence Container 1" />
+      DTS:To="Package\UPDATE" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 3]"
+      DTS:CreationName=""
+      DTS:DTSID="{902E66A3-37DB-449E-8B31-AFBA2BB60E3E}"
+      DTS:From="Package\UPDATE"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 3"
+      DTS:To="Package\INSERT" />
   </DTS:PrecedenceConstraints>
   <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
 <!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
@@ -2122,53 +2226,27 @@ ORDER BY A01.[MANDT]
       <GraphLayout
         Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
-          Size="132,42"
-          Id="Package\clean stage"
-          TopLeft="493,50" />
+          Size="135,42"
+          Id="Package\Clean Stage"
+          TopLeft="53,29" />
         <NodeLayout
-          Size="107,42"
+          Size="135,42"
           Id="Package\MARC"
-          TopLeft="201,58" />
-        <NodeLayout
-          Size="108,42"
-          Id="Package\Sequence Container\delete"
-          TopLeft="195,39" />
-        <NodeLayout
-          Size="112,42"
-          Id="Package\Sequence Container\update"
-          TopLeft="17,42" />
-        <ContainerLayout
-          HeaderHeight="43"
-          IsExpanded="True"
-          PanelSize="383,139"
-          Size="383,182"
-          Id="Package\Sequence Container"
-          TopLeft="60,174" />
-        <NodeLayout
-          Size="107,42"
-          Id="Package\Sequence Container 1\Insert"
-          TopLeft="119,42" />
-        <ContainerLayout
-          HeaderHeight="43"
-          IsExpanded="True"
-          PanelSize="383,139"
-          Size="383,182"
-          Id="Package\Sequence Container 1"
-          TopLeft="60,416" />
+          TopLeft="53,141.25" />
         <EdgeLayout
-          Id="Package.PrecedenceConstraints[Constraint]"
-          TopLeft="253,100">
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="120.5,71">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,74"
+              EndConnector="0,70.25"
               Start="0,0"
-              End="0,66.5">
+              End="0,62.75">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,66.5" />
+                    End="0,62.75" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -2177,32 +2255,32 @@ ORDER BY A01.[MANDT]
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
+        <NodeLayout
+          Size="135,42"
+          Id="Package\DELETE"
+          TopLeft="53,253.5" />
+        <NodeLayout
+          Size="135,42"
+          Id="Package\UPDATE"
+          TopLeft="53,365.75" />
+        <NodeLayout
+          Size="135,42"
+          Id="Package\INSERT"
+          TopLeft="53,478" />
         <EdgeLayout
-          Id="Package.PrecedenceConstraints[Constraint 1]"
-          TopLeft="493,71">
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="120.5,183.25">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-185,8"
+              EndConnector="0,70.25"
               Start="0,0"
-              End="-177.5,8">
+              End="0,62.75">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="-88.5,0" />
-                  <mssgle:CubicBezierSegment
-                    Point1="-88.5,0"
-                    Point2="-92.5,0"
-                    Point3="-92.5,4" />
-                  <mssgle:LineSegment
-                    End="-92.5,4" />
-                  <mssgle:CubicBezierSegment
-                    Point1="-92.5,4"
-                    Point2="-92.5,8"
-                    Point3="-96.5,8" />
-                  <mssgle:LineSegment
-                    End="-177.5,8" />
+                    End="0,62.75" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -2213,18 +2291,40 @@ ORDER BY A01.[MANDT]
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 2]"
-          TopLeft="251.5,356">
+          TopLeft="120.5,295.5">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,60"
+              EndConnector="0,70.25"
               Start="0,0"
-              End="0,52.5">
+              End="0,62.75">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,52.5" />
+                    End="0,62.75" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 3]"
+          TopLeft="120.5,407.75">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,70.25"
+              Start="0,0"
+              End="0,62.75">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,62.75" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -2242,71 +2342,37 @@ ORDER BY A01.[MANDT]
       <GraphLayout
         Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
-          Size="153,42"
-          Id="Package\MARC\Identity records"
-          TopLeft="439,233" />
-        <NodeLayout
-          Size="184,42"
-          Id="Package\MARC\Find Changed Records"
-          TopLeft="420,366" />
-        <NodeLayout
-          Size="180,42"
-          Id="Package\MARC\stage deleted records"
-          TopLeft="687,371" />
-        <NodeLayout
           Size="130,42"
           Id="Package\MARC\Merge Join"
           TopLeft="451,137" />
-        <NodeLayout
-          Size="114,42"
-          Id="Package\MARC\DB SAP"
-          TopLeft="199,46" />
-        <NodeLayout
-          Size="186,42"
-          Id="Package\MARC\stage changed records"
-          TopLeft="420,478" />
         <NodeLayout
           Size="166,42"
           Id="Package\MARC\insert new records"
           TopLeft="159,370" />
         <NodeLayout
+          Size="114,42"
+          Id="Package\MARC\DB SAP"
+          TopLeft="199,46" />
+        <NodeLayout
+          Size="153,42"
+          Id="Package\MARC\Identity records"
+          TopLeft="439,233" />
+        <NodeLayout
+          Size="186,42"
+          Id="Package\MARC\stage changed records"
+          TopLeft="420,478" />
+        <NodeLayout
+          Size="180,42"
+          Id="Package\MARC\stage deleted records"
+          TopLeft="687,371" />
+        <NodeLayout
           Size="112,42"
           Id="Package\MARC\DB PBI"
           TopLeft="671,48" />
-        <EdgeLayout
-          Id="Package\MARC.Paths[OLE DB Source Output1]"
-          TopLeft="727,90">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="-190.666666666667,47"
-              Start="0,0"
-              End="-190.666666666667,39.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,23.8571428571429" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,23.8571428571429"
-                    Point2="0,27.8571428571429"
-                    Point3="-4,27.8571428571429" />
-                  <mssgle:LineSegment
-                    End="-186.666666666667,27.8571428571429" />
-                  <mssgle:CubicBezierSegment
-                    Point1="-186.666666666667,27.8571428571429"
-                    Point2="-190.666666666667,27.8571428571429"
-                    Point3="-190.666666666667,31.8571428571429" />
-                  <mssgle:LineSegment
-                    End="-190.666666666667,39.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
+        <NodeLayout
+          Size="184,42"
+          Id="Package\MARC\Find Changed Records"
+          TopLeft="420,366" />
         <EdgeLayout
           Id="Package\MARC.Paths[OLE DB Source Output]"
           TopLeft="256,88">
@@ -2483,11 +2549,45 @@ ORDER BY A01.[MANDT]
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
+        <EdgeLayout
+          Id="Package\MARC.Paths[OLE DB Source Output1]"
+          TopLeft="727,90">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-190.666666666667,47"
+              Start="0,0"
+              End="-190.666666666667,39.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,23.8571428571429" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,23.8571428571429"
+                    Point2="0,27.8571428571429"
+                    Point3="-4,27.8571428571429" />
+                  <mssgle:LineSegment
+                    End="-186.666666666667,27.8571428571429" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-186.666666666667,27.8571428571429"
+                    Point2="-190.666666666667,27.8571428571429"
+                    Point3="-190.666666666667,31.8571428571429" />
+                  <mssgle:LineSegment
+                    End="-190.666666666667,39.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
       </GraphLayout>
     </LayoutInfo>
   </TaskHost>
   <PipelineComponentMetadata
-    design-time-name="Package\MARC\stage deleted records">
+    design-time-name="Package\MARC\insert new records">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -2521,7 +2621,7 @@ ORDER BY A01.[MANDT]
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\MARC\insert new records">
+    design-time-name="Package\MARC\stage deleted records">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
