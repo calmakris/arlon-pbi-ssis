@@ -7,12 +7,12 @@
   DTS:CreatorName="DOMAIN\RPETRELLA"
   DTS:DTSID="{4DE2AA12-6074-468E-A934-B751A99EEDE5}"
   DTS:ExecutableType="Microsoft.Package"
-  DTS:LastModifiedProductVersion="16.0.521.0"
+  DTS:LastModifiedProductVersion="16.0.948.0"
   DTS:LocaleID="1033"
   DTS:ObjectName="Package1"
   DTS:PackageType="5"
-  DTS:VersionBuild="41"
-  DTS:VersionGUID="{9AE804D4-274B-40F3-9105-AFBCAE637367}">
+  DTS:VersionBuild="45"
+  DTS:VersionGUID="{FCD9183E-28A5-4E9F-B9BA-58DBF72B4A34}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:Variables />
@@ -32,6 +32,40 @@
         <SQLTask:SqlTaskData
           SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
           SQLTask:SqlStatementSource="TRUNCATE TABLE [KNVV_STAGE_UPDATE]&#xA;go&#xA;TRUNCATE TABLE [KNVV_STAGE_DELETE]&#xA;go&#xA;TRUNCATE TABLE [KNVV_STAGE_INSERT]&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\DELETE"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{41936665-0482-47F2-9638-587484E63C59}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="DELETE"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="DELETE A01&#xA;FROM [KNVV] A01 INNER JOIN [KNVV_STAGE_DELETE] B01 ON ( A01.MANDT = B01.MANDT&#xA;                                                    AND A01.KUNNR = B01.KUNNR&#xA;                                                    AND A01.VKORG = B01.VKORG&#xA;                                                    AND A01.VTWEG = B01.VTWEG&#xA;                                                    AND A01.SPART = B01.SPART )" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\INSERT"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{8f385d60-8cfd-49c0-b41f-c5ad553a771f}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="INSERT"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="INSERT INTO [KNVV]&#xA;SELECT * FROM [KNVV_STAGE_INSERT]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
@@ -81,6 +115,7 @@
       ,A01.[BZIRK]
       ,A01.[VKBUR]
       ,A01.[VWERK]
+      ,A01.[VKGRP]
       ,A01.[PLTYP]
       ,A01.[LPRIO]
 FROM [KNVV] A01 (NOLOCK)
@@ -230,6 +265,16 @@ ORDER BY A01.[MANDT]
                       lineageId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Output].Columns[LPRIO]"
                       name="LPRIO"
                       truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Output].Columns[VKGRP]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Output].ExternalColumns[VKGRP]"
+                      length="3"
+                      lineageId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Output].Columns[VKGRP]"
+                      name="VKGRP"
+                      truncationRowDisposition="FailComponent" />
                   </outputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -283,6 +328,11 @@ ORDER BY A01.[MANDT]
                       dataType="wstr"
                       length="2"
                       name="LPRIO" />
+                    <externalMetadataColumn
+                      refId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Output].ExternalColumns[VKGRP]"
+                      dataType="wstr"
+                      length="3"
+                      name="VKGRP" />
                   </externalMetadataColumns>
                 </output>
                 <output
@@ -338,6 +388,12 @@ ORDER BY A01.[MANDT]
                       length="4"
                       lineageId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Error Output].Columns[VWERK]"
                       name="VWERK" />
+                    <outputColumn
+                      refId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Error Output].Columns[VKGRP]"
+                      dataType="wstr"
+                      length="3"
+                      lineageId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Error Output].Columns[VKGRP]"
+                      name="VKGRP" />
                     <outputColumn
                       refId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Error Output].Columns[PLTYP]"
                       dataType="wstr"
@@ -400,6 +456,7 @@ ORDER BY A01.[MANDT]
       ,A01.[BZIRK]
       ,A01.[VKBUR]
       ,A01.[VWERK]
+      ,A01.[VKGRP]
       ,A01.[PLTYP]
       ,A01.[LPRIO]
 FROM [ecp].[KNVV] A01 (NOLOCK)
@@ -549,6 +606,16 @@ ORDER BY A01.[MANDT]
                       lineageId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Output].Columns[LPRIO]"
                       name="LPRIO"
                       truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Output].Columns[VKGRP]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Output].ExternalColumns[VKGRP]"
+                      length="3"
+                      lineageId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Output].Columns[VKGRP]"
+                      name="VKGRP"
+                      truncationRowDisposition="FailComponent" />
                   </outputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -602,6 +669,11 @@ ORDER BY A01.[MANDT]
                       dataType="wstr"
                       length="2"
                       name="LPRIO" />
+                    <externalMetadataColumn
+                      refId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Output].ExternalColumns[VKGRP]"
+                      dataType="wstr"
+                      length="3"
+                      name="VKGRP" />
                   </externalMetadataColumns>
                 </output>
                 <output
@@ -657,6 +729,12 @@ ORDER BY A01.[MANDT]
                       length="4"
                       lineageId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Error Output].Columns[VWERK]"
                       name="VWERK" />
+                    <outputColumn
+                      refId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Error Output].Columns[VKGRP]"
+                      dataType="wstr"
+                      length="3"
+                      lineageId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Error Output].Columns[VKGRP]"
+                      name="VKGRP" />
                     <outputColumn
                       refId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Error Output].Columns[PLTYP]"
                       dataType="wstr"
@@ -759,6 +837,18 @@ ORDER BY A01.[MANDT]
                       cachedLength="2"
                       cachedName="LPRIO (1)"
                       lineageId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[LPRIO (1)]" />
+                    <inputColumn
+                      refId="Package\KNVV\Find Changed records.Inputs[Conditional Split Input].Columns[VKGRP]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="VKGRP"
+                      lineageId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[VKGRP]" />
+                    <inputColumn
+                      refId="Package\KNVV\Find Changed records.Inputs[Conditional Split Input].Columns[VKGRP (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="VKGRP (1)"
+                      lineageId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[VKGRP (1)]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
@@ -778,13 +868,13 @@ ORDER BY A01.[MANDT]
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
-                      name="Expression">#{Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[BZIRK]} != #{Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[BZIRK (1)]} || #{Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[VKBUR]} != #{Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[VKBUR (1)]} || #{Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[VWERK]} != #{Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[VWERK (1)]} || #{Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[PLTYP]} != #{Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[PLTYP (1)]} || #{Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[LPRIO]} != #{Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[LPRIO (1)]}</property>
+                      name="Expression">#{Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[BZIRK]} != #{Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[BZIRK (1)]} || #{Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[VKBUR]} != #{Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[VKBUR (1)]} || #{Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[VWERK]} != #{Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[VWERK (1)]} || #{Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[PLTYP]} != #{Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[PLTYP (1)]} || #{Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[LPRIO]} != #{Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[LPRIO (1)]} || #{Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[VKGRP]} != #{Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[VKGRP (1)]}</property>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the friendly version of the expression. This expression version uses column names."
                       expressionType="Notify"
-                      name="FriendlyExpression">BZIRK != [BZIRK (1)] || VKBUR != [VKBUR (1)] || VWERK != [VWERK (1)] || PLTYP != [PLTYP (1)] || LPRIO != [LPRIO (1)]</property>
+                      name="FriendlyExpression">BZIRK != [BZIRK (1)] || VKBUR != [VKBUR (1)] || VWERK != [VWERK (1)] || PLTYP != [PLTYP (1)] || LPRIO != [LPRIO (1)] || VKGRP != [VKGRP (1)]</property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
@@ -1130,6 +1220,13 @@ ORDER BY A01.[MANDT]
                       cachedName="LPRIO"
                       externalMetadataColumnId="Package\KNVV\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[LPRIO]"
                       lineageId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[LPRIO]" />
+                    <inputColumn
+                      refId="Package\KNVV\insert new records.Inputs[OLE DB Destination Input].Columns[VKGRP]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="VKGRP"
+                      externalMetadataColumnId="Package\KNVV\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[VKGRP]"
+                      lineageId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[VKGRP]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -1183,6 +1280,11 @@ ORDER BY A01.[MANDT]
                       dataType="wstr"
                       length="2"
                       name="LPRIO" />
+                    <externalMetadataColumn
+                      refId="Package\KNVV\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[VKGRP]"
+                      dataType="wstr"
+                      length="3"
+                      name="VKGRP" />
                   </externalMetadataColumns>
                 </input>
               </inputs>
@@ -1308,6 +1410,12 @@ ORDER BY A01.[MANDT]
                       cachedLength="2"
                       cachedName="LPRIO"
                       lineageId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Output].Columns[LPRIO]" />
+                    <inputColumn
+                      refId="Package\KNVV\Merge Join.Inputs[Merge Join Left Input].Columns[VKGRP]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="VKGRP"
+                      lineageId="Package\KNVV\DB SAP KNVV.Outputs[OLE DB Source Output].Columns[VKGRP]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
@@ -1381,6 +1489,12 @@ ORDER BY A01.[MANDT]
                       cachedLength="2"
                       cachedName="LPRIO"
                       lineageId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Output].Columns[LPRIO]" />
+                    <inputColumn
+                      refId="Package\KNVV\Merge Join.Inputs[Merge Join Right Input].Columns[VKGRP]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="VKGRP"
+                      lineageId="Package\KNVV\DB PBI KNVV.Outputs[OLE DB Source Output].Columns[VKGRP]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
@@ -1676,6 +1790,34 @@ ORDER BY A01.[MANDT]
                           name="InputColumnID">#{Package\KNVV\Merge Join.Inputs[Merge Join Right Input].Columns[LPRIO]}</property>
                       </properties>
                     </outputColumn>
+                    <outputColumn
+                      refId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[VKGRP]"
+                      dataType="wstr"
+                      length="3"
+                      lineageId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[VKGRP]"
+                      name="VKGRP">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\KNVV\Merge Join.Inputs[Merge Join Left Input].Columns[VKGRP]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[VKGRP (1)]"
+                      dataType="wstr"
+                      length="3"
+                      lineageId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[VKGRP (1)]"
+                      name="VKGRP (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\KNVV\Merge Join.Inputs[Merge Join Right Input].Columns[VKGRP]}</property>
+                      </properties>
+                    </outputColumn>
                   </outputColumns>
                   <externalMetadataColumns />
                 </output>
@@ -1828,6 +1970,13 @@ ORDER BY A01.[MANDT]
                       cachedName="LPRIO"
                       externalMetadataColumnId="Package\KNVV\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[LPRIO]"
                       lineageId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[LPRIO]" />
+                    <inputColumn
+                      refId="Package\KNVV\stage changed records.Inputs[OLE DB Destination Input].Columns[VKGRP]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="VKGRP"
+                      externalMetadataColumnId="Package\KNVV\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[VKGRP]"
+                      lineageId="Package\KNVV\Merge Join.Outputs[Merge Join Output].Columns[VKGRP]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -1881,6 +2030,11 @@ ORDER BY A01.[MANDT]
                       dataType="wstr"
                       length="2"
                       name="LPRIO" />
+                    <externalMetadataColumn
+                      refId="Package\KNVV\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[VKGRP]"
+                      dataType="wstr"
+                      length="3"
+                      name="VKGRP" />
                   </externalMetadataColumns>
                 </input>
               </inputs>
@@ -2114,90 +2268,32 @@ ORDER BY A01.[MANDT]
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
-      DTS:refId="Package\Sequence Container"
-      DTS:CreationName="STOCK:SEQUENCE"
-      DTS:Description="Sequence Container"
-      DTS:DTSID="{F341836E-7C39-4677-99F7-ADD34EE511DF}"
-      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:refId="Package\UPDATE"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{09C39945-DD96-40EF-9339-5E676B2240B7}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
-      DTS:ObjectName="Sequence Container">
+      DTS:ObjectName="UPDATE"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
       <DTS:Variables />
-      <DTS:Executables>
-        <DTS:Executable
-          DTS:refId="Package\Sequence Container\delete"
-          DTS:CreationName="Microsoft.ExecuteSQLTask"
-          DTS:Description="Execute SQL Task"
-          DTS:DTSID="{41936665-0482-47F2-9638-587484E63C59}"
-          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
-          DTS:LocaleID="-1"
-          DTS:ObjectName="delete"
-          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="0">
-          <DTS:Variables />
-          <DTS:ObjectData>
-            <SQLTask:SqlTaskData
-              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-              SQLTask:SqlStatementSource="DELETE A01&#xA;FROM [KNVV] A01 INNER JOIN [KNVV_STAGE_DELETE] B01 ON ( A01.MANDT = B01.MANDT&#xA;                                                    AND A01.KUNNR = B01.KUNNR&#xA;                                                    AND A01.VKORG = B01.VKORG&#xA;                                                    AND A01.VTWEG = B01.VTWEG&#xA;                                                    AND A01.SPART = B01.SPART )" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
-          </DTS:ObjectData>
-        </DTS:Executable>
-        <DTS:Executable
-          DTS:refId="Package\Sequence Container\update"
-          DTS:CreationName="Microsoft.ExecuteSQLTask"
-          DTS:Description="Execute SQL Task"
-          DTS:DTSID="{09C39945-DD96-40EF-9339-5E676B2240B7}"
-          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
-          DTS:LocaleID="-1"
-          DTS:ObjectName="update"
-          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="1">
-          <DTS:Variables />
-          <DTS:ObjectData>
-            <SQLTask:SqlTaskData
-              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-              SQLTask:SqlStatementSource="UPDATE A01&#xA;SET A01.[BZIRK] = B01.[BZIRK]&#xA;   ,A01.[VWERK] = B01.[VWERK]&#xA;   ,A01.[VKBUR] = B01.[VKBUR]&#xA;   ,A01.[PLTYP] = B01.[PLTYP]&#xA;   ,A01.[LPRIO] = B01.[LPRIO]&#xA;FROM [KNVV] A01 INNER JOIN [KNVV_STAGE_UPDATE] B01 ON ( A01.[MANDT] = B01.[MANDT]&#xA;                                                    AND A01.[KUNNR] = B01.[KUNNR]&#xA;                                                    AND A01.[VKORG] = B01.[VKORG]&#xA;                                                    AND A01.[VTWEG] = B01.[VTWEG]&#xA;                                                    AND A01.[SPART] = B01.[SPART] )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
-          </DTS:ObjectData>
-        </DTS:Executable>
-      </DTS:Executables>
-    </DTS:Executable>
-    <DTS:Executable
-      DTS:refId="Package\Sequence Container 1"
-      DTS:CreationName="STOCK:SEQUENCE"
-      DTS:Description="Sequence Container"
-      DTS:DTSID="{1adec654-20dd-49e0-bfb9-be334e276478}"
-      DTS:ExecutableType="STOCK:SEQUENCE"
-      DTS:LocaleID="-1"
-      DTS:ObjectName="Sequence Container 1">
-      <DTS:Variables />
-      <DTS:Executables>
-        <DTS:Executable
-          DTS:refId="Package\Sequence Container 1\Insert"
-          DTS:CreationName="Microsoft.ExecuteSQLTask"
-          DTS:Description="Execute SQL Task"
-          DTS:DTSID="{8f385d60-8cfd-49c0-b41f-c5ad553a771f}"
-          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
-          DTS:LocaleID="-1"
-          DTS:ObjectName="Insert"
-          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="0">
-          <DTS:Variables />
-          <DTS:ObjectData>
-            <SQLTask:SqlTaskData
-              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-              SQLTask:SqlStatementSource="INSERT INTO [KNVV]&#xA;SELECT * FROM [KNVV_STAGE_INSERT]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
-          </DTS:ObjectData>
-        </DTS:Executable>
-      </DTS:Executables>
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="UPDATE A01&#xA;SET A01.[BZIRK] = B01.[BZIRK]&#xA;   ,A01.[VWERK] = B01.[VWERK]&#xA;   ,A01.[VKBUR] = B01.[VKBUR]&#xA;   ,A01.[VKGRP] = B01.[VKGRP]&#xA;   ,A01.[PLTYP] = B01.[PLTYP]&#xA;   ,A01.[LPRIO] = B01.[LPRIO]&#xA;FROM [KNVV] A01 INNER JOIN [KNVV_STAGE_UPDATE] B01 ON ( A01.[MANDT] = B01.[MANDT]&#xA;                                                    AND A01.[KUNNR] = B01.[KUNNR]&#xA;                                                    AND A01.[VKORG] = B01.[VKORG]&#xA;                                                    AND A01.[VTWEG] = B01.[VTWEG]&#xA;                                                    AND A01.[SPART] = B01.[SPART] )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
     </DTS:Executable>
   </DTS:Executables>
   <DTS:PrecedenceConstraints>
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint]"
       DTS:CreationName=""
-      DTS:DTSID="{9097E6C9-C489-45D5-B608-82274F0E4896}"
+      DTS:DTSID="{E29F09CC-7338-4AC7-8CA0-334287EC141E}"
       DTS:From="Package\KNVV"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint"
-      DTS:To="Package\Sequence Container" />
+      DTS:To="Package\UPDATE" />
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
       DTS:CreationName=""
@@ -2209,11 +2305,19 @@ ORDER BY A01.[MANDT]
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
       DTS:CreationName=""
-      DTS:DTSID="{B91BAFD5-A25D-47E4-93B2-5B6244C73777}"
-      DTS:From="Package\Sequence Container"
+      DTS:DTSID="{5DC94AD1-25C0-40D5-817A-38A068090EE8}"
+      DTS:From="Package\UPDATE"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 2"
-      DTS:To="Package\Sequence Container 1" />
+      DTS:To="Package\DELETE" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 3]"
+      DTS:CreationName=""
+      DTS:DTSID="{19FEEAFA-BE3E-47BF-A4CD-B08F676FAF27}"
+      DTS:From="Package\DELETE"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 3"
+      DTS:To="Package\INSERT" />
   </DTS:PrecedenceConstraints>
   <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
 <!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
@@ -2230,51 +2334,25 @@ ORDER BY A01.[MANDT]
         <NodeLayout
           Size="132,42"
           Id="Package\clean stage"
-          TopLeft="155,40" />
+          TopLeft="154,40" />
         <NodeLayout
-          Size="105,42"
+          Size="132,42"
           Id="Package\KNVV"
-          TopLeft="413,41" />
-        <NodeLayout
-          Size="108,42"
-          Id="Package\Sequence Container\delete"
-          TopLeft="225,38" />
-        <NodeLayout
-          Size="112,42"
-          Id="Package\Sequence Container\update"
-          TopLeft="42,33" />
-        <ContainerLayout
-          HeaderHeight="43"
-          IsExpanded="True"
-          PanelSize="402,135"
-          Size="402,178"
-          Id="Package\Sequence Container"
-          TopLeft="265,147" />
-        <NodeLayout
-          Size="107,42"
-          Id="Package\Sequence Container 1\Insert"
-          TopLeft="131,32" />
-        <ContainerLayout
-          HeaderHeight="43"
-          IsExpanded="True"
-          PanelSize="402,135"
-          Size="402,178"
-          Id="Package\Sequence Container 1"
-          TopLeft="264,391" />
+          TopLeft="154,111" />
         <EdgeLayout
-          Id="Package.PrecedenceConstraints[Constraint]"
-          TopLeft="465.75,83">
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="220,82">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,64"
+              EndConnector="0,29"
               Start="0,0"
-              End="0,56.5">
+              End="0,21.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,56.5" />
+                    End="0,21.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -2283,20 +2361,32 @@ ORDER BY A01.[MANDT]
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
+        <NodeLayout
+          Size="132,42"
+          Id="Package\UPDATE"
+          TopLeft="154,182" />
+        <NodeLayout
+          Size="132,42"
+          Id="Package\DELETE"
+          TopLeft="154,252" />
+        <NodeLayout
+          Size="132,42"
+          Id="Package\INSERT"
+          TopLeft="154,324" />
         <EdgeLayout
-          Id="Package.PrecedenceConstraints[Constraint 1]"
-          TopLeft="287,61.5">
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="220,153">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="126,0"
+              EndConnector="0,29"
               Start="0,0"
-              End="118.5,0">
+              End="0,21.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="118.5,0" />
+                    End="0,21.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -2307,18 +2397,40 @@ ORDER BY A01.[MANDT]
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 2]"
-          TopLeft="465.5,325">
+          TopLeft="220,224">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,66"
+              EndConnector="0,28"
               Start="0,0"
-              End="0,58.5">
+              End="0,20.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,58.5" />
+                    End="0,20.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 3]"
+          TopLeft="220,294">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,30"
+              Start="0,0"
+              End="0,22.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,22.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -2336,71 +2448,37 @@ ORDER BY A01.[MANDT]
       <GraphLayout
         Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
-          Size="186,42"
-          Id="Package\KNVV\stage changed records"
-          TopLeft="428,480" />
-        <NodeLayout
-          Size="180,42"
-          Id="Package\KNVV\stage deleted records"
-          TopLeft="679,360" />
+          Size="166,42"
+          Id="Package\KNVV\insert new records"
+          TopLeft="169,350" />
         <NodeLayout
           Size="144,42"
           Id="Package\KNVV\DB SAP KNVV"
           TopLeft="273,36" />
         <NodeLayout
-          Size="130,42"
-          Id="Package\KNVV\Merge Join"
-          TopLeft="450,122" />
-        <NodeLayout
-          Size="166,42"
-          Id="Package\KNVV\insert new records"
-          TopLeft="169,350" />
-        <NodeLayout
           Size="153,42"
           Id="Package\KNVV\Identify records"
           TopLeft="440,243" />
+        <NodeLayout
+          Size="186,42"
+          Id="Package\KNVV\stage changed records"
+          TopLeft="428,480" />
+        <NodeLayout
+          Size="181,42"
+          Id="Package\KNVV\Find Changed records"
+          TopLeft="427,372" />
+        <NodeLayout
+          Size="180,42"
+          Id="Package\KNVV\stage deleted records"
+          TopLeft="679,360" />
         <NodeLayout
           Size="141,42"
           Id="Package\KNVV\DB PBI KNVV"
           TopLeft="618,31" />
         <NodeLayout
-          Size="181,42"
-          Id="Package\KNVV\Find Changed records"
-          TopLeft="427,372" />
-        <EdgeLayout
-          Id="Package\KNVV.Paths[OLE DB Source Output]"
-          TopLeft="345,78">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="149.666666666667,44"
-              Start="0,0"
-              End="149.666666666667,36.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,22.0790273556231" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,22.0790273556231"
-                    Point2="0,26.0790273556231"
-                    Point3="4,26.0790273556231" />
-                  <mssgle:LineSegment
-                    End="145.666666666667,26.0790273556231" />
-                  <mssgle:CubicBezierSegment
-                    Point1="145.666666666667,26.0790273556231"
-                    Point2="149.666666666667,26.0790273556231"
-                    Point3="149.666666666667,30.0790273556231" />
-                  <mssgle:LineSegment
-                    End="149.666666666667,36.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
+          Size="130,42"
+          Id="Package\KNVV\Merge Join"
+          TopLeft="450,122" />
         <EdgeLayout
           Id="Package\KNVV.Paths[Merge Join Output]"
           TopLeft="515.75,164">
@@ -2577,24 +2655,45 @@ ORDER BY A01.[MANDT]
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
+        <EdgeLayout
+          Id="Package\KNVV.Paths[OLE DB Source Output]"
+          TopLeft="345,78">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="149.666666666667,44"
+              Start="0,0"
+              End="149.666666666667,36.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,22.0790273556231" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,22.0790273556231"
+                    Point2="0,26.0790273556231"
+                    Point3="4,26.0790273556231" />
+                  <mssgle:LineSegment
+                    End="145.666666666667,26.0790273556231" />
+                  <mssgle:CubicBezierSegment
+                    Point1="145.666666666667,26.0790273556231"
+                    Point2="149.666666666667,26.0790273556231"
+                    Point3="149.666666666667,30.0790273556231" />
+                  <mssgle:LineSegment
+                    End="149.666666666667,36.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
       </GraphLayout>
     </LayoutInfo>
   </TaskHost>
   <PipelineComponentMetadata
-    design-time-name="Package\KNVV\stage changed records">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-      <Property>
-        <Name>TableInfoObjectType</Name>
-        <Value
-          type="q2:string">Table</Value>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
-    design-time-name="Package\KNVV\stage deleted records">
+    design-time-name="Package\KNVV\insert new records">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -2615,7 +2714,20 @@ ORDER BY A01.[MANDT]
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\KNVV\insert new records">
+    design-time-name="Package\KNVV\stage changed records">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\KNVV\stage deleted records">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
