@@ -1,0 +1,2768 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="11/29/2022 3:12:02 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="KCALMA-LT2"
+  DTS:CreatorName="DOMAIN\kcalma"
+  DTS:DTSID="{9230D0B7-5046-4EAF-9236-AD8EFAF54069}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="16.0.948.0"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="zAAS"
+  DTS:PackageType="5"
+  DTS:VersionBuild="11"
+  DTS:VersionGUID="{3CF65E61-DD79-4372-9DFE-82E4754F57B0}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\CONVOEE"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Sequence Container"
+      DTS:DTSID="{D7E93874-9DA0-4A41-ADC9-FFEC5990303D}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="CONVOEE">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\CONVOEE\Clean Stage"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{2D3FD16D-C743-4794-A93E-7DC45EADA225}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Clean Stage"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+              SQLTask:SqlStatementSource="TRUNCATE TABLE zAAS_CONVOEE_STAGE_INSERT&#xA;GO&#xA;TRUNCATE TABLE zAAS_CONVOEE_STAGE_UPDATE&#xA;GO&#xA;TRUNCATE TABLE zAAS_CONVOEE_STAGE_DELETE&#xA;GO" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\CONVOEE\DELETE"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{2134B6A2-6D7C-416C-999F-955EEE05BBBE}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="DELETE"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+              SQLTask:SqlStatementSource="DELETE a&#xA;FROM [zAAS_CONVOEE] a&#xA;INNER JOIN [zAAS_CONVOEE_STAGE_DELETE] b&#xA;ON a.[ID] = b.[ID]&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\CONVOEE\INSERT"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{35711133-58ED-4660-BF8F-3C1FA4EE0FCD}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="INSERT"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+              SQLTask:SqlStatementSource="INSERT INTO zAAS_CONVOEE&#xA;SELECT *&#xA;FROM zAAS_CONVOEE_STAGE_INSERT" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\CONVOEE\Staging"
+          DTS:CreationName="Microsoft.Pipeline"
+          DTS:Description="Data Flow Task"
+          DTS:DTSID="{854AE593-62F0-45ED-84CF-F24394F0F537}"
+          DTS:ExecutableType="Microsoft.Pipeline"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Staging"
+          DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <pipeline
+              version="1">
+              <components>
+                <component
+                  refId="Package\CONVOEE\Staging\AASPRDDB"
+                  componentClassID="Microsoft.OLEDBSource"
+                  contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+                  description="OLE DB Source"
+                  name="AASPRDDB"
+                  usesDispositions="true"
+                  version="7">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT [ID]
+    ,[STTIME]
+    ,[MCNNO]
+    ,[SHIFTNO]
+    ,[OPERNO]
+    ,[ORDNO]
+    ,[SPECNO]
+    ,[LINESPD]
+    ,[WIPNO]
+    ,[WIPBATCH]
+    ,[OPRCMTS]
+    ,[ORDQTY]
+FROM [CONVOEE] (NOLOCK)
+ORDER BY [ID]</property>
+                    <property
+                      dataType="System.String"
+                      description="The variable that contains the SQL command to be executed."
+                      name="SqlCommandVariable"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">2</property>
+                    <property
+                      dataType="System.String"
+                      description="The mappings between the parameters in the SQL command and variables."
+                      name="ParameterMapping"></property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\CONVOEE\Staging\AASPRDDB.Connections[OleDbConnection]"
+                      connectionManagerID="{3F09C573-DA94-41E6-BB0A-44EE0C0524A9}:external"
+                      connectionManagerRefId="Project.ConnectionManagers[ARLSQL01.AASPRDDB]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <outputs>
+                    <output
+                      refId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Output]"
+                      isSorted="true"
+                      name="OLE DB Source Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Output].Columns[ID]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Output].ExternalColumns[ID]"
+                          lineageId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Output].Columns[ID]"
+                          name="ID"
+                          sortKeyPosition="1"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Output].Columns[STTIME]"
+                          dataType="dbTimeStamp"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Output].ExternalColumns[STTIME]"
+                          lineageId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Output].Columns[STTIME]"
+                          name="STTIME"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Output].Columns[MCNNO]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Output].ExternalColumns[MCNNO]"
+                          lineageId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Output].Columns[MCNNO]"
+                          name="MCNNO"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Output].Columns[SHIFTNO]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Output].ExternalColumns[SHIFTNO]"
+                          lineageId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Output].Columns[SHIFTNO]"
+                          name="SHIFTNO"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Output].Columns[OPERNO]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Output].ExternalColumns[OPERNO]"
+                          length="10"
+                          lineageId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Output].Columns[OPERNO]"
+                          name="OPERNO"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Output].Columns[ORDNO]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Output].ExternalColumns[ORDNO]"
+                          lineageId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Output].Columns[ORDNO]"
+                          name="ORDNO"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Output].Columns[SPECNO]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Output].ExternalColumns[SPECNO]"
+                          length="50"
+                          lineageId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Output].Columns[SPECNO]"
+                          name="SPECNO"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Output].Columns[LINESPD]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Output].ExternalColumns[LINESPD]"
+                          lineageId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Output].Columns[LINESPD]"
+                          name="LINESPD"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Output].Columns[WIPNO]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Output].ExternalColumns[WIPNO]"
+                          length="50"
+                          lineageId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Output].Columns[WIPNO]"
+                          name="WIPNO"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Output].Columns[WIPBATCH]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Output].ExternalColumns[WIPBATCH]"
+                          length="50"
+                          lineageId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Output].Columns[WIPBATCH]"
+                          name="WIPBATCH"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Output].Columns[OPRCMTS]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Output].ExternalColumns[OPRCMTS]"
+                          length="200"
+                          lineageId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Output].Columns[OPRCMTS]"
+                          name="OPRCMTS"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Output].Columns[ORDQTY]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Output].ExternalColumns[ORDQTY]"
+                          lineageId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Output].Columns[ORDQTY]"
+                          name="ORDQTY"
+                          precision="18"
+                          scale="3"
+                          truncationRowDisposition="FailComponent" />
+                      </outputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Output].ExternalColumns[ID]"
+                          dataType="i4"
+                          name="ID" />
+                        <externalMetadataColumn
+                          refId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Output].ExternalColumns[STTIME]"
+                          dataType="dbTimeStamp"
+                          name="STTIME" />
+                        <externalMetadataColumn
+                          refId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Output].ExternalColumns[MCNNO]"
+                          dataType="i4"
+                          name="MCNNO" />
+                        <externalMetadataColumn
+                          refId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Output].ExternalColumns[SHIFTNO]"
+                          dataType="i4"
+                          name="SHIFTNO" />
+                        <externalMetadataColumn
+                          refId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Output].ExternalColumns[OPERNO]"
+                          dataType="wstr"
+                          length="10"
+                          name="OPERNO" />
+                        <externalMetadataColumn
+                          refId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Output].ExternalColumns[ORDNO]"
+                          dataType="i4"
+                          name="ORDNO" />
+                        <externalMetadataColumn
+                          refId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Output].ExternalColumns[SPECNO]"
+                          dataType="wstr"
+                          length="50"
+                          name="SPECNO" />
+                        <externalMetadataColumn
+                          refId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Output].ExternalColumns[LINESPD]"
+                          dataType="i4"
+                          name="LINESPD" />
+                        <externalMetadataColumn
+                          refId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Output].ExternalColumns[WIPNO]"
+                          dataType="wstr"
+                          length="50"
+                          name="WIPNO" />
+                        <externalMetadataColumn
+                          refId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Output].ExternalColumns[WIPBATCH]"
+                          dataType="wstr"
+                          length="50"
+                          name="WIPBATCH" />
+                        <externalMetadataColumn
+                          refId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Output].ExternalColumns[OPRCMTS]"
+                          dataType="wstr"
+                          length="200"
+                          name="OPRCMTS" />
+                        <externalMetadataColumn
+                          refId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Output].ExternalColumns[ORDQTY]"
+                          dataType="numeric"
+                          name="ORDQTY"
+                          precision="18"
+                          scale="3" />
+                      </externalMetadataColumns>
+                    </output>
+                    <output
+                      refId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Error Output]"
+                      isErrorOut="true"
+                      name="OLE DB Source Error Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Error Output].Columns[ID]"
+                          dataType="i4"
+                          lineageId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Error Output].Columns[ID]"
+                          name="ID" />
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Error Output].Columns[STTIME]"
+                          dataType="dbTimeStamp"
+                          lineageId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Error Output].Columns[STTIME]"
+                          name="STTIME" />
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Error Output].Columns[MCNNO]"
+                          dataType="i4"
+                          lineageId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Error Output].Columns[MCNNO]"
+                          name="MCNNO" />
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Error Output].Columns[SHIFTNO]"
+                          dataType="i4"
+                          lineageId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Error Output].Columns[SHIFTNO]"
+                          name="SHIFTNO" />
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Error Output].Columns[OPERNO]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Error Output].Columns[OPERNO]"
+                          name="OPERNO" />
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Error Output].Columns[ORDNO]"
+                          dataType="i4"
+                          lineageId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Error Output].Columns[ORDNO]"
+                          name="ORDNO" />
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Error Output].Columns[SPECNO]"
+                          dataType="wstr"
+                          length="50"
+                          lineageId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Error Output].Columns[SPECNO]"
+                          name="SPECNO" />
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Error Output].Columns[LINESPD]"
+                          dataType="i4"
+                          lineageId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Error Output].Columns[LINESPD]"
+                          name="LINESPD" />
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Error Output].Columns[WIPNO]"
+                          dataType="wstr"
+                          length="50"
+                          lineageId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Error Output].Columns[WIPNO]"
+                          name="WIPNO" />
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Error Output].Columns[WIPBATCH]"
+                          dataType="wstr"
+                          length="50"
+                          lineageId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Error Output].Columns[WIPBATCH]"
+                          name="WIPBATCH" />
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Error Output].Columns[OPRCMTS]"
+                          dataType="wstr"
+                          length="200"
+                          lineageId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Error Output].Columns[OPRCMTS]"
+                          name="OPRCMTS" />
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Error Output].Columns[ORDQTY]"
+                          dataType="numeric"
+                          lineageId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Error Output].Columns[ORDQTY]"
+                          name="ORDQTY"
+                          precision="18"
+                          scale="3" />
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\CONVOEE\Staging\DELETE Stage"
+                  componentClassID="Microsoft.OLEDBDestination"
+                  contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                  description="OLE DB Destination"
+                  name="DELETE Stage"
+                  usesDispositions="true"
+                  version="4">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset">[dbo].[zAAS_CONVOEE_STAGE_DELETE]</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">3</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepIdentity">false</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                      name="FastLoadOptions">CHECK_CONSTRAINTS</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                      name="FastLoadMaxInsertCommitSize">2147483647</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\CONVOEE\Staging\DELETE Stage.Connections[OleDbConnection]"
+                      connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
+                      connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\CONVOEE\Staging\DELETE Stage.Inputs[OLE DB Destination Input]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="OLE DB Destination Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\DELETE Stage.Inputs[OLE DB Destination Input].Columns[ID (1)]"
+                          cachedDataType="i4"
+                          cachedName="ID (1)"
+                          externalMetadataColumnId="Package\CONVOEE\Staging\DELETE Stage.Inputs[OLE DB Destination Input].ExternalColumns[ID]"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[ID (1)]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\CONVOEE\Staging\DELETE Stage.Inputs[OLE DB Destination Input].ExternalColumns[ID]"
+                          dataType="i4"
+                          name="ID" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\CONVOEE\Staging\DELETE Stage.Outputs[OLE DB Destination Error Output]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="OLE DB Destination Error Output"
+                      synchronousInputId="Package\CONVOEE\Staging\DELETE Stage.Inputs[OLE DB Destination Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\DELETE Stage.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\CONVOEE\Staging\DELETE Stage.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\DELETE Stage.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\CONVOEE\Staging\DELETE Stage.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\CONVOEE\Staging\Identify Changed Records"
+                  componentClassID="Microsoft.ConditionalSplit"
+                  contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                  description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
+                  name="Identify Changed Records"
+                  usesDispositions="true">
+                  <inputs>
+                    <input
+                      refId="Package\CONVOEE\Staging\Identify Changed Records.Inputs[Conditional Split Input]"
+                      description="Input to the Conditional Split Transformation"
+                      name="Conditional Split Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\Identify Changed Records.Inputs[Conditional Split Input].Columns[STTIME]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="STTIME"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[STTIME]" />
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\Identify Changed Records.Inputs[Conditional Split Input].Columns[MCNNO]"
+                          cachedDataType="i4"
+                          cachedName="MCNNO"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[MCNNO]" />
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\Identify Changed Records.Inputs[Conditional Split Input].Columns[SHIFTNO]"
+                          cachedDataType="i4"
+                          cachedName="SHIFTNO"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[SHIFTNO]" />
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\Identify Changed Records.Inputs[Conditional Split Input].Columns[OPERNO]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="OPERNO"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[OPERNO]" />
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\Identify Changed Records.Inputs[Conditional Split Input].Columns[ORDNO]"
+                          cachedDataType="i4"
+                          cachedName="ORDNO"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[ORDNO]" />
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\Identify Changed Records.Inputs[Conditional Split Input].Columns[SPECNO]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="SPECNO"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[SPECNO]" />
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\Identify Changed Records.Inputs[Conditional Split Input].Columns[LINESPD]"
+                          cachedDataType="i4"
+                          cachedName="LINESPD"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[LINESPD]" />
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\Identify Changed Records.Inputs[Conditional Split Input].Columns[WIPNO]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="WIPNO"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[WIPNO]" />
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\Identify Changed Records.Inputs[Conditional Split Input].Columns[WIPBATCH]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="WIPBATCH"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[WIPBATCH]" />
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\Identify Changed Records.Inputs[Conditional Split Input].Columns[OPRCMTS]"
+                          cachedDataType="wstr"
+                          cachedLength="200"
+                          cachedName="OPRCMTS"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[OPRCMTS]" />
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\Identify Changed Records.Inputs[Conditional Split Input].Columns[ORDQTY]"
+                          cachedDataType="numeric"
+                          cachedName="ORDQTY"
+                          cachedPrecision="18"
+                          cachedScale="3"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[ORDQTY]" />
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\Identify Changed Records.Inputs[Conditional Split Input].Columns[STTIME (1)]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="STTIME (1)"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[STTIME (1)]" />
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\Identify Changed Records.Inputs[Conditional Split Input].Columns[MCNNO (1)]"
+                          cachedDataType="i4"
+                          cachedName="MCNNO (1)"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[MCNNO (1)]" />
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\Identify Changed Records.Inputs[Conditional Split Input].Columns[SHIFTNO (1)]"
+                          cachedDataType="i4"
+                          cachedName="SHIFTNO (1)"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[SHIFTNO (1)]" />
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\Identify Changed Records.Inputs[Conditional Split Input].Columns[OPERNO (1)]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="OPERNO (1)"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[OPERNO (1)]" />
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\Identify Changed Records.Inputs[Conditional Split Input].Columns[ORDNO (1)]"
+                          cachedDataType="i4"
+                          cachedName="ORDNO (1)"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[ORDNO (1)]" />
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\Identify Changed Records.Inputs[Conditional Split Input].Columns[SPECNO (1)]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="SPECNO (1)"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[SPECNO (1)]" />
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\Identify Changed Records.Inputs[Conditional Split Input].Columns[LINESPD (1)]"
+                          cachedDataType="i4"
+                          cachedName="LINESPD (1)"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[LINESPD (1)]" />
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\Identify Changed Records.Inputs[Conditional Split Input].Columns[WIPNO (1)]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="WIPNO (1)"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[WIPNO (1)]" />
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\Identify Changed Records.Inputs[Conditional Split Input].Columns[WIPBATCH (1)]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="WIPBATCH (1)"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[WIPBATCH (1)]" />
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\Identify Changed Records.Inputs[Conditional Split Input].Columns[OPRCMTS (1)]"
+                          cachedDataType="wstr"
+                          cachedLength="200"
+                          cachedName="OPRCMTS (1)"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[OPRCMTS (1)]" />
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\Identify Changed Records.Inputs[Conditional Split Input].Columns[ORDQTY (1)]"
+                          cachedDataType="numeric"
+                          cachedName="ORDQTY (1)"
+                          cachedPrecision="18"
+                          cachedScale="3"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[ORDQTY (1)]" />
+                      </inputColumns>
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\CONVOEE\Staging\Identify Changed Records.Outputs[update]"
+                      description="Output 1 of the Conditional Split Transformation"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      exclusionGroup="1"
+                      name="update"
+                      synchronousInputId="Package\CONVOEE\Staging\Identify Changed Records.Inputs[Conditional Split Input]"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                          name="Expression">#{Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[STTIME]} != #{Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[STTIME (1)]} || #{Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[MCNNO]} != #{Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[MCNNO (1)]} || #{Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[SHIFTNO]} != #{Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[SHIFTNO (1)]} || #{Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[OPERNO]} != #{Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[OPERNO (1)]} || #{Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[ORDNO]} != #{Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[ORDNO (1)]} || #{Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[SPECNO]} != #{Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[SPECNO (1)]} || #{Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[LINESPD]} != #{Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[LINESPD (1)]} || #{Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[WIPNO]} != #{Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[WIPNO (1)]} || #{Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[WIPBATCH]} != #{Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[WIPBATCH (1)]} || #{Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[OPRCMTS]} != #{Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[OPRCMTS (1)]} || #{Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[ORDQTY]} != #{Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[ORDQTY (1)]}</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Specifies the friendly version of the expression. This expression version uses column names."
+                          expressionType="Notify"
+                          name="FriendlyExpression">STTIME != [STTIME (1)] || MCNNO != [MCNNO (1)] || SHIFTNO != [SHIFTNO (1)] || OPERNO != [OPERNO (1)] || ORDNO != [ORDNO (1)] || SPECNO != [SPECNO (1)] || LINESPD != [LINESPD (1)] || WIPNO != [WIPNO (1)] || WIPBATCH != [WIPBATCH (1)] || OPRCMTS != [OPRCMTS (1)] || ORDQTY != [ORDQTY (1)]</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                          name="EvaluationOrder">0</property>
+                      </properties>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\CONVOEE\Staging\Identify Changed Records.Outputs[Conditional Split Default Output]"
+                      description="Default Output of the Conditional Split Transformation"
+                      exclusionGroup="1"
+                      name="Conditional Split Default Output"
+                      synchronousInputId="Package\CONVOEE\Staging\Identify Changed Records.Inputs[Conditional Split Input]">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          name="IsDefaultOut">true</property>
+                      </properties>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\CONVOEE\Staging\Identify Changed Records.Outputs[Conditional Split Error Output]"
+                      description="Error Output of the Conditional Split Transformation"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Conditional Split Error Output"
+                      synchronousInputId="Package\CONVOEE\Staging\Identify Changed Records.Inputs[Conditional Split Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\Identify Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\CONVOEE\Staging\Identify Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\Identify Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\CONVOEE\Staging\Identify Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\CONVOEE\Staging\Identify Stage Records"
+                  componentClassID="Microsoft.ConditionalSplit"
+                  contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                  description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
+                  name="Identify Stage Records"
+                  usesDispositions="true">
+                  <inputs>
+                    <input
+                      refId="Package\CONVOEE\Staging\Identify Stage Records.Inputs[Conditional Split Input]"
+                      description="Input to the Conditional Split Transformation"
+                      name="Conditional Split Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\Identify Stage Records.Inputs[Conditional Split Input].Columns[ID]"
+                          cachedDataType="i4"
+                          cachedName="ID"
+                          cachedSortKeyPosition="1"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[ID]" />
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\Identify Stage Records.Inputs[Conditional Split Input].Columns[ID (1)]"
+                          cachedDataType="i4"
+                          cachedName="ID (1)"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[ID (1)]" />
+                      </inputColumns>
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\CONVOEE\Staging\Identify Stage Records.Outputs[update]"
+                      description="Output 1 of the Conditional Split Transformation"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      exclusionGroup="1"
+                      name="update"
+                      synchronousInputId="Package\CONVOEE\Staging\Identify Stage Records.Inputs[Conditional Split Input]"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                          name="Expression">![ISNULL](#{Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[ID]}) &amp;&amp; ![ISNULL](#{Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[ID (1)]})</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Specifies the friendly version of the expression. This expression version uses column names."
+                          expressionType="Notify"
+                          name="FriendlyExpression">!ISNULL(ID) &amp;&amp; !ISNULL([ID (1)])</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                          name="EvaluationOrder">0</property>
+                      </properties>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\CONVOEE\Staging\Identify Stage Records.Outputs[insert]"
+                      description="Output 2 of the Conditional Split Transformation"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      exclusionGroup="1"
+                      name="insert"
+                      synchronousInputId="Package\CONVOEE\Staging\Identify Stage Records.Inputs[Conditional Split Input]"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                          name="Expression">![ISNULL](#{Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[ID]}) &amp;&amp; [ISNULL](#{Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[ID (1)]})</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Specifies the friendly version of the expression. This expression version uses column names."
+                          expressionType="Notify"
+                          name="FriendlyExpression">!ISNULL(ID) &amp;&amp; ISNULL([ID (1)])</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                          name="EvaluationOrder">1</property>
+                      </properties>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\CONVOEE\Staging\Identify Stage Records.Outputs[delete]"
+                      description="Output 3 of the Conditional Split Transformation"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      exclusionGroup="1"
+                      name="delete"
+                      synchronousInputId="Package\CONVOEE\Staging\Identify Stage Records.Inputs[Conditional Split Input]"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                          name="Expression">[ISNULL](#{Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[ID]}) &amp;&amp; ![ISNULL](#{Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[ID (1)]})</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Specifies the friendly version of the expression. This expression version uses column names."
+                          expressionType="Notify"
+                          name="FriendlyExpression">ISNULL(ID) &amp;&amp; !ISNULL([ID (1)])</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                          name="EvaluationOrder">2</property>
+                      </properties>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\CONVOEE\Staging\Identify Stage Records.Outputs[Conditional Split Default Output]"
+                      description="Default Output of the Conditional Split Transformation"
+                      exclusionGroup="1"
+                      name="Conditional Split Default Output"
+                      synchronousInputId="Package\CONVOEE\Staging\Identify Stage Records.Inputs[Conditional Split Input]">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          name="IsDefaultOut">true</property>
+                      </properties>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\CONVOEE\Staging\Identify Stage Records.Outputs[Conditional Split Error Output]"
+                      description="Error Output of the Conditional Split Transformation"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Conditional Split Error Output"
+                      synchronousInputId="Package\CONVOEE\Staging\Identify Stage Records.Inputs[Conditional Split Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\Identify Stage Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\CONVOEE\Staging\Identify Stage Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\Identify Stage Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\CONVOEE\Staging\Identify Stage Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\CONVOEE\Staging\INSERT Stage"
+                  componentClassID="Microsoft.OLEDBDestination"
+                  contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                  description="OLE DB Destination"
+                  name="INSERT Stage"
+                  usesDispositions="true"
+                  version="4">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset">[dbo].[zAAS_CONVOEE_STAGE_INSERT]</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">3</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepIdentity">false</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                      name="FastLoadOptions">CHECK_CONSTRAINTS</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                      name="FastLoadMaxInsertCommitSize">2147483647</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\CONVOEE\Staging\INSERT Stage.Connections[OleDbConnection]"
+                      connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
+                      connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\CONVOEE\Staging\INSERT Stage.Inputs[OLE DB Destination Input]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="OLE DB Destination Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\INSERT Stage.Inputs[OLE DB Destination Input].Columns[ID]"
+                          cachedDataType="i4"
+                          cachedName="ID"
+                          cachedSortKeyPosition="1"
+                          externalMetadataColumnId="Package\CONVOEE\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[ID]"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[ID]" />
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\INSERT Stage.Inputs[OLE DB Destination Input].Columns[STTIME]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="STTIME"
+                          externalMetadataColumnId="Package\CONVOEE\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[STTIME]"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[STTIME]" />
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\INSERT Stage.Inputs[OLE DB Destination Input].Columns[MCNNO]"
+                          cachedDataType="i4"
+                          cachedName="MCNNO"
+                          externalMetadataColumnId="Package\CONVOEE\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[MCNNO]"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[MCNNO]" />
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\INSERT Stage.Inputs[OLE DB Destination Input].Columns[SHIFTNO]"
+                          cachedDataType="i4"
+                          cachedName="SHIFTNO"
+                          externalMetadataColumnId="Package\CONVOEE\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[SHIFTNO]"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[SHIFTNO]" />
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\INSERT Stage.Inputs[OLE DB Destination Input].Columns[OPERNO]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="OPERNO"
+                          externalMetadataColumnId="Package\CONVOEE\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[OPERNO]"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[OPERNO]" />
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\INSERT Stage.Inputs[OLE DB Destination Input].Columns[ORDNO]"
+                          cachedDataType="i4"
+                          cachedName="ORDNO"
+                          externalMetadataColumnId="Package\CONVOEE\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[ORDNO]"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[ORDNO]" />
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\INSERT Stage.Inputs[OLE DB Destination Input].Columns[SPECNO]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="SPECNO"
+                          externalMetadataColumnId="Package\CONVOEE\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[SPECNO]"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[SPECNO]" />
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\INSERT Stage.Inputs[OLE DB Destination Input].Columns[LINESPD]"
+                          cachedDataType="i4"
+                          cachedName="LINESPD"
+                          externalMetadataColumnId="Package\CONVOEE\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[LINESPD]"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[LINESPD]" />
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\INSERT Stage.Inputs[OLE DB Destination Input].Columns[WIPNO]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="WIPNO"
+                          externalMetadataColumnId="Package\CONVOEE\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[WIPNO]"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[WIPNO]" />
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\INSERT Stage.Inputs[OLE DB Destination Input].Columns[WIPBATCH]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="WIPBATCH"
+                          externalMetadataColumnId="Package\CONVOEE\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[WIPBATCH]"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[WIPBATCH]" />
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\INSERT Stage.Inputs[OLE DB Destination Input].Columns[OPRCMTS]"
+                          cachedDataType="wstr"
+                          cachedLength="200"
+                          cachedName="OPRCMTS"
+                          externalMetadataColumnId="Package\CONVOEE\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[OPRCMTS]"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[OPRCMTS]" />
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\INSERT Stage.Inputs[OLE DB Destination Input].Columns[ORDQTY]"
+                          cachedDataType="numeric"
+                          cachedName="ORDQTY"
+                          cachedPrecision="18"
+                          cachedScale="3"
+                          externalMetadataColumnId="Package\CONVOEE\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[ORDQTY]"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[ORDQTY]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\CONVOEE\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[ID]"
+                          dataType="i4"
+                          name="ID" />
+                        <externalMetadataColumn
+                          refId="Package\CONVOEE\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[STTIME]"
+                          dataType="dbTimeStamp"
+                          name="STTIME" />
+                        <externalMetadataColumn
+                          refId="Package\CONVOEE\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[MCNNO]"
+                          dataType="i4"
+                          name="MCNNO" />
+                        <externalMetadataColumn
+                          refId="Package\CONVOEE\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[SHIFTNO]"
+                          dataType="i4"
+                          name="SHIFTNO" />
+                        <externalMetadataColumn
+                          refId="Package\CONVOEE\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[OPERNO]"
+                          dataType="wstr"
+                          length="10"
+                          name="OPERNO" />
+                        <externalMetadataColumn
+                          refId="Package\CONVOEE\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[ORDNO]"
+                          dataType="i4"
+                          name="ORDNO" />
+                        <externalMetadataColumn
+                          refId="Package\CONVOEE\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[SPECNO]"
+                          dataType="wstr"
+                          length="50"
+                          name="SPECNO" />
+                        <externalMetadataColumn
+                          refId="Package\CONVOEE\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[LINESPD]"
+                          dataType="i4"
+                          name="LINESPD" />
+                        <externalMetadataColumn
+                          refId="Package\CONVOEE\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[WIPNO]"
+                          dataType="wstr"
+                          length="50"
+                          name="WIPNO" />
+                        <externalMetadataColumn
+                          refId="Package\CONVOEE\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[WIPBATCH]"
+                          dataType="wstr"
+                          length="50"
+                          name="WIPBATCH" />
+                        <externalMetadataColumn
+                          refId="Package\CONVOEE\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[OPRCMTS]"
+                          dataType="wstr"
+                          length="200"
+                          name="OPRCMTS" />
+                        <externalMetadataColumn
+                          refId="Package\CONVOEE\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[ORDQTY]"
+                          dataType="numeric"
+                          name="ORDQTY"
+                          precision="18"
+                          scale="3" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\CONVOEE\Staging\INSERT Stage.Outputs[OLE DB Destination Error Output]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="OLE DB Destination Error Output"
+                      synchronousInputId="Package\CONVOEE\Staging\INSERT Stage.Inputs[OLE DB Destination Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\INSERT Stage.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\CONVOEE\Staging\INSERT Stage.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\INSERT Stage.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\CONVOEE\Staging\INSERT Stage.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\CONVOEE\Staging\Merge Join"
+                  componentClassID="Microsoft.MergeJoin"
+                  contactInfo="Merge Join;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
+                  description="Combine two sorted data flows into one using the FULL, LEFT, or INNER join. We recommend this transformation when data flows can be sorted at their sources."
+                  name="Merge Join"
+                  version="1">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the type of join to perform."
+                      name="JoinType"
+                      typeConverter="JoinType">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the number of columns in the ordering key."
+                      name="NumKeyColumns">1</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the null values are treated as equal values."
+                      name="TreatNullsAsEqual">true</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Indicates the requested maximum buffers per input before blocking."
+                      name="MaxBuffersPerInput">5</property>
+                  </properties>
+                  <inputs>
+                    <input
+                      refId="Package\CONVOEE\Staging\Merge Join.Inputs[Merge Join Left Input]"
+                      hasSideEffects="true"
+                      name="Merge Join Left Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[ID]"
+                          cachedDataType="i4"
+                          cachedName="ID"
+                          cachedSortKeyPosition="1"
+                          lineageId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Output].Columns[ID]" />
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[STTIME]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="STTIME"
+                          lineageId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Output].Columns[STTIME]" />
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[MCNNO]"
+                          cachedDataType="i4"
+                          cachedName="MCNNO"
+                          lineageId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Output].Columns[MCNNO]" />
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[SHIFTNO]"
+                          cachedDataType="i4"
+                          cachedName="SHIFTNO"
+                          lineageId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Output].Columns[SHIFTNO]" />
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[OPERNO]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="OPERNO"
+                          lineageId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Output].Columns[OPERNO]" />
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[ORDNO]"
+                          cachedDataType="i4"
+                          cachedName="ORDNO"
+                          lineageId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Output].Columns[ORDNO]" />
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[SPECNO]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="SPECNO"
+                          lineageId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Output].Columns[SPECNO]" />
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[LINESPD]"
+                          cachedDataType="i4"
+                          cachedName="LINESPD"
+                          lineageId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Output].Columns[LINESPD]" />
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[WIPNO]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="WIPNO"
+                          lineageId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Output].Columns[WIPNO]" />
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[WIPBATCH]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="WIPBATCH"
+                          lineageId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Output].Columns[WIPBATCH]" />
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[OPRCMTS]"
+                          cachedDataType="wstr"
+                          cachedLength="200"
+                          cachedName="OPRCMTS"
+                          lineageId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Output].Columns[OPRCMTS]" />
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[ORDQTY]"
+                          cachedDataType="numeric"
+                          cachedName="ORDQTY"
+                          cachedPrecision="18"
+                          cachedScale="3"
+                          lineageId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Output].Columns[ORDQTY]" />
+                      </inputColumns>
+                      <externalMetadataColumns />
+                    </input>
+                    <input
+                      refId="Package\CONVOEE\Staging\Merge Join.Inputs[Merge Join Right Input]"
+                      hasSideEffects="true"
+                      name="Merge Join Right Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[ID]"
+                          cachedDataType="i4"
+                          cachedName="ID"
+                          cachedSortKeyPosition="1"
+                          lineageId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Output].Columns[ID]" />
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[STTIME]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="STTIME"
+                          lineageId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Output].Columns[STTIME]" />
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[MCNNO]"
+                          cachedDataType="i4"
+                          cachedName="MCNNO"
+                          lineageId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Output].Columns[MCNNO]" />
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[SHIFTNO]"
+                          cachedDataType="i4"
+                          cachedName="SHIFTNO"
+                          lineageId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Output].Columns[SHIFTNO]" />
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[OPERNO]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="OPERNO"
+                          lineageId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Output].Columns[OPERNO]" />
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[ORDNO]"
+                          cachedDataType="i4"
+                          cachedName="ORDNO"
+                          lineageId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Output].Columns[ORDNO]" />
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[SPECNO]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="SPECNO"
+                          lineageId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Output].Columns[SPECNO]" />
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[LINESPD]"
+                          cachedDataType="i4"
+                          cachedName="LINESPD"
+                          lineageId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Output].Columns[LINESPD]" />
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[WIPNO]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="WIPNO"
+                          lineageId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Output].Columns[WIPNO]" />
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[WIPBATCH]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="WIPBATCH"
+                          lineageId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Output].Columns[WIPBATCH]" />
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[OPRCMTS]"
+                          cachedDataType="wstr"
+                          cachedLength="200"
+                          cachedName="OPRCMTS"
+                          lineageId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Output].Columns[OPRCMTS]" />
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[ORDQTY]"
+                          cachedDataType="numeric"
+                          cachedName="ORDQTY"
+                          cachedPrecision="18"
+                          cachedScale="3"
+                          lineageId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Output].Columns[ORDQTY]" />
+                      </inputColumns>
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output]"
+                      isSorted="true"
+                      name="Merge Join Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[ID]"
+                          dataType="i4"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[ID]"
+                          name="ID"
+                          sortKeyPosition="1">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\CONVOEE\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[ID]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[STTIME]"
+                          dataType="dbTimeStamp"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[STTIME]"
+                          name="STTIME">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\CONVOEE\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[STTIME]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[MCNNO]"
+                          dataType="i4"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[MCNNO]"
+                          name="MCNNO">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\CONVOEE\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[MCNNO]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[SHIFTNO]"
+                          dataType="i4"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[SHIFTNO]"
+                          name="SHIFTNO">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\CONVOEE\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[SHIFTNO]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[OPERNO]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[OPERNO]"
+                          name="OPERNO">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\CONVOEE\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[OPERNO]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[ORDNO]"
+                          dataType="i4"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[ORDNO]"
+                          name="ORDNO">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\CONVOEE\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[ORDNO]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[SPECNO]"
+                          dataType="wstr"
+                          length="50"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[SPECNO]"
+                          name="SPECNO">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\CONVOEE\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[SPECNO]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[LINESPD]"
+                          dataType="i4"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[LINESPD]"
+                          name="LINESPD">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\CONVOEE\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[LINESPD]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[WIPNO]"
+                          dataType="wstr"
+                          length="50"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[WIPNO]"
+                          name="WIPNO">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\CONVOEE\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[WIPNO]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[WIPBATCH]"
+                          dataType="wstr"
+                          length="50"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[WIPBATCH]"
+                          name="WIPBATCH">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\CONVOEE\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[WIPBATCH]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[OPRCMTS]"
+                          dataType="wstr"
+                          length="200"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[OPRCMTS]"
+                          name="OPRCMTS">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\CONVOEE\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[OPRCMTS]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[ORDQTY]"
+                          dataType="numeric"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[ORDQTY]"
+                          name="ORDQTY"
+                          precision="18"
+                          scale="3">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\CONVOEE\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[ORDQTY]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[ID (1)]"
+                          dataType="i4"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[ID (1)]"
+                          name="ID (1)">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\CONVOEE\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[ID]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[STTIME (1)]"
+                          dataType="dbTimeStamp"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[STTIME (1)]"
+                          name="STTIME (1)">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\CONVOEE\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[STTIME]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[MCNNO (1)]"
+                          dataType="i4"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[MCNNO (1)]"
+                          name="MCNNO (1)">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\CONVOEE\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[MCNNO]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[SHIFTNO (1)]"
+                          dataType="i4"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[SHIFTNO (1)]"
+                          name="SHIFTNO (1)">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\CONVOEE\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[SHIFTNO]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[OPERNO (1)]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[OPERNO (1)]"
+                          name="OPERNO (1)">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\CONVOEE\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[OPERNO]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[ORDNO (1)]"
+                          dataType="i4"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[ORDNO (1)]"
+                          name="ORDNO (1)">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\CONVOEE\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[ORDNO]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[SPECNO (1)]"
+                          dataType="wstr"
+                          length="50"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[SPECNO (1)]"
+                          name="SPECNO (1)">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\CONVOEE\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[SPECNO]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[LINESPD (1)]"
+                          dataType="i4"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[LINESPD (1)]"
+                          name="LINESPD (1)">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\CONVOEE\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[LINESPD]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[WIPNO (1)]"
+                          dataType="wstr"
+                          length="50"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[WIPNO (1)]"
+                          name="WIPNO (1)">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\CONVOEE\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[WIPNO]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[WIPBATCH (1)]"
+                          dataType="wstr"
+                          length="50"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[WIPBATCH (1)]"
+                          name="WIPBATCH (1)">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\CONVOEE\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[WIPBATCH]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[OPRCMTS (1)]"
+                          dataType="wstr"
+                          length="200"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[OPRCMTS (1)]"
+                          name="OPRCMTS (1)">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\CONVOEE\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[OPRCMTS]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[ORDQTY (1)]"
+                          dataType="numeric"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[ORDQTY (1)]"
+                          name="ORDQTY (1)"
+                          precision="18"
+                          scale="3">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\CONVOEE\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[ORDQTY]}</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\CONVOEE\Staging\PBI"
+                  componentClassID="Microsoft.OLEDBSource"
+                  contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+                  description="OLE DB Source"
+                  name="PBI"
+                  usesDispositions="true"
+                  version="7">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT [ID]
+    ,[STTIME]
+    ,[MCNNO]
+    ,[SHIFTNO]
+    ,[OPERNO]
+    ,[ORDNO]
+    ,[SPECNO]
+    ,[LINESPD]
+    ,[WIPNO]
+    ,[WIPBATCH]
+    ,[OPRCMTS]
+    ,[ORDQTY]
+FROM [zAAS_CONVOEE] (NOLOCK)
+ORDER BY [ID]</property>
+                    <property
+                      dataType="System.String"
+                      description="The variable that contains the SQL command to be executed."
+                      name="SqlCommandVariable"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">2</property>
+                    <property
+                      dataType="System.String"
+                      description="The mappings between the parameters in the SQL command and variables."
+                      name="ParameterMapping"></property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\CONVOEE\Staging\PBI.Connections[OleDbConnection]"
+                      connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
+                      connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <outputs>
+                    <output
+                      refId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Output]"
+                      isSorted="true"
+                      name="OLE DB Source Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Output].Columns[ID]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Output].ExternalColumns[ID]"
+                          lineageId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Output].Columns[ID]"
+                          name="ID"
+                          sortKeyPosition="1"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Output].Columns[STTIME]"
+                          dataType="dbTimeStamp"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Output].ExternalColumns[STTIME]"
+                          lineageId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Output].Columns[STTIME]"
+                          name="STTIME"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Output].Columns[MCNNO]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Output].ExternalColumns[MCNNO]"
+                          lineageId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Output].Columns[MCNNO]"
+                          name="MCNNO"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Output].Columns[SHIFTNO]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Output].ExternalColumns[SHIFTNO]"
+                          lineageId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Output].Columns[SHIFTNO]"
+                          name="SHIFTNO"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Output].Columns[OPERNO]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Output].ExternalColumns[OPERNO]"
+                          length="10"
+                          lineageId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Output].Columns[OPERNO]"
+                          name="OPERNO"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Output].Columns[ORDNO]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Output].ExternalColumns[ORDNO]"
+                          lineageId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Output].Columns[ORDNO]"
+                          name="ORDNO"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Output].Columns[SPECNO]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Output].ExternalColumns[SPECNO]"
+                          length="50"
+                          lineageId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Output].Columns[SPECNO]"
+                          name="SPECNO"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Output].Columns[LINESPD]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Output].ExternalColumns[LINESPD]"
+                          lineageId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Output].Columns[LINESPD]"
+                          name="LINESPD"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Output].Columns[WIPNO]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Output].ExternalColumns[WIPNO]"
+                          length="50"
+                          lineageId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Output].Columns[WIPNO]"
+                          name="WIPNO"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Output].Columns[WIPBATCH]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Output].ExternalColumns[WIPBATCH]"
+                          length="50"
+                          lineageId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Output].Columns[WIPBATCH]"
+                          name="WIPBATCH"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Output].Columns[OPRCMTS]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Output].ExternalColumns[OPRCMTS]"
+                          length="200"
+                          lineageId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Output].Columns[OPRCMTS]"
+                          name="OPRCMTS"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Output].Columns[ORDQTY]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Output].ExternalColumns[ORDQTY]"
+                          lineageId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Output].Columns[ORDQTY]"
+                          name="ORDQTY"
+                          precision="18"
+                          scale="3"
+                          truncationRowDisposition="FailComponent" />
+                      </outputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Output].ExternalColumns[ID]"
+                          dataType="i4"
+                          name="ID" />
+                        <externalMetadataColumn
+                          refId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Output].ExternalColumns[STTIME]"
+                          dataType="dbTimeStamp"
+                          name="STTIME" />
+                        <externalMetadataColumn
+                          refId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Output].ExternalColumns[MCNNO]"
+                          dataType="i4"
+                          name="MCNNO" />
+                        <externalMetadataColumn
+                          refId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Output].ExternalColumns[SHIFTNO]"
+                          dataType="i4"
+                          name="SHIFTNO" />
+                        <externalMetadataColumn
+                          refId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Output].ExternalColumns[OPERNO]"
+                          dataType="wstr"
+                          length="10"
+                          name="OPERNO" />
+                        <externalMetadataColumn
+                          refId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Output].ExternalColumns[ORDNO]"
+                          dataType="i4"
+                          name="ORDNO" />
+                        <externalMetadataColumn
+                          refId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Output].ExternalColumns[SPECNO]"
+                          dataType="wstr"
+                          length="50"
+                          name="SPECNO" />
+                        <externalMetadataColumn
+                          refId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Output].ExternalColumns[LINESPD]"
+                          dataType="i4"
+                          name="LINESPD" />
+                        <externalMetadataColumn
+                          refId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Output].ExternalColumns[WIPNO]"
+                          dataType="wstr"
+                          length="50"
+                          name="WIPNO" />
+                        <externalMetadataColumn
+                          refId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Output].ExternalColumns[WIPBATCH]"
+                          dataType="wstr"
+                          length="50"
+                          name="WIPBATCH" />
+                        <externalMetadataColumn
+                          refId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Output].ExternalColumns[OPRCMTS]"
+                          dataType="wstr"
+                          length="200"
+                          name="OPRCMTS" />
+                        <externalMetadataColumn
+                          refId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Output].ExternalColumns[ORDQTY]"
+                          dataType="numeric"
+                          name="ORDQTY"
+                          precision="18"
+                          scale="3" />
+                      </externalMetadataColumns>
+                    </output>
+                    <output
+                      refId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Error Output]"
+                      isErrorOut="true"
+                      name="OLE DB Source Error Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Error Output].Columns[ID]"
+                          dataType="i4"
+                          lineageId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Error Output].Columns[ID]"
+                          name="ID" />
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Error Output].Columns[STTIME]"
+                          dataType="dbTimeStamp"
+                          lineageId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Error Output].Columns[STTIME]"
+                          name="STTIME" />
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Error Output].Columns[MCNNO]"
+                          dataType="i4"
+                          lineageId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Error Output].Columns[MCNNO]"
+                          name="MCNNO" />
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Error Output].Columns[SHIFTNO]"
+                          dataType="i4"
+                          lineageId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Error Output].Columns[SHIFTNO]"
+                          name="SHIFTNO" />
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Error Output].Columns[OPERNO]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Error Output].Columns[OPERNO]"
+                          name="OPERNO" />
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Error Output].Columns[ORDNO]"
+                          dataType="i4"
+                          lineageId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Error Output].Columns[ORDNO]"
+                          name="ORDNO" />
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Error Output].Columns[SPECNO]"
+                          dataType="wstr"
+                          length="50"
+                          lineageId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Error Output].Columns[SPECNO]"
+                          name="SPECNO" />
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Error Output].Columns[LINESPD]"
+                          dataType="i4"
+                          lineageId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Error Output].Columns[LINESPD]"
+                          name="LINESPD" />
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Error Output].Columns[WIPNO]"
+                          dataType="wstr"
+                          length="50"
+                          lineageId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Error Output].Columns[WIPNO]"
+                          name="WIPNO" />
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Error Output].Columns[WIPBATCH]"
+                          dataType="wstr"
+                          length="50"
+                          lineageId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Error Output].Columns[WIPBATCH]"
+                          name="WIPBATCH" />
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Error Output].Columns[OPRCMTS]"
+                          dataType="wstr"
+                          length="200"
+                          lineageId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Error Output].Columns[OPRCMTS]"
+                          name="OPRCMTS" />
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Error Output].Columns[ORDQTY]"
+                          dataType="numeric"
+                          lineageId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Error Output].Columns[ORDQTY]"
+                          name="ORDQTY"
+                          precision="18"
+                          scale="3" />
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\CONVOEE\Staging\UPDATE Stage"
+                  componentClassID="Microsoft.OLEDBDestination"
+                  contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                  description="OLE DB Destination"
+                  name="UPDATE Stage"
+                  usesDispositions="true"
+                  version="4">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset">[dbo].[zAAS_CONVOEE_STAGE_UPDATE]</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">3</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepIdentity">false</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                      name="FastLoadOptions">CHECK_CONSTRAINTS</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                      name="FastLoadMaxInsertCommitSize">2147483647</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\CONVOEE\Staging\UPDATE Stage.Connections[OleDbConnection]"
+                      connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
+                      connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\CONVOEE\Staging\UPDATE Stage.Inputs[OLE DB Destination Input]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="OLE DB Destination Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].Columns[ID]"
+                          cachedDataType="i4"
+                          cachedName="ID"
+                          cachedSortKeyPosition="1"
+                          externalMetadataColumnId="Package\CONVOEE\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[ID]"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[ID]" />
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].Columns[STTIME]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="STTIME"
+                          externalMetadataColumnId="Package\CONVOEE\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[STTIME]"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[STTIME]" />
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].Columns[MCNNO]"
+                          cachedDataType="i4"
+                          cachedName="MCNNO"
+                          externalMetadataColumnId="Package\CONVOEE\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[MCNNO]"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[MCNNO]" />
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].Columns[SHIFTNO]"
+                          cachedDataType="i4"
+                          cachedName="SHIFTNO"
+                          externalMetadataColumnId="Package\CONVOEE\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[SHIFTNO]"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[SHIFTNO]" />
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].Columns[OPERNO]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="OPERNO"
+                          externalMetadataColumnId="Package\CONVOEE\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[OPERNO]"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[OPERNO]" />
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].Columns[ORDNO]"
+                          cachedDataType="i4"
+                          cachedName="ORDNO"
+                          externalMetadataColumnId="Package\CONVOEE\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[ORDNO]"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[ORDNO]" />
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].Columns[SPECNO]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="SPECNO"
+                          externalMetadataColumnId="Package\CONVOEE\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[SPECNO]"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[SPECNO]" />
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].Columns[LINESPD]"
+                          cachedDataType="i4"
+                          cachedName="LINESPD"
+                          externalMetadataColumnId="Package\CONVOEE\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[LINESPD]"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[LINESPD]" />
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].Columns[WIPNO]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="WIPNO"
+                          externalMetadataColumnId="Package\CONVOEE\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[WIPNO]"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[WIPNO]" />
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].Columns[WIPBATCH]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="WIPBATCH"
+                          externalMetadataColumnId="Package\CONVOEE\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[WIPBATCH]"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[WIPBATCH]" />
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].Columns[OPRCMTS]"
+                          cachedDataType="wstr"
+                          cachedLength="200"
+                          cachedName="OPRCMTS"
+                          externalMetadataColumnId="Package\CONVOEE\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[OPRCMTS]"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[OPRCMTS]" />
+                        <inputColumn
+                          refId="Package\CONVOEE\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].Columns[ORDQTY]"
+                          cachedDataType="numeric"
+                          cachedName="ORDQTY"
+                          cachedPrecision="18"
+                          cachedScale="3"
+                          externalMetadataColumnId="Package\CONVOEE\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[ORDQTY]"
+                          lineageId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output].Columns[ORDQTY]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\CONVOEE\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[ID]"
+                          dataType="i4"
+                          name="ID" />
+                        <externalMetadataColumn
+                          refId="Package\CONVOEE\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[STTIME]"
+                          dataType="dbTimeStamp"
+                          name="STTIME" />
+                        <externalMetadataColumn
+                          refId="Package\CONVOEE\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[MCNNO]"
+                          dataType="i4"
+                          name="MCNNO" />
+                        <externalMetadataColumn
+                          refId="Package\CONVOEE\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[SHIFTNO]"
+                          dataType="i4"
+                          name="SHIFTNO" />
+                        <externalMetadataColumn
+                          refId="Package\CONVOEE\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[OPERNO]"
+                          dataType="wstr"
+                          length="10"
+                          name="OPERNO" />
+                        <externalMetadataColumn
+                          refId="Package\CONVOEE\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[ORDNO]"
+                          dataType="i4"
+                          name="ORDNO" />
+                        <externalMetadataColumn
+                          refId="Package\CONVOEE\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[SPECNO]"
+                          dataType="wstr"
+                          length="50"
+                          name="SPECNO" />
+                        <externalMetadataColumn
+                          refId="Package\CONVOEE\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[LINESPD]"
+                          dataType="i4"
+                          name="LINESPD" />
+                        <externalMetadataColumn
+                          refId="Package\CONVOEE\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[WIPNO]"
+                          dataType="wstr"
+                          length="50"
+                          name="WIPNO" />
+                        <externalMetadataColumn
+                          refId="Package\CONVOEE\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[WIPBATCH]"
+                          dataType="wstr"
+                          length="50"
+                          name="WIPBATCH" />
+                        <externalMetadataColumn
+                          refId="Package\CONVOEE\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[OPRCMTS]"
+                          dataType="wstr"
+                          length="200"
+                          name="OPRCMTS" />
+                        <externalMetadataColumn
+                          refId="Package\CONVOEE\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[ORDQTY]"
+                          dataType="numeric"
+                          name="ORDQTY"
+                          precision="18"
+                          scale="3" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\CONVOEE\Staging\UPDATE Stage.Outputs[OLE DB Destination Error Output]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="OLE DB Destination Error Output"
+                      synchronousInputId="Package\CONVOEE\Staging\UPDATE Stage.Inputs[OLE DB Destination Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\UPDATE Stage.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\CONVOEE\Staging\UPDATE Stage.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\CONVOEE\Staging\UPDATE Stage.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\CONVOEE\Staging\UPDATE Stage.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+              </components>
+              <paths>
+                <path
+                  refId="Package\CONVOEE\Staging.Paths[delete]"
+                  endId="Package\CONVOEE\Staging\DELETE Stage.Inputs[OLE DB Destination Input]"
+                  name="delete"
+                  startId="Package\CONVOEE\Staging\Identify Stage Records.Outputs[delete]" />
+                <path
+                  refId="Package\CONVOEE\Staging.Paths[insert]"
+                  endId="Package\CONVOEE\Staging\INSERT Stage.Inputs[OLE DB Destination Input]"
+                  name="insert"
+                  startId="Package\CONVOEE\Staging\Identify Stage Records.Outputs[insert]" />
+                <path
+                  refId="Package\CONVOEE\Staging.Paths[Merge Join Output]"
+                  endId="Package\CONVOEE\Staging\Identify Stage Records.Inputs[Conditional Split Input]"
+                  name="Merge Join Output"
+                  startId="Package\CONVOEE\Staging\Merge Join.Outputs[Merge Join Output]" />
+                <path
+                  refId="Package\CONVOEE\Staging.Paths[OLE DB Source Output]"
+                  endId="Package\CONVOEE\Staging\Merge Join.Inputs[Merge Join Left Input]"
+                  name="OLE DB Source Output"
+                  startId="Package\CONVOEE\Staging\AASPRDDB.Outputs[OLE DB Source Output]" />
+                <path
+                  refId="Package\CONVOEE\Staging.Paths[OLE DB Source Output1]"
+                  endId="Package\CONVOEE\Staging\Merge Join.Inputs[Merge Join Right Input]"
+                  name="OLE DB Source Output"
+                  startId="Package\CONVOEE\Staging\PBI.Outputs[OLE DB Source Output]" />
+                <path
+                  refId="Package\CONVOEE\Staging.Paths[update]"
+                  endId="Package\CONVOEE\Staging\Identify Changed Records.Inputs[Conditional Split Input]"
+                  name="update"
+                  startId="Package\CONVOEE\Staging\Identify Stage Records.Outputs[update]" />
+                <path
+                  refId="Package\CONVOEE\Staging.Paths[update1]"
+                  endId="Package\CONVOEE\Staging\UPDATE Stage.Inputs[OLE DB Destination Input]"
+                  name="update"
+                  startId="Package\CONVOEE\Staging\Identify Changed Records.Outputs[update]" />
+              </paths>
+            </pipeline>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\CONVOEE\UPDATE"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{56139147-F7D8-4623-8453-20277FA7222D}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="UPDATE"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+              SQLTask:SqlStatementSource="UPDATE a&#xA;SET a.STTIME = b.STTIME&#xA;&#x9;,a.MCNNO = b.MCNNO&#xA;&#x9;,a.SHIFTNO = b.SHIFTNO&#xA;&#x9;,a.OPERNO = b.OPERNO&#xA;&#x9;,a.ORDNO = b.ORDNO&#xA;&#x9;,a.SPECNO = b.SPECNO&#xA;&#x9;,a.LINESPD = b.LINESPD&#xA;&#x9;,a.WIPNO = b.WIPNO&#xA;&#x9;,a.WIPBATCH = b.WIPBATCH&#xA;&#x9;,a.OPRCMTS = b.OPRCMTS&#xA;&#x9;,a.ORDQTY = b.ORDQTY&#xA;FROM [zAAS_CONVOEE] a&#xA;INNER JOIN [zAAS_CONVOEE_STAGE_UPDATE] b&#xA;ON a.[ID] = b.[ID]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\CONVOEE.PrecedenceConstraints[Constraint]"
+          DTS:CreationName=""
+          DTS:DTSID="{EC75C1AF-8A48-4942-8CE4-5281A18A42F2}"
+          DTS:From="Package\CONVOEE\Clean Stage"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint"
+          DTS:To="Package\CONVOEE\Staging" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\CONVOEE.PrecedenceConstraints[Constraint 1]"
+          DTS:CreationName=""
+          DTS:DTSID="{7B1804F5-F01B-4C36-BB6E-F23CE0221A74}"
+          DTS:From="Package\CONVOEE\Staging"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 1"
+          DTS:To="Package\CONVOEE\DELETE" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\CONVOEE.PrecedenceConstraints[Constraint 2]"
+          DTS:CreationName=""
+          DTS:DTSID="{FCD29B3F-A8DD-42FC-8388-CC3E4C9A69E1}"
+          DTS:From="Package\CONVOEE\DELETE"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 2"
+          DTS:To="Package\CONVOEE\UPDATE" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\CONVOEE.PrecedenceConstraints[Constraint 3]"
+          DTS:CreationName=""
+          DTS:DTSID="{E660595D-5C21-4FA5-9CF0-CCCAE0064504}"
+          DTS:From="Package\CONVOEE\UPDATE"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 3"
+          DTS:To="Package\CONVOEE\INSERT" />
+      </DTS:PrecedenceConstraints>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="135,42"
+          Id="Package\CONVOEE\Clean Stage"
+          TopLeft="16,9" />
+        <NodeLayout
+          Size="135,42"
+          Id="Package\CONVOEE\Staging"
+          TopLeft="16,93.5" />
+        <EdgeLayout
+          Id="Package\CONVOEE.PrecedenceConstraints[Constraint]"
+          TopLeft="83.5,51">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,42.5"
+              Start="0,0"
+              End="0,35">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,35" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="135,42"
+          Id="Package\CONVOEE\DELETE"
+          TopLeft="16,178" />
+        <EdgeLayout
+          Id="Package\CONVOEE.PrecedenceConstraints[Constraint 1]"
+          TopLeft="83.5,135.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,42.5"
+              Start="0,0"
+              End="0,35">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,35" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="135,42"
+          Id="Package\CONVOEE\UPDATE"
+          TopLeft="16,262.5" />
+        <EdgeLayout
+          Id="Package\CONVOEE.PrecedenceConstraints[Constraint 2]"
+          TopLeft="83.5,220">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,42.5"
+              Start="0,0"
+              End="0,35">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,35" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="135,42"
+          Id="Package\CONVOEE\INSERT"
+          TopLeft="16,347" />
+        <EdgeLayout
+          Id="Package\CONVOEE.PrecedenceConstraints[Constraint 3]"
+          TopLeft="83.5,304.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,42.5"
+              Start="0,0"
+              End="0,35">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,35" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="164,409"
+          Size="164,452"
+          Id="Package\CONVOEE"
+          TopLeft="20,16" />
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\CONVOEE\Staging">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="131,42"
+          Id="Package\CONVOEE\Staging\Merge Join"
+          TopLeft="292,127" />
+        <NodeLayout
+          Size="146,42"
+          Id="Package\CONVOEE\Staging\DELETE Stage"
+          TopLeft="540,348" />
+        <NodeLayout
+          Size="131,42"
+          Id="Package\CONVOEE\Staging\PBI"
+          TopLeft="555,20" />
+        <NodeLayout
+          Size="145,42"
+          Id="Package\CONVOEE\Staging\INSERT Stage"
+          TopLeft="29,348" />
+        <NodeLayout
+          Size="186,42"
+          Id="Package\CONVOEE\Staging\Identify Stage Records"
+          TopLeft="266,232" />
+        <NodeLayout
+          Size="131,42"
+          Id="Package\CONVOEE\Staging\AASPRDDB"
+          TopLeft="29,20" />
+        <EdgeLayout
+          Id="Package\CONVOEE\Staging.Paths[OLE DB Source Output1]"
+          TopLeft="620.5,62">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-242.5,65"
+              Start="0,0"
+              End="-242.5,57.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,34.5294117647059" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,34.5294117647059"
+                    Point2="0,38.5294117647059"
+                    Point3="-4,38.5294117647059" />
+                  <mssgle:LineSegment
+                    End="-238.5,38.5294117647059" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-238.5,38.5294117647059"
+                    Point2="-242.5,38.5294117647059"
+                    Point3="-242.5,42.5294117647059" />
+                  <mssgle:LineSegment
+                    End="-242.5,57.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\CONVOEE\Staging.Paths[OLE DB Source Output]"
+          TopLeft="94.5,62">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="242.5,65"
+              Start="0,0"
+              End="242.5,57.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,34.5294117647059" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,34.5294117647059"
+                    Point2="0,38.5294117647059"
+                    Point3="4,38.5294117647059" />
+                  <mssgle:LineSegment
+                    End="238.5,38.5294117647059" />
+                  <mssgle:CubicBezierSegment
+                    Point1="238.5,38.5294117647059"
+                    Point2="242.5,38.5294117647059"
+                    Point3="242.5,42.5294117647059" />
+                  <mssgle:LineSegment
+                    End="242.5,57.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\CONVOEE\Staging.Paths[Merge Join Output]"
+          TopLeft="358.25,169">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,63"
+              Start="0,0"
+              End="0,55.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,55.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\CONVOEE\Staging.Paths[insert]"
+          TopLeft="329.333333333333,274">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-227.833333333333,74"
+              Start="0,0"
+              End="-227.833333333333,66.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,25.9786780383795" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,25.9786780383795"
+                    Point2="0,29.9786780383795"
+                    Point3="-4,29.9786780383795" />
+                  <mssgle:LineSegment
+                    End="-223.833333333333,29.9786780383795" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-223.833333333333,29.9786780383795"
+                    Point2="-227.833333333333,29.9786780383795"
+                    Point3="-227.833333333333,33.9786780383795" />
+                  <mssgle:LineSegment
+                    End="-227.833333333333,66.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-126.866647135417,34.9786780383795,25.8999609375,9.451171875"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\CONVOEE\Staging.Paths[delete]"
+          TopLeft="388.666666666667,274">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="224.333333333333,74"
+              Start="0,0"
+              End="224.333333333333,66.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,25.9786780383795" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,25.9786780383795"
+                    Point2="0,29.9786780383795"
+                    Point3="4,29.9786780383795" />
+                  <mssgle:LineSegment
+                    End="220.333333333333,29.9786780383795" />
+                  <mssgle:CubicBezierSegment
+                    Point1="220.333333333333,29.9786780383795"
+                    Point2="224.333333333333,29.9786780383795"
+                    Point3="224.333333333333,33.9786780383795" />
+                  <mssgle:LineSegment
+                    End="224.333333333333,66.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="97.9707096354167,34.9786780383795,28.3919140625,9.7490234375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="201,42"
+          Id="Package\CONVOEE\Staging\Identify Changed Records"
+          TopLeft="257,348" />
+        <EdgeLayout
+          Id="Package\CONVOEE\Staging.Paths[update]"
+          TopLeft="358.25,274">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,74"
+              Start="0,0"
+              End="0,66.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,66.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-15.8025,27.4453125,31.605,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="148,42"
+          Id="Package\CONVOEE\Staging\UPDATE Stage"
+          TopLeft="280,455" />
+        <EdgeLayout
+          Id="Package\CONVOEE\Staging.Paths[update1]"
+          TopLeft="355.75,390">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,65"
+              Start="0,0"
+              End="0,57.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,57.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-15.8025,22.9453125,31.605,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\CONVOEE\Staging\DELETE Stage">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\CONVOEE\Staging\PBI">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\CONVOEE\Staging\INSERT Stage">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\CONVOEE\Staging\AASPRDDB">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\CONVOEE\Staging\UPDATE Stage">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>
