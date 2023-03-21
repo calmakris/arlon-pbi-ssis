@@ -1,0 +1,2519 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="2/10/2021 6:49:29 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="ARLPBIDEV"
+  DTS:CreatorName="DOMAIN\RPETRELLA"
+  DTS:DTSID="{49BF1D46-FC9B-4321-8643-74841307D861}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="16.0.5035.3"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="STKO"
+  DTS:PackageType="5"
+  DTS:VersionBuild="61"
+  DTS:VersionGUID="{18DC39A8-184F-4A47-980F-C6D8FB43F440}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Clean Stage"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{54CEFF05-870E-4257-99E8-8156A7D30CFF}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Clean Stage"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="TRUNCATE TABLE [STKO_STAGE_UPDATE]&#xA;go&#xA;TRUNCATE TABLE [STKO_STAGE_DELETE]&#xA;go&#xA;TRUNCATE TABLE [STKO_STAGE_INSERT]&#xA;go" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\DELETE"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{AE990AFE-F8F1-4980-81D2-63496BC4FD74}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="DELETE"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="DELETE A01&#xA;FROM [STKO] A01&#xA;INNER JOIN [STKO_STAGE_DELETE] B01&#xA;ON ( A01.[MANDT] = B01.[MANDT]&#xA;&#x9;AND A01.[STLTY] = B01.[STLTY]&#xA;&#x9;AND A01.[STLNR] = B01.[STLNR]&#xA;&#x9;AND A01.[STLAL] = B01.[STLAL]&#xA;&#x9;AND A01.[STKOZ] = B01.[STKOZ] )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\INSERT"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{7E5C7918-32C2-4460-AC73-210440995936}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="INSERT"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="INSERT INTO [STKO]&#xA;SELECT * FROM [STKO_STAGE_INSERT]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\STKO"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{A2F76C94-DCFD-4409-B82D-BC7789303CFC}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="STKO"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\STKO\DB PBI"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="DB PBI"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT
+    [MANDT]
+    ,[STLTY]
+    ,[STLNR]
+    ,[STLAL]
+    ,[STKOZ]
+    ,[DATUV]
+    ,[AENNR]
+    ,[ANDAT]
+    ,[AEDAT]
+FROM [STKO] (NOLOCK)
+WHERE 
+    [STLTY] = 'M'
+ORDER BY
+    [MANDT]
+    ,[STLTY]
+    ,[STLNR]
+    ,[STLAL]
+    ,[STKOZ]</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\STKO\DB PBI.Connections[OleDbConnection]"
+                  connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\STKO\DB PBI.Outputs[OLE DB Source Output]"
+                  isSorted="true"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\STKO\DB PBI.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\STKO\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      length="3"
+                      lineageId="Package\STKO\DB PBI.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      name="MANDT"
+                      sortKeyPosition="1"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\STKO\DB PBI.Outputs[OLE DB Source Output].Columns[STLTY]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\STKO\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[STLTY]"
+                      length="1"
+                      lineageId="Package\STKO\DB PBI.Outputs[OLE DB Source Output].Columns[STLTY]"
+                      name="STLTY"
+                      sortKeyPosition="2"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\STKO\DB PBI.Outputs[OLE DB Source Output].Columns[STLNR]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\STKO\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[STLNR]"
+                      length="8"
+                      lineageId="Package\STKO\DB PBI.Outputs[OLE DB Source Output].Columns[STLNR]"
+                      name="STLNR"
+                      sortKeyPosition="3"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\STKO\DB PBI.Outputs[OLE DB Source Output].Columns[AEDAT]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\STKO\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[AEDAT]"
+                      length="8"
+                      lineageId="Package\STKO\DB PBI.Outputs[OLE DB Source Output].Columns[AEDAT]"
+                      name="AEDAT"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\STKO\DB PBI.Outputs[OLE DB Source Output].Columns[STLAL]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\STKO\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[STLAL]"
+                      length="2"
+                      lineageId="Package\STKO\DB PBI.Outputs[OLE DB Source Output].Columns[STLAL]"
+                      name="STLAL"
+                      sortKeyPosition="4"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\STKO\DB PBI.Outputs[OLE DB Source Output].Columns[STKOZ]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\STKO\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[STKOZ]"
+                      length="8"
+                      lineageId="Package\STKO\DB PBI.Outputs[OLE DB Source Output].Columns[STKOZ]"
+                      name="STKOZ"
+                      sortKeyPosition="5"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\STKO\DB PBI.Outputs[OLE DB Source Output].Columns[DATUV]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\STKO\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[DATUV]"
+                      length="8"
+                      lineageId="Package\STKO\DB PBI.Outputs[OLE DB Source Output].Columns[DATUV]"
+                      name="DATUV"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\STKO\DB PBI.Outputs[OLE DB Source Output].Columns[AENNR]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\STKO\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[AENNR]"
+                      length="12"
+                      lineageId="Package\STKO\DB PBI.Outputs[OLE DB Source Output].Columns[AENNR]"
+                      name="AENNR"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\STKO\DB PBI.Outputs[OLE DB Source Output].Columns[ANDAT]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\STKO\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[ANDAT]"
+                      length="8"
+                      lineageId="Package\STKO\DB PBI.Outputs[OLE DB Source Output].Columns[ANDAT]"
+                      name="ANDAT"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\STKO\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      name="MANDT" />
+                    <externalMetadataColumn
+                      refId="Package\STKO\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[STLTY]"
+                      dataType="wstr"
+                      length="1"
+                      name="STLTY" />
+                    <externalMetadataColumn
+                      refId="Package\STKO\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[STLNR]"
+                      dataType="wstr"
+                      length="8"
+                      name="STLNR" />
+                    <externalMetadataColumn
+                      refId="Package\STKO\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[AEDAT]"
+                      dataType="wstr"
+                      length="8"
+                      name="AEDAT" />
+                    <externalMetadataColumn
+                      refId="Package\STKO\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[STLAL]"
+                      dataType="wstr"
+                      length="2"
+                      name="STLAL" />
+                    <externalMetadataColumn
+                      refId="Package\STKO\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[STKOZ]"
+                      dataType="wstr"
+                      length="8"
+                      name="STKOZ" />
+                    <externalMetadataColumn
+                      refId="Package\STKO\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[DATUV]"
+                      dataType="wstr"
+                      length="8"
+                      name="DATUV" />
+                    <externalMetadataColumn
+                      refId="Package\STKO\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[AENNR]"
+                      dataType="wstr"
+                      length="12"
+                      name="AENNR" />
+                    <externalMetadataColumn
+                      refId="Package\STKO\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[ANDAT]"
+                      dataType="wstr"
+                      length="8"
+                      name="ANDAT" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\STKO\DB PBI.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\STKO\DB PBI.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      lineageId="Package\STKO\DB PBI.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      name="MANDT" />
+                    <outputColumn
+                      refId="Package\STKO\DB PBI.Outputs[OLE DB Source Error Output].Columns[STLTY]"
+                      dataType="wstr"
+                      length="1"
+                      lineageId="Package\STKO\DB PBI.Outputs[OLE DB Source Error Output].Columns[STLTY]"
+                      name="STLTY" />
+                    <outputColumn
+                      refId="Package\STKO\DB PBI.Outputs[OLE DB Source Error Output].Columns[STLNR]"
+                      dataType="wstr"
+                      length="8"
+                      lineageId="Package\STKO\DB PBI.Outputs[OLE DB Source Error Output].Columns[STLNR]"
+                      name="STLNR" />
+                    <outputColumn
+                      refId="Package\STKO\DB PBI.Outputs[OLE DB Source Error Output].Columns[STLAL]"
+                      dataType="wstr"
+                      length="2"
+                      lineageId="Package\STKO\DB PBI.Outputs[OLE DB Source Error Output].Columns[STLAL]"
+                      name="STLAL" />
+                    <outputColumn
+                      refId="Package\STKO\DB PBI.Outputs[OLE DB Source Error Output].Columns[STKOZ]"
+                      dataType="wstr"
+                      length="8"
+                      lineageId="Package\STKO\DB PBI.Outputs[OLE DB Source Error Output].Columns[STKOZ]"
+                      name="STKOZ" />
+                    <outputColumn
+                      refId="Package\STKO\DB PBI.Outputs[OLE DB Source Error Output].Columns[DATUV]"
+                      dataType="wstr"
+                      length="8"
+                      lineageId="Package\STKO\DB PBI.Outputs[OLE DB Source Error Output].Columns[DATUV]"
+                      name="DATUV" />
+                    <outputColumn
+                      refId="Package\STKO\DB PBI.Outputs[OLE DB Source Error Output].Columns[AENNR]"
+                      dataType="wstr"
+                      length="12"
+                      lineageId="Package\STKO\DB PBI.Outputs[OLE DB Source Error Output].Columns[AENNR]"
+                      name="AENNR" />
+                    <outputColumn
+                      refId="Package\STKO\DB PBI.Outputs[OLE DB Source Error Output].Columns[ANDAT]"
+                      dataType="wstr"
+                      length="8"
+                      lineageId="Package\STKO\DB PBI.Outputs[OLE DB Source Error Output].Columns[ANDAT]"
+                      name="ANDAT" />
+                    <outputColumn
+                      refId="Package\STKO\DB PBI.Outputs[OLE DB Source Error Output].Columns[AEDAT]"
+                      dataType="wstr"
+                      length="8"
+                      lineageId="Package\STKO\DB PBI.Outputs[OLE DB Source Error Output].Columns[AEDAT]"
+                      name="AEDAT" />
+                    <outputColumn
+                      refId="Package\STKO\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\STKO\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\STKO\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\STKO\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\STKO\DB SAP"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="DB SAP"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT
+    [MANDT]
+    ,[STLTY]
+    ,[STLNR]
+    ,[STLAL]
+    ,[STKOZ]
+    ,[DATUV]
+    ,[AENNR]
+    ,[ANDAT]
+    ,[AEDAT]
+FROM [ecp].[STKO] (NOLOCK)
+WHERE 
+    [STLTY] = 'M'
+ORDER BY
+    [MANDT]
+    ,[STLTY]
+    ,[STLNR]
+    ,[STLAL]
+    ,[STKOZ]</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\STKO\DB SAP.Connections[OleDbConnection]"
+                  connectionManagerID="{544CCAD9-2CB1-4D87-98D7-A7C478586195}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[SQL_SAP]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\STKO\DB SAP.Outputs[OLE DB Source Output]"
+                  isSorted="true"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\STKO\DB SAP.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\STKO\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      length="3"
+                      lineageId="Package\STKO\DB SAP.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      name="MANDT"
+                      sortKeyPosition="1"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\STKO\DB SAP.Outputs[OLE DB Source Output].Columns[STLTY]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\STKO\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[STLTY]"
+                      length="1"
+                      lineageId="Package\STKO\DB SAP.Outputs[OLE DB Source Output].Columns[STLTY]"
+                      name="STLTY"
+                      sortKeyPosition="2"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\STKO\DB SAP.Outputs[OLE DB Source Output].Columns[STLNR]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\STKO\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[STLNR]"
+                      length="8"
+                      lineageId="Package\STKO\DB SAP.Outputs[OLE DB Source Output].Columns[STLNR]"
+                      name="STLNR"
+                      sortKeyPosition="3"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\STKO\DB SAP.Outputs[OLE DB Source Output].Columns[AEDAT]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\STKO\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[AEDAT]"
+                      length="8"
+                      lineageId="Package\STKO\DB SAP.Outputs[OLE DB Source Output].Columns[AEDAT]"
+                      name="AEDAT"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\STKO\DB SAP.Outputs[OLE DB Source Output].Columns[STLAL]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\STKO\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[STLAL]"
+                      length="2"
+                      lineageId="Package\STKO\DB SAP.Outputs[OLE DB Source Output].Columns[STLAL]"
+                      name="STLAL"
+                      sortKeyPosition="4"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\STKO\DB SAP.Outputs[OLE DB Source Output].Columns[STKOZ]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\STKO\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[STKOZ]"
+                      length="8"
+                      lineageId="Package\STKO\DB SAP.Outputs[OLE DB Source Output].Columns[STKOZ]"
+                      name="STKOZ"
+                      sortKeyPosition="5"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\STKO\DB SAP.Outputs[OLE DB Source Output].Columns[DATUV]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\STKO\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[DATUV]"
+                      length="8"
+                      lineageId="Package\STKO\DB SAP.Outputs[OLE DB Source Output].Columns[DATUV]"
+                      name="DATUV"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\STKO\DB SAP.Outputs[OLE DB Source Output].Columns[AENNR]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\STKO\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[AENNR]"
+                      length="12"
+                      lineageId="Package\STKO\DB SAP.Outputs[OLE DB Source Output].Columns[AENNR]"
+                      name="AENNR"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\STKO\DB SAP.Outputs[OLE DB Source Output].Columns[ANDAT]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\STKO\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[ANDAT]"
+                      length="8"
+                      lineageId="Package\STKO\DB SAP.Outputs[OLE DB Source Output].Columns[ANDAT]"
+                      name="ANDAT"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\STKO\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      name="MANDT" />
+                    <externalMetadataColumn
+                      refId="Package\STKO\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[STLTY]"
+                      dataType="wstr"
+                      length="1"
+                      name="STLTY" />
+                    <externalMetadataColumn
+                      refId="Package\STKO\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[STLNR]"
+                      dataType="wstr"
+                      length="8"
+                      name="STLNR" />
+                    <externalMetadataColumn
+                      refId="Package\STKO\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[AEDAT]"
+                      dataType="wstr"
+                      length="8"
+                      name="AEDAT" />
+                    <externalMetadataColumn
+                      refId="Package\STKO\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[STLAL]"
+                      dataType="wstr"
+                      length="2"
+                      name="STLAL" />
+                    <externalMetadataColumn
+                      refId="Package\STKO\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[STKOZ]"
+                      dataType="wstr"
+                      length="8"
+                      name="STKOZ" />
+                    <externalMetadataColumn
+                      refId="Package\STKO\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[DATUV]"
+                      dataType="wstr"
+                      length="8"
+                      name="DATUV" />
+                    <externalMetadataColumn
+                      refId="Package\STKO\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[AENNR]"
+                      dataType="wstr"
+                      length="12"
+                      name="AENNR" />
+                    <externalMetadataColumn
+                      refId="Package\STKO\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[ANDAT]"
+                      dataType="wstr"
+                      length="8"
+                      name="ANDAT" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\STKO\DB SAP.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\STKO\DB SAP.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      lineageId="Package\STKO\DB SAP.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      name="MANDT" />
+                    <outputColumn
+                      refId="Package\STKO\DB SAP.Outputs[OLE DB Source Error Output].Columns[STLTY]"
+                      dataType="wstr"
+                      length="1"
+                      lineageId="Package\STKO\DB SAP.Outputs[OLE DB Source Error Output].Columns[STLTY]"
+                      name="STLTY" />
+                    <outputColumn
+                      refId="Package\STKO\DB SAP.Outputs[OLE DB Source Error Output].Columns[STLNR]"
+                      dataType="wstr"
+                      length="8"
+                      lineageId="Package\STKO\DB SAP.Outputs[OLE DB Source Error Output].Columns[STLNR]"
+                      name="STLNR" />
+                    <outputColumn
+                      refId="Package\STKO\DB SAP.Outputs[OLE DB Source Error Output].Columns[STLAL]"
+                      dataType="wstr"
+                      length="2"
+                      lineageId="Package\STKO\DB SAP.Outputs[OLE DB Source Error Output].Columns[STLAL]"
+                      name="STLAL" />
+                    <outputColumn
+                      refId="Package\STKO\DB SAP.Outputs[OLE DB Source Error Output].Columns[STKOZ]"
+                      dataType="wstr"
+                      length="8"
+                      lineageId="Package\STKO\DB SAP.Outputs[OLE DB Source Error Output].Columns[STKOZ]"
+                      name="STKOZ" />
+                    <outputColumn
+                      refId="Package\STKO\DB SAP.Outputs[OLE DB Source Error Output].Columns[DATUV]"
+                      dataType="wstr"
+                      length="8"
+                      lineageId="Package\STKO\DB SAP.Outputs[OLE DB Source Error Output].Columns[DATUV]"
+                      name="DATUV" />
+                    <outputColumn
+                      refId="Package\STKO\DB SAP.Outputs[OLE DB Source Error Output].Columns[AENNR]"
+                      dataType="wstr"
+                      length="12"
+                      lineageId="Package\STKO\DB SAP.Outputs[OLE DB Source Error Output].Columns[AENNR]"
+                      name="AENNR" />
+                    <outputColumn
+                      refId="Package\STKO\DB SAP.Outputs[OLE DB Source Error Output].Columns[ANDAT]"
+                      dataType="wstr"
+                      length="8"
+                      lineageId="Package\STKO\DB SAP.Outputs[OLE DB Source Error Output].Columns[ANDAT]"
+                      name="ANDAT" />
+                    <outputColumn
+                      refId="Package\STKO\DB SAP.Outputs[OLE DB Source Error Output].Columns[AEDAT]"
+                      dataType="wstr"
+                      length="8"
+                      lineageId="Package\STKO\DB SAP.Outputs[OLE DB Source Error Output].Columns[AEDAT]"
+                      name="AEDAT" />
+                    <outputColumn
+                      refId="Package\STKO\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\STKO\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\STKO\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\STKO\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\STKO\Find Changed Records"
+              componentClassID="Microsoft.ConditionalSplit"
+              contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
+              name="Find Changed Records"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\STKO\Find Changed Records.Inputs[Conditional Split Input]"
+                  description="Input to the Conditional Split Transformation"
+                  name="Conditional Split Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\STKO\Find Changed Records.Inputs[Conditional Split Input].Columns[AEDAT]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="AEDAT"
+                      lineageId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[AEDAT]" />
+                    <inputColumn
+                      refId="Package\STKO\Find Changed Records.Inputs[Conditional Split Input].Columns[AEDAT (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="AEDAT (1)"
+                      lineageId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[AEDAT (1)]" />
+                    <inputColumn
+                      refId="Package\STKO\Find Changed Records.Inputs[Conditional Split Input].Columns[DATUV]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="DATUV"
+                      lineageId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[DATUV]" />
+                    <inputColumn
+                      refId="Package\STKO\Find Changed Records.Inputs[Conditional Split Input].Columns[AENNR]"
+                      cachedDataType="wstr"
+                      cachedLength="12"
+                      cachedName="AENNR"
+                      lineageId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[AENNR]" />
+                    <inputColumn
+                      refId="Package\STKO\Find Changed Records.Inputs[Conditional Split Input].Columns[ANDAT]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="ANDAT"
+                      lineageId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[ANDAT]" />
+                    <inputColumn
+                      refId="Package\STKO\Find Changed Records.Inputs[Conditional Split Input].Columns[DATUV (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="DATUV (1)"
+                      lineageId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[DATUV (1)]" />
+                    <inputColumn
+                      refId="Package\STKO\Find Changed Records.Inputs[Conditional Split Input].Columns[AENNR (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="12"
+                      cachedName="AENNR (1)"
+                      lineageId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[AENNR (1)]" />
+                    <inputColumn
+                      refId="Package\STKO\Find Changed Records.Inputs[Conditional Split Input].Columns[ANDAT (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="ANDAT (1)"
+                      lineageId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[ANDAT (1)]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\STKO\Find Changed Records.Outputs[update]"
+                  description="Output 1 of the Conditional Split Transformation"
+                  errorOrTruncationOperation="Computation"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="update"
+                  synchronousInputId="Package\STKO\Find Changed Records.Inputs[Conditional Split Input]"
+                  truncationRowDisposition="FailComponent">
+                  <properties>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                      name="Expression">#{Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[DATUV]} != #{Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[DATUV (1)]} || #{Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[AENNR]} != #{Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[AENNR (1)]} || #{Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[ANDAT]} != #{Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[ANDAT (1)]} || #{Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[AEDAT]} != #{Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[AEDAT (1)]}</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the friendly version of the expression. This expression version uses column names."
+                      expressionType="Notify"
+                      name="FriendlyExpression">DATUV != [DATUV (1)] || AENNR != [AENNR (1)] || ANDAT != [ANDAT (1)] || AEDAT != [AEDAT (1)]</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                      name="EvaluationOrder">0</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\STKO\Find Changed Records.Outputs[Conditional Split Default Output]"
+                  description="Default Output of the Conditional Split Transformation"
+                  exclusionGroup="1"
+                  name="Conditional Split Default Output"
+                  synchronousInputId="Package\STKO\Find Changed Records.Inputs[Conditional Split Input]">
+                  <properties>
+                    <property
+                      dataType="System.Boolean"
+                      name="IsDefaultOut">true</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\STKO\Find Changed Records.Outputs[Conditional Split Error Output]"
+                  description="Error Output of the Conditional Split Transformation"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Conditional Split Error Output"
+                  synchronousInputId="Package\STKO\Find Changed Records.Inputs[Conditional Split Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\STKO\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\STKO\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\STKO\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\STKO\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\STKO\Identify records"
+              componentClassID="Microsoft.ConditionalSplit"
+              contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
+              name="Identify records"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\STKO\Identify records.Inputs[Conditional Split Input]"
+                  description="Input to the Conditional Split Transformation"
+                  name="Conditional Split Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\STKO\Identify records.Inputs[Conditional Split Input].Columns[MANDT]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT"
+                      cachedSortKeyPosition="1"
+                      lineageId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
+                    <inputColumn
+                      refId="Package\STKO\Identify records.Inputs[Conditional Split Input].Columns[MANDT (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT (1)"
+                      lineageId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\STKO\Identify records.Outputs[update]"
+                  description="Output 1 of the Conditional Split Transformation"
+                  errorOrTruncationOperation="Computation"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="update"
+                  synchronousInputId="Package\STKO\Identify records.Inputs[Conditional Split Input]"
+                  truncationRowDisposition="FailComponent">
+                  <properties>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                      name="Expression">![ISNULL](#{Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; ![ISNULL](#{Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the friendly version of the expression. This expression version uses column names."
+                      expressionType="Notify"
+                      name="FriendlyExpression">!ISNULL(MANDT) &amp;&amp; !ISNULL([MANDT (1)])</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                      name="EvaluationOrder">0</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\STKO\Identify records.Outputs[insert]"
+                  description="Output 2 of the Conditional Split Transformation"
+                  errorOrTruncationOperation="Computation"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="insert"
+                  synchronousInputId="Package\STKO\Identify records.Inputs[Conditional Split Input]"
+                  truncationRowDisposition="FailComponent">
+                  <properties>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                      name="Expression">![ISNULL](#{Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; [ISNULL](#{Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the friendly version of the expression. This expression version uses column names."
+                      expressionType="Notify"
+                      name="FriendlyExpression">!ISNULL(MANDT) &amp;&amp; ISNULL([MANDT (1)])</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                      name="EvaluationOrder">1</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\STKO\Identify records.Outputs[delete]"
+                  description="Output 3 of the Conditional Split Transformation"
+                  errorOrTruncationOperation="Computation"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="delete"
+                  synchronousInputId="Package\STKO\Identify records.Inputs[Conditional Split Input]"
+                  truncationRowDisposition="FailComponent">
+                  <properties>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                      name="Expression">[ISNULL](#{Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; ![ISNULL](#{Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the friendly version of the expression. This expression version uses column names."
+                      expressionType="Notify"
+                      name="FriendlyExpression">ISNULL(MANDT) &amp;&amp; !ISNULL([MANDT (1)])</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                      name="EvaluationOrder">2</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\STKO\Identify records.Outputs[Conditional Split Default Output]"
+                  description="Default Output of the Conditional Split Transformation"
+                  exclusionGroup="1"
+                  name="Conditional Split Default Output"
+                  synchronousInputId="Package\STKO\Identify records.Inputs[Conditional Split Input]">
+                  <properties>
+                    <property
+                      dataType="System.Boolean"
+                      name="IsDefaultOut">true</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\STKO\Identify records.Outputs[Conditional Split Error Output]"
+                  description="Error Output of the Conditional Split Transformation"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Conditional Split Error Output"
+                  synchronousInputId="Package\STKO\Identify records.Inputs[Conditional Split Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\STKO\Identify records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\STKO\Identify records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\STKO\Identify records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\STKO\Identify records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\STKO\insert new records"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="insert new records"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[STKO_STAGE_INSERT]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\STKO\insert new records.Connections[OleDbConnection]"
+                  connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\STKO\insert new records.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\STKO\insert new records.Inputs[OLE DB Destination Input].Columns[MANDT]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT"
+                      cachedSortKeyPosition="1"
+                      externalMetadataColumnId="Package\STKO\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      lineageId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
+                    <inputColumn
+                      refId="Package\STKO\insert new records.Inputs[OLE DB Destination Input].Columns[STLTY]"
+                      cachedDataType="wstr"
+                      cachedLength="1"
+                      cachedName="STLTY"
+                      cachedSortKeyPosition="2"
+                      externalMetadataColumnId="Package\STKO\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[STLTY]"
+                      lineageId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[STLTY]" />
+                    <inputColumn
+                      refId="Package\STKO\insert new records.Inputs[OLE DB Destination Input].Columns[STLNR]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="STLNR"
+                      cachedSortKeyPosition="3"
+                      externalMetadataColumnId="Package\STKO\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[STLNR]"
+                      lineageId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[STLNR]" />
+                    <inputColumn
+                      refId="Package\STKO\insert new records.Inputs[OLE DB Destination Input].Columns[AEDAT]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="AEDAT"
+                      externalMetadataColumnId="Package\STKO\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[AEDAT]"
+                      lineageId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[AEDAT]" />
+                    <inputColumn
+                      refId="Package\STKO\insert new records.Inputs[OLE DB Destination Input].Columns[STLAL]"
+                      cachedDataType="wstr"
+                      cachedLength="2"
+                      cachedName="STLAL"
+                      cachedSortKeyPosition="4"
+                      externalMetadataColumnId="Package\STKO\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[STLAL]"
+                      lineageId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[STLAL]" />
+                    <inputColumn
+                      refId="Package\STKO\insert new records.Inputs[OLE DB Destination Input].Columns[STKOZ]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="STKOZ"
+                      cachedSortKeyPosition="5"
+                      externalMetadataColumnId="Package\STKO\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[STKOZ]"
+                      lineageId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[STKOZ]" />
+                    <inputColumn
+                      refId="Package\STKO\insert new records.Inputs[OLE DB Destination Input].Columns[DATUV]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="DATUV"
+                      externalMetadataColumnId="Package\STKO\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[DATUV]"
+                      lineageId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[DATUV]" />
+                    <inputColumn
+                      refId="Package\STKO\insert new records.Inputs[OLE DB Destination Input].Columns[AENNR]"
+                      cachedDataType="wstr"
+                      cachedLength="12"
+                      cachedName="AENNR"
+                      externalMetadataColumnId="Package\STKO\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[AENNR]"
+                      lineageId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[AENNR]" />
+                    <inputColumn
+                      refId="Package\STKO\insert new records.Inputs[OLE DB Destination Input].Columns[ANDAT]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="ANDAT"
+                      externalMetadataColumnId="Package\STKO\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[ANDAT]"
+                      lineageId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[ANDAT]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\STKO\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      name="MANDT" />
+                    <externalMetadataColumn
+                      refId="Package\STKO\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[STLTY]"
+                      dataType="wstr"
+                      length="1"
+                      name="STLTY" />
+                    <externalMetadataColumn
+                      refId="Package\STKO\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[STLNR]"
+                      dataType="wstr"
+                      length="8"
+                      name="STLNR" />
+                    <externalMetadataColumn
+                      refId="Package\STKO\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[AEDAT]"
+                      dataType="wstr"
+                      length="8"
+                      name="AEDAT" />
+                    <externalMetadataColumn
+                      refId="Package\STKO\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[STLAL]"
+                      dataType="wstr"
+                      length="2"
+                      name="STLAL" />
+                    <externalMetadataColumn
+                      refId="Package\STKO\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[STKOZ]"
+                      dataType="wstr"
+                      length="8"
+                      name="STKOZ" />
+                    <externalMetadataColumn
+                      refId="Package\STKO\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[DATUV]"
+                      dataType="wstr"
+                      length="8"
+                      name="DATUV" />
+                    <externalMetadataColumn
+                      refId="Package\STKO\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[AENNR]"
+                      dataType="wstr"
+                      length="12"
+                      name="AENNR" />
+                    <externalMetadataColumn
+                      refId="Package\STKO\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[ANDAT]"
+                      dataType="wstr"
+                      length="8"
+                      name="ANDAT" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\STKO\insert new records.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\STKO\insert new records.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\STKO\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\STKO\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\STKO\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\STKO\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\STKO\Merge Join"
+              componentClassID="Microsoft.MergeJoin"
+              contactInfo="Merge Join;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
+              description="Combine two sorted data flows into one using the FULL, LEFT, or INNER join. We recommend this transformation when data flows can be sorted at their sources."
+              name="Merge Join"
+              version="1">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the type of join to perform."
+                  name="JoinType"
+                  typeConverter="JoinType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the number of columns in the ordering key."
+                  name="NumKeyColumns">5</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the null values are treated as equal values."
+                  name="TreatNullsAsEqual">true</property>
+                <property
+                  dataType="System.Int32"
+                  description="Indicates the requested maximum buffers per input before blocking."
+                  name="MaxBuffersPerInput">5</property>
+              </properties>
+              <inputs>
+                <input
+                  refId="Package\STKO\Merge Join.Inputs[Merge Join Left Input]"
+                  hasSideEffects="true"
+                  name="Merge Join Left Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\STKO\Merge Join.Inputs[Merge Join Left Input].Columns[MANDT]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT"
+                      cachedSortKeyPosition="1"
+                      lineageId="Package\STKO\DB SAP.Outputs[OLE DB Source Output].Columns[MANDT]" />
+                    <inputColumn
+                      refId="Package\STKO\Merge Join.Inputs[Merge Join Left Input].Columns[STLTY]"
+                      cachedDataType="wstr"
+                      cachedLength="1"
+                      cachedName="STLTY"
+                      cachedSortKeyPosition="2"
+                      lineageId="Package\STKO\DB SAP.Outputs[OLE DB Source Output].Columns[STLTY]" />
+                    <inputColumn
+                      refId="Package\STKO\Merge Join.Inputs[Merge Join Left Input].Columns[STLNR]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="STLNR"
+                      cachedSortKeyPosition="3"
+                      lineageId="Package\STKO\DB SAP.Outputs[OLE DB Source Output].Columns[STLNR]" />
+                    <inputColumn
+                      refId="Package\STKO\Merge Join.Inputs[Merge Join Left Input].Columns[AEDAT]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="AEDAT"
+                      lineageId="Package\STKO\DB SAP.Outputs[OLE DB Source Output].Columns[AEDAT]" />
+                    <inputColumn
+                      refId="Package\STKO\Merge Join.Inputs[Merge Join Left Input].Columns[STLAL]"
+                      cachedDataType="wstr"
+                      cachedLength="2"
+                      cachedName="STLAL"
+                      cachedSortKeyPosition="4"
+                      lineageId="Package\STKO\DB SAP.Outputs[OLE DB Source Output].Columns[STLAL]" />
+                    <inputColumn
+                      refId="Package\STKO\Merge Join.Inputs[Merge Join Left Input].Columns[STKOZ]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="STKOZ"
+                      cachedSortKeyPosition="5"
+                      lineageId="Package\STKO\DB SAP.Outputs[OLE DB Source Output].Columns[STKOZ]" />
+                    <inputColumn
+                      refId="Package\STKO\Merge Join.Inputs[Merge Join Left Input].Columns[DATUV]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="DATUV"
+                      lineageId="Package\STKO\DB SAP.Outputs[OLE DB Source Output].Columns[DATUV]" />
+                    <inputColumn
+                      refId="Package\STKO\Merge Join.Inputs[Merge Join Left Input].Columns[AENNR]"
+                      cachedDataType="wstr"
+                      cachedLength="12"
+                      cachedName="AENNR"
+                      lineageId="Package\STKO\DB SAP.Outputs[OLE DB Source Output].Columns[AENNR]" />
+                    <inputColumn
+                      refId="Package\STKO\Merge Join.Inputs[Merge Join Left Input].Columns[ANDAT]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="ANDAT"
+                      lineageId="Package\STKO\DB SAP.Outputs[OLE DB Source Output].Columns[ANDAT]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+                <input
+                  refId="Package\STKO\Merge Join.Inputs[Merge Join Right Input]"
+                  hasSideEffects="true"
+                  name="Merge Join Right Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\STKO\Merge Join.Inputs[Merge Join Right Input].Columns[MANDT]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT"
+                      cachedSortKeyPosition="1"
+                      lineageId="Package\STKO\DB PBI.Outputs[OLE DB Source Output].Columns[MANDT]" />
+                    <inputColumn
+                      refId="Package\STKO\Merge Join.Inputs[Merge Join Right Input].Columns[STLTY]"
+                      cachedDataType="wstr"
+                      cachedLength="1"
+                      cachedName="STLTY"
+                      cachedSortKeyPosition="2"
+                      lineageId="Package\STKO\DB PBI.Outputs[OLE DB Source Output].Columns[STLTY]" />
+                    <inputColumn
+                      refId="Package\STKO\Merge Join.Inputs[Merge Join Right Input].Columns[STLNR]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="STLNR"
+                      cachedSortKeyPosition="3"
+                      lineageId="Package\STKO\DB PBI.Outputs[OLE DB Source Output].Columns[STLNR]" />
+                    <inputColumn
+                      refId="Package\STKO\Merge Join.Inputs[Merge Join Right Input].Columns[AEDAT]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="AEDAT"
+                      lineageId="Package\STKO\DB PBI.Outputs[OLE DB Source Output].Columns[AEDAT]" />
+                    <inputColumn
+                      refId="Package\STKO\Merge Join.Inputs[Merge Join Right Input].Columns[STLAL]"
+                      cachedDataType="wstr"
+                      cachedLength="2"
+                      cachedName="STLAL"
+                      cachedSortKeyPosition="4"
+                      lineageId="Package\STKO\DB PBI.Outputs[OLE DB Source Output].Columns[STLAL]" />
+                    <inputColumn
+                      refId="Package\STKO\Merge Join.Inputs[Merge Join Right Input].Columns[STKOZ]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="STKOZ"
+                      cachedSortKeyPosition="5"
+                      lineageId="Package\STKO\DB PBI.Outputs[OLE DB Source Output].Columns[STKOZ]" />
+                    <inputColumn
+                      refId="Package\STKO\Merge Join.Inputs[Merge Join Right Input].Columns[DATUV]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="DATUV"
+                      lineageId="Package\STKO\DB PBI.Outputs[OLE DB Source Output].Columns[DATUV]" />
+                    <inputColumn
+                      refId="Package\STKO\Merge Join.Inputs[Merge Join Right Input].Columns[AENNR]"
+                      cachedDataType="wstr"
+                      cachedLength="12"
+                      cachedName="AENNR"
+                      lineageId="Package\STKO\DB PBI.Outputs[OLE DB Source Output].Columns[AENNR]" />
+                    <inputColumn
+                      refId="Package\STKO\Merge Join.Inputs[Merge Join Right Input].Columns[ANDAT]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="ANDAT"
+                      lineageId="Package\STKO\DB PBI.Outputs[OLE DB Source Output].Columns[ANDAT]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\STKO\Merge Join.Outputs[Merge Join Output]"
+                  isSorted="true"
+                  name="Merge Join Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      lineageId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[MANDT]"
+                      name="MANDT"
+                      sortKeyPosition="1">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\STKO\Merge Join.Inputs[Merge Join Left Input].Columns[MANDT]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[STLTY]"
+                      dataType="wstr"
+                      length="1"
+                      lineageId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[STLTY]"
+                      name="STLTY"
+                      sortKeyPosition="2">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\STKO\Merge Join.Inputs[Merge Join Left Input].Columns[STLTY]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[STLNR]"
+                      dataType="wstr"
+                      length="8"
+                      lineageId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[STLNR]"
+                      name="STLNR"
+                      sortKeyPosition="3">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\STKO\Merge Join.Inputs[Merge Join Left Input].Columns[STLNR]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[AEDAT]"
+                      dataType="wstr"
+                      length="8"
+                      lineageId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[AEDAT]"
+                      name="AEDAT">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\STKO\Merge Join.Inputs[Merge Join Left Input].Columns[AEDAT]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]"
+                      dataType="wstr"
+                      length="3"
+                      lineageId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]"
+                      name="MANDT (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\STKO\Merge Join.Inputs[Merge Join Right Input].Columns[MANDT]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[STLTY (1)]"
+                      dataType="wstr"
+                      length="1"
+                      lineageId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[STLTY (1)]"
+                      name="STLTY (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\STKO\Merge Join.Inputs[Merge Join Right Input].Columns[STLTY]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[STLNR (1)]"
+                      dataType="wstr"
+                      length="8"
+                      lineageId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[STLNR (1)]"
+                      name="STLNR (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\STKO\Merge Join.Inputs[Merge Join Right Input].Columns[STLNR]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[AEDAT (1)]"
+                      dataType="wstr"
+                      length="8"
+                      lineageId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[AEDAT (1)]"
+                      name="AEDAT (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\STKO\Merge Join.Inputs[Merge Join Right Input].Columns[AEDAT]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[STLAL]"
+                      dataType="wstr"
+                      length="2"
+                      lineageId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[STLAL]"
+                      name="STLAL"
+                      sortKeyPosition="4">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\STKO\Merge Join.Inputs[Merge Join Left Input].Columns[STLAL]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[STKOZ]"
+                      dataType="wstr"
+                      length="8"
+                      lineageId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[STKOZ]"
+                      name="STKOZ"
+                      sortKeyPosition="5">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\STKO\Merge Join.Inputs[Merge Join Left Input].Columns[STKOZ]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[DATUV]"
+                      dataType="wstr"
+                      length="8"
+                      lineageId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[DATUV]"
+                      name="DATUV">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\STKO\Merge Join.Inputs[Merge Join Left Input].Columns[DATUV]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[AENNR]"
+                      dataType="wstr"
+                      length="12"
+                      lineageId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[AENNR]"
+                      name="AENNR">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\STKO\Merge Join.Inputs[Merge Join Left Input].Columns[AENNR]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[ANDAT]"
+                      dataType="wstr"
+                      length="8"
+                      lineageId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[ANDAT]"
+                      name="ANDAT">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\STKO\Merge Join.Inputs[Merge Join Left Input].Columns[ANDAT]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[STLAL (1)]"
+                      dataType="wstr"
+                      length="2"
+                      lineageId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[STLAL (1)]"
+                      name="STLAL (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\STKO\Merge Join.Inputs[Merge Join Right Input].Columns[STLAL]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[STKOZ (1)]"
+                      dataType="wstr"
+                      length="8"
+                      lineageId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[STKOZ (1)]"
+                      name="STKOZ (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\STKO\Merge Join.Inputs[Merge Join Right Input].Columns[STKOZ]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[DATUV (1)]"
+                      dataType="wstr"
+                      length="8"
+                      lineageId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[DATUV (1)]"
+                      name="DATUV (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\STKO\Merge Join.Inputs[Merge Join Right Input].Columns[DATUV]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[AENNR (1)]"
+                      dataType="wstr"
+                      length="12"
+                      lineageId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[AENNR (1)]"
+                      name="AENNR (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\STKO\Merge Join.Inputs[Merge Join Right Input].Columns[AENNR]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[ANDAT (1)]"
+                      dataType="wstr"
+                      length="8"
+                      lineageId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[ANDAT (1)]"
+                      name="ANDAT (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\STKO\Merge Join.Inputs[Merge Join Right Input].Columns[ANDAT]}</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\STKO\stage changed records"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="stage changed records"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[STKO_STAGE_UPDATE]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\STKO\stage changed records.Connections[OleDbConnection]"
+                  connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\STKO\stage changed records.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\STKO\stage changed records.Inputs[OLE DB Destination Input].Columns[MANDT]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT"
+                      cachedSortKeyPosition="1"
+                      externalMetadataColumnId="Package\STKO\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      lineageId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
+                    <inputColumn
+                      refId="Package\STKO\stage changed records.Inputs[OLE DB Destination Input].Columns[STLTY]"
+                      cachedDataType="wstr"
+                      cachedLength="1"
+                      cachedName="STLTY"
+                      cachedSortKeyPosition="2"
+                      externalMetadataColumnId="Package\STKO\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[STLTY]"
+                      lineageId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[STLTY]" />
+                    <inputColumn
+                      refId="Package\STKO\stage changed records.Inputs[OLE DB Destination Input].Columns[STLNR]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="STLNR"
+                      cachedSortKeyPosition="3"
+                      externalMetadataColumnId="Package\STKO\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[STLNR]"
+                      lineageId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[STLNR]" />
+                    <inputColumn
+                      refId="Package\STKO\stage changed records.Inputs[OLE DB Destination Input].Columns[AEDAT]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="AEDAT"
+                      externalMetadataColumnId="Package\STKO\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[AEDAT]"
+                      lineageId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[AEDAT]" />
+                    <inputColumn
+                      refId="Package\STKO\stage changed records.Inputs[OLE DB Destination Input].Columns[STLAL]"
+                      cachedDataType="wstr"
+                      cachedLength="2"
+                      cachedName="STLAL"
+                      cachedSortKeyPosition="4"
+                      externalMetadataColumnId="Package\STKO\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[STLAL]"
+                      lineageId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[STLAL]" />
+                    <inputColumn
+                      refId="Package\STKO\stage changed records.Inputs[OLE DB Destination Input].Columns[STKOZ]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="STKOZ"
+                      cachedSortKeyPosition="5"
+                      externalMetadataColumnId="Package\STKO\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[STKOZ]"
+                      lineageId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[STKOZ]" />
+                    <inputColumn
+                      refId="Package\STKO\stage changed records.Inputs[OLE DB Destination Input].Columns[DATUV]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="DATUV"
+                      externalMetadataColumnId="Package\STKO\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[DATUV]"
+                      lineageId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[DATUV]" />
+                    <inputColumn
+                      refId="Package\STKO\stage changed records.Inputs[OLE DB Destination Input].Columns[AENNR]"
+                      cachedDataType="wstr"
+                      cachedLength="12"
+                      cachedName="AENNR"
+                      externalMetadataColumnId="Package\STKO\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[AENNR]"
+                      lineageId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[AENNR]" />
+                    <inputColumn
+                      refId="Package\STKO\stage changed records.Inputs[OLE DB Destination Input].Columns[ANDAT]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="ANDAT"
+                      externalMetadataColumnId="Package\STKO\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[ANDAT]"
+                      lineageId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[ANDAT]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\STKO\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      name="MANDT" />
+                    <externalMetadataColumn
+                      refId="Package\STKO\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[STLTY]"
+                      dataType="wstr"
+                      length="1"
+                      name="STLTY" />
+                    <externalMetadataColumn
+                      refId="Package\STKO\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[STLNR]"
+                      dataType="wstr"
+                      length="8"
+                      name="STLNR" />
+                    <externalMetadataColumn
+                      refId="Package\STKO\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[AEDAT]"
+                      dataType="wstr"
+                      length="8"
+                      name="AEDAT" />
+                    <externalMetadataColumn
+                      refId="Package\STKO\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[STLAL]"
+                      dataType="wstr"
+                      length="2"
+                      name="STLAL" />
+                    <externalMetadataColumn
+                      refId="Package\STKO\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[STKOZ]"
+                      dataType="wstr"
+                      length="8"
+                      name="STKOZ" />
+                    <externalMetadataColumn
+                      refId="Package\STKO\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[DATUV]"
+                      dataType="wstr"
+                      length="8"
+                      name="DATUV" />
+                    <externalMetadataColumn
+                      refId="Package\STKO\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[AENNR]"
+                      dataType="wstr"
+                      length="12"
+                      name="AENNR" />
+                    <externalMetadataColumn
+                      refId="Package\STKO\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[ANDAT]"
+                      dataType="wstr"
+                      length="8"
+                      name="ANDAT" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\STKO\stage changed records.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\STKO\stage changed records.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\STKO\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\STKO\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\STKO\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\STKO\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\STKO\stage deleted records"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="stage deleted records"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[STKO_STAGE_DELETE]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\STKO\stage deleted records.Connections[OleDbConnection]"
+                  connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\STKO\stage deleted records.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\STKO\stage deleted records.Inputs[OLE DB Destination Input].Columns[MANDT (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT (1)"
+                      externalMetadataColumnId="Package\STKO\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      lineageId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]" />
+                    <inputColumn
+                      refId="Package\STKO\stage deleted records.Inputs[OLE DB Destination Input].Columns[STLTY (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="1"
+                      cachedName="STLTY (1)"
+                      externalMetadataColumnId="Package\STKO\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[STLTY]"
+                      lineageId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[STLTY (1)]" />
+                    <inputColumn
+                      refId="Package\STKO\stage deleted records.Inputs[OLE DB Destination Input].Columns[STLNR (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="STLNR (1)"
+                      externalMetadataColumnId="Package\STKO\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[STLNR]"
+                      lineageId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[STLNR (1)]" />
+                    <inputColumn
+                      refId="Package\STKO\stage deleted records.Inputs[OLE DB Destination Input].Columns[STLAL (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="2"
+                      cachedName="STLAL (1)"
+                      externalMetadataColumnId="Package\STKO\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[STLAL]"
+                      lineageId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[STLAL (1)]" />
+                    <inputColumn
+                      refId="Package\STKO\stage deleted records.Inputs[OLE DB Destination Input].Columns[STKOZ (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="STKOZ (1)"
+                      externalMetadataColumnId="Package\STKO\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[STKOZ]"
+                      lineageId="Package\STKO\Merge Join.Outputs[Merge Join Output].Columns[STKOZ (1)]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\STKO\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      name="MANDT" />
+                    <externalMetadataColumn
+                      refId="Package\STKO\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[STLTY]"
+                      dataType="wstr"
+                      length="1"
+                      name="STLTY" />
+                    <externalMetadataColumn
+                      refId="Package\STKO\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[STLNR]"
+                      dataType="wstr"
+                      length="8"
+                      name="STLNR" />
+                    <externalMetadataColumn
+                      refId="Package\STKO\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[STLAL]"
+                      dataType="wstr"
+                      length="2"
+                      name="STLAL" />
+                    <externalMetadataColumn
+                      refId="Package\STKO\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[STKOZ]"
+                      dataType="wstr"
+                      length="8"
+                      name="STKOZ" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\STKO\stage deleted records.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\STKO\stage deleted records.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\STKO\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\STKO\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\STKO\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\STKO\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\STKO.Paths[delete]"
+              endId="Package\STKO\stage deleted records.Inputs[OLE DB Destination Input]"
+              name="delete"
+              startId="Package\STKO\Identify records.Outputs[delete]" />
+            <path
+              refId="Package\STKO.Paths[insert]"
+              endId="Package\STKO\insert new records.Inputs[OLE DB Destination Input]"
+              name="insert"
+              startId="Package\STKO\Identify records.Outputs[insert]" />
+            <path
+              refId="Package\STKO.Paths[Merge Join Output]"
+              endId="Package\STKO\Identify records.Inputs[Conditional Split Input]"
+              name="Merge Join Output"
+              startId="Package\STKO\Merge Join.Outputs[Merge Join Output]" />
+            <path
+              refId="Package\STKO.Paths[OLE DB Source Output]"
+              endId="Package\STKO\Merge Join.Inputs[Merge Join Left Input]"
+              name="OLE DB Source Output"
+              startId="Package\STKO\DB SAP.Outputs[OLE DB Source Output]" />
+            <path
+              refId="Package\STKO.Paths[OLE DB Source Output1]"
+              endId="Package\STKO\Merge Join.Inputs[Merge Join Right Input]"
+              name="OLE DB Source Output"
+              startId="Package\STKO\DB PBI.Outputs[OLE DB Source Output]" />
+            <path
+              refId="Package\STKO.Paths[update]"
+              endId="Package\STKO\Find Changed Records.Inputs[Conditional Split Input]"
+              name="update"
+              startId="Package\STKO\Identify records.Outputs[update]" />
+            <path
+              refId="Package\STKO.Paths[update1]"
+              endId="Package\STKO\stage changed records.Inputs[OLE DB Destination Input]"
+              name="update"
+              startId="Package\STKO\Find Changed Records.Outputs[update]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\UPDATE"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{EFC43E53-9D8F-4E84-9520-97E273CE62E7}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="UPDATE"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="UPDATE A01&#xA;SET A01.[DATUV] = B01.[DATUV]&#xA;   ,A01.[AENNR] = B01.[AENNR]&#xA;   ,A01.[ANDAT] = B01.[ANDAT]&#xA;   ,A01.[AEDAT] = B01.[AEDAT]&#xA;FROM [STKO] A01 &#xA;INNER JOIN [STKO_STAGE_UPDATE] B01 &#xA;ON ( A01.[MANDT] = B01.[MANDT]&#xA;&#x9;AND A01.[STLTY] = B01.[STLTY]&#xA;&#x9;AND A01.[STLNR] = B01.[STLNR]&#xA;&#x9;AND A01.[STLAL] = B01.[STLAL]&#xA;&#x9;AND A01.[STKOZ] = B01.[STKOZ] )" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{622DDD41-D2D7-46D3-B9D2-3CFF7F4027B9}"
+      DTS:From="Package\STKO"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\DELETE" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
+      DTS:CreationName=""
+      DTS:DTSID="{B963655E-BDD0-4B39-9481-48F91B6DEE56}"
+      DTS:From="Package\Clean Stage"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 1"
+      DTS:To="Package\STKO" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
+      DTS:CreationName=""
+      DTS:DTSID="{43638C57-1C91-4995-947E-F9FEA9CC36B3}"
+      DTS:From="Package\DELETE"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 2"
+      DTS:To="Package\INSERT" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 3]"
+      DTS:CreationName=""
+      DTS:DTSID="{E5BA0F9B-EF88-4BD5-AB99-4A1F01ABB79F}"
+      DTS:From="Package\INSERT"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 3"
+      DTS:To="Package\UPDATE" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="135,42"
+          Id="Package\Clean Stage"
+          TopLeft="116,44.333333333333" />
+        <NodeLayout
+          Size="135,42"
+          Id="Package\DELETE"
+          TopLeft="116,186.166666666666" />
+        <NodeLayout
+          Size="135,42"
+          Id="Package\INSERT"
+          TopLeft="116,257.083333333333" />
+        <NodeLayout
+          Size="135,42"
+          Id="Package\STKO"
+          TopLeft="116,115.25" />
+        <NodeLayout
+          Size="135,42"
+          Id="Package\UPDATE"
+          TopLeft="116,328" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="183.5,157.25">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,28.916666666666"
+              Start="0,0"
+              End="0,21.416666666666">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,21.416666666666" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="183.5,86.333333333333">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,28.916666666667"
+              Start="0,0"
+              End="0,21.416666666667">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,21.416666666667" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 2]"
+          TopLeft="183.5,228.166666666666">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,28.916666666667"
+              Start="0,0"
+              End="0,21.416666666667">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,21.416666666667" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 3]"
+          TopLeft="183.5,299.083333333333">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,28.916666666667"
+              Start="0,0"
+              End="0,21.416666666667">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,21.416666666667" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\STKO">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="186,42"
+          Id="Package\STKO\stage changed records"
+          TopLeft="367,379" />
+        <NodeLayout
+          Size="180,42"
+          Id="Package\STKO\stage deleted records"
+          TopLeft="654,301" />
+        <NodeLayout
+          Size="114,42"
+          Id="Package\STKO\DB SAP"
+          TopLeft="224,40" />
+        <NodeLayout
+          Size="130,42"
+          Id="Package\STKO\Merge Join"
+          TopLeft="400,125" />
+        <NodeLayout
+          Size="166,42"
+          Id="Package\STKO\insert new records"
+          TopLeft="89,302" />
+        <NodeLayout
+          Size="153,42"
+          Id="Package\STKO\Identify records"
+          TopLeft="382,209" />
+        <NodeLayout
+          Size="112,42"
+          Id="Package\STKO\DB PBI"
+          TopLeft="584,40" />
+        <NodeLayout
+          Size="184,42"
+          Id="Package\STKO\Find Changed Records"
+          TopLeft="371,303" />
+        <EdgeLayout
+          Id="Package\STKO.Paths[OLE DB Source Output]"
+          TopLeft="281,82">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="163.666666666667,43"
+              Start="0,0"
+              End="163.666666666667,35.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,21.4863221884498" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,21.4863221884498"
+                    Point2="0,25.4863221884498"
+                    Point3="4,25.4863221884498" />
+                  <mssgle:LineSegment
+                    End="159.666666666667,25.4863221884498" />
+                  <mssgle:CubicBezierSegment
+                    Point1="159.666666666667,25.4863221884498"
+                    Point2="163.666666666667,25.4863221884498"
+                    Point3="163.666666666667,29.4863221884498" />
+                  <mssgle:LineSegment
+                    End="163.666666666667,35.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\STKO.Paths[Merge Join Output]"
+          TopLeft="461.75,167">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,42"
+              Start="0,0"
+              End="0,34.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,34.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\STKO.Paths[insert]"
+          TopLeft="422.25,251">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-250.25,51"
+              Start="0,0"
+              End="-250.25,43.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,13.5824411134904" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,13.5824411134904"
+                    Point2="0,17.5824411134904"
+                    Point3="-4,17.5824411134904" />
+                  <mssgle:LineSegment
+                    End="-246.25,17.5824411134904" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-246.25,17.5824411134904"
+                    Point2="-250.25,17.5824411134904"
+                    Point3="-250.25,21.5824411134904" />
+                  <mssgle:LineSegment
+                    End="-250.25,43.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-138.07498046875,22.5824411134904,25.8999609375,9.451171875"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\STKO.Paths[delete]"
+          TopLeft="494.75,251">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="249.25,50"
+              Start="0,0"
+              End="249.25,42.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,13.237687366167" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,13.237687366167"
+                    Point2="0,17.237687366167"
+                    Point3="4,17.237687366167" />
+                  <mssgle:LineSegment
+                    End="245.25,17.237687366167" />
+                  <mssgle:CubicBezierSegment
+                    Point1="245.25,17.237687366167"
+                    Point2="249.25,17.237687366167"
+                    Point3="249.25,21.237687366167" />
+                  <mssgle:LineSegment
+                    End="249.25,42.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="110.42904296875,22.237687366167,28.3919140625,9.7490234375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\STKO.Paths[update1]"
+          TopLeft="461.5,345">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,34"
+              Start="0,0"
+              End="0,26.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,26.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-15.8025,7.4453125,31.605,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\STKO.Paths[update]"
+          TopLeft="460.75,251">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,52"
+              Start="0,0"
+              End="0,44.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,44.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-15.8025,16.4453125,31.605,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\STKO.Paths[OLE DB Source Output1]"
+          TopLeft="640,82">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-154.666666666667,43"
+              Start="0,0"
+              End="-154.666666666667,35.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,21.4863221884498" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,21.4863221884498"
+                    Point2="0,25.4863221884498"
+                    Point3="-4,25.4863221884498" />
+                  <mssgle:LineSegment
+                    End="-150.666666666667,25.4863221884498" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-150.666666666667,25.4863221884498"
+                    Point2="-154.666666666667,25.4863221884498"
+                    Point3="-154.666666666667,29.4863221884498" />
+                  <mssgle:LineSegment
+                    End="-154.666666666667,35.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\STKO\stage changed records">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\STKO\stage deleted records">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\STKO\DB SAP">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\STKO\insert new records">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\STKO\DB PBI">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>
