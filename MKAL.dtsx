@@ -11,8 +11,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="MKAL"
   DTS:PackageType="5"
-  DTS:VersionBuild="37"
-  DTS:VersionGUID="{D9ED5F52-E1B7-457E-8643-1CF8C4704D9D}">
+  DTS:VersionBuild="38"
+  DTS:VersionGUID="{2D7F6CD6-68BC-4C9F-A0A7-CD301B198932}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:Variables />
@@ -48,7 +48,7 @@
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
           SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-          SQLTask:SqlStatementSource="DELETE a&#xA;FROM MKAL AS a&#xA;INNER JOIN MKAL_STAGE_UPDATE AS b&#xA;ON a.[MANDT] = b.[MANDT]&#xA;   AND a.[MATNR] = b.[MATNR]&#xA;   AND a.[WERKS] = b.[WERKS]&#xA;   AND a.[VERID] = b.[VERID]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          SQLTask:SqlStatementSource="DELETE a&#xA;FROM MKAL AS a&#xA;INNER JOIN MKAL_STAGE_DELETE AS b&#xA;ON a.[MANDT] = b.[MANDT]&#xA;   AND a.[MATNR] = b.[MATNR]&#xA;   AND a.[WERKS] = b.[WERKS]&#xA;   AND a.[VERID] = b.[VERID]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
@@ -1962,11 +1962,23 @@ ORDER BY
           TopLeft="119,35.285714285714" />
         <NodeLayout
           Size="135,42"
+          Id="Package\DELETE"
+          TopLeft="119,250.696428571428" />
+        <NodeLayout
+          Size="135,42"
+          Id="Package\INSERT"
+          TopLeft="119,322.5" />
+        <NodeLayout
+          Size="135,42"
           Id="Package\MKAL"
           TopLeft="119,107.089285714285" />
+        <NodeLayout
+          Size="135,42"
+          Id="Package\UPDATE"
+          TopLeft="119,178.892857142857" />
         <EdgeLayout
-          Id="Package.PrecedenceConstraints[Constraint 1]"
-          TopLeft="186.5,77.285714285714">
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="186.5,149.089285714285">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -1986,21 +1998,9 @@ ORDER BY
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
-        <NodeLayout
-          Size="135,42"
-          Id="Package\UPDATE"
-          TopLeft="119,178.892857142857" />
-        <NodeLayout
-          Size="135,42"
-          Id="Package\DELETE"
-          TopLeft="119,250.696428571428" />
-        <NodeLayout
-          Size="135,42"
-          Id="Package\INSERT"
-          TopLeft="119,322.5" />
         <EdgeLayout
-          Id="Package.PrecedenceConstraints[Constraint]"
-          TopLeft="186.5,149.089285714285">
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="186.5,77.285714285714">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -2073,37 +2073,37 @@ ORDER BY
       <GraphLayout
         Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
-          Size="114,42"
-          Id="Package\MKAL\DB SAP"
-          TopLeft="180,11" />
-        <NodeLayout
           Size="166,42"
           Id="Package\MKAL\insert new records"
           TopLeft="41,262" />
-        <NodeLayout
-          Size="181,42"
-          Id="Package\MKAL\Find Changed records"
-          TopLeft="267,240" />
-        <NodeLayout
-          Size="186,42"
-          Id="Package\MKAL\stage changed records"
-          TopLeft="272,339" />
-        <NodeLayout
-          Size="153,42"
-          Id="Package\MKAL\Identify records"
-          TopLeft="285,161" />
         <NodeLayout
           Size="130,42"
           Id="Package\MKAL\Merge Join"
           TopLeft="289,85" />
         <NodeLayout
+          Size="181,42"
+          Id="Package\MKAL\Find Changed records"
+          TopLeft="267,240" />
+        <NodeLayout
+          Size="114,42"
+          Id="Package\MKAL\DB SAP"
+          TopLeft="180,11" />
+        <NodeLayout
           Size="180,42"
           Id="Package\MKAL\stage deleted records"
           TopLeft="489,276" />
         <NodeLayout
+          Size="186,42"
+          Id="Package\MKAL\stage changed records"
+          TopLeft="272,339" />
+        <NodeLayout
           Size="112,42"
           Id="Package\MKAL\DB PBI"
           TopLeft="418,15" />
+        <NodeLayout
+          Size="153,42"
+          Id="Package\MKAL\Identify records"
+          TopLeft="285,161" />
         <EdgeLayout
           Id="Package\MKAL.Paths[update1]"
           TopLeft="361.25,282">
@@ -2318,14 +2318,6 @@ ORDER BY
     </LayoutInfo>
   </TaskHost>
   <PipelineComponentMetadata
-    design-time-name="Package\MKAL\DB SAP">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
     design-time-name="Package\MKAL\insert new records">
     <Properties>
       <Property>
@@ -2339,7 +2331,15 @@ ORDER BY
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\MKAL\stage changed records">
+    design-time-name="Package\MKAL\DB SAP">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\MKAL\stage deleted records">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -2352,7 +2352,7 @@ ORDER BY
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\MKAL\stage deleted records">
+    design-time-name="Package\MKAL\stage changed records">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
