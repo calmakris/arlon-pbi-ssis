@@ -1,0 +1,1890 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="4/19/2021 12:51:06 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="ARLPBIDEV"
+  DTS:CreatorName="DOMAIN\RPETRELLA"
+  DTS:DTSID="{1451F32B-2BB5-489F-8781-79706EE60AEB}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="16.0.5035.3"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="COKEY"
+  DTS:PackageType="5"
+  DTS:VersionBuild="23"
+  DTS:VersionGUID="{DFFC589E-3253-4AF1-88D9-C091B708351D}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Clean Stage"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{937776F4-1B98-4276-B0C8-2C5BF2E6D93C}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Clean Stage"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="TRUNCATE TABLE [COKEY_STAGE_UPDATE]&#xA;go&#xA;TRUNCATE TABLE [COKEY_STAGE_DELETE]&#xA;go&#xA;TRUNCATE TABLE [COKEY_STAGE_INSERT]&#xA;go" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\COKEY"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{4BDF19E0-32DF-4B91-9EE8-BAC27B16FE4C}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="COKEY"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\COKEY\DB PBI"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="DB PBI"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT 
+  [MANDT], 
+  [HRKFT], 
+  [WERKS], 
+  [MATNR] 
+FROM 
+  [COKEY] (NOLOCK) 
+ORDER BY 
+  [MANDT], 
+  [HRKFT]</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\COKEY\DB PBI.Connections[OleDbConnection]"
+                  connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\COKEY\DB PBI.Outputs[OLE DB Source Output]"
+                  isSorted="true"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\COKEY\DB PBI.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\COKEY\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      length="3"
+                      lineageId="Package\COKEY\DB PBI.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      name="MANDT"
+                      sortKeyPosition="1"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\COKEY\DB PBI.Outputs[OLE DB Source Output].Columns[HRKFT]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\COKEY\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[HRKFT]"
+                      length="14"
+                      lineageId="Package\COKEY\DB PBI.Outputs[OLE DB Source Output].Columns[HRKFT]"
+                      name="HRKFT"
+                      sortKeyPosition="2"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\COKEY\DB PBI.Outputs[OLE DB Source Output].Columns[WERKS]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\COKEY\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[WERKS]"
+                      length="4"
+                      lineageId="Package\COKEY\DB PBI.Outputs[OLE DB Source Output].Columns[WERKS]"
+                      name="WERKS"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\COKEY\DB PBI.Outputs[OLE DB Source Output].Columns[MATNR]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\COKEY\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[MATNR]"
+                      length="18"
+                      lineageId="Package\COKEY\DB PBI.Outputs[OLE DB Source Output].Columns[MATNR]"
+                      name="MATNR"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\COKEY\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      name="MANDT" />
+                    <externalMetadataColumn
+                      refId="Package\COKEY\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[HRKFT]"
+                      dataType="wstr"
+                      length="14"
+                      name="HRKFT" />
+                    <externalMetadataColumn
+                      refId="Package\COKEY\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[WERKS]"
+                      dataType="wstr"
+                      length="4"
+                      name="WERKS" />
+                    <externalMetadataColumn
+                      refId="Package\COKEY\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[MATNR]"
+                      dataType="wstr"
+                      length="18"
+                      name="MATNR" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\COKEY\DB PBI.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\COKEY\DB PBI.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      lineageId="Package\COKEY\DB PBI.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      name="MANDT" />
+                    <outputColumn
+                      refId="Package\COKEY\DB PBI.Outputs[OLE DB Source Error Output].Columns[HRKFT]"
+                      dataType="wstr"
+                      length="14"
+                      lineageId="Package\COKEY\DB PBI.Outputs[OLE DB Source Error Output].Columns[HRKFT]"
+                      name="HRKFT" />
+                    <outputColumn
+                      refId="Package\COKEY\DB PBI.Outputs[OLE DB Source Error Output].Columns[WERKS]"
+                      dataType="wstr"
+                      length="4"
+                      lineageId="Package\COKEY\DB PBI.Outputs[OLE DB Source Error Output].Columns[WERKS]"
+                      name="WERKS" />
+                    <outputColumn
+                      refId="Package\COKEY\DB PBI.Outputs[OLE DB Source Error Output].Columns[MATNR]"
+                      dataType="wstr"
+                      length="18"
+                      lineageId="Package\COKEY\DB PBI.Outputs[OLE DB Source Error Output].Columns[MATNR]"
+                      name="MATNR" />
+                    <outputColumn
+                      refId="Package\COKEY\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\COKEY\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\COKEY\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\COKEY\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\COKEY\DB SAP"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="DB SAP"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT 
+  [MANDT], 
+  [HRKFT], 
+  [WERKS], 
+  [MATNR] 
+FROM 
+  [ecp].[COKEY] (NOLOCK) 
+ORDER BY 
+  [MANDT], 
+  [HRKFT]</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\COKEY\DB SAP.Connections[OleDbConnection]"
+                  connectionManagerID="{544CCAD9-2CB1-4D87-98D7-A7C478586195}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[SQL_SAP]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\COKEY\DB SAP.Outputs[OLE DB Source Output]"
+                  isSorted="true"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\COKEY\DB SAP.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\COKEY\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      length="3"
+                      lineageId="Package\COKEY\DB SAP.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      name="MANDT"
+                      sortKeyPosition="1"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\COKEY\DB SAP.Outputs[OLE DB Source Output].Columns[HRKFT]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\COKEY\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[HRKFT]"
+                      length="14"
+                      lineageId="Package\COKEY\DB SAP.Outputs[OLE DB Source Output].Columns[HRKFT]"
+                      name="HRKFT"
+                      sortKeyPosition="2"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\COKEY\DB SAP.Outputs[OLE DB Source Output].Columns[WERKS]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\COKEY\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[WERKS]"
+                      length="4"
+                      lineageId="Package\COKEY\DB SAP.Outputs[OLE DB Source Output].Columns[WERKS]"
+                      name="WERKS"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\COKEY\DB SAP.Outputs[OLE DB Source Output].Columns[MATNR]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\COKEY\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[MATNR]"
+                      length="18"
+                      lineageId="Package\COKEY\DB SAP.Outputs[OLE DB Source Output].Columns[MATNR]"
+                      name="MATNR"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\COKEY\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      name="MANDT" />
+                    <externalMetadataColumn
+                      refId="Package\COKEY\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[HRKFT]"
+                      dataType="wstr"
+                      length="14"
+                      name="HRKFT" />
+                    <externalMetadataColumn
+                      refId="Package\COKEY\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[WERKS]"
+                      dataType="wstr"
+                      length="4"
+                      name="WERKS" />
+                    <externalMetadataColumn
+                      refId="Package\COKEY\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[MATNR]"
+                      dataType="wstr"
+                      length="18"
+                      name="MATNR" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\COKEY\DB SAP.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\COKEY\DB SAP.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      lineageId="Package\COKEY\DB SAP.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      name="MANDT" />
+                    <outputColumn
+                      refId="Package\COKEY\DB SAP.Outputs[OLE DB Source Error Output].Columns[HRKFT]"
+                      dataType="wstr"
+                      length="14"
+                      lineageId="Package\COKEY\DB SAP.Outputs[OLE DB Source Error Output].Columns[HRKFT]"
+                      name="HRKFT" />
+                    <outputColumn
+                      refId="Package\COKEY\DB SAP.Outputs[OLE DB Source Error Output].Columns[WERKS]"
+                      dataType="wstr"
+                      length="4"
+                      lineageId="Package\COKEY\DB SAP.Outputs[OLE DB Source Error Output].Columns[WERKS]"
+                      name="WERKS" />
+                    <outputColumn
+                      refId="Package\COKEY\DB SAP.Outputs[OLE DB Source Error Output].Columns[MATNR]"
+                      dataType="wstr"
+                      length="18"
+                      lineageId="Package\COKEY\DB SAP.Outputs[OLE DB Source Error Output].Columns[MATNR]"
+                      name="MATNR" />
+                    <outputColumn
+                      refId="Package\COKEY\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\COKEY\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\COKEY\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\COKEY\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\COKEY\Find Changed Records"
+              componentClassID="Microsoft.ConditionalSplit"
+              contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
+              name="Find Changed Records"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\COKEY\Find Changed Records.Inputs[Conditional Split Input]"
+                  description="Input to the Conditional Split Transformation"
+                  name="Conditional Split Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\COKEY\Find Changed Records.Inputs[Conditional Split Input].Columns[WERKS]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="WERKS"
+                      lineageId="Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[WERKS]" />
+                    <inputColumn
+                      refId="Package\COKEY\Find Changed Records.Inputs[Conditional Split Input].Columns[MATNR]"
+                      cachedDataType="wstr"
+                      cachedLength="18"
+                      cachedName="MATNR"
+                      lineageId="Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[MATNR]" />
+                    <inputColumn
+                      refId="Package\COKEY\Find Changed Records.Inputs[Conditional Split Input].Columns[WERKS (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="WERKS (1)"
+                      lineageId="Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[WERKS (1)]" />
+                    <inputColumn
+                      refId="Package\COKEY\Find Changed Records.Inputs[Conditional Split Input].Columns[MATNR (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="18"
+                      cachedName="MATNR (1)"
+                      lineageId="Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[MATNR (1)]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\COKEY\Find Changed Records.Outputs[update]"
+                  description="Output 1 of the Conditional Split Transformation"
+                  errorOrTruncationOperation="Computation"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="update"
+                  synchronousInputId="Package\COKEY\Find Changed Records.Inputs[Conditional Split Input]"
+                  truncationRowDisposition="FailComponent">
+                  <properties>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                      name="Expression">#{Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[WERKS]} != #{Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[WERKS (1)]} || #{Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[MATNR]} != #{Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[MATNR (1)]}</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the friendly version of the expression. This expression version uses column names."
+                      expressionType="Notify"
+                      name="FriendlyExpression">WERKS != [WERKS (1)] || MATNR != [MATNR (1)]</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                      name="EvaluationOrder">0</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\COKEY\Find Changed Records.Outputs[Conditional Split Default Output]"
+                  description="Default Output of the Conditional Split Transformation"
+                  exclusionGroup="1"
+                  name="Conditional Split Default Output"
+                  synchronousInputId="Package\COKEY\Find Changed Records.Inputs[Conditional Split Input]">
+                  <properties>
+                    <property
+                      dataType="System.Boolean"
+                      name="IsDefaultOut">true</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\COKEY\Find Changed Records.Outputs[Conditional Split Error Output]"
+                  description="Error Output of the Conditional Split Transformation"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Conditional Split Error Output"
+                  synchronousInputId="Package\COKEY\Find Changed Records.Inputs[Conditional Split Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\COKEY\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\COKEY\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\COKEY\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\COKEY\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\COKEY\Identity records"
+              componentClassID="Microsoft.ConditionalSplit"
+              contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
+              name="Identity records"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\COKEY\Identity records.Inputs[Conditional Split Input]"
+                  description="Input to the Conditional Split Transformation"
+                  name="Conditional Split Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\COKEY\Identity records.Inputs[Conditional Split Input].Columns[MANDT]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT"
+                      cachedSortKeyPosition="1"
+                      lineageId="Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
+                    <inputColumn
+                      refId="Package\COKEY\Identity records.Inputs[Conditional Split Input].Columns[MANDT (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT (1)"
+                      lineageId="Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\COKEY\Identity records.Outputs[update]"
+                  description="Output 1 of the Conditional Split Transformation"
+                  errorOrTruncationOperation="Computation"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="update"
+                  synchronousInputId="Package\COKEY\Identity records.Inputs[Conditional Split Input]"
+                  truncationRowDisposition="FailComponent">
+                  <properties>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                      name="Expression">![ISNULL](#{Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; ![ISNULL](#{Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the friendly version of the expression. This expression version uses column names."
+                      expressionType="Notify"
+                      name="FriendlyExpression">!ISNULL(MANDT) &amp;&amp; !ISNULL([MANDT (1)])</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                      name="EvaluationOrder">0</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\COKEY\Identity records.Outputs[insert]"
+                  description="Output 2 of the Conditional Split Transformation"
+                  errorOrTruncationOperation="Computation"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="insert"
+                  synchronousInputId="Package\COKEY\Identity records.Inputs[Conditional Split Input]"
+                  truncationRowDisposition="FailComponent">
+                  <properties>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                      name="Expression">![ISNULL](#{Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; [ISNULL](#{Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the friendly version of the expression. This expression version uses column names."
+                      expressionType="Notify"
+                      name="FriendlyExpression">!ISNULL(MANDT) &amp;&amp; ISNULL([MANDT (1)])</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                      name="EvaluationOrder">1</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\COKEY\Identity records.Outputs[delete]"
+                  description="Output 3 of the Conditional Split Transformation"
+                  errorOrTruncationOperation="Computation"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="delete"
+                  synchronousInputId="Package\COKEY\Identity records.Inputs[Conditional Split Input]"
+                  truncationRowDisposition="FailComponent">
+                  <properties>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                      name="Expression">[ISNULL](#{Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; ![ISNULL](#{Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
+                    <property
+                      containsID="true"
+                      dataType="System.String"
+                      description="Specifies the friendly version of the expression. This expression version uses column names."
+                      expressionType="Notify"
+                      name="FriendlyExpression">ISNULL(MANDT) &amp;&amp; !ISNULL([MANDT (1)])</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                      name="EvaluationOrder">2</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\COKEY\Identity records.Outputs[Conditional Split Default Output]"
+                  description="Default Output of the Conditional Split Transformation"
+                  exclusionGroup="1"
+                  name="Conditional Split Default Output"
+                  synchronousInputId="Package\COKEY\Identity records.Inputs[Conditional Split Input]">
+                  <properties>
+                    <property
+                      dataType="System.Boolean"
+                      name="IsDefaultOut">true</property>
+                  </properties>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\COKEY\Identity records.Outputs[Conditional Split Error Output]"
+                  description="Error Output of the Conditional Split Transformation"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Conditional Split Error Output"
+                  synchronousInputId="Package\COKEY\Identity records.Inputs[Conditional Split Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\COKEY\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\COKEY\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\COKEY\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\COKEY\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\COKEY\insert new records"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="insert new records"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[COKEY_STAGE_INSERT]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\COKEY\insert new records.Connections[OleDbConnection]"
+                  connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\COKEY\insert new records.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\COKEY\insert new records.Inputs[OLE DB Destination Input].Columns[MANDT]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT"
+                      cachedSortKeyPosition="1"
+                      externalMetadataColumnId="Package\COKEY\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      lineageId="Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
+                    <inputColumn
+                      refId="Package\COKEY\insert new records.Inputs[OLE DB Destination Input].Columns[HRKFT]"
+                      cachedDataType="wstr"
+                      cachedLength="14"
+                      cachedName="HRKFT"
+                      cachedSortKeyPosition="2"
+                      externalMetadataColumnId="Package\COKEY\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[HRKFT]"
+                      lineageId="Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[HRKFT]" />
+                    <inputColumn
+                      refId="Package\COKEY\insert new records.Inputs[OLE DB Destination Input].Columns[WERKS]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="WERKS"
+                      externalMetadataColumnId="Package\COKEY\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[WERKS]"
+                      lineageId="Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[WERKS]" />
+                    <inputColumn
+                      refId="Package\COKEY\insert new records.Inputs[OLE DB Destination Input].Columns[MATNR]"
+                      cachedDataType="wstr"
+                      cachedLength="18"
+                      cachedName="MATNR"
+                      externalMetadataColumnId="Package\COKEY\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MATNR]"
+                      lineageId="Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[MATNR]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\COKEY\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      name="MANDT" />
+                    <externalMetadataColumn
+                      refId="Package\COKEY\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[HRKFT]"
+                      dataType="wstr"
+                      length="14"
+                      name="HRKFT" />
+                    <externalMetadataColumn
+                      refId="Package\COKEY\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[WERKS]"
+                      dataType="wstr"
+                      length="4"
+                      name="WERKS" />
+                    <externalMetadataColumn
+                      refId="Package\COKEY\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MATNR]"
+                      dataType="wstr"
+                      length="18"
+                      name="MATNR" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\COKEY\insert new records.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\COKEY\insert new records.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\COKEY\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\COKEY\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\COKEY\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\COKEY\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\COKEY\Merge Join"
+              componentClassID="Microsoft.MergeJoin"
+              contactInfo="Merge Join;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
+              description="Combine two sorted data flows into one using the FULL, LEFT, or INNER join. We recommend this transformation when data flows can be sorted at their sources."
+              name="Merge Join"
+              version="1">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the type of join to perform."
+                  name="JoinType"
+                  typeConverter="JoinType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the number of columns in the ordering key."
+                  name="NumKeyColumns">2</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the null values are treated as equal values."
+                  name="TreatNullsAsEqual">true</property>
+                <property
+                  dataType="System.Int32"
+                  description="Indicates the requested maximum buffers per input before blocking."
+                  name="MaxBuffersPerInput">5</property>
+              </properties>
+              <inputs>
+                <input
+                  refId="Package\COKEY\Merge Join.Inputs[Merge Join Left Input]"
+                  hasSideEffects="true"
+                  name="Merge Join Left Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\COKEY\Merge Join.Inputs[Merge Join Left Input].Columns[MANDT]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT"
+                      cachedSortKeyPosition="1"
+                      lineageId="Package\COKEY\DB SAP.Outputs[OLE DB Source Output].Columns[MANDT]" />
+                    <inputColumn
+                      refId="Package\COKEY\Merge Join.Inputs[Merge Join Left Input].Columns[HRKFT]"
+                      cachedDataType="wstr"
+                      cachedLength="14"
+                      cachedName="HRKFT"
+                      cachedSortKeyPosition="2"
+                      lineageId="Package\COKEY\DB SAP.Outputs[OLE DB Source Output].Columns[HRKFT]" />
+                    <inputColumn
+                      refId="Package\COKEY\Merge Join.Inputs[Merge Join Left Input].Columns[WERKS]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="WERKS"
+                      lineageId="Package\COKEY\DB SAP.Outputs[OLE DB Source Output].Columns[WERKS]" />
+                    <inputColumn
+                      refId="Package\COKEY\Merge Join.Inputs[Merge Join Left Input].Columns[MATNR]"
+                      cachedDataType="wstr"
+                      cachedLength="18"
+                      cachedName="MATNR"
+                      lineageId="Package\COKEY\DB SAP.Outputs[OLE DB Source Output].Columns[MATNR]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+                <input
+                  refId="Package\COKEY\Merge Join.Inputs[Merge Join Right Input]"
+                  hasSideEffects="true"
+                  name="Merge Join Right Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\COKEY\Merge Join.Inputs[Merge Join Right Input].Columns[MANDT]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT"
+                      cachedSortKeyPosition="1"
+                      lineageId="Package\COKEY\DB PBI.Outputs[OLE DB Source Output].Columns[MANDT]" />
+                    <inputColumn
+                      refId="Package\COKEY\Merge Join.Inputs[Merge Join Right Input].Columns[HRKFT]"
+                      cachedDataType="wstr"
+                      cachedLength="14"
+                      cachedName="HRKFT"
+                      cachedSortKeyPosition="2"
+                      lineageId="Package\COKEY\DB PBI.Outputs[OLE DB Source Output].Columns[HRKFT]" />
+                    <inputColumn
+                      refId="Package\COKEY\Merge Join.Inputs[Merge Join Right Input].Columns[WERKS]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="WERKS"
+                      lineageId="Package\COKEY\DB PBI.Outputs[OLE DB Source Output].Columns[WERKS]" />
+                    <inputColumn
+                      refId="Package\COKEY\Merge Join.Inputs[Merge Join Right Input].Columns[MATNR]"
+                      cachedDataType="wstr"
+                      cachedLength="18"
+                      cachedName="MATNR"
+                      lineageId="Package\COKEY\DB PBI.Outputs[OLE DB Source Output].Columns[MATNR]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\COKEY\Merge Join.Outputs[Merge Join Output]"
+                  isSorted="true"
+                  name="Merge Join Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      lineageId="Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[MANDT]"
+                      name="MANDT"
+                      sortKeyPosition="1">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\COKEY\Merge Join.Inputs[Merge Join Left Input].Columns[MANDT]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[HRKFT]"
+                      dataType="wstr"
+                      length="14"
+                      lineageId="Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[HRKFT]"
+                      name="HRKFT"
+                      sortKeyPosition="2">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\COKEY\Merge Join.Inputs[Merge Join Left Input].Columns[HRKFT]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[WERKS]"
+                      dataType="wstr"
+                      length="4"
+                      lineageId="Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[WERKS]"
+                      name="WERKS">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\COKEY\Merge Join.Inputs[Merge Join Left Input].Columns[WERKS]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[MATNR]"
+                      dataType="wstr"
+                      length="18"
+                      lineageId="Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[MATNR]"
+                      name="MATNR">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\COKEY\Merge Join.Inputs[Merge Join Left Input].Columns[MATNR]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]"
+                      dataType="wstr"
+                      length="3"
+                      lineageId="Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]"
+                      name="MANDT (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\COKEY\Merge Join.Inputs[Merge Join Right Input].Columns[MANDT]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[HRKFT (1)]"
+                      dataType="wstr"
+                      length="14"
+                      lineageId="Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[HRKFT (1)]"
+                      name="HRKFT (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\COKEY\Merge Join.Inputs[Merge Join Right Input].Columns[HRKFT]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[WERKS (1)]"
+                      dataType="wstr"
+                      length="4"
+                      lineageId="Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[WERKS (1)]"
+                      name="WERKS (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\COKEY\Merge Join.Inputs[Merge Join Right Input].Columns[WERKS]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[MATNR (1)]"
+                      dataType="wstr"
+                      length="18"
+                      lineageId="Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[MATNR (1)]"
+                      name="MATNR (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\COKEY\Merge Join.Inputs[Merge Join Right Input].Columns[MATNR]}</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\COKEY\stage changed records"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="stage changed records"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[COKEY_STAGE_UPDATE]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\COKEY\stage changed records.Connections[OleDbConnection]"
+                  connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\COKEY\stage changed records.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\COKEY\stage changed records.Inputs[OLE DB Destination Input].Columns[MANDT]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT"
+                      cachedSortKeyPosition="1"
+                      externalMetadataColumnId="Package\COKEY\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      lineageId="Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
+                    <inputColumn
+                      refId="Package\COKEY\stage changed records.Inputs[OLE DB Destination Input].Columns[HRKFT]"
+                      cachedDataType="wstr"
+                      cachedLength="14"
+                      cachedName="HRKFT"
+                      cachedSortKeyPosition="2"
+                      externalMetadataColumnId="Package\COKEY\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[HRKFT]"
+                      lineageId="Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[HRKFT]" />
+                    <inputColumn
+                      refId="Package\COKEY\stage changed records.Inputs[OLE DB Destination Input].Columns[WERKS]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="WERKS"
+                      externalMetadataColumnId="Package\COKEY\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[WERKS]"
+                      lineageId="Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[WERKS]" />
+                    <inputColumn
+                      refId="Package\COKEY\stage changed records.Inputs[OLE DB Destination Input].Columns[MATNR]"
+                      cachedDataType="wstr"
+                      cachedLength="18"
+                      cachedName="MATNR"
+                      externalMetadataColumnId="Package\COKEY\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MATNR]"
+                      lineageId="Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[MATNR]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\COKEY\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      name="MANDT" />
+                    <externalMetadataColumn
+                      refId="Package\COKEY\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[HRKFT]"
+                      dataType="wstr"
+                      length="14"
+                      name="HRKFT" />
+                    <externalMetadataColumn
+                      refId="Package\COKEY\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[WERKS]"
+                      dataType="wstr"
+                      length="4"
+                      name="WERKS" />
+                    <externalMetadataColumn
+                      refId="Package\COKEY\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MATNR]"
+                      dataType="wstr"
+                      length="18"
+                      name="MATNR" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\COKEY\stage changed records.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\COKEY\stage changed records.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\COKEY\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\COKEY\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\COKEY\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\COKEY\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\COKEY\stage deleted records"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="stage deleted records"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[COKEY_STAGE_DELETE]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\COKEY\stage deleted records.Connections[OleDbConnection]"
+                  connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\COKEY\stage deleted records.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\COKEY\stage deleted records.Inputs[OLE DB Destination Input].Columns[MANDT (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="MANDT (1)"
+                      externalMetadataColumnId="Package\COKEY\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      lineageId="Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]" />
+                    <inputColumn
+                      refId="Package\COKEY\stage deleted records.Inputs[OLE DB Destination Input].Columns[HRKFT (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="14"
+                      cachedName="HRKFT (1)"
+                      externalMetadataColumnId="Package\COKEY\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[HRKFT]"
+                      lineageId="Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[HRKFT (1)]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\COKEY\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      name="MANDT" />
+                    <externalMetadataColumn
+                      refId="Package\COKEY\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[HRKFT]"
+                      dataType="wstr"
+                      length="14"
+                      name="HRKFT" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\COKEY\stage deleted records.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\COKEY\stage deleted records.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\COKEY\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\COKEY\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\COKEY\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\COKEY\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\COKEY.Paths[delete]"
+              endId="Package\COKEY\stage deleted records.Inputs[OLE DB Destination Input]"
+              name="delete"
+              startId="Package\COKEY\Identity records.Outputs[delete]" />
+            <path
+              refId="Package\COKEY.Paths[insert]"
+              endId="Package\COKEY\insert new records.Inputs[OLE DB Destination Input]"
+              name="insert"
+              startId="Package\COKEY\Identity records.Outputs[insert]" />
+            <path
+              refId="Package\COKEY.Paths[Merge Join Output]"
+              endId="Package\COKEY\Identity records.Inputs[Conditional Split Input]"
+              name="Merge Join Output"
+              startId="Package\COKEY\Merge Join.Outputs[Merge Join Output]" />
+            <path
+              refId="Package\COKEY.Paths[OLE DB Source Output]"
+              endId="Package\COKEY\Merge Join.Inputs[Merge Join Left Input]"
+              name="OLE DB Source Output"
+              startId="Package\COKEY\DB SAP.Outputs[OLE DB Source Output]" />
+            <path
+              refId="Package\COKEY.Paths[OLE DB Source Output1]"
+              endId="Package\COKEY\Merge Join.Inputs[Merge Join Right Input]"
+              name="OLE DB Source Output"
+              startId="Package\COKEY\DB PBI.Outputs[OLE DB Source Output]" />
+            <path
+              refId="Package\COKEY.Paths[update]"
+              endId="Package\COKEY\Find Changed Records.Inputs[Conditional Split Input]"
+              name="update"
+              startId="Package\COKEY\Identity records.Outputs[update]" />
+            <path
+              refId="Package\COKEY.Paths[update1]"
+              endId="Package\COKEY\stage changed records.Inputs[OLE DB Destination Input]"
+              name="update"
+              startId="Package\COKEY\Find Changed Records.Outputs[update]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\DELETE"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{87E23DBC-EFE5-40D6-B259-43C615CF3A3C}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="DELETE"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="DELETE A01 &#xA;FROM &#xA;  [COKEY] A01 &#xA;  INNER JOIN [COKEY_STAGE_DELETE] B01 ON (&#xA;    A01.[MANDT] = B01.[MANDT] &#xA;    AND A01.[HRKFT] = B01.[HRKFT] &#xA;  )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\INSERT"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{DFC001C6-4D70-43BE-B38D-FA627FA88F8A}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="INSERT"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="INSERT INTO [COKEY]&#xA;SELECT * FROM [COKEY_STAGE_INSERT]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\UPDATE"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{D6602F8D-349C-4E8A-B5D4-6C3686DF83D6}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="UPDATE"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="UPDATE &#xA;  A01 &#xA;SET &#xA;  A01.[WERKS] = B01.[WERKS], &#xA;  A01.[MATNR] = B01.[MATNR]&#xA;FROM &#xA;  [COKEY] A01 &#xA;  INNER JOIN [COKEY_STAGE_UPDATE] B01 ON (&#xA;    A01.[MANDT] = B01.[MANDT] &#xA;    AND A01.[HRKFT] = B01.[HRKFT]&#xA;  )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{D0F7CEA0-6F8A-4E0D-BC12-7723146404B0}"
+      DTS:From="Package\COKEY"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\UPDATE" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
+      DTS:CreationName=""
+      DTS:DTSID="{0A200C7A-2192-4660-A064-37BB9D4A1C0F}"
+      DTS:From="Package\Clean Stage"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 1"
+      DTS:To="Package\COKEY" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
+      DTS:CreationName=""
+      DTS:DTSID="{CF3D3C25-FECA-4DC6-A2E5-CC82C08A2E6F}"
+      DTS:From="Package\UPDATE"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 2"
+      DTS:To="Package\DELETE" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 3]"
+      DTS:CreationName=""
+      DTS:DTSID="{41E7AA3E-B590-4BF7-B2F4-DB118D1E4E28}"
+      DTS:From="Package\DELETE"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 3"
+      DTS:To="Package\INSERT" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="135,42"
+          Id="Package\Clean Stage"
+          TopLeft="46,22" />
+        <NodeLayout
+          Size="135,42"
+          Id="Package\COKEY"
+          TopLeft="46,103" />
+        <NodeLayout
+          Size="135,42"
+          Id="Package\DELETE"
+          TopLeft="46,265" />
+        <NodeLayout
+          Size="135,42"
+          Id="Package\INSERT"
+          TopLeft="46,346" />
+        <NodeLayout
+          Size="135,42"
+          Id="Package\UPDATE"
+          TopLeft="46,184" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="113.5,145">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,39"
+              Start="0,0"
+              End="0,31.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,31.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="113.5,64">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,39"
+              Start="0,0"
+              End="0,31.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,31.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 2]"
+          TopLeft="113.5,226">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,39"
+              Start="0,0"
+              End="0,31.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,31.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 3]"
+          TopLeft="113.5,307">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,39"
+              Start="0,0"
+              End="0,31.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,31.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\COKEY">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="180,42"
+          Id="Package\COKEY\stage deleted records"
+          TopLeft="687,371" />
+        <NodeLayout
+          Size="153,42"
+          Id="Package\COKEY\Identity records"
+          TopLeft="437,237" />
+        <NodeLayout
+          Size="114,42"
+          Id="Package\COKEY\DB SAP"
+          TopLeft="199,46" />
+        <NodeLayout
+          Size="186,42"
+          Id="Package\COKEY\stage changed records"
+          TopLeft="423,479" />
+        <NodeLayout
+          Size="184,42"
+          Id="Package\COKEY\Find Changed Records"
+          TopLeft="420,366" />
+        <NodeLayout
+          Size="112,42"
+          Id="Package\COKEY\DB PBI"
+          TopLeft="671,48" />
+        <NodeLayout
+          Size="166,42"
+          Id="Package\COKEY\insert new records"
+          TopLeft="159,370" />
+        <EdgeLayout
+          Id="Package\COKEY.Paths[update1]"
+          TopLeft="514,408">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,71"
+              Start="0,0"
+              End="0,63.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,63.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-15.8025,25.9453125,31.605,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\COKEY.Paths[update]"
+          TopLeft="512.75,279">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,87"
+              Start="0,0"
+              End="0,79.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,79.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-15.8025,33.9453125,31.605,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\COKEY.Paths[insert]"
+          TopLeft="477.25,279">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-235.25,91"
+              Start="0,0"
+              End="-235.25,83.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,27.372591006424" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,27.372591006424"
+                    Point2="0,31.372591006424"
+                    Point3="-4,31.372591006424" />
+                  <mssgle:LineSegment
+                    End="-231.25,31.372591006424" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-231.25,31.372591006424"
+                    Point2="-235.25,31.372591006424"
+                    Point3="-235.25,35.372591006424" />
+                  <mssgle:LineSegment
+                    End="-235.25,83.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-130.57498046875,36.372591006424,25.8999609375,9.451171875"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\COKEY.Paths[delete]"
+          TopLeft="549.75,279">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="227.25,92"
+              Start="0,0"
+              End="227.25,84.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,27.7173447537473" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,27.7173447537473"
+                    Point2="0,31.7173447537473"
+                    Point3="4,31.7173447537473" />
+                  <mssgle:LineSegment
+                    End="223.25,31.7173447537473" />
+                  <mssgle:CubicBezierSegment
+                    Point1="223.25,31.7173447537473"
+                    Point2="227.25,31.7173447537473"
+                    Point3="227.25,35.7173447537473" />
+                  <mssgle:LineSegment
+                    End="227.25,84.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="99.42904296875,36.7173447537473,28.3919140625,9.7490234375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="130,42"
+          Id="Package\COKEY\Merge Join"
+          TopLeft="442,122" />
+        <EdgeLayout
+          Id="Package\COKEY.Paths[OLE DB Source Output]"
+          TopLeft="256,88">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="251,34"
+              Start="0,0"
+              End="251,26.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,13" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,13"
+                    Point2="0,17"
+                    Point3="4,17" />
+                  <mssgle:LineSegment
+                    End="247,17" />
+                  <mssgle:CubicBezierSegment
+                    Point1="247,17"
+                    Point2="251,17"
+                    Point3="251,21" />
+                  <mssgle:LineSegment
+                    End="251,26.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\COKEY.Paths[OLE DB Source Output1]"
+          TopLeft="727,90">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-199.666666666667,32"
+              Start="0,0"
+              End="-199.666666666667,24.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,14.9665653495441" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,14.9665653495441"
+                    Point2="0,18.9665653495441"
+                    Point3="-4,18.9665653495441" />
+                  <mssgle:LineSegment
+                    End="-195.666666666667,18.9665653495441" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-195.666666666667,18.9665653495441"
+                    Point2="-199.666666666667,18.9665653495441"
+                    Point3="-199.666666666667,22.9665653495441" />
+                  <mssgle:LineSegment
+                    End="-199.666666666667,24.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\COKEY.Paths[Merge Join Output]"
+          TopLeft="510.25,164">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,73"
+              Start="0,0"
+              End="0,65.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,65.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\COKEY\stage deleted records">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\COKEY\DB SAP">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\COKEY\stage changed records">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\COKEY\DB PBI">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\COKEY\insert new records">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>
