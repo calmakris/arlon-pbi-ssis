@@ -11,8 +11,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="BSIS"
   DTS:PackageType="5"
-  DTS:VersionBuild="20"
-  DTS:VersionGUID="{1DD0D72B-8458-4202-BC3B-38542061403F}">
+  DTS:VersionBuild="21"
+  DTS:VersionGUID="{FC467B25-4F5E-41D7-81BF-BC6E21105560}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:Variables>
@@ -91,7 +91,7 @@
       ,[AUFNR]
       ,[WRBTR]
 FROM [BSIS] A01 (NOLOCK)
-WHERE [BUDAT] &gt;= ?
+WHERE [BUDAT] &gt; ?
 ORDER BY [MANDT]
       ,[BUKRS]
       ,[HKONT]
@@ -714,7 +714,7 @@ ORDER BY [MANDT]
       ,[AUFNR]
       ,[WRBTR]
 FROM [ecp].[BSIS] (NOLOCK)
-WHERE [BUDAT] &gt;= ?
+WHERE [BUDAT] &gt; ?
 ORDER BY [MANDT]
       ,[BUKRS]
       ,[HKONT]
@@ -3759,7 +3759,7 @@ ORDER BY [MANDT]
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
           SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-          SQLTask:SqlStatementSource="UPDATE&#xA;   zzJOB_ETL &#xA;SET&#xA;   LAST_SUCCESS_RUN = GETDATE()&#xA;   ,SUCCESS_DATE = dbo.GetBegDate(GETDATE())&#xA;   ,BEG_FISCAL_DATE = dbo.GetBegFiscalYearDate(GETDATE())&#xA;   ,MIN_DATE = DATEADD(YEAR, - 1, dbo.GetBegFiscalYearDate(GETDATE())) &#xA;WHERE&#xA;   TABLE_NAME = 'BSIS'" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          SQLTask:SqlStatementSource="UPDATE&#xA;   zzJOB_ETL &#xA;SET&#xA;   LAST_SUCCESS_RUN = GETDATE()&#xA;   ,SUCCESS_DATE = dbo.GetBegDate(GETDATE())&#xA;   ,BEG_FISCAL_DATE = dbo.GetBegFiscalYearDate(GETDATE())&#xA;   ,MIN_DATE = EOMONTH( GETDATE(), -6 )&#xA;WHERE&#xA;   TABLE_NAME = 'BSIS'" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
   </DTS:Executables>
@@ -3833,9 +3833,29 @@ ORDER BY [MANDT]
           Size="158,42"
           Id="Package\Clean Stage"
           TopLeft="24.5,187" />
+        <NodeLayout
+          Size="158,42"
+          Id="Package\DELETE"
+          TopLeft="24.5,339" />
+        <NodeLayout
+          Size="158,42"
+          Id="Package\Get MinDate"
+          TopLeft="24.5,111" />
+        <NodeLayout
+          Size="158,42"
+          Id="Package\INSERT"
+          TopLeft="24.5,491" />
+        <NodeLayout
+          Size="158,42"
+          Id="Package\UPDATE"
+          TopLeft="24.5,415" />
+        <NodeLayout
+          Size="158,42"
+          Id="Package\Update MinDate"
+          TopLeft="24.5,565.5" />
         <EdgeLayout
-          Id="Package.PrecedenceConstraints[Constraint 1]"
-          TopLeft="103.5,229">
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="103.5,305">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -3855,21 +3875,9 @@ ORDER BY [MANDT]
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
-        <NodeLayout
-          Size="158,42"
-          Id="Package\DELETE"
-          TopLeft="24.5,339" />
-        <NodeLayout
-          Size="158,42"
-          Id="Package\UPDATE"
-          TopLeft="24.5,415" />
-        <NodeLayout
-          Size="158,42"
-          Id="Package\INSERT"
-          TopLeft="24.5,491" />
         <EdgeLayout
-          Id="Package.PrecedenceConstraints[Constraint]"
-          TopLeft="103.5,305">
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="103.5,229">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -3933,10 +3941,6 @@ ORDER BY [MANDT]
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
-        <NodeLayout
-          Size="158,42"
-          Id="Package\Get MinDate"
-          TopLeft="24.5,111" />
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 4]"
           TopLeft="103.5,153">
@@ -3959,10 +3963,6 @@ ORDER BY [MANDT]
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
-        <NodeLayout
-          Size="158,42"
-          Id="Package\Update MinDate"
-          TopLeft="24.5,565.5" />
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 5]"
           TopLeft="103.5,533">
@@ -4080,9 +4080,7 @@ ORDER BY [MANDT]
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-103.333333333333,32.8571428571429,16,16"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
