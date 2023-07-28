@@ -7,15 +7,24 @@
   DTS:CreatorName="DOMAIN\kcalma"
   DTS:DTSID="{56EC1822-882E-43F8-B8A4-34BD422205C4}"
   DTS:ExecutableType="Microsoft.Package"
-  DTS:LastModifiedProductVersion="16.0.948.0"
+  DTS:LastModifiedProductVersion="16.0.5270.0"
   DTS:LocaleID="1033"
   DTS:ObjectName="zC3"
   DTS:PackageType="5"
-  DTS:VersionBuild="170"
-  DTS:VersionGUID="{14F83CFC-D5CA-493D-812E-7B5A93C48933}">
+  DTS:VersionBuild="176"
+  DTS:VersionGUID="{D393C663-D346-42C9-9D67-AB461CE12D67}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{FA3AEA30-BCB5-4ED1-A5D3-87EFD15BEAB2}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="LastDatetime_JobData">
+      <DTS:VariableValue
+        DTS:DataType="7">7/26/2023 8:02:37 AM</DTS:VariableValue>
+    </DTS:Variable>
     <DTS:Variable
       DTS:CreationName=""
       DTS:DTSID="{A7E9D8BE-330B-43A3-A364-5129B6D0A3FC}"
@@ -33,6 +42,15 @@
       DTS:ObjectName="LastDatetime_Profile">
       <DTS:VariableValue
         DTS:DataType="7">4/6/2022 11:46:53 AM</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{7C0B9237-DD01-4A56-BF0C-E7ECBA0BC640}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="LastJobIndex">
+      <DTS:VariableValue
+        DTS:DataType="3">0</DTS:VariableValue>
     </DTS:Variable>
   </DTS:Variables>
   <DTS:Executables>
@@ -55,7 +73,7 @@
           DTS:LocaleID="-1"
           DTS:ObjectName="Clean Stage"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="3">
+          DTS:ThreadHint="1">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -72,7 +90,7 @@
           DTS:LocaleID="-1"
           DTS:ObjectName="Delete Data"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="3">
+          DTS:ThreadHint="1">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -89,12 +107,34 @@
           DTS:LocaleID="-1"
           DTS:ObjectName="Insert Data"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="3">
+          DTS:ThreadHint="1">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
               SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
               SQLTask:SqlStatementSource="INSERT INTO [zC3_JOBDATA]&#xA;SELECT * FROM [zC3_JOBDATA_STAGE_INSERT]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Job Data\Last DateTime"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{550decfa-a2e4-4a41-ab5c-5d1d508ac312}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Last DateTime"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+              SQLTask:SqlStatementSource="SELECT ISNULL(DATEADD(DAY, -90, MAX(DateTime)), CAST('2019-10-01' AS datetime))&#xA;FROM zC3_JOBDATA"
+              SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ResultBinding
+                SQLTask:ResultName="0"
+                SQLTask:DtsVariableName="User::LastDatetime_JobData" />
+            </SQLTask:SqlTaskData>
           </DTS:ObjectData>
         </DTS:Executable>
         <DTS:Executable
@@ -141,7 +181,8 @@
     ,[JobIndex]
     ,[Footage]
     ,[Downtime]
-FROM [zC3_JOBDATA]</property>
+FROM [zC3_JOBDATA]
+WHERE [DateTime] &gt; ?</property>
                     <property
                       dataType="System.String"
                       description="The variable that contains the SQL command to be executed."
@@ -162,7 +203,7 @@ FROM [zC3_JOBDATA]</property>
                     <property
                       dataType="System.String"
                       description="The mappings between the parameters in the SQL command and variables."
-                      name="ParameterMapping"></property>
+                      name="ParameterMapping">"Parameter0:Input",{FA3AEA30-BCB5-4ED1-A5D3-87EFD15BEAB2};</property>
                   </properties>
                   <connections>
                     <connection
@@ -327,7 +368,7 @@ FROM [zC3_JOBDATA]</property>
     LastRollFt AS Footage,
     DownTime AS Downtime
 FROM c3jobdata
-WHERE Date_Time IS NOT NULL
+WHERE Date_Time &gt; ?
 ORDER BY Record_ID,
     Date_Time</property>
                     <property
@@ -350,7 +391,7 @@ ORDER BY Record_ID,
                     <property
                       dataType="System.String"
                       description="The mappings between the parameters in the SQL command and variables."
-                      name="ParameterMapping"></property>
+                      name="ParameterMapping">"Parameter0:Input",{FA3AEA30-BCB5-4ED1-A5D3-87EFD15BEAB2};</property>
                   </properties>
                   <connections>
                     <connection
@@ -1468,7 +1509,7 @@ ORDER BY Record_ID,
           DTS:LocaleID="-1"
           DTS:ObjectName="Update Data"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="3">
+          DTS:ThreadHint="1">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -1481,11 +1522,11 @@ ORDER BY Record_ID,
         <DTS:PrecedenceConstraint
           DTS:refId="Package\Job Data.PrecedenceConstraints[Constraint]"
           DTS:CreationName=""
-          DTS:DTSID="{FD7E3928-EB5A-48B4-B567-31CB86F9B6DA}"
+          DTS:DTSID="{3DFCD38E-C87E-40C8-B45C-6651F47DE09A}"
           DTS:From="Package\Job Data\Clean Stage"
           DTS:LogicalAnd="True"
           DTS:ObjectName="Constraint"
-          DTS:To="Package\Job Data\Staging" />
+          DTS:To="Package\Job Data\Last DateTime" />
         <DTS:PrecedenceConstraint
           DTS:refId="Package\Job Data.PrecedenceConstraints[Constraint 1]"
           DTS:CreationName=""
@@ -1510,6 +1551,14 @@ ORDER BY Record_ID,
           DTS:LogicalAnd="True"
           DTS:ObjectName="Constraint 3"
           DTS:To="Package\Job Data\Insert Data" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Job Data.PrecedenceConstraints[Constraint 4]"
+          DTS:CreationName=""
+          DTS:DTSID="{BD6984BF-793F-4677-89C4-892172F08393}"
+          DTS:From="Package\Job Data\Last DateTime"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 4"
+          DTS:To="Package\Job Data\Staging" />
       </DTS:PrecedenceConstraints>
     </DTS:Executable>
     <DTS:Executable
@@ -1531,7 +1580,7 @@ ORDER BY Record_ID,
           DTS:LocaleID="-1"
           DTS:ObjectName="Clean Stage"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="1">
+          DTS:ThreadHint="0">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -1548,12 +1597,33 @@ ORDER BY Record_ID,
           DTS:LocaleID="-1"
           DTS:ObjectName="Insert Data"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="1">
+          DTS:ThreadHint="0">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
               SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
               SQLTask:SqlStatementSource="INSERT INTO [zC3_PRIMARYSTRUCT]&#xA;SELECT * FROM [zC3_PRIMARYSTRUCT_STAGE_INSERT]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Primary Structure\LastJobIndex"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{c641920e-428f-4503-b833-ce894d2310f8}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="LastJobIndex"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+              SQLTask:SqlStatementSource="SELECT MAX( PIndex ) - 1000 AS LastPIndex&#xA;FROM zC3_PRIMARYSTRUCT"
+              SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ResultBinding
+                SQLTask:ResultName="0"
+                SQLTask:DtsVariableName="User::LastJobIndex" />
+            </SQLTask:SqlTaskData>
           </DTS:ObjectData>
         </DTS:Executable>
         <DTS:Executable
@@ -1783,6 +1853,7 @@ ORDER BY Record_ID,
     ,[ProcessOrderNo]
     ,[SpecLinespeed]
 FROM [zC3_PRIMARYSTRUCT]
+WHERE [PIndex] &gt; ?
 ORDER BY [PIndex]</property>
                     <property
                       dataType="System.String"
@@ -1804,7 +1875,7 @@ ORDER BY [PIndex]</property>
                     <property
                       dataType="System.String"
                       description="The mappings between the parameters in the SQL command and variables."
-                      name="ParameterMapping"></property>
+                      name="ParameterMapping">"Parameter0:Input",{7C0B9237-DD01-4A56-BF0C-E7ECBA0BC640};</property>
                   </properties>
                   <connections>
                     <connection
@@ -2066,7 +2137,7 @@ ORDER BY [PIndex]</property>
     CSTR([ProcessOrder]) AS ProcessOrderNo,
     [SpecLS] AS SpecLinespeed
 FROM c3primarystructure
-WHERE [PIndex] IS NOT NULL
+WHERE [PIndex] &gt; ?
 ORDER BY [PIndex]</property>
                     <property
                       dataType="System.String"
@@ -2088,7 +2159,7 @@ ORDER BY [PIndex]</property>
                     <property
                       dataType="System.String"
                       description="The mappings between the parameters in the SQL command and variables."
-                      name="ParameterMapping"></property>
+                      name="ParameterMapping">"Parameter0:Input",{7C0B9237-DD01-4A56-BF0C-E7ECBA0BC640};</property>
                   </properties>
                   <connections>
                     <connection
@@ -3451,7 +3522,7 @@ ORDER BY [PIndex]</property>
           DTS:LocaleID="-1"
           DTS:ObjectName="Update Data"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="1">
+          DTS:ThreadHint="0">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -3464,11 +3535,11 @@ ORDER BY [PIndex]</property>
         <DTS:PrecedenceConstraint
           DTS:refId="Package\Primary Structure.PrecedenceConstraints[Constraint]"
           DTS:CreationName=""
-          DTS:DTSID="{B98CFC58-5B94-45D6-AD2D-197EB4236765}"
+          DTS:DTSID="{959857F1-0137-4CDA-BC9A-C210DAD2152F}"
           DTS:From="Package\Primary Structure\Clean Stage"
           DTS:LogicalAnd="True"
           DTS:ObjectName="Constraint"
-          DTS:To="Package\Primary Structure\Staging" />
+          DTS:To="Package\Primary Structure\LastJobIndex" />
         <DTS:PrecedenceConstraint
           DTS:refId="Package\Primary Structure.PrecedenceConstraints[Constraint 1]"
           DTS:CreationName=""
@@ -3485,6 +3556,14 @@ ORDER BY [PIndex]</property>
           DTS:LogicalAnd="True"
           DTS:ObjectName="Constraint 2"
           DTS:To="Package\Primary Structure\Insert Data" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Primary Structure.PrecedenceConstraints[Constraint 3]"
+          DTS:CreationName=""
+          DTS:DTSID="{BA5C0E51-5B17-4D31-B03D-ED36E03E590D}"
+          DTS:From="Package\Primary Structure\LastJobIndex"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 3"
+          DTS:To="Package\Primary Structure\Staging" />
       </DTS:PrecedenceConstraints>
     </DTS:Executable>
     <DTS:Executable
@@ -3562,7 +3641,7 @@ ORDER BY [PIndex]</property>
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
               SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-              SQLTask:SqlStatementSource="SELECT ISNULL(DATEADD(DAY, -30, MAX(Date_Time)), CAST('2019-10-01' AS datetime))&#xA;FROM zC3_PROCESSDATA"
+              SQLTask:SqlStatementSource="SELECT ISNULL( MAX(Date_Time), CAST('2019-10-01' AS datetime))&#xA;FROM zC3_PROCESSDATA"
               SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
               <SQLTask:ResultBinding
                 SQLTask:ResultName="0"
@@ -6092,7 +6171,7 @@ ORDER BY [Date_Time]</property>
           DTS:LocaleID="-1"
           DTS:ObjectName="Clean Stage"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="0">
+          DTS:ThreadHint="3">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -6109,7 +6188,7 @@ ORDER BY [Date_Time]</property>
           DTS:LocaleID="-1"
           DTS:ObjectName="Delete Data"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="0">
+          DTS:ThreadHint="3">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -6126,7 +6205,7 @@ ORDER BY [Date_Time]</property>
           DTS:LocaleID="-1"
           DTS:ObjectName="Insert Data"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="0">
+          DTS:ThreadHint="3">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -6143,12 +6222,12 @@ ORDER BY [Date_Time]</property>
           DTS:LocaleID="-1"
           DTS:ObjectName="Last DateTime"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="0">
+          DTS:ThreadHint="3">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
               SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-              SQLTask:SqlStatementSource="SELECT ISNULL(DATEADD(DAY, -30, MAX(Date_Time)), CAST('2019-10-01' AS datetime))&#xA;FROM zC3_PROFILE"
+              SQLTask:SqlStatementSource="SELECT ISNULL( MAX(Date_Time), CAST('2019-10-01' AS datetime))&#xA;FROM zC3_PROFILE"
               SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
               <SQLTask:ResultBinding
                 SQLTask:ResultName="0"
@@ -10638,7 +10717,7 @@ ORDER BY [Date_Time]</property>
           DTS:LocaleID="-1"
           DTS:ObjectName="Update Data"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="0">
+          DTS:ThreadHint="3">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -10704,39 +10783,43 @@ ORDER BY [Date_Time]</property>
       <GraphLayout
         Capacity="64" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
-          Size="138,42"
+          Size="147,42"
           Id="Package\Job Data\Clean Stage"
           TopLeft="17,17" />
         <NodeLayout
-          Size="138,42"
+          Size="147,42"
           Id="Package\Job Data\Delete Data"
-          TopLeft="17,171.5" />
+          TopLeft="17,249.2" />
         <NodeLayout
-          Size="138,42"
+          Size="147,42"
           Id="Package\Job Data\Insert Data"
-          TopLeft="17,326" />
+          TopLeft="17,404" />
         <NodeLayout
-          Size="138,42"
+          Size="147,42"
+          Id="Package\Job Data\Last DateTime"
+          TopLeft="17,94.4" />
+        <NodeLayout
+          Size="147,42"
           Id="Package\Job Data\Staging"
-          TopLeft="17,94.25" />
+          TopLeft="17,171.8" />
         <NodeLayout
-          Size="138,42"
+          Size="147,42"
           Id="Package\Job Data\Update Data"
-          TopLeft="17,248.75" />
+          TopLeft="17,326.6" />
         <EdgeLayout
           Id="Package\Job Data.PrecedenceConstraints[Constraint]"
-          TopLeft="86,59">
+          TopLeft="90.5,59">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,35.25"
+              EndConnector="0,35.4"
               Start="0,0"
-              End="0,27.75">
+              End="0,27.9">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,27.75" />
+                    End="0,27.9" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -10747,18 +10830,18 @@ ORDER BY [Date_Time]</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\Job Data.PrecedenceConstraints[Constraint 1]"
-          TopLeft="86,136.25">
+          TopLeft="90.5,213.8">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,35.25"
+              EndConnector="0,35.4"
               Start="0,0"
-              End="0,27.75">
+              End="0,27.9">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,27.75" />
+                    End="0,27.9" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -10769,18 +10852,18 @@ ORDER BY [Date_Time]</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\Job Data.PrecedenceConstraints[Constraint 2]"
-          TopLeft="86,213.5">
+          TopLeft="90.5,291.2">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,35.25"
+              EndConnector="0,35.4"
               Start="0,0"
-              End="0,27.75">
+              End="0,27.9">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,27.75" />
+                    End="0,27.9" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -10791,18 +10874,40 @@ ORDER BY [Date_Time]</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\Job Data.PrecedenceConstraints[Constraint 3]"
-          TopLeft="86,290.75">
+          TopLeft="90.5,368.6">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,35.25"
+              EndConnector="0,35.4"
               Start="0,0"
-              End="0,27.75">
+              End="0,27.9">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,27.75" />
+                    End="0,27.9" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Job Data.PrecedenceConstraints[Constraint 4]"
+          TopLeft="90.5,136.4">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,35.4"
+              Start="0,0"
+              End="0,27.9">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,27.9" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -10814,29 +10919,33 @@ ORDER BY [Date_Time]</property>
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="178,421"
-          Size="178,464"
+          PanelSize="178,504"
+          Size="178,547"
           Id="Package\Job Data"
           TopLeft="139,9" />
         <NodeLayout
-          Size="138,42"
+          Size="144,42"
           Id="Package\Primary Structure\Clean Stage"
           TopLeft="17,17" />
         <NodeLayout
-          Size="138,42"
+          Size="144,42"
           Id="Package\Primary Structure\Insert Data"
-          TopLeft="17,251" />
+          TopLeft="17,329" />
         <NodeLayout
-          Size="138,42"
-          Id="Package\Primary Structure\Staging"
+          Size="144,42"
+          Id="Package\Primary Structure\LastJobIndex"
           TopLeft="17,95" />
         <NodeLayout
-          Size="138,42"
-          Id="Package\Primary Structure\Update Data"
+          Size="144,42"
+          Id="Package\Primary Structure\Staging"
           TopLeft="17,173" />
+        <NodeLayout
+          Size="144,42"
+          Id="Package\Primary Structure\Update Data"
+          TopLeft="17,251" />
         <EdgeLayout
           Id="Package\Primary Structure.PrecedenceConstraints[Constraint]"
-          TopLeft="86,59">
+          TopLeft="89,59">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -10858,7 +10967,7 @@ ORDER BY [Date_Time]</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\Primary Structure.PrecedenceConstraints[Constraint 1]"
-          TopLeft="86,137">
+          TopLeft="89,215">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -10880,7 +10989,29 @@ ORDER BY [Date_Time]</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\Primary Structure.PrecedenceConstraints[Constraint 2]"
-          TopLeft="86,215">
+          TopLeft="89,293">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,36"
+              Start="0,0"
+              End="0,28.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,28.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Primary Structure.PrecedenceConstraints[Constraint 3]"
+          TopLeft="89,137">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -10903,8 +11034,8 @@ ORDER BY [Date_Time]</property>
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="185,405"
-          Size="185,448"
+          PanelSize="185,498"
+          Size="185,541"
           Id="Package\Primary Structure"
           TopLeft="325,10" />
         <NodeLayout
@@ -11320,9 +11451,7 @@ ORDER BY [Date_Time]</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -11356,9 +11485,7 @@ ORDER BY [Date_Time]</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -11380,9 +11507,7 @@ ORDER BY [Date_Time]</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -11583,9 +11708,7 @@ ORDER BY [Date_Time]</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -11607,9 +11730,7 @@ ORDER BY [Date_Time]</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -11763,9 +11884,7 @@ ORDER BY [Date_Time]</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>

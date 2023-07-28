@@ -7,15 +7,26 @@
   DTS:CreatorName="DOMAIN\kcalma"
   DTS:DTSID="{ADD384E0-F81E-41B9-A600-B8B07881AB65}"
   DTS:ExecutableType="Microsoft.Package"
-  DTS:LastModifiedProductVersion="16.0.948.0"
+  DTS:LastModifiedProductVersion="16.0.5270.0"
   DTS:LocaleID="1033"
   DTS:ObjectName="RESB"
   DTS:PackageType="5"
-  DTS:VersionBuild="27"
-  DTS:VersionGUID="{1C56A547-BC2C-4E0D-8068-8A4E435601F2}">
+  DTS:VersionBuild="32"
+  DTS:VersionGUID="{7C789931-DD27-4084-95B1-B1EE7BCDB63A}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
-  <DTS:Variables />
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{58A60FF1-D278-422E-896E-F4ADD39305F5}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="MinDate">
+      <DTS:VariableValue
+        DTS:DataType="8"
+        xml:space="preserve"></DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
   <DTS:Executables>
     <DTS:Executable
       DTS:refId="Package\Clean Stage"
@@ -49,6 +60,27 @@
         <SQLTask:SqlTaskData
           SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
           SQLTask:SqlStatementSource="DELETE A01&#xA;FROM [RESB] A01&#xA;INNER JOIN [RESB_STAGE_DELETE] B01&#xA;ON A01.MANDT = B01.MANDT&#xA;&#x9;AND A01.RSNUM = B01.RSNUM&#xA;&#x9;AND A01.RSPOS = B01.RSPOS&#xA;&#x9;AND A01.RSART = B01.RSART" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Get MinDate"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{354b4d15-7a8d-4507-b276-d5a155e0f420}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Get MinDate"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="SELECT FORMAT( ISNULL( MIN_DATE, dbo.GetBegFiscalYearDate( GETDATE() ) ), 'yyyyMMdd' ) AS MinDate&#xA;FROM zzJOB_ETL&#xA;WHERE TABLE_NAME = 'RESB'"
+          SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ResultBinding
+            SQLTask:ResultName="MinDate"
+            SQLTask:DtsVariableName="User::MinDate" />
+        </SQLTask:SqlTaskData>
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
@@ -1397,24 +1429,29 @@
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT [MANDT]
-    ,[RSNUM]
-    ,[RSPOS]
-    ,[RSART]
-    ,[BDART]
-    ,[XLOEK]
-    ,[MATNR]
-    ,[WERKS]
-    ,[BDTER]
-    ,[BDMNG]
-    ,[SHKZG]
-    ,[AUFNR]
-FROM [RESB] (NOLOCK)
-WHERE [MANDT] = '105'
-ORDER BY [MANDT]
-    ,[RSNUM]
-    ,[RSPOS]
-    ,[RSART]</property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT 
+  [MANDT], 
+  [RSNUM], 
+  [RSPOS], 
+  [RSART], 
+  [BDART], 
+  [XLOEK], 
+  [MATNR], 
+  [WERKS], 
+  [BDTER], 
+  [BDMNG], 
+  [SHKZG], 
+  [AUFNR] 
+FROM 
+  [RESB] (NOLOCK) 
+WHERE 
+  [MANDT] = '105' 
+  AND [BDTER] &gt; ? 
+ORDER BY 
+  [MANDT], 
+  [RSNUM], 
+  [RSPOS], 
+  [RSART]</property>
                 <property
                   dataType="System.String"
                   description="The variable that contains the SQL command to be executed."
@@ -1435,7 +1472,7 @@ ORDER BY [MANDT]
                 <property
                   dataType="System.String"
                   description="The mappings between the parameters in the SQL command and variables."
-                  name="ParameterMapping"></property>
+                  name="ParameterMapping">"Parameter0:Input",{58A60FF1-D278-422E-896E-F4ADD39305F5};</property>
               </properties>
               <connections>
                 <connection
@@ -1762,27 +1799,32 @@ ORDER BY [MANDT]
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT [MANDT]
-    ,[RSNUM]
-    ,[RSPOS]
-    ,[RSART]
-    ,[BDART]
-    ,[XLOEK]
-    ,[MATNR]
-    ,[WERKS]
-    ,[BDTER]
-    ,[BDMNG]
-    ,[SHKZG]
-    ,[AUFNR]
-FROM [ecp].[RESB] (NOLOCK)
-WHERE [MANDT] = '105'
-    AND [BDART] = 'AR'
-    AND [XLOEK] = ''
-    AND [KZEAR] = ''
-ORDER BY [MANDT]
-    ,[RSNUM]
-    ,[RSPOS]
-    ,[RSART]</property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT 
+  [MANDT], 
+  [RSNUM], 
+  [RSPOS], 
+  [RSART], 
+  [BDART], 
+  [XLOEK], 
+  [MATNR], 
+  [WERKS], 
+  [BDTER], 
+  [BDMNG], 
+  [SHKZG], 
+  [AUFNR] 
+FROM 
+  [ecp].[RESB] (NOLOCK) 
+WHERE 
+  [MANDT] = '105' 
+  AND [BDART] = 'AR' 
+  AND [XLOEK] = '' 
+  AND [KZEAR] = '' 
+  AND [BDTER] &gt; ? 
+ORDER BY 
+  [MANDT], 
+  [RSNUM], 
+  [RSPOS], 
+  [RSART]</property>
                 <property
                   dataType="System.String"
                   description="The variable that contains the SQL command to be executed."
@@ -1803,7 +1845,7 @@ ORDER BY [MANDT]
                 <property
                   dataType="System.String"
                   description="The mappings between the parameters in the SQL command and variables."
-                  name="ParameterMapping"></property>
+                  name="ParameterMapping">"Parameter0:Input",{58A60FF1-D278-422E-896E-F4ADD39305F5};</property>
               </properties>
               <connections>
                 <connection
@@ -2416,6 +2458,22 @@ ORDER BY [MANDT]
           SQLTask:SqlStatementSource="UPDATE A01&#xA;SET A01.[BDART] = B01.[BDART]&#xA;    ,A01.[XLOEK] = B01.[XLOEK]&#xA;    ,A01.[MATNR] = B01.[MATNR]&#xA;    ,A01.[WERKS] = B01.[WERKS]&#xA;    ,A01.[BDTER] = B01.[BDTER]&#xA;    ,A01.[BDMNG] = B01.[BDMNG]&#xA;    ,A01.[SHKZG] = B01.[SHKZG]&#xA;    ,A01.[AUFNR] = B01.[AUFNR]&#xA;FROM [RESB] A01&#xA;INNER JOIN [RESB_STAGE_UPDATE] B01&#xA;ON A01.MANDT = B01.MANDT&#xA;&#x9;AND A01.RSNUM = B01.RSNUM&#xA;&#x9;AND A01.RSPOS = B01.RSPOS&#xA;&#x9;AND A01.RSART = B01.RSART" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Update MinDate"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{948de489-8768-4797-b78d-7480e70bc1d5}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Update MinDate"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="UPDATE&#xA;   zzJOB_ETL &#xA;SET&#xA;   LAST_SUCCESS_RUN = GETDATE()&#xA;   ,SUCCESS_DATE = dbo.GetBegDate(GETDATE())&#xA;   ,BEG_FISCAL_DATE = dbo.GetBegFiscalYearDate(GETDATE())&#xA;   ,MIN_DATE = EOMONTH( GETDATE(), -3 )&#xA;WHERE&#xA;   TABLE_NAME = 'RESB'" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
   </DTS:Executables>
   <DTS:PrecedenceConstraints>
     <DTS:PrecedenceConstraint
@@ -2450,6 +2508,22 @@ ORDER BY [MANDT]
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 3"
       DTS:To="Package\INSERT" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 4]"
+      DTS:CreationName=""
+      DTS:DTSID="{20E8930F-1F89-49D9-A1FA-3C9A69D19F38}"
+      DTS:From="Package\Get MinDate"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 4"
+      DTS:To="Package\Clean Stage" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 5]"
+      DTS:CreationName=""
+      DTS:DTSID="{62BF5BED-2BDC-4001-A6BB-50766D4EC790}"
+      DTS:From="Package\INSERT"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 5"
+      DTS:To="Package\Update MinDate" />
   </DTS:PrecedenceConstraints>
   <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
 <!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
@@ -2464,39 +2538,47 @@ ORDER BY [MANDT]
       <GraphLayout
         Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
-          Size="135,42"
+          Size="158,42"
           Id="Package\Clean Stage"
-          TopLeft="126,43" />
+          TopLeft="41,107.166666666667" />
         <NodeLayout
-          Size="135,42"
+          Size="158,42"
           Id="Package\DELETE"
-          TopLeft="126,215" />
+          TopLeft="41,265.5" />
         <NodeLayout
-          Size="135,42"
+          Size="158,42"
+          Id="Package\Get MinDate"
+          TopLeft="41,28" />
+        <NodeLayout
+          Size="158,42"
           Id="Package\INSERT"
-          TopLeft="126,387" />
+          TopLeft="41,423.833333333333" />
         <NodeLayout
-          Size="135,42"
+          Size="158,42"
           Id="Package\RESB"
-          TopLeft="126,129" />
+          TopLeft="41,186.333333333333" />
         <NodeLayout
-          Size="135,42"
+          Size="158,42"
           Id="Package\UPDATE"
-          TopLeft="126,301" />
+          TopLeft="41,344.666666666667" />
+        <NodeLayout
+          Size="158,42"
+          Id="Package\Update MinDate"
+          TopLeft="41,503" />
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint]"
-          TopLeft="193.5,85">
+          TopLeft="120,149.166666666667">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,44"
+              EndConnector="0,37.1666666666667"
               Start="0,0"
-              End="0,36.5">
+              End="0,29.6666666666667">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,36.5" />
+                    End="0,29.6666666666667" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -2507,18 +2589,18 @@ ORDER BY [MANDT]
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 1]"
-          TopLeft="193.5,171">
+          TopLeft="120,228.333333333333">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,44"
+              EndConnector="0,37.1666666666667"
               Start="0,0"
-              End="0,36.5">
+              End="0,29.6666666666667">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,36.5" />
+                    End="0,29.6666666666667" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -2529,18 +2611,18 @@ ORDER BY [MANDT]
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 2]"
-          TopLeft="193.5,257">
+          TopLeft="120,307.5">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,44"
+              EndConnector="0,37.1666666666667"
               Start="0,0"
-              End="0,36.5">
+              End="0,29.6666666666667">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,36.5" />
+                    End="0,29.6666666666667" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -2551,18 +2633,62 @@ ORDER BY [MANDT]
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 3]"
-          TopLeft="193.5,343">
+          TopLeft="120,386.666666666667">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,44"
+              EndConnector="0,37.1666666666667"
               Start="0,0"
-              End="0,36.5">
+              End="0,29.6666666666667">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,36.5" />
+                    End="0,29.6666666666667" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 4]"
+          TopLeft="120,70">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,37.1666666666667"
+              Start="0,0"
+              End="0,29.6666666666667">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,29.6666666666667" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 5]"
+          TopLeft="120,465.833333333333">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,37.1666666666666"
+              Start="0,0"
+              End="0,29.6666666666666">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,29.6666666666666" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
