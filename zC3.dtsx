@@ -11,8 +11,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="zC3"
   DTS:PackageType="5"
-  DTS:VersionBuild="176"
-  DTS:VersionGUID="{D393C663-D346-42C9-9D67-AB461CE12D67}">
+  DTS:VersionBuild="182"
+  DTS:VersionGUID="{FB41CF85-3A3F-4C29-9DF2-B13CBD2DEE8A}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:Variables>
@@ -73,7 +73,7 @@
           DTS:LocaleID="-1"
           DTS:ObjectName="Clean Stage"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="1">
+          DTS:ThreadHint="3">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -90,12 +90,12 @@
           DTS:LocaleID="-1"
           DTS:ObjectName="Delete Data"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="1">
+          DTS:ThreadHint="3">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
               SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-              SQLTask:SqlStatementSource="DELETE A01&#xA;FROM [zC3_JOBDATA] A01 INNER JOIN [zC3_JOBDATA_STAGE_DELETE] B01 ON (A01.[RecordID] = B01.[RecordID])&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+              SQLTask:SqlStatementSource="DELETE A01 &#xA;FROM &#xA;  [zC3_JOBDATA] A01 &#xA;  INNER JOIN [zC3_JOBDATA_STAGE_DELETE] B01&#xA;  ON A01.[RecordID] = B01.[RecordID] &#xA;    AND A01.[DateTime] = B01.[DateTime]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
           </DTS:ObjectData>
         </DTS:Executable>
         <DTS:Executable
@@ -107,7 +107,7 @@
           DTS:LocaleID="-1"
           DTS:ObjectName="Insert Data"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="1">
+          DTS:ThreadHint="3">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -124,7 +124,7 @@
           DTS:LocaleID="-1"
           DTS:ObjectName="Last DateTime"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="1">
+          DTS:ThreadHint="3">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -237,6 +237,7 @@ WHERE [DateTime] &gt; ?</property>
                           externalMetadataColumnId="Package\Job Data\Staging\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[DateTime]"
                           lineageId="Package\Job Data\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[DateTime]"
                           name="DateTime"
+                          sortKeyPosition="2"
                           truncationRowDisposition="FailComponent" />
                         <outputColumn
                           refId="Package\Job Data\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[JobIndex]"
@@ -425,6 +426,7 @@ ORDER BY Record_ID,
                           externalMetadataColumnId="Package\Job Data\Staging\DB Runtime.Outputs[OLE DB Source Output].ExternalColumns[DateTime]"
                           lineageId="Package\Job Data\Staging\DB Runtime.Outputs[OLE DB Source Output].Columns[DateTime]"
                           name="DateTime"
+                          sortKeyPosition="2"
                           truncationRowDisposition="FailComponent" />
                         <outputColumn
                           refId="Package\Job Data\Staging\DB Runtime.Outputs[OLE DB Source Output].Columns[JobIndex]"
@@ -603,6 +605,12 @@ ORDER BY Record_ID,
                           cachedName="RecordID (1)"
                           externalMetadataColumnId="Package\Job Data\Staging\DELETE Stage.Inputs[OLE DB Destination Input].ExternalColumns[RecordID]"
                           lineageId="Package\Job Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[RecordID (1)]" />
+                        <inputColumn
+                          refId="Package\Job Data\Staging\DELETE Stage.Inputs[OLE DB Destination Input].Columns[DateTime (1)]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="DateTime (1)"
+                          externalMetadataColumnId="Package\Job Data\Staging\DELETE Stage.Inputs[OLE DB Destination Input].ExternalColumns[DateTime]"
+                          lineageId="Package\Job Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[DateTime (1)]" />
                       </inputColumns>
                       <externalMetadataColumns
                         isUsed="True">
@@ -610,6 +618,10 @@ ORDER BY Record_ID,
                           refId="Package\Job Data\Staging\DELETE Stage.Inputs[OLE DB Destination Input].ExternalColumns[RecordID]"
                           dataType="i8"
                           name="RecordID" />
+                        <externalMetadataColumn
+                          refId="Package\Job Data\Staging\DELETE Stage.Inputs[OLE DB Destination Input].ExternalColumns[DateTime]"
+                          dataType="dbTimeStamp"
+                          name="DateTime" />
                       </externalMetadataColumns>
                     </input>
                   </inputs>
@@ -685,6 +697,7 @@ ORDER BY Record_ID,
                           refId="Package\Job Data\Staging\Find Changed Records.Inputs[Conditional Split Input].Columns[DateTime]"
                           cachedDataType="dbTimeStamp"
                           cachedName="DateTime"
+                          cachedSortKeyPosition="2"
                           lineageId="Package\Job Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[DateTime]" />
                         <inputColumn
                           refId="Package\Job Data\Staging\Find Changed Records.Inputs[Conditional Split Input].Columns[DateTime (1)]"
@@ -996,6 +1009,7 @@ ORDER BY Record_ID,
                           refId="Package\Job Data\Staging\INSERT Stage.Inputs[OLE DB Destination Input].Columns[DateTime]"
                           cachedDataType="dbTimeStamp"
                           cachedName="DateTime"
+                          cachedSortKeyPosition="2"
                           externalMetadataColumnId="Package\Job Data\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[DateTime]"
                           lineageId="Package\Job Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[DateTime]" />
                         <inputColumn
@@ -1083,7 +1097,7 @@ ORDER BY Record_ID,
                     <property
                       dataType="System.Int32"
                       description="Specifies the number of columns in the ordering key."
-                      name="NumKeyColumns">1</property>
+                      name="NumKeyColumns">2</property>
                     <property
                       dataType="System.Boolean"
                       description="Indicates whether the null values are treated as equal values."
@@ -1109,6 +1123,7 @@ ORDER BY Record_ID,
                           refId="Package\Job Data\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[DateTime]"
                           cachedDataType="dbTimeStamp"
                           cachedName="DateTime"
+                          cachedSortKeyPosition="2"
                           lineageId="Package\Job Data\Staging\DB Runtime.Outputs[OLE DB Source Output].Columns[DateTime]" />
                         <inputColumn
                           refId="Package\Job Data\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[JobIndex]"
@@ -1143,6 +1158,7 @@ ORDER BY Record_ID,
                           refId="Package\Job Data\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[DateTime]"
                           cachedDataType="dbTimeStamp"
                           cachedName="DateTime"
+                          cachedSortKeyPosition="2"
                           lineageId="Package\Job Data\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[DateTime]" />
                         <inputColumn
                           refId="Package\Job Data\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[JobIndex]"
@@ -1187,7 +1203,8 @@ ORDER BY Record_ID,
                           refId="Package\Job Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[DateTime]"
                           dataType="dbTimeStamp"
                           lineageId="Package\Job Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[DateTime]"
-                          name="DateTime">
+                          name="DateTime"
+                          sortKeyPosition="2">
                           <properties>
                             <property
                               containsID="true"
@@ -1388,6 +1405,7 @@ ORDER BY Record_ID,
                           refId="Package\Job Data\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].Columns[DateTime]"
                           cachedDataType="dbTimeStamp"
                           cachedName="DateTime"
+                          cachedSortKeyPosition="2"
                           externalMetadataColumnId="Package\Job Data\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[DateTime]"
                           lineageId="Package\Job Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[DateTime]" />
                         <inputColumn
@@ -1509,12 +1527,12 @@ ORDER BY Record_ID,
           DTS:LocaleID="-1"
           DTS:ObjectName="Update Data"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="1">
+          DTS:ThreadHint="3">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
               SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-              SQLTask:SqlStatementSource="UPDATE a&#xA;SET a.[JobIndex] = b.[JobIndex],&#xA; a.[DateTime]=b.[DateTime],&#xA; a.[Footage] = b.[Footage],&#xA; a.[Downtime] = b.[Downtime]&#xA;FROM [dbo].[zC3_JOBDATA] a&#xA;INNER JOIN zC3_JOBDATA_STAGE_UPDATE b&#xA;ON a.[RecordID] = b.[RecordID]&#xA;GO" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+              SQLTask:SqlStatementSource="UPDATE &#xA;  a &#xA;SET &#xA;  a.[JobIndex] = b.[JobIndex], &#xA;  a.[Footage] = b.[Footage], &#xA;  a.[Downtime] = b.[Downtime] &#xA;FROM &#xA;  [dbo].[zC3_JOBDATA] a &#xA;  INNER JOIN zC3_JOBDATA_STAGE_UPDATE b &#xA;  ON a.[RecordID] = b.[RecordID] &#xA;    AND a.[DateTime] = b.[DateTime] &#xA;GO&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
           </DTS:ObjectData>
         </DTS:Executable>
       </DTS:Executables>
@@ -2138,6 +2156,7 @@ ORDER BY [PIndex]</property>
     [SpecLS] AS SpecLinespeed
 FROM c3primarystructure
 WHERE [PIndex] &gt; ?
+    AND [Category] IS NOT NULL
 ORDER BY [PIndex]</property>
                     <property
                       dataType="System.String"
@@ -3585,7 +3604,7 @@ ORDER BY [PIndex]</property>
           DTS:LocaleID="-1"
           DTS:ObjectName="Clean Stage"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="2">
+          DTS:ThreadHint="1">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -3602,7 +3621,7 @@ ORDER BY [PIndex]</property>
           DTS:LocaleID="-1"
           DTS:ObjectName="Delete Data"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="2">
+          DTS:ThreadHint="1">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -3619,7 +3638,7 @@ ORDER BY [PIndex]</property>
           DTS:LocaleID="-1"
           DTS:ObjectName="Insert Data"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="2">
+          DTS:ThreadHint="1">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -3636,7 +3655,7 @@ ORDER BY [PIndex]</property>
           DTS:LocaleID="-1"
           DTS:ObjectName="Last DateTime"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="2">
+          DTS:ThreadHint="1">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -4122,7 +4141,7 @@ ORDER BY [Date_Time]</property>
                       <outputColumns>
                         <outputColumn
                           refId="Package\Process Data\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[Record_ID]"
-                          dataType="i4"
+                          dataType="i8"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
                           externalMetadataColumnId="Package\Process Data\Staging\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[Record_ID]"
@@ -4267,7 +4286,7 @@ ORDER BY [Date_Time]</property>
                         isUsed="True">
                         <externalMetadataColumn
                           refId="Package\Process Data\Staging\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[Record_ID]"
-                          dataType="i4"
+                          dataType="i8"
                           name="Record_ID" />
                         <externalMetadataColumn
                           refId="Package\Process Data\Staging\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[Date_Time]"
@@ -4340,7 +4359,7 @@ ORDER BY [Date_Time]</property>
                       <outputColumns>
                         <outputColumn
                           refId="Package\Process Data\Staging\DB PBI.Outputs[OLE DB Source Error Output].Columns[Record_ID]"
-                          dataType="i4"
+                          dataType="i8"
                           lineageId="Package\Process Data\Staging\DB PBI.Outputs[OLE DB Source Error Output].Columns[Record_ID]"
                           name="Record_ID" />
                         <outputColumn
@@ -4514,6 +4533,12 @@ ORDER BY [Date_Time]</property>
                           cachedName="Date_Time (1)"
                           externalMetadataColumnId="Package\Process Data\Staging\DELETE Stage.Inputs[OLE DB Destination Input].ExternalColumns[Date_Time]"
                           lineageId="Package\Process Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[Date_Time (1)]" />
+                        <inputColumn
+                          refId="Package\Process Data\Staging\DELETE Stage.Inputs[OLE DB Destination Input].Columns[Record_ID (1)]"
+                          cachedDataType="i8"
+                          cachedName="Record_ID (1)"
+                          externalMetadataColumnId="Package\Process Data\Staging\DELETE Stage.Inputs[OLE DB Destination Input].ExternalColumns[Record_ID]"
+                          lineageId="Package\Process Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[Record_ID (1)]" />
                       </inputColumns>
                       <externalMetadataColumns
                         isUsed="True">
@@ -4521,6 +4546,10 @@ ORDER BY [Date_Time]</property>
                           refId="Package\Process Data\Staging\DELETE Stage.Inputs[OLE DB Destination Input].ExternalColumns[Date_Time]"
                           dataType="dbTimeStamp"
                           name="Date_Time" />
+                        <externalMetadataColumn
+                          refId="Package\Process Data\Staging\DELETE Stage.Inputs[OLE DB Destination Input].ExternalColumns[Record_ID]"
+                          dataType="i8"
+                          name="Record_ID" />
                       </externalMetadataColumns>
                     </input>
                   </inputs>
@@ -5088,7 +5117,7 @@ ORDER BY [Date_Time]</property>
                         isUsed="True">
                         <externalMetadataColumn
                           refId="Package\Process Data\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[Record_ID]"
-                          dataType="i4"
+                          dataType="i8"
                           name="Record_ID" />
                         <externalMetadataColumn
                           refId="Package\Process Data\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[Date_Time]"
@@ -5304,7 +5333,7 @@ ORDER BY [Date_Time]</property>
                           lineageId="Package\Process Data\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[Date_Time]" />
                         <inputColumn
                           refId="Package\Process Data\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[Record_ID]"
-                          cachedDataType="i4"
+                          cachedDataType="i8"
                           cachedName="Record_ID"
                           lineageId="Package\Process Data\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[Record_ID]" />
                         <inputColumn
@@ -5521,7 +5550,7 @@ ORDER BY [Date_Time]</property>
                         </outputColumn>
                         <outputColumn
                           refId="Package\Process Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[Record_ID (1)]"
-                          dataType="i4"
+                          dataType="i8"
                           lineageId="Package\Process Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[Record_ID (1)]"
                           name="Record_ID (1)">
                           <properties>
@@ -5958,7 +5987,7 @@ ORDER BY [Date_Time]</property>
                         isUsed="True">
                         <externalMetadataColumn
                           refId="Package\Process Data\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[Record_ID]"
-                          dataType="i4"
+                          dataType="i8"
                           name="Record_ID" />
                         <externalMetadataColumn
                           refId="Package\Process Data\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[Date_Time]"
@@ -6100,7 +6129,7 @@ ORDER BY [Date_Time]</property>
           DTS:LocaleID="-1"
           DTS:ObjectName="Update Data"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="2">
+          DTS:ThreadHint="1">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -6171,7 +6200,7 @@ ORDER BY [Date_Time]</property>
           DTS:LocaleID="-1"
           DTS:ObjectName="Clean Stage"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="3">
+          DTS:ThreadHint="2">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -6188,7 +6217,7 @@ ORDER BY [Date_Time]</property>
           DTS:LocaleID="-1"
           DTS:ObjectName="Delete Data"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="3">
+          DTS:ThreadHint="2">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -6205,7 +6234,7 @@ ORDER BY [Date_Time]</property>
           DTS:LocaleID="-1"
           DTS:ObjectName="Insert Data"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="3">
+          DTS:ThreadHint="2">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -6222,7 +6251,7 @@ ORDER BY [Date_Time]</property>
           DTS:LocaleID="-1"
           DTS:ObjectName="Last DateTime"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="3">
+          DTS:ThreadHint="2">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -7107,7 +7136,7 @@ ORDER BY [Date_Time]</property>
                       <outputColumns>
                         <outputColumn
                           refId="Package\Profile\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[Record_ID]"
-                          dataType="i4"
+                          dataType="i8"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
                           externalMetadataColumnId="Package\Profile\Staging\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[Record_ID]"
@@ -7426,7 +7455,7 @@ ORDER BY [Date_Time]</property>
                         isUsed="True">
                         <externalMetadataColumn
                           refId="Package\Profile\Staging\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[Record_ID]"
-                          dataType="i4"
+                          dataType="i8"
                           name="Record_ID" />
                         <externalMetadataColumn
                           refId="Package\Profile\Staging\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[Date_Time]"
@@ -7573,7 +7602,7 @@ ORDER BY [Date_Time]</property>
                       <outputColumns>
                         <outputColumn
                           refId="Package\Profile\Staging\DB PBI.Outputs[OLE DB Source Error Output].Columns[Record_ID]"
-                          dataType="i4"
+                          dataType="i8"
                           lineageId="Package\Profile\Staging\DB PBI.Outputs[OLE DB Source Error Output].Columns[Record_ID]"
                           name="Record_ID" />
                         <outputColumn
@@ -7841,6 +7870,12 @@ ORDER BY [Date_Time]</property>
                           cachedName="Date_Time (1)"
                           externalMetadataColumnId="Package\Profile\Staging\DELETE Stage.Inputs[OLE DB Destination Input].ExternalColumns[Date_Time]"
                           lineageId="Package\Profile\Staging\Merge Join.Outputs[Merge Join Output].Columns[Date_Time (1)]" />
+                        <inputColumn
+                          refId="Package\Profile\Staging\DELETE Stage.Inputs[OLE DB Destination Input].Columns[Record_ID (1)]"
+                          cachedDataType="i8"
+                          cachedName="Record_ID (1)"
+                          externalMetadataColumnId="Package\Profile\Staging\DELETE Stage.Inputs[OLE DB Destination Input].ExternalColumns[Record_ID]"
+                          lineageId="Package\Profile\Staging\Merge Join.Outputs[Merge Join Output].Columns[Record_ID (1)]" />
                       </inputColumns>
                       <externalMetadataColumns
                         isUsed="True">
@@ -7848,6 +7883,10 @@ ORDER BY [Date_Time]</property>
                           refId="Package\Profile\Staging\DELETE Stage.Inputs[OLE DB Destination Input].ExternalColumns[Date_Time]"
                           dataType="dbTimeStamp"
                           name="Date_Time" />
+                        <externalMetadataColumn
+                          refId="Package\Profile\Staging\DELETE Stage.Inputs[OLE DB Destination Input].ExternalColumns[Record_ID]"
+                          dataType="i8"
+                          name="Record_ID" />
                       </externalMetadataColumns>
                     </input>
                   </inputs>
@@ -8729,7 +8768,7 @@ ORDER BY [Date_Time]</property>
                         isUsed="True">
                         <externalMetadataColumn
                           refId="Package\Profile\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[Record_ID]"
-                          dataType="i4"
+                          dataType="i8"
                           name="Record_ID" />
                         <externalMetadataColumn
                           refId="Package\Profile\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[Date_Time]"
@@ -9119,7 +9158,7 @@ ORDER BY [Date_Time]</property>
                           lineageId="Package\Profile\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[Date_Time]" />
                         <inputColumn
                           refId="Package\Profile\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[Record_ID]"
-                          cachedDataType="i4"
+                          cachedDataType="i8"
                           cachedName="Record_ID"
                           lineageId="Package\Profile\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[Record_ID]" />
                         <inputColumn
@@ -9339,7 +9378,7 @@ ORDER BY [Date_Time]</property>
                         </outputColumn>
                         <outputColumn
                           refId="Package\Profile\Staging\Merge Join.Outputs[Merge Join Output].Columns[Record_ID (1)]"
-                          dataType="i4"
+                          dataType="i8"
                           lineageId="Package\Profile\Staging\Merge Join.Outputs[Merge Join Output].Columns[Record_ID (1)]"
                           name="Record_ID (1)">
                           <properties>
@@ -10501,7 +10540,7 @@ ORDER BY [Date_Time]</property>
                         isUsed="True">
                         <externalMetadataColumn
                           refId="Package\Profile\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[Record_ID]"
-                          dataType="i4"
+                          dataType="i8"
                           name="Record_ID" />
                         <externalMetadataColumn
                           refId="Package\Profile\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[Date_Time]"
@@ -10717,7 +10756,7 @@ ORDER BY [Date_Time]</property>
           DTS:LocaleID="-1"
           DTS:ObjectName="Update Data"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="3">
+          DTS:ThreadHint="2">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -11347,7 +11386,7 @@ ORDER BY [Date_Time]</property>
         <NodeLayout
           Size="146,42"
           Id="Package\Job Data\Staging\DELETE Stage"
-          TopLeft="713,344" />
+          TopLeft="714,344" />
         <NodeLayout
           Size="148,42"
           Id="Package\Job Data\Staging\UPDATE Stage"
@@ -11552,9 +11591,9 @@ ORDER BY [Date_Time]</property>
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="330,59"
+              EndConnector="331,59"
               Start="0,0"
-              End="330,51.5">
+              End="331,51.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
@@ -11565,39 +11604,26 @@ ORDER BY [Date_Time]</property>
                     Point2="0,20.327731092437"
                     Point3="4,20.327731092437" />
                   <mssgle:LineSegment
-                    End="326,20.327731092437" />
+                    End="327,20.327731092437" />
                   <mssgle:CubicBezierSegment
-                    Point1="326,20.327731092437"
-                    Point2="330,20.327731092437"
-                    Point3="330,24.327731092437" />
+                    Point1="327,20.327731092437"
+                    Point2="331,20.327731092437"
+                    Point3="331,24.327731092437" />
                   <mssgle:LineSegment
-                    End="330,51.5" />
+                    End="331,51.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="150.80404296875,25.327731092437,28.3919140625,9.7490234375"
+              BoundingBox="151.30404296875,25.327731092437,28.3919140625,9.7490234375"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
     </LayoutInfo>
   </TaskHost>
-  <PipelineComponentMetadata
-    design-time-name="Package\Job Data\Staging\INSERT Stage">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-      <Property>
-        <Name>TableInfoObjectType</Name>
-        <Value
-          type="q2:string">Table</Value>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
   <PipelineComponentMetadata
     design-time-name="Package\Job Data\Staging\DB Runtime">
     <Properties>
@@ -11620,7 +11646,7 @@ ORDER BY [Date_Time]</property>
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\Job Data\Staging\UPDATE Stage">
+    design-time-name="Package\Job Data\Staging\INSERT Stage">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -11637,6 +11663,19 @@ ORDER BY [Date_Time]</property>
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Job Data\Staging\UPDATE Stage">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
       </Property>
     </Properties>
   </PipelineComponentMetadata>
@@ -12501,7 +12540,7 @@ ORDER BY [Date_Time]</property>
     </LayoutInfo>
   </TaskHost>
   <PipelineComponentMetadata
-    design-time-name="Package\Profile\Staging\INSERT Stage">
+    design-time-name="Package\Profile\Staging\UPDATE Stage">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -12543,7 +12582,7 @@ ORDER BY [Date_Time]</property>
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\Profile\Staging\UPDATE Stage">
+    design-time-name="Package\Profile\Staging\INSERT Stage">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
