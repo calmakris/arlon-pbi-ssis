@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+﻿<?xml version="1.0"?>
 <DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
   DTS:refId="Package"
   DTS:CreationDate="4/19/2021 12:36:30 PM"
@@ -11,19 +11,20 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="COEP"
   DTS:PackageType="5"
-  DTS:VersionBuild="32"
-  DTS:VersionGUID="{F70054EA-EA93-4ACD-A35A-C5F3EABC6EEE}">
+  DTS:VersionBuild="40"
+  DTS:VersionGUID="{A42C82B7-58C1-44CA-AE8F-B4ED933048BF}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:Variables>
     <DTS:Variable
       DTS:CreationName=""
       DTS:DTSID="{99A8C5EF-FA32-4484-9437-60B680FDD9A3}"
-      DTS:IncludeInDebugDump="6789"
+      DTS:IncludeInDebugDump="2345"
       DTS:Namespace="User"
-      DTS:ObjectName="LastTimestamp">
+      DTS:ObjectName="MinDate">
       <DTS:VariableValue
-        DTS:DataType="20">0</DTS:VariableValue>
+        DTS:DataType="8"
+        xml:space="preserve"></DTS:VariableValue>
     </DTS:Variable>
   </DTS:Variables>
   <DTS:Executables>
@@ -83,33 +84,40 @@
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT 
-  [MANDT], 
-  [KOKRS], 
-  [BELNR], 
-  [BUZEI], 
-  [PERIO], 
-  [WKGBTR], 
-  [MBGBTR], 
-  [OBJNR], 
-  [GJAHR], 
-  [WRTTP], 
-  [KSTAR], 
-  [VRGNG], 
-  [PAROB1], 
-  [BUKRS], 
-  [EBELN], 
-  [EBELP], 
-  [GKONT], 
-  [GKOAR], 
-  [MATNR], 
-  [REFBZ], 
-  [SGTXT], 
-  [WERKS]
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT 
+  item.[MANDT], 
+  item.[KOKRS], 
+  item.[BELNR], 
+  item.[BUZEI], 
+  item.[PERIO], 
+  item.[WKGBTR], 
+  item.[MBGBTR], 
+  item.[OBJNR], 
+  item.[GJAHR], 
+  item.[WRTTP], 
+  item.[KSTAR], 
+  item.[VRGNG],
+  item.[PAROB1],
+  item.[BUKRS], 
+  item.[EBELN], 
+  item.[EBELP], 
+  item.[GKONT], 
+  item.[GKOAR], 
+  item.[MATNR], 
+  item.[REFBZ], 
+  item.[SGTXT], 
+  item.[WERKS], 
+  item.[TIMESTMP]
 FROM 
-  [COEP] (NOLOCK) 
-WHERE
-  [TIMESTMP] &gt;= ?
+  [COEP] AS item (NOLOCK)
+INNER JOIN [COBK] AS head
+ON item.[MANDT] = head.[MANDT]
+  AND item.[KOKRS] = head.[KOKRS]
+  AND item.[BELNR] = head.[BELNR]
+WHERE 
+  item.VRGNG IN ('RKL', 'RKLN', 'COIN') 
+  AND LEFT(item.KSTAR, 3) IN ('005', '006', '009')
+  AND head.CPUDT &gt;= ?
 ORDER BY 
   [MANDT], 
   [KOKRS], 
@@ -377,6 +385,16 @@ ORDER BY
                       lineageId="Package\COEP\DB PBI.Outputs[OLE DB Source Output].Columns[PAROB1]"
                       name="PAROB1"
                       truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\COEP\DB PBI.Outputs[OLE DB Source Output].Columns[TIMESTMP]"
+                      dataType="numeric"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\COEP\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[TIMESTMP]"
+                      lineageId="Package\COEP\DB PBI.Outputs[OLE DB Source Output].Columns[TIMESTMP]"
+                      name="TIMESTMP"
+                      precision="16"
+                      truncationRowDisposition="FailComponent" />
                   </outputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -492,6 +510,11 @@ ORDER BY
                       dataType="wstr"
                       length="22"
                       name="PAROB1" />
+                    <externalMetadataColumn
+                      refId="Package\COEP\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[TIMESTMP]"
+                      dataType="numeric"
+                      name="TIMESTMP"
+                      precision="16" />
                   </externalMetadataColumns>
                 </output>
                 <output
@@ -634,6 +657,12 @@ ORDER BY
                       lineageId="Package\COEP\DB PBI.Outputs[OLE DB Source Error Output].Columns[WERKS]"
                       name="WERKS" />
                     <outputColumn
+                      refId="Package\COEP\DB PBI.Outputs[OLE DB Source Error Output].Columns[TIMESTMP]"
+                      dataType="numeric"
+                      lineageId="Package\COEP\DB PBI.Outputs[OLE DB Source Error Output].Columns[TIMESTMP]"
+                      name="TIMESTMP"
+                      precision="16" />
+                    <outputColumn
                       refId="Package\COEP\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
                       dataType="i4"
                       lineageId="Package\COEP\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
@@ -675,36 +704,40 @@ ORDER BY
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT 
-  [MANDT], 
-  [KOKRS], 
-  [BELNR], 
-  [BUZEI], 
-  [PERIO], 
-  [WKGBTR], 
-  [MBGBTR], 
-  [OBJNR], 
-  [GJAHR], 
-  [WRTTP], 
-  [KSTAR], 
-  [VRGNG],
-  [PAROB1],
-  [BUKRS], 
-  [EBELN], 
-  [EBELP], 
-  [GKONT], 
-  [GKOAR], 
-  [MATNR], 
-  [REFBZ], 
-  [SGTXT], 
-  [WERKS], 
-  [TIMESTMP]
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT 
+  item.[MANDT], 
+  item.[KOKRS], 
+  item.[BELNR], 
+  item.[BUZEI], 
+  item.[PERIO], 
+  item.[WKGBTR], 
+  item.[MBGBTR], 
+  item.[OBJNR], 
+  item.[GJAHR], 
+  item.[WRTTP], 
+  item.[KSTAR], 
+  item.[VRGNG],
+  item.[PAROB1],
+  item.[BUKRS], 
+  item.[EBELN], 
+  item.[EBELP], 
+  item.[GKONT], 
+  item.[GKOAR], 
+  item.[MATNR], 
+  item.[REFBZ], 
+  item.[SGTXT], 
+  item.[WERKS], 
+  item.[TIMESTMP]
 FROM 
-  [ecp].[COEP] A01 (NOLOCK)
+  [ecp].[COEP] AS item (NOLOCK)
+INNER JOIN [ecp].[COBK] AS head
+ON item.[MANDT] = head.[MANDT]
+  AND item.[KOKRS] = head.[KOKRS]
+  AND item.[BELNR] = head.[BELNR]
 WHERE 
-  VRGNG IN ('RKL', 'RKLN', 'COIN') 
-  AND LEFT(KSTAR, 3) IN ('005', '006', '009')
-  AND [TIMESTMP] &gt;= ?
+  item.VRGNG IN ('RKL', 'RKLN', 'COIN') 
+  AND LEFT(item.KSTAR, 3) IN ('005', '006', '009')
+  AND head.CPUDT &gt;= ?
 ORDER BY 
   [MANDT], 
   [KOKRS], 
@@ -1391,6 +1424,114 @@ ORDER BY
                       cachedLength="22"
                       cachedName="PAROB1 (1)"
                       lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[PAROB1 (1)]" />
+                    <inputColumn
+                      refId="Package\COEP\Find Changed Records.Inputs[Conditional Split Input].Columns[BUKRS]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="BUKRS"
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[BUKRS]" />
+                    <inputColumn
+                      refId="Package\COEP\Find Changed Records.Inputs[Conditional Split Input].Columns[EBELN]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="EBELN"
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[EBELN]" />
+                    <inputColumn
+                      refId="Package\COEP\Find Changed Records.Inputs[Conditional Split Input].Columns[EBELP]"
+                      cachedDataType="wstr"
+                      cachedLength="5"
+                      cachedName="EBELP"
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[EBELP]" />
+                    <inputColumn
+                      refId="Package\COEP\Find Changed Records.Inputs[Conditional Split Input].Columns[GKONT]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="GKONT"
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[GKONT]" />
+                    <inputColumn
+                      refId="Package\COEP\Find Changed Records.Inputs[Conditional Split Input].Columns[GKOAR]"
+                      cachedDataType="wstr"
+                      cachedLength="1"
+                      cachedName="GKOAR"
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[GKOAR]" />
+                    <inputColumn
+                      refId="Package\COEP\Find Changed Records.Inputs[Conditional Split Input].Columns[MATNR]"
+                      cachedDataType="wstr"
+                      cachedLength="18"
+                      cachedName="MATNR"
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[MATNR]" />
+                    <inputColumn
+                      refId="Package\COEP\Find Changed Records.Inputs[Conditional Split Input].Columns[REFBZ]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="REFBZ"
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[REFBZ]" />
+                    <inputColumn
+                      refId="Package\COEP\Find Changed Records.Inputs[Conditional Split Input].Columns[SGTXT]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="SGTXT"
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[SGTXT]" />
+                    <inputColumn
+                      refId="Package\COEP\Find Changed Records.Inputs[Conditional Split Input].Columns[WERKS]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="WERKS"
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[WERKS]" />
+                    <inputColumn
+                      refId="Package\COEP\Find Changed Records.Inputs[Conditional Split Input].Columns[BUKRS (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="BUKRS (1)"
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[BUKRS (1)]" />
+                    <inputColumn
+                      refId="Package\COEP\Find Changed Records.Inputs[Conditional Split Input].Columns[EBELN (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="EBELN (1)"
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[EBELN (1)]" />
+                    <inputColumn
+                      refId="Package\COEP\Find Changed Records.Inputs[Conditional Split Input].Columns[EBELP (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="5"
+                      cachedName="EBELP (1)"
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[EBELP (1)]" />
+                    <inputColumn
+                      refId="Package\COEP\Find Changed Records.Inputs[Conditional Split Input].Columns[GKONT (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="GKONT (1)"
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[GKONT (1)]" />
+                    <inputColumn
+                      refId="Package\COEP\Find Changed Records.Inputs[Conditional Split Input].Columns[GKOAR (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="1"
+                      cachedName="GKOAR (1)"
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[GKOAR (1)]" />
+                    <inputColumn
+                      refId="Package\COEP\Find Changed Records.Inputs[Conditional Split Input].Columns[MATNR (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="18"
+                      cachedName="MATNR (1)"
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[MATNR (1)]" />
+                    <inputColumn
+                      refId="Package\COEP\Find Changed Records.Inputs[Conditional Split Input].Columns[REFBZ (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="REFBZ (1)"
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[REFBZ (1)]" />
+                    <inputColumn
+                      refId="Package\COEP\Find Changed Records.Inputs[Conditional Split Input].Columns[SGTXT (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="SGTXT (1)"
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[SGTXT (1)]" />
+                    <inputColumn
+                      refId="Package\COEP\Find Changed Records.Inputs[Conditional Split Input].Columns[WERKS (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="WERKS (1)"
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[WERKS (1)]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
@@ -1410,13 +1551,13 @@ ORDER BY
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
-                      name="Expression">#{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[PERIO]} != #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[PERIO (1)]} || #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[WKGBTR]} != #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[WKGBTR (1)]} || #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[MBGBTR]} != #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[MBGBTR (1)]} || #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[OBJNR]} != #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[OBJNR (1)]} || #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[GJAHR]} != #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[GJAHR (1)]} || #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[WRTTP]} != #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[WRTTP (1)]} || #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[KSTAR]} != #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[KSTAR (1)]} || #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[VRGNG]} != #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[VRGNG (1)]} || #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[PAROB1]} != #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[PAROB1 (1)]}</property>
+                      name="Expression">#{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[PERIO]} != #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[PERIO (1)]} || #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[WKGBTR]} != #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[WKGBTR (1)]} || #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[MBGBTR]} != #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[MBGBTR (1)]} || #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[OBJNR]} != #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[OBJNR (1)]} || #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[GJAHR]} != #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[GJAHR (1)]} || #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[WRTTP]} != #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[WRTTP (1)]} || #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[KSTAR]} != #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[KSTAR (1)]} || #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[VRGNG]} != #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[VRGNG (1)]} || #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[PAROB1]} != #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[PAROB1 (1)]} || #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[BUKRS]} != #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[BUKRS (1)]} || #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[EBELN]} != #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[EBELN (1)]} || #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[EBELP]} != #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[EBELP (1)]} || #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[GKONT]} != #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[GKONT (1)]} || #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[GKOAR]} != #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[GKOAR (1)]} || #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[MATNR]} != #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[MATNR (1)]} || #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[REFBZ]} != #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[REFBZ (1)]} || #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[SGTXT]} != #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[SGTXT (1)]} || #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[WERKS]} != #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[WERKS (1)]}</property>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the friendly version of the expression. This expression version uses column names."
                       expressionType="Notify"
-                      name="FriendlyExpression">PERIO != [PERIO (1)] || WKGBTR != [WKGBTR (1)] || MBGBTR != [MBGBTR (1)] || OBJNR != [OBJNR (1)] || GJAHR != [GJAHR (1)] || WRTTP != [WRTTP (1)] || KSTAR != [KSTAR (1)] || VRGNG != [VRGNG (1)] || PAROB1 != [PAROB1 (1)]</property>
+                      name="FriendlyExpression">PERIO != [PERIO (1)] || WKGBTR != [WKGBTR (1)] || MBGBTR != [MBGBTR (1)] || OBJNR != [OBJNR (1)] || GJAHR != [GJAHR (1)] || WRTTP != [WRTTP (1)] || KSTAR != [KSTAR (1)] || VRGNG != [VRGNG (1)] || PAROB1 != [PAROB1 (1)] || BUKRS != [BUKRS (1)] || EBELN != [EBELN (1)] || EBELP != [EBELP (1)] || GKONT != [GKONT (1)] || GKOAR != [GKOAR (1)] || MATNR != [MATNR (1)] || REFBZ != [REFBZ (1)] || SGTXT != [SGTXT (1)] || WERKS != [WERKS (1)]</property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
@@ -1640,7 +1781,7 @@ ORDER BY
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                 <property
                   dataType="System.Int32"
                   description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -3002,7 +3143,7 @@ ORDER BY
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                 <property
                   dataType="System.Int32"
                   description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -3389,7 +3530,7 @@ ORDER BY
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                 <property
                   dataType="System.Int32"
                   description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -3574,23 +3715,23 @@ ORDER BY
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
-      DTS:refId="Package\Get LastTimestamp"
+      DTS:refId="Package\Get MinDate"
       DTS:CreationName="Microsoft.ExecuteSQLTask"
       DTS:Description="Execute SQL Task"
-      DTS:DTSID="{88F8F7F9-DDE6-4BB3-8D4C-E61723754186}"
+      DTS:DTSID="{804552fb-8017-41ee-ae46-4683f5848fb9}"
       DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
-      DTS:ObjectName="Get LastTimestamp"
+      DTS:ObjectName="Get MinDate"
       DTS:ThreadHint="0">
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
           SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-          SQLTask:SqlStatementSource="SELECT MAX( TIMESTMP ) AS LastTimestamp&#xA;FROM zzJOB_ETL_LARGETBL&#xA;WHERE TABLE_NAME = 'COEP'"
+          SQLTask:SqlStatementSource="SELECT FORMAT( ISNULL( MIN_DATE, dbo.GetBegFiscalYearDate( GETDATE() ) ), 'yyyyMMdd' ) AS MinDate&#xA;FROM zzJOB_ETL&#xA;WHERE TABLE_NAME = 'COEP'"
           SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
           <SQLTask:ResultBinding
-            SQLTask:ResultName="LastTimestamp"
-            SQLTask:DtsVariableName="User::LastTimestamp" />
+            SQLTask:ResultName="MinDate"
+            SQLTask:DtsVariableName="User::MinDate" />
         </SQLTask:SqlTaskData>
       </DTS:ObjectData>
     </DTS:Executable>
@@ -3625,23 +3766,23 @@ ORDER BY
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
           SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-          SQLTask:SqlStatementSource="UPDATE &#xA;  A01 &#xA;SET &#xA;  A01.[PERIO] = B01.[PERIO], &#xA;  A01.[WKGBTR] = B01.[WKGBTR], &#xA;  A01.[MBGBTR] = B01.[MBGBTR], &#xA;  A01.[OBJNR] = B01.[OBJNR], &#xA;  A01.[GJAHR] = B01.[GJAHR], &#xA;  A01.[WRTTP] = B01.[WRTTP], &#xA;  A01.[KSTAR] = B01.[KSTAR], &#xA;  A01.[VRGNG] = B01.[VRGNG], &#xA;  A01.[PAROB1] = B01.[PAROB1], &#xA;  A01.[BUKRS] = B01.[BUKRS], &#xA;  A01.[EBELN] = B01.[EBELN], &#xA;  A01.[EBELP] = B01.[EBELP], &#xA;  A01.[GKONT] = B01.[GKONT], &#xA;  A01.[GKOAR] = B01.[GKOAR], &#xA;  A01.[MATNR] = B01.[MATNR], &#xA;  A01.[REFBZ] = B01.[REFBZ], &#xA;  A01.[SGTXT] = B01.[SGTXT], &#xA;  A01.[WERKS] = B01.[WERKS] &#xA;FROM &#xA;  [COEP] A01 &#xA;  INNER JOIN [COEP_STAGE_UPDATE] B01 ON (&#xA;    A01.[MANDT] = B01.[MANDT] &#xA;    AND A01.[KOKRS] = B01.[KOKRS] &#xA;    AND A01.[BELNR] = B01.[BELNR] &#xA;    AND A01.[BUZEI] = B01.[BUZEI]&#xA;  )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          SQLTask:SqlStatementSource="UPDATE &#xA;  A01 &#xA;SET &#xA;  A01.[PERIO] = B01.[PERIO], &#xA;  A01.[WKGBTR] = B01.[WKGBTR], &#xA;  A01.[MBGBTR] = B01.[MBGBTR], &#xA;  A01.[OBJNR] = B01.[OBJNR], &#xA;  A01.[GJAHR] = B01.[GJAHR], &#xA;  A01.[WRTTP] = B01.[WRTTP], &#xA;  A01.[KSTAR] = B01.[KSTAR], &#xA;  A01.[VRGNG] = B01.[VRGNG], &#xA;  A01.[PAROB1] = B01.[PAROB1], &#xA;  A01.[BUKRS] = B01.[BUKRS], &#xA;  A01.[EBELN] = B01.[EBELN], &#xA;  A01.[EBELP] = B01.[EBELP], &#xA;  A01.[GKONT] = B01.[GKONT], &#xA;  A01.[GKOAR] = B01.[GKOAR], &#xA;  A01.[MATNR] = B01.[MATNR], &#xA;  A01.[REFBZ] = B01.[REFBZ], &#xA;  A01.[SGTXT] = B01.[SGTXT], &#xA;  A01.[WERKS] = B01.[WERKS],&#xA;  A01.[TIMESTMP] = B01.[TIMESTMP] &#xA;FROM &#xA;  [COEP] A01 &#xA;  INNER JOIN [COEP_STAGE_UPDATE] B01 ON (&#xA;    A01.[MANDT] = B01.[MANDT] &#xA;    AND A01.[KOKRS] = B01.[KOKRS] &#xA;    AND A01.[BELNR] = B01.[BELNR] &#xA;    AND A01.[BUZEI] = B01.[BUZEI]&#xA;  )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
-      DTS:refId="Package\Update LastTimestamp"
+      DTS:refId="Package\Update MinDate"
       DTS:CreationName="Microsoft.ExecuteSQLTask"
       DTS:Description="Execute SQL Task"
-      DTS:DTSID="{B16ED28B-DDA6-471B-B61A-89CA146D417A}"
+      DTS:DTSID="{079619ef-e567-45ef-a4b3-1c2ab9cac708}"
       DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
-      DTS:ObjectName="Update LastTimestamp"
+      DTS:ObjectName="Update MinDate"
       DTS:ThreadHint="0">
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
           SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-          SQLTask:SqlStatementSource="UPDATE &#xA;  zzJOB_ETL_LARGETBL &#xA;SET &#xA;  TIMESTMP = ( SELECT MAX(TIMESTMP) FROM COEP ) &#xA;WHERE &#xA;  TABLE_NAME = 'COEP'" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          SQLTask:SqlStatementSource="UPDATE&#xA;   zzJOB_ETL &#xA;SET&#xA;   LAST_SUCCESS_RUN = GETDATE()&#xA;   ,SUCCESS_DATE = dbo.GetBegDate(GETDATE())&#xA;   ,BEG_FISCAL_DATE = dbo.GetBegFiscalYearDate(GETDATE())&#xA;   ,MIN_DATE = EOMONTH( GETDATE(), -2 )&#xA;WHERE&#xA;   TABLE_NAME = 'COEP'" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
   </DTS:Executables>
@@ -3681,19 +3822,19 @@ ORDER BY
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 4]"
       DTS:CreationName=""
-      DTS:DTSID="{8EC3A052-5EEA-4B22-A9B1-201314216990}"
-      DTS:From="Package\Get LastTimestamp"
+      DTS:DTSID="{A61C89A3-BF62-49DE-B40F-323619DC5D4C}"
+      DTS:From="Package\Get MinDate"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 4"
       DTS:To="Package\Clean Stage" />
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 5]"
       DTS:CreationName=""
-      DTS:DTSID="{27CE7029-A285-4CAF-B84E-4DB203CF82BF}"
+      DTS:DTSID="{05729496-1A12-4D91-A964-021BA1C52390}"
       DTS:From="Package\INSERT"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 5"
-      DTS:To="Package\Update LastTimestamp" />
+      DTS:To="Package\Update MinDate" />
   </DTS:PrecedenceConstraints>
   <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
 <!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
@@ -3710,45 +3851,37 @@ ORDER BY
         <NodeLayout
           Size="193,42"
           Id="Package\Clean Stage"
-          TopLeft="79,112.666666666667" />
+          TopLeft="80.7142857142857,112.666666666667" />
         <NodeLayout
           Size="193,42"
           Id="Package\COEP"
-          TopLeft="79,196.333333333333" />
+          TopLeft="80.7142857142857,196.333333333333" />
         <NodeLayout
           Size="193,42"
           Id="Package\DELETE"
-          TopLeft="79,363.666666666667" />
-        <NodeLayout
-          Size="193,42"
-          Id="Package\Get LastTimestamp"
-          TopLeft="79,29" />
+          TopLeft="80.7142857142857,363.666666666667" />
         <NodeLayout
           Size="193,42"
           Id="Package\INSERT"
-          TopLeft="79,447.333333333333" />
+          TopLeft="80.7142857142857,447.333333333333" />
         <NodeLayout
           Size="193,42"
           Id="Package\UPDATE"
-          TopLeft="79,280" />
-        <NodeLayout
-          Size="193,42"
-          Id="Package\Update LastTimestamp"
-          TopLeft="79,531" />
+          TopLeft="80.7142857142857,280" />
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint]"
-          TopLeft="175.5,238.333333333333">
+          TopLeft="177.214285714286,238.333333333333">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,41.6666666666667"
+              EndConnector="0,41.666666666667"
               Start="0,0"
-              End="0,34.1666666666667">
+              End="0,34.166666666667">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,34.1666666666667" />
+                    End="0,34.166666666667" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -3759,18 +3892,18 @@ ORDER BY
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 1]"
-          TopLeft="175.5,154.666666666667">
+          TopLeft="177.214285714286,154.666666666667">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,41.6666666666667"
+              EndConnector="0,41.666666666666"
               Start="0,0"
-              End="0,34.1666666666667">
+              End="0,34.166666666666">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,34.1666666666667" />
+                    End="0,34.166666666666" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -3781,18 +3914,18 @@ ORDER BY
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 2]"
-          TopLeft="175.5,322">
+          TopLeft="177.214285714286,322">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,41.6666666666667"
+              EndConnector="0,41.666666666667"
               Start="0,0"
-              End="0,34.1666666666667">
+              End="0,34.166666666667">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,34.1666666666667" />
+                    End="0,34.166666666667" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -3803,18 +3936,18 @@ ORDER BY
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 3]"
-          TopLeft="175.5,405.666666666667">
+          TopLeft="177.214285714286,405.666666666667">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,41.6666666666667"
+              EndConnector="0,41.6666666666659"
               Start="0,0"
-              End="0,34.1666666666667">
+              End="0,34.1666666666659">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,34.1666666666667" />
+                    End="0,34.1666666666659" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -3823,20 +3956,28 @@ ORDER BY
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
+        <NodeLayout
+          Size="158,42"
+          Id="Package\Get MinDate"
+          TopLeft="98.2142857142857,41" />
+        <NodeLayout
+          Size="158,42"
+          Id="Package\Update MinDate"
+          TopLeft="98.2142857142857,516" />
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 4]"
-          TopLeft="175.5,71">
+          TopLeft="177.214285714286,83">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,41.6666666666667"
+              EndConnector="0,29.666666666667"
               Start="0,0"
-              End="0,34.1666666666667">
+              End="0,22.166666666667">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,34.1666666666667" />
+                    End="0,22.166666666667" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -3847,18 +3988,18 @@ ORDER BY
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 5]"
-          TopLeft="175.5,489.333333333333">
+          TopLeft="177.214285714286,489.333333333333">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,41.6666666666666"
+              EndConnector="0,26.666666666667"
               Start="0,0"
-              End="0,34.1666666666666">
+              End="0,19.166666666667">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,34.1666666666666" />
+                    End="0,19.166666666667" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -4117,13 +4258,6 @@ ORDER BY
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
-        <AnnotationLayout
-          Text="TIMESTMP field doesn't need to be updated"
-          ParentId="Package\COEP"
-          FontInfo="{assembly:Null}"
-          Size="262,40"
-          Id="2dd06344-ec5c-4514-bfc5-fccdaf2bf7aa"
-          TopLeft="529,421" />
       </GraphLayout>
     </LayoutInfo>
   </TaskHost>
