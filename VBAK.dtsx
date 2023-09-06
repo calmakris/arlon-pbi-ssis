@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+﻿<?xml version="1.0"?>
 <DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
   DTS:refId="Package"
   DTS:CreationDate="2/10/2021 9:54:15 PM"
@@ -7,12 +7,12 @@
   DTS:CreatorName="DOMAIN\RPETRELLA"
   DTS:DTSID="{1E13A7AE-47AE-463A-8921-577F69102BC1}"
   DTS:ExecutableType="Microsoft.Package"
-  DTS:LastModifiedProductVersion="16.0.5270.0"
+  DTS:LastModifiedProductVersion="16.0.5035.3"
   DTS:LocaleID="1033"
   DTS:ObjectName="Package1"
   DTS:PackageType="5"
-  DTS:VersionBuild="38"
-  DTS:VersionGUID="{7EA72223-4280-44E9-ADAB-2FBC2B715E55}">
+  DTS:VersionBuild="44"
+  DTS:VersionGUID="{8503DCB5-AF7F-4BC9-8BCE-CEB5E06CE9FA}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:Variables />
@@ -82,7 +82,7 @@
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
           SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-          SQLTask:SqlStatementSource="UPDATE A01&#xA;SET A01.[AUDAT] = B01.[AUDAT]&#xA;   ,A01.[AUART] = B01.[AUART]&#xA;   ,A01.[FAKSK] = B01.[FAKSK]&#xA;   ,A01.[KUNNR] = B01.[KUNNR]&#xA;   ,A01.[BSTNK] = B01.[BSTNK]&#xA;   ,A01.[VDATU] = B01.[VDATU]&#xA;   ,A01.[ERDAT] = B01.[ERDAT]&#xA;   ,A01.[ERNAM] = B01.[ERNAM]&#xA;   ,A01.[VBTYP] = B01.[VBTYP]&#xA;   ,A01.[AUGRU] = B01.[AUGRU]&#xA;   ,A01.[WAERK] = B01.[WAERK]&#xA;   ,A01.[VKGRP] = B01.[VKGRP]&#xA;   ,A01.[VKBUR] = B01.[VKBUR]&#xA;   ,A01.[BUKRS_VF] = B01.[BUKRS_VF]&#xA;FROM [VBAK] A01 INNER JOIN [VBAK_STAGE_UPDATE] B01 ON ( A01.[MANDT] = B01.[MANDT]&#xA;                                                    AND A01.[VBELN] = B01.[VBELN] )" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          SQLTask:SqlStatementSource="UPDATE A01&#xA;SET A01.[AUDAT] = B01.[AUDAT]&#xA;   ,A01.[AUART] = B01.[AUART]&#xA;   ,A01.[FAKSK] = B01.[FAKSK]&#xA;   ,A01.[KUNNR] = B01.[KUNNR]&#xA;   ,A01.[BSTNK] = B01.[BSTNK]&#xA;   ,A01.[VDATU] = B01.[VDATU]&#xA;   ,A01.[ERDAT] = B01.[ERDAT]&#xA;   ,A01.[ERNAM] = B01.[ERNAM]&#xA;   ,A01.[VBTYP] = B01.[VBTYP]&#xA;   ,A01.[AUGRU] = B01.[AUGRU]&#xA;   ,A01.[WAERK] = B01.[WAERK]&#xA;   ,A01.[VKGRP] = B01.[VKGRP]&#xA;   ,A01.[VKBUR] = B01.[VKBUR]&#xA;   ,A01.[BUKRS_VF] = B01.[BUKRS_VF]&#xA;   ,A01.VGBEL = B01.VGBEL&#xA;FROM [VBAK] A01 INNER JOIN [VBAK_STAGE_UPDATE] B01 ON ( A01.[MANDT] = B01.[MANDT]&#xA;                                                    AND A01.[VBELN] = B01.[VBELN] )" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
@@ -124,7 +124,7 @@
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT A01.[MANDT]
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT A01.[MANDT]
       ,A01.[VBELN]
       ,A01.[VKORG]
       ,A01.[VTWEG]
@@ -143,6 +143,7 @@
       ,A01.[VKGRP]
       ,A01.[VKBUR]
       ,A01.[BUKRS_VF]
+      ,isnull(A01.VGBEL,'') as VGBEL
 FROM [VBAK] A01 (NOLOCK)
 ORDER BY A01.[MANDT]
         ,A01.[VBELN]</property>
@@ -374,6 +375,16 @@ ORDER BY A01.[MANDT]
                       lineageId="Package\VBAK\DB DBI VBAK.Outputs[OLE DB Source Output].Columns[BUKRS_VF]"
                       name="BUKRS_VF"
                       truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\VBAK\DB DBI VBAK.Outputs[OLE DB Source Output].Columns[VGBEL]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\VBAK\DB DBI VBAK.Outputs[OLE DB Source Output].ExternalColumns[VGBEL]"
+                      length="10"
+                      lineageId="Package\VBAK\DB DBI VBAK.Outputs[OLE DB Source Output].Columns[VGBEL]"
+                      name="VGBEL"
+                      truncationRowDisposition="FailComponent" />
                   </outputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -472,6 +483,11 @@ ORDER BY A01.[MANDT]
                       dataType="wstr"
                       length="4"
                       name="BUKRS_VF" />
+                    <externalMetadataColumn
+                      refId="Package\VBAK\DB DBI VBAK.Outputs[OLE DB Source Output].ExternalColumns[VGBEL]"
+                      dataType="wstr"
+                      length="10"
+                      name="VGBEL" />
                   </externalMetadataColumns>
                 </output>
                 <output
@@ -594,6 +610,12 @@ ORDER BY A01.[MANDT]
                       lineageId="Package\VBAK\DB DBI VBAK.Outputs[OLE DB Source Error Output].Columns[BUKRS_VF]"
                       name="BUKRS_VF" />
                     <outputColumn
+                      refId="Package\VBAK\DB DBI VBAK.Outputs[OLE DB Source Error Output].Columns[VGBEL]"
+                      dataType="wstr"
+                      length="10"
+                      lineageId="Package\VBAK\DB DBI VBAK.Outputs[OLE DB Source Error Output].Columns[VGBEL]"
+                      name="VGBEL" />
+                    <outputColumn
                       refId="Package\VBAK\DB DBI VBAK.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
                       dataType="i4"
                       lineageId="Package\VBAK\DB DBI VBAK.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
@@ -635,7 +657,7 @@ ORDER BY A01.[MANDT]
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT A01.[MANDT]
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT A01.[MANDT]
       ,A01.[VBELN]
       ,A01.[AUDAT]
       ,A01.[VKORG]
@@ -654,6 +676,7 @@ ORDER BY A01.[MANDT]
       ,A01.[VKGRP]
       ,A01.[VKBUR]
       ,A01.[BUKRS_VF]
+      ,isnull(A01.VGBEL,'') as VGBEL
 FROM [ecp].[VBAK] A01 (NOLOCK)
 ORDER BY A01.[MANDT]
         ,A01.[VBELN]</property>
@@ -885,6 +908,16 @@ ORDER BY A01.[MANDT]
                       lineageId="Package\VBAK\DB SAP VBAK.Outputs[OLE DB Source Output].Columns[BUKRS_VF]"
                       name="BUKRS_VF"
                       truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\VBAK\DB SAP VBAK.Outputs[OLE DB Source Output].Columns[VGBEL]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\VBAK\DB SAP VBAK.Outputs[OLE DB Source Output].ExternalColumns[VGBEL]"
+                      length="10"
+                      lineageId="Package\VBAK\DB SAP VBAK.Outputs[OLE DB Source Output].Columns[VGBEL]"
+                      name="VGBEL"
+                      truncationRowDisposition="FailComponent" />
                   </outputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -983,6 +1016,11 @@ ORDER BY A01.[MANDT]
                       dataType="wstr"
                       length="4"
                       name="BUKRS_VF" />
+                    <externalMetadataColumn
+                      refId="Package\VBAK\DB SAP VBAK.Outputs[OLE DB Source Output].ExternalColumns[VGBEL]"
+                      dataType="wstr"
+                      length="10"
+                      name="VGBEL" />
                   </externalMetadataColumns>
                 </output>
                 <output
@@ -1104,6 +1142,12 @@ ORDER BY A01.[MANDT]
                       length="4"
                       lineageId="Package\VBAK\DB SAP VBAK.Outputs[OLE DB Source Error Output].Columns[BUKRS_VF]"
                       name="BUKRS_VF" />
+                    <outputColumn
+                      refId="Package\VBAK\DB SAP VBAK.Outputs[OLE DB Source Error Output].Columns[VGBEL]"
+                      dataType="wstr"
+                      length="10"
+                      lineageId="Package\VBAK\DB SAP VBAK.Outputs[OLE DB Source Error Output].Columns[VGBEL]"
+                      name="VGBEL" />
                     <outputColumn
                       refId="Package\VBAK\DB SAP VBAK.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
                       dataType="i4"
@@ -1307,6 +1351,18 @@ ORDER BY A01.[MANDT]
                       cachedLength="4"
                       cachedName="BUKRS_VF (1)"
                       lineageId="Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[BUKRS_VF (1)]" />
+                    <inputColumn
+                      refId="Package\VBAK\Find Changed Records.Inputs[Conditional Split Input].Columns[VGBEL]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="VGBEL"
+                      lineageId="Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[VGBEL]" />
+                    <inputColumn
+                      refId="Package\VBAK\Find Changed Records.Inputs[Conditional Split Input].Columns[VGBEL (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="VGBEL (1)"
+                      lineageId="Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[VGBEL (1)]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
@@ -1326,13 +1382,13 @@ ORDER BY A01.[MANDT]
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
-                      name="Expression">#{Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[VBTYP]} != #{Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[VBTYP (1)]} || #{Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[AUART]} != #{Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[AUART (1)]} || #{Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[AUGRU]} != #{Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[AUGRU (1)]} || #{Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[FAKSK]} != #{Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[FAKSK (1)]} || #{Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[WAERK]} != #{Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[WAERK (1)]} || #{Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[VKORG]} != #{Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[VKORG (1)]} || #{Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[VTWEG]} != #{Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[VTWEG (1)]} || #{Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[SPART]} != #{Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[SPART (1)]} || #{Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[VKGRP]} != #{Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[VKGRP (1)]} || #{Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[VKBUR]} != #{Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[VKBUR (1)]} || #{Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[VDATU]} != #{Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[VDATU (1)]} || #{Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[BSTNK]} != #{Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[BSTNK (1)]} || #{Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[KUNNR]} != #{Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[KUNNR (1)]} || #{Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[BUKRS_VF]} != #{Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[BUKRS_VF (1)]}</property>
+                      name="Expression">#{Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[VBTYP]} != #{Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[VBTYP (1)]} || #{Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[AUART]} != #{Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[AUART (1)]} || #{Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[AUGRU]} != #{Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[AUGRU (1)]} || #{Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[FAKSK]} != #{Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[FAKSK (1)]} || #{Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[WAERK]} != #{Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[WAERK (1)]} || #{Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[VKORG]} != #{Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[VKORG (1)]} || #{Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[VTWEG]} != #{Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[VTWEG (1)]} || #{Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[SPART]} != #{Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[SPART (1)]} || #{Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[VKGRP]} != #{Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[VKGRP (1)]} || #{Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[VKBUR]} != #{Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[VKBUR (1)]} || #{Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[VDATU]} != #{Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[VDATU (1)]} || #{Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[BSTNK]} != #{Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[BSTNK (1)]} || #{Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[KUNNR]} != #{Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[KUNNR (1)]} || #{Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[BUKRS_VF]} != #{Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[BUKRS_VF (1)]} || #{Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[VGBEL]} != #{Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[VGBEL (1)]}</property>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the friendly version of the expression. This expression version uses column names."
                       expressionType="Notify"
-                      name="FriendlyExpression">VBTYP != [VBTYP (1)] || AUART != [AUART (1)] || AUGRU != [AUGRU (1)] || FAKSK != [FAKSK (1)] || WAERK != [WAERK (1)] || VKORG != [VKORG (1)] || VTWEG != [VTWEG (1)] || SPART != [SPART (1)] || VKGRP != [VKGRP (1)] || VKBUR != [VKBUR (1)] || VDATU != [VDATU (1)] || BSTNK != [BSTNK (1)] || KUNNR != [KUNNR (1)] || BUKRS_VF != [BUKRS_VF (1)]</property>
+                      name="FriendlyExpression">VBTYP != [VBTYP (1)] || AUART != [AUART (1)] || AUGRU != [AUGRU (1)] || FAKSK != [FAKSK (1)] || WAERK != [WAERK (1)] || VKORG != [VKORG (1)] || VTWEG != [VTWEG (1)] || SPART != [SPART (1)] || VKGRP != [VKGRP (1)] || VKBUR != [VKBUR (1)] || VDATU != [VDATU (1)] || BSTNK != [BSTNK (1)] || KUNNR != [KUNNR (1)] || BUKRS_VF != [BUKRS_VF (1)] || VGBEL != [VGBEL (1)]</property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
@@ -1556,7 +1612,7 @@ ORDER BY A01.[MANDT]
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                 <property
                   dataType="System.Int32"
                   description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -1744,6 +1800,13 @@ ORDER BY A01.[MANDT]
                       cachedName="BUKRS_VF"
                       externalMetadataColumnId="Package\VBAK\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[BUKRS_VF]"
                       lineageId="Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[BUKRS_VF]" />
+                    <inputColumn
+                      refId="Package\VBAK\insert new records.Inputs[OLE DB Destination Input].Columns[VGBEL]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="VGBEL"
+                      externalMetadataColumnId="Package\VBAK\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[VGBEL]"
+                      lineageId="Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[VGBEL]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -1842,6 +1905,11 @@ ORDER BY A01.[MANDT]
                       dataType="wstr"
                       length="4"
                       name="BUKRS_VF" />
+                    <externalMetadataColumn
+                      refId="Package\VBAK\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[VGBEL]"
+                      dataType="wstr"
+                      length="10"
+                      name="VGBEL" />
                   </externalMetadataColumns>
                 </input>
               </inputs>
@@ -2018,6 +2086,12 @@ ORDER BY A01.[MANDT]
                       cachedLength="4"
                       cachedName="BUKRS_VF"
                       lineageId="Package\VBAK\DB SAP VBAK.Outputs[OLE DB Source Output].Columns[BUKRS_VF]" />
+                    <inputColumn
+                      refId="Package\VBAK\Merge Join.Inputs[Merge Join Left Input].Columns[VGBEL]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="VGBEL"
+                      lineageId="Package\VBAK\DB SAP VBAK.Outputs[OLE DB Source Output].Columns[VGBEL]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
@@ -2142,6 +2216,12 @@ ORDER BY A01.[MANDT]
                       cachedLength="4"
                       cachedName="BUKRS_VF"
                       lineageId="Package\VBAK\DB DBI VBAK.Outputs[OLE DB Source Output].Columns[BUKRS_VF]" />
+                    <inputColumn
+                      refId="Package\VBAK\Merge Join.Inputs[Merge Join Right Input].Columns[VGBEL]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="VGBEL"
+                      lineageId="Package\VBAK\DB DBI VBAK.Outputs[OLE DB Source Output].Columns[VGBEL]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
@@ -2692,6 +2772,34 @@ ORDER BY A01.[MANDT]
                           name="InputColumnID">#{Package\VBAK\Merge Join.Inputs[Merge Join Right Input].Columns[BUKRS_VF]}</property>
                       </properties>
                     </outputColumn>
+                    <outputColumn
+                      refId="Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[VGBEL]"
+                      dataType="wstr"
+                      length="10"
+                      lineageId="Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[VGBEL]"
+                      name="VGBEL">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\VBAK\Merge Join.Inputs[Merge Join Left Input].Columns[VGBEL]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[VGBEL (1)]"
+                      dataType="wstr"
+                      length="10"
+                      lineageId="Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[VGBEL (1)]"
+                      name="VGBEL (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\VBAK\Merge Join.Inputs[Merge Join Right Input].Columns[VGBEL]}</property>
+                      </properties>
+                    </outputColumn>
                   </outputColumns>
                   <externalMetadataColumns />
                 </output>
@@ -2722,7 +2830,7 @@ ORDER BY A01.[MANDT]
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                 <property
                   dataType="System.Int32"
                   description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -2910,6 +3018,13 @@ ORDER BY A01.[MANDT]
                       cachedName="BUKRS_VF"
                       externalMetadataColumnId="Package\VBAK\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[BUKRS_VF]"
                       lineageId="Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[BUKRS_VF]" />
+                    <inputColumn
+                      refId="Package\VBAK\stage changed records.Inputs[OLE DB Destination Input].Columns[VGBEL]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="VGBEL"
+                      externalMetadataColumnId="Package\VBAK\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[VGBEL]"
+                      lineageId="Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[VGBEL]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -3008,6 +3123,11 @@ ORDER BY A01.[MANDT]
                       dataType="wstr"
                       length="4"
                       name="BUKRS_VF" />
+                    <externalMetadataColumn
+                      refId="Package\VBAK\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[VGBEL]"
+                      dataType="wstr"
+                      length="10"
+                      name="VGBEL" />
                   </externalMetadataColumns>
                 </input>
               </inputs>
@@ -3061,7 +3181,7 @@ ORDER BY A01.[MANDT]
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                 <property
                   dataType="System.Int32"
                   description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -3252,16 +3372,28 @@ ORDER BY A01.[MANDT]
       <GraphLayout
         Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
-          Size="135,42"
+          Size="135.2,41.6"
           Id="Package\Clean Stage"
           TopLeft="140.5,43.5" />
         <NodeLayout
-          Size="135,42"
+          Size="135.2,41.6"
+          Id="Package\DELETE"
+          TopLeft="140.5,286" />
+        <NodeLayout
+          Size="135.2,41.6"
+          Id="Package\INSERT"
+          TopLeft="140.5,366.833333333333" />
+        <NodeLayout
+          Size="135.2,41.6"
+          Id="Package\UPDATE"
+          TopLeft="140.5,205.166666666667" />
+        <NodeLayout
+          Size="135.2,41.6"
           Id="Package\VBAK"
           TopLeft="140.5,124.333333333333" />
         <EdgeLayout
-          Id="Package.PrecedenceConstraints[Constraint 1]"
-          TopLeft="208,85.5">
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="208,166.333333333333">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -3281,21 +3413,9 @@ ORDER BY A01.[MANDT]
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
-        <NodeLayout
-          Size="135,42"
-          Id="Package\UPDATE"
-          TopLeft="140.5,205.166666666667" />
-        <NodeLayout
-          Size="135,42"
-          Id="Package\DELETE"
-          TopLeft="140.5,286" />
-        <NodeLayout
-          Size="135,42"
-          Id="Package\INSERT"
-          TopLeft="140.5,366.833333333333" />
         <EdgeLayout
-          Id="Package.PrecedenceConstraints[Constraint]"
-          TopLeft="208,166.333333333333">
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="208,85.5">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -3368,37 +3488,37 @@ ORDER BY A01.[MANDT]
       <GraphLayout
         Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
-          Size="184,42"
-          Id="Package\VBAK\Find Changed Records"
-          TopLeft="349,407" />
-        <NodeLayout
-          Size="180,42"
-          Id="Package\VBAK\stage deleted records"
-          TopLeft="673,412" />
-        <NodeLayout
-          Size="130,42"
+          Size="129.6,41.6"
           Id="Package\VBAK\Merge Join"
           TopLeft="376,162" />
         <NodeLayout
-          Size="142,42"
+          Size="151.2,41.6"
+          Id="Package\VBAK\Identify Record"
+          TopLeft="358,283" />
+        <NodeLayout
+          Size="142.4,41.6"
           Id="Package\VBAK\DB DBI VBAK"
           TopLeft="550,63" />
         <NodeLayout
-          Size="143,42"
-          Id="Package\VBAK\DB SAP VBAK"
-          TopLeft="197,60" />
+          Size="180,41.6"
+          Id="Package\VBAK\stage deleted records"
+          TopLeft="673,412" />
         <NodeLayout
-          Size="186,42"
+          Size="184,41.6"
+          Id="Package\VBAK\Find Changed Records"
+          TopLeft="349,407" />
+        <NodeLayout
+          Size="185.6,41.6"
           Id="Package\VBAK\stage changed records"
           TopLeft="341,511" />
         <NodeLayout
-          Size="166,42"
+          Size="143.2,41.6"
+          Id="Package\VBAK\DB SAP VBAK"
+          TopLeft="197,60" />
+        <NodeLayout
+          Size="166.4,41.6"
           Id="Package\VBAK\insert new records"
           TopLeft="60,403" />
-        <NodeLayout
-          Size="151,42"
-          Id="Package\VBAK\Identify Record"
-          TopLeft="358,283" />
         <EdgeLayout
           Id="Package\VBAK.Paths[update1]"
           TopLeft="437.5,449">
@@ -3613,6 +3733,14 @@ ORDER BY A01.[MANDT]
     </LayoutInfo>
   </TaskHost>
   <PipelineComponentMetadata
+    design-time-name="Package\VBAK\DB DBI VBAK">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
     design-time-name="Package\VBAK\stage deleted records">
     <Properties>
       <Property>
@@ -3626,22 +3754,6 @@ ORDER BY A01.[MANDT]
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\VBAK\DB DBI VBAK">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
-    design-time-name="Package\VBAK\DB SAP VBAK">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
     design-time-name="Package\VBAK\stage changed records">
     <Properties>
       <Property>
@@ -3651,6 +3763,14 @@ ORDER BY A01.[MANDT]
         <Name>TableInfoObjectType</Name>
         <Value
           type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\VBAK\DB SAP VBAK">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
       </Property>
     </Properties>
   </PipelineComponentMetadata>
