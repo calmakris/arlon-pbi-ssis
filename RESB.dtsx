@@ -7,15 +7,26 @@
   DTS:CreatorName="DOMAIN\kcalma"
   DTS:DTSID="{ADD384E0-F81E-41B9-A600-B8B07881AB65}"
   DTS:ExecutableType="Microsoft.Package"
-  DTS:LastModifiedProductVersion="16.0.948.0"
+  DTS:LastModifiedProductVersion="16.0.5270.0"
   DTS:LocaleID="1033"
   DTS:ObjectName="RESB"
   DTS:PackageType="5"
-  DTS:VersionBuild="27"
-  DTS:VersionGUID="{1C56A547-BC2C-4E0D-8068-8A4E435601F2}">
+  DTS:VersionBuild="42"
+  DTS:VersionGUID="{C70869BF-1277-47DB-B596-3B4080453945}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
-  <DTS:Variables />
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{58A60FF1-D278-422E-896E-F4ADD39305F5}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="MinDate">
+      <DTS:VariableValue
+        DTS:DataType="8"
+        xml:space="preserve"></DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
   <DTS:Executables>
     <DTS:Executable
       DTS:refId="Package\Clean Stage"
@@ -31,14 +42,14 @@
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
           SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-          SQLTask:SqlStatementSource="TRUNCATE TABLE [RESB_STAGE_UPDATE]&#xA;go&#xA;TRUNCATE TABLE [RESB_STAGE_DELETE]&#xA;go&#xA;TRUNCATE TABLE [RESB_STAGE_INSERT]&#xA;go" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          SQLTask:SqlStatementSource="TRUNCATE TABLE [RESB_STAGE_UPDATE]&#xA;go&#xA;TRUNCATE TABLE [RESB_STAGE_INSERT]&#xA;go&#xA;TRUNCATE TABLE [RESB_STAGE_DELETE]&#xA;go" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
       DTS:refId="Package\DELETE"
       DTS:CreationName="Microsoft.ExecuteSQLTask"
       DTS:Description="Execute SQL Task"
-      DTS:DTSID="{1DC7D354-D13D-4432-B685-9D7BAB45471F}"
+      DTS:DTSID="{60b41dcc-990b-4d11-8aa7-310f01f5a97a}"
       DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
       DTS:ObjectName="DELETE"
@@ -49,6 +60,27 @@
         <SQLTask:SqlTaskData
           SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
           SQLTask:SqlStatementSource="DELETE A01&#xA;FROM [RESB] A01&#xA;INNER JOIN [RESB_STAGE_DELETE] B01&#xA;ON A01.MANDT = B01.MANDT&#xA;&#x9;AND A01.RSNUM = B01.RSNUM&#xA;&#x9;AND A01.RSPOS = B01.RSPOS&#xA;&#x9;AND A01.RSART = B01.RSART" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Get MinDate"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{354b4d15-7a8d-4507-b276-d5a155e0f420}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Get MinDate"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="SELECT FORMAT( ISNULL( MIN_DATE, dbo.GetBegFiscalYearDate( GETDATE() ) ), 'yyyyMMdd' ) AS MinDate&#xA;FROM zzJOB_ETL&#xA;WHERE TABLE_NAME = 'RESB'"
+          SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ResultBinding
+            SQLTask:ResultName="MinDate"
+            SQLTask:DtsVariableName="User::MinDate" />
+        </SQLTask:SqlTaskData>
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
@@ -82,6 +114,570 @@
         <pipeline
           version="1">
           <components>
+            <component
+              refId="Package\RESB\DB PBI"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="DB PBI"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT 
+  [MANDT], 
+  [RSNUM], 
+  [RSPOS], 
+  [RSART]
+FROM 
+  [RESB] (NOLOCK) 
+WHERE 
+  [MANDT] = '105' 
+  AND [BDTER] &gt; ?
+ORDER BY 
+  [MANDT], 
+  [RSNUM], 
+  [RSPOS], 
+  [RSART]</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping">"Parameter0:Input",{58A60FF1-D278-422E-896E-F4ADD39305F5};</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\RESB\DB PBI.Connections[OleDbConnection]"
+                  connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\RESB\DB PBI.Outputs[OLE DB Source Output]"
+                  isSorted="true"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\RESB\DB PBI.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\RESB\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      length="3"
+                      lineageId="Package\RESB\DB PBI.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      name="MANDT"
+                      sortKeyPosition="1"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\RESB\DB PBI.Outputs[OLE DB Source Output].Columns[RSNUM]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\RESB\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[RSNUM]"
+                      length="10"
+                      lineageId="Package\RESB\DB PBI.Outputs[OLE DB Source Output].Columns[RSNUM]"
+                      name="RSNUM"
+                      sortKeyPosition="2"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\RESB\DB PBI.Outputs[OLE DB Source Output].Columns[RSPOS]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\RESB\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[RSPOS]"
+                      length="4"
+                      lineageId="Package\RESB\DB PBI.Outputs[OLE DB Source Output].Columns[RSPOS]"
+                      name="RSPOS"
+                      sortKeyPosition="3"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\RESB\DB PBI.Outputs[OLE DB Source Output].Columns[RSART]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\RESB\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[RSART]"
+                      length="1"
+                      lineageId="Package\RESB\DB PBI.Outputs[OLE DB Source Output].Columns[RSART]"
+                      name="RSART"
+                      sortKeyPosition="4"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\RESB\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      name="MANDT" />
+                    <externalMetadataColumn
+                      refId="Package\RESB\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[RSNUM]"
+                      dataType="wstr"
+                      length="10"
+                      name="RSNUM" />
+                    <externalMetadataColumn
+                      refId="Package\RESB\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[RSPOS]"
+                      dataType="wstr"
+                      length="4"
+                      name="RSPOS" />
+                    <externalMetadataColumn
+                      refId="Package\RESB\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[RSART]"
+                      dataType="wstr"
+                      length="1"
+                      name="RSART" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\RESB\DB PBI.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\RESB\DB PBI.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      lineageId="Package\RESB\DB PBI.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      name="MANDT" />
+                    <outputColumn
+                      refId="Package\RESB\DB PBI.Outputs[OLE DB Source Error Output].Columns[RSNUM]"
+                      dataType="wstr"
+                      length="10"
+                      lineageId="Package\RESB\DB PBI.Outputs[OLE DB Source Error Output].Columns[RSNUM]"
+                      name="RSNUM" />
+                    <outputColumn
+                      refId="Package\RESB\DB PBI.Outputs[OLE DB Source Error Output].Columns[RSPOS]"
+                      dataType="wstr"
+                      length="4"
+                      lineageId="Package\RESB\DB PBI.Outputs[OLE DB Source Error Output].Columns[RSPOS]"
+                      name="RSPOS" />
+                    <outputColumn
+                      refId="Package\RESB\DB PBI.Outputs[OLE DB Source Error Output].Columns[RSART]"
+                      dataType="wstr"
+                      length="1"
+                      lineageId="Package\RESB\DB PBI.Outputs[OLE DB Source Error Output].Columns[RSART]"
+                      name="RSART" />
+                    <outputColumn
+                      refId="Package\RESB\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\RESB\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\RESB\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\RESB\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\RESB\DB SAP"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="DB SAP"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT 
+  [MANDT], 
+  [RSNUM], 
+  [RSPOS], 
+  [RSART], 
+  [BDART], 
+  [XLOEK], 
+  [MATNR], 
+  [WERKS], 
+  [BDTER], 
+  [BDMNG], 
+  [SHKZG], 
+  [AUFNR] 
+FROM 
+  [ecp].[RESB] (NOLOCK) 
+WHERE 
+  [MANDT] = '105' 
+  AND [BDART] = 'AR' 
+  AND [XLOEK] = '' 
+  AND [KZEAR] = ''
+  AND [BDTER] &gt; ?
+ORDER BY 
+  [MANDT], 
+  [RSNUM], 
+  [RSPOS], 
+  [RSART]</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping">"Parameter0:Input",{58A60FF1-D278-422E-896E-F4ADD39305F5};</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\RESB\DB SAP.Connections[OleDbConnection]"
+                  connectionManagerID="{544CCAD9-2CB1-4D87-98D7-A7C478586195}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[SQL_SAP]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\RESB\DB SAP.Outputs[OLE DB Source Output]"
+                  isSorted="true"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\RESB\DB SAP.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\RESB\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      length="3"
+                      lineageId="Package\RESB\DB SAP.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      name="MANDT"
+                      sortKeyPosition="1"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\RESB\DB SAP.Outputs[OLE DB Source Output].Columns[RSNUM]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\RESB\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[RSNUM]"
+                      length="10"
+                      lineageId="Package\RESB\DB SAP.Outputs[OLE DB Source Output].Columns[RSNUM]"
+                      name="RSNUM"
+                      sortKeyPosition="2"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\RESB\DB SAP.Outputs[OLE DB Source Output].Columns[RSPOS]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\RESB\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[RSPOS]"
+                      length="4"
+                      lineageId="Package\RESB\DB SAP.Outputs[OLE DB Source Output].Columns[RSPOS]"
+                      name="RSPOS"
+                      sortKeyPosition="3"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\RESB\DB SAP.Outputs[OLE DB Source Output].Columns[RSART]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\RESB\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[RSART]"
+                      length="1"
+                      lineageId="Package\RESB\DB SAP.Outputs[OLE DB Source Output].Columns[RSART]"
+                      name="RSART"
+                      sortKeyPosition="4"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\RESB\DB SAP.Outputs[OLE DB Source Output].Columns[MATNR]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\RESB\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[MATNR]"
+                      length="18"
+                      lineageId="Package\RESB\DB SAP.Outputs[OLE DB Source Output].Columns[MATNR]"
+                      name="MATNR"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\RESB\DB SAP.Outputs[OLE DB Source Output].Columns[AUFNR]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\RESB\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[AUFNR]"
+                      length="12"
+                      lineageId="Package\RESB\DB SAP.Outputs[OLE DB Source Output].Columns[AUFNR]"
+                      name="AUFNR"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\RESB\DB SAP.Outputs[OLE DB Source Output].Columns[BDART]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\RESB\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[BDART]"
+                      length="2"
+                      lineageId="Package\RESB\DB SAP.Outputs[OLE DB Source Output].Columns[BDART]"
+                      name="BDART"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\RESB\DB SAP.Outputs[OLE DB Source Output].Columns[XLOEK]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\RESB\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[XLOEK]"
+                      length="1"
+                      lineageId="Package\RESB\DB SAP.Outputs[OLE DB Source Output].Columns[XLOEK]"
+                      name="XLOEK"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\RESB\DB SAP.Outputs[OLE DB Source Output].Columns[WERKS]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\RESB\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[WERKS]"
+                      length="4"
+                      lineageId="Package\RESB\DB SAP.Outputs[OLE DB Source Output].Columns[WERKS]"
+                      name="WERKS"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\RESB\DB SAP.Outputs[OLE DB Source Output].Columns[BDMNG]"
+                      dataType="numeric"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\RESB\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[BDMNG]"
+                      lineageId="Package\RESB\DB SAP.Outputs[OLE DB Source Output].Columns[BDMNG]"
+                      name="BDMNG"
+                      precision="13"
+                      scale="3"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\RESB\DB SAP.Outputs[OLE DB Source Output].Columns[SHKZG]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\RESB\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[SHKZG]"
+                      length="1"
+                      lineageId="Package\RESB\DB SAP.Outputs[OLE DB Source Output].Columns[SHKZG]"
+                      name="SHKZG"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\RESB\DB SAP.Outputs[OLE DB Source Output].Columns[BDTER]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\RESB\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[BDTER]"
+                      length="8"
+                      lineageId="Package\RESB\DB SAP.Outputs[OLE DB Source Output].Columns[BDTER]"
+                      name="BDTER"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\RESB\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      name="MANDT" />
+                    <externalMetadataColumn
+                      refId="Package\RESB\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[RSNUM]"
+                      dataType="wstr"
+                      length="10"
+                      name="RSNUM" />
+                    <externalMetadataColumn
+                      refId="Package\RESB\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[RSPOS]"
+                      dataType="wstr"
+                      length="4"
+                      name="RSPOS" />
+                    <externalMetadataColumn
+                      refId="Package\RESB\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[RSART]"
+                      dataType="wstr"
+                      length="1"
+                      name="RSART" />
+                    <externalMetadataColumn
+                      refId="Package\RESB\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[MATNR]"
+                      dataType="wstr"
+                      length="18"
+                      name="MATNR" />
+                    <externalMetadataColumn
+                      refId="Package\RESB\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[AUFNR]"
+                      dataType="wstr"
+                      length="12"
+                      name="AUFNR" />
+                    <externalMetadataColumn
+                      refId="Package\RESB\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[BDART]"
+                      dataType="wstr"
+                      length="2"
+                      name="BDART" />
+                    <externalMetadataColumn
+                      refId="Package\RESB\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[XLOEK]"
+                      dataType="wstr"
+                      length="1"
+                      name="XLOEK" />
+                    <externalMetadataColumn
+                      refId="Package\RESB\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[WERKS]"
+                      dataType="wstr"
+                      length="4"
+                      name="WERKS" />
+                    <externalMetadataColumn
+                      refId="Package\RESB\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[BDMNG]"
+                      dataType="numeric"
+                      name="BDMNG"
+                      precision="13"
+                      scale="3" />
+                    <externalMetadataColumn
+                      refId="Package\RESB\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[SHKZG]"
+                      dataType="wstr"
+                      length="1"
+                      name="SHKZG" />
+                    <externalMetadataColumn
+                      refId="Package\RESB\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[BDTER]"
+                      dataType="wstr"
+                      length="8"
+                      name="BDTER" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\RESB\DB SAP.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\RESB\DB SAP.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      dataType="wstr"
+                      length="3"
+                      lineageId="Package\RESB\DB SAP.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      name="MANDT" />
+                    <outputColumn
+                      refId="Package\RESB\DB SAP.Outputs[OLE DB Source Error Output].Columns[RSNUM]"
+                      dataType="wstr"
+                      length="10"
+                      lineageId="Package\RESB\DB SAP.Outputs[OLE DB Source Error Output].Columns[RSNUM]"
+                      name="RSNUM" />
+                    <outputColumn
+                      refId="Package\RESB\DB SAP.Outputs[OLE DB Source Error Output].Columns[RSPOS]"
+                      dataType="wstr"
+                      length="4"
+                      lineageId="Package\RESB\DB SAP.Outputs[OLE DB Source Error Output].Columns[RSPOS]"
+                      name="RSPOS" />
+                    <outputColumn
+                      refId="Package\RESB\DB SAP.Outputs[OLE DB Source Error Output].Columns[RSART]"
+                      dataType="wstr"
+                      length="1"
+                      lineageId="Package\RESB\DB SAP.Outputs[OLE DB Source Error Output].Columns[RSART]"
+                      name="RSART" />
+                    <outputColumn
+                      refId="Package\RESB\DB SAP.Outputs[OLE DB Source Error Output].Columns[BDART]"
+                      dataType="wstr"
+                      length="2"
+                      lineageId="Package\RESB\DB SAP.Outputs[OLE DB Source Error Output].Columns[BDART]"
+                      name="BDART" />
+                    <outputColumn
+                      refId="Package\RESB\DB SAP.Outputs[OLE DB Source Error Output].Columns[XLOEK]"
+                      dataType="wstr"
+                      length="1"
+                      lineageId="Package\RESB\DB SAP.Outputs[OLE DB Source Error Output].Columns[XLOEK]"
+                      name="XLOEK" />
+                    <outputColumn
+                      refId="Package\RESB\DB SAP.Outputs[OLE DB Source Error Output].Columns[MATNR]"
+                      dataType="wstr"
+                      length="18"
+                      lineageId="Package\RESB\DB SAP.Outputs[OLE DB Source Error Output].Columns[MATNR]"
+                      name="MATNR" />
+                    <outputColumn
+                      refId="Package\RESB\DB SAP.Outputs[OLE DB Source Error Output].Columns[WERKS]"
+                      dataType="wstr"
+                      length="4"
+                      lineageId="Package\RESB\DB SAP.Outputs[OLE DB Source Error Output].Columns[WERKS]"
+                      name="WERKS" />
+                    <outputColumn
+                      refId="Package\RESB\DB SAP.Outputs[OLE DB Source Error Output].Columns[BDTER]"
+                      dataType="wstr"
+                      length="8"
+                      lineageId="Package\RESB\DB SAP.Outputs[OLE DB Source Error Output].Columns[BDTER]"
+                      name="BDTER" />
+                    <outputColumn
+                      refId="Package\RESB\DB SAP.Outputs[OLE DB Source Error Output].Columns[BDMNG]"
+                      dataType="numeric"
+                      lineageId="Package\RESB\DB SAP.Outputs[OLE DB Source Error Output].Columns[BDMNG]"
+                      name="BDMNG"
+                      precision="13"
+                      scale="3" />
+                    <outputColumn
+                      refId="Package\RESB\DB SAP.Outputs[OLE DB Source Error Output].Columns[SHKZG]"
+                      dataType="wstr"
+                      length="1"
+                      lineageId="Package\RESB\DB SAP.Outputs[OLE DB Source Error Output].Columns[SHKZG]"
+                      name="SHKZG" />
+                    <outputColumn
+                      refId="Package\RESB\DB SAP.Outputs[OLE DB Source Error Output].Columns[AUFNR]"
+                      dataType="wstr"
+                      length="12"
+                      lineageId="Package\RESB\DB SAP.Outputs[OLE DB Source Error Output].Columns[AUFNR]"
+                      name="AUFNR" />
+                    <outputColumn
+                      refId="Package\RESB\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\RESB\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\RESB\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\RESB\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
             <component
               refId="Package\RESB\DELETE Table"
               componentClassID="Microsoft.OLEDBDestination"
@@ -234,209 +830,27 @@
               </outputs>
             </component>
             <component
-              refId="Package\RESB\Identify Changed Records"
+              refId="Package\RESB\Identify Records"
               componentClassID="Microsoft.ConditionalSplit"
               contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
               description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
-              name="Identify Changed Records"
+              name="Identify Records"
               usesDispositions="true">
               <inputs>
                 <input
-                  refId="Package\RESB\Identify Changed Records.Inputs[Conditional Split Input]"
+                  refId="Package\RESB\Identify Records.Inputs[Conditional Split Input]"
                   description="Input to the Conditional Split Transformation"
                   name="Conditional Split Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\RESB\Identify Changed Records.Inputs[Conditional Split Input].Columns[MATNR]"
-                      cachedDataType="wstr"
-                      cachedLength="18"
-                      cachedName="MATNR"
-                      lineageId="Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[MATNR]" />
-                    <inputColumn
-                      refId="Package\RESB\Identify Changed Records.Inputs[Conditional Split Input].Columns[AUFNR]"
-                      cachedDataType="wstr"
-                      cachedLength="12"
-                      cachedName="AUFNR"
-                      lineageId="Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[AUFNR]" />
-                    <inputColumn
-                      refId="Package\RESB\Identify Changed Records.Inputs[Conditional Split Input].Columns[MATNR (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="18"
-                      cachedName="MATNR (1)"
-                      lineageId="Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[MATNR (1)]" />
-                    <inputColumn
-                      refId="Package\RESB\Identify Changed Records.Inputs[Conditional Split Input].Columns[AUFNR (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="12"
-                      cachedName="AUFNR (1)"
-                      lineageId="Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[AUFNR (1)]" />
-                    <inputColumn
-                      refId="Package\RESB\Identify Changed Records.Inputs[Conditional Split Input].Columns[BDART]"
-                      cachedDataType="wstr"
-                      cachedLength="2"
-                      cachedName="BDART"
-                      lineageId="Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[BDART]" />
-                    <inputColumn
-                      refId="Package\RESB\Identify Changed Records.Inputs[Conditional Split Input].Columns[XLOEK]"
-                      cachedDataType="wstr"
-                      cachedLength="1"
-                      cachedName="XLOEK"
-                      lineageId="Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[XLOEK]" />
-                    <inputColumn
-                      refId="Package\RESB\Identify Changed Records.Inputs[Conditional Split Input].Columns[BDART (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="2"
-                      cachedName="BDART (1)"
-                      lineageId="Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[BDART (1)]" />
-                    <inputColumn
-                      refId="Package\RESB\Identify Changed Records.Inputs[Conditional Split Input].Columns[XLOEK (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="1"
-                      cachedName="XLOEK (1)"
-                      lineageId="Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[XLOEK (1)]" />
-                    <inputColumn
-                      refId="Package\RESB\Identify Changed Records.Inputs[Conditional Split Input].Columns[WERKS]"
-                      cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="WERKS"
-                      lineageId="Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[WERKS]" />
-                    <inputColumn
-                      refId="Package\RESB\Identify Changed Records.Inputs[Conditional Split Input].Columns[BDMNG]"
-                      cachedDataType="numeric"
-                      cachedName="BDMNG"
-                      cachedPrecision="13"
-                      cachedScale="3"
-                      lineageId="Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[BDMNG]" />
-                    <inputColumn
-                      refId="Package\RESB\Identify Changed Records.Inputs[Conditional Split Input].Columns[SHKZG]"
-                      cachedDataType="wstr"
-                      cachedLength="1"
-                      cachedName="SHKZG"
-                      lineageId="Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[SHKZG]" />
-                    <inputColumn
-                      refId="Package\RESB\Identify Changed Records.Inputs[Conditional Split Input].Columns[WERKS (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="WERKS (1)"
-                      lineageId="Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[WERKS (1)]" />
-                    <inputColumn
-                      refId="Package\RESB\Identify Changed Records.Inputs[Conditional Split Input].Columns[BDMNG (1)]"
-                      cachedDataType="numeric"
-                      cachedName="BDMNG (1)"
-                      cachedPrecision="13"
-                      cachedScale="3"
-                      lineageId="Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[BDMNG (1)]" />
-                    <inputColumn
-                      refId="Package\RESB\Identify Changed Records.Inputs[Conditional Split Input].Columns[SHKZG (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="1"
-                      cachedName="SHKZG (1)"
-                      lineageId="Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[SHKZG (1)]" />
-                    <inputColumn
-                      refId="Package\RESB\Identify Changed Records.Inputs[Conditional Split Input].Columns[BDTER]"
-                      cachedDataType="wstr"
-                      cachedLength="8"
-                      cachedName="BDTER"
-                      lineageId="Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[BDTER]" />
-                    <inputColumn
-                      refId="Package\RESB\Identify Changed Records.Inputs[Conditional Split Input].Columns[BDTER (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="8"
-                      cachedName="BDTER (1)"
-                      lineageId="Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[BDTER (1)]" />
-                  </inputColumns>
-                  <externalMetadataColumns />
-                </input>
-              </inputs>
-              <outputs>
-                <output
-                  refId="Package\RESB\Identify Changed Records.Outputs[UPDATE]"
-                  description="Output 1 of the Conditional Split Transformation"
-                  errorOrTruncationOperation="Computation"
-                  errorRowDisposition="FailComponent"
-                  exclusionGroup="1"
-                  name="UPDATE"
-                  synchronousInputId="Package\RESB\Identify Changed Records.Inputs[Conditional Split Input]"
-                  truncationRowDisposition="FailComponent">
-                  <properties>
-                    <property
-                      containsID="true"
-                      dataType="System.String"
-                      description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
-                      name="Expression">#{Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[BDART]} != #{Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[BDART (1)]} || #{Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[XLOEK]} != #{Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[XLOEK (1)]} || #{Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[MATNR]} != #{Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[MATNR (1)]} || #{Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[AUFNR]} != #{Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[AUFNR (1)]} || #{Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[WERKS]} != #{Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[WERKS (1)]} || #{Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[BDMNG]} != #{Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[BDMNG (1)]} || #{Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[SHKZG]} != #{Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[SHKZG (1)]} || #{Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[BDTER]} != #{Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[BDTER (1)]}</property>
-                    <property
-                      containsID="true"
-                      dataType="System.String"
-                      description="Specifies the friendly version of the expression. This expression version uses column names."
-                      expressionType="Notify"
-                      name="FriendlyExpression">BDART != [BDART (1)] || XLOEK != [XLOEK (1)] || MATNR != [MATNR (1)] || AUFNR != [AUFNR (1)] || WERKS != [WERKS (1)] || BDMNG != [BDMNG (1)] || SHKZG != [SHKZG (1)] || BDTER != [BDTER (1)]</property>
-                    <property
-                      dataType="System.Int32"
-                      description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
-                      name="EvaluationOrder">0</property>
-                  </properties>
-                  <externalMetadataColumns />
-                </output>
-                <output
-                  refId="Package\RESB\Identify Changed Records.Outputs[Conditional Split Default Output]"
-                  description="Default Output of the Conditional Split Transformation"
-                  exclusionGroup="1"
-                  name="Conditional Split Default Output"
-                  synchronousInputId="Package\RESB\Identify Changed Records.Inputs[Conditional Split Input]">
-                  <properties>
-                    <property
-                      dataType="System.Boolean"
-                      name="IsDefaultOut">true</property>
-                  </properties>
-                  <externalMetadataColumns />
-                </output>
-                <output
-                  refId="Package\RESB\Identify Changed Records.Outputs[Conditional Split Error Output]"
-                  description="Error Output of the Conditional Split Transformation"
-                  exclusionGroup="1"
-                  isErrorOut="true"
-                  name="Conditional Split Error Output"
-                  synchronousInputId="Package\RESB\Identify Changed Records.Inputs[Conditional Split Input]">
-                  <outputColumns>
-                    <outputColumn
-                      refId="Package\RESB\Identify Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
-                      dataType="i4"
-                      lineageId="Package\RESB\Identify Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
-                      name="ErrorCode"
-                      specialFlags="1" />
-                    <outputColumn
-                      refId="Package\RESB\Identify Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
-                      dataType="i4"
-                      lineageId="Package\RESB\Identify Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
-                      name="ErrorColumn"
-                      specialFlags="2" />
-                  </outputColumns>
-                  <externalMetadataColumns />
-                </output>
-              </outputs>
-            </component>
-            <component
-              refId="Package\RESB\Identify records"
-              componentClassID="Microsoft.ConditionalSplit"
-              contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
-              description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
-              name="Identify records"
-              usesDispositions="true">
-              <inputs>
-                <input
-                  refId="Package\RESB\Identify records.Inputs[Conditional Split Input]"
-                  description="Input to the Conditional Split Transformation"
-                  name="Conditional Split Input">
-                  <inputColumns>
-                    <inputColumn
-                      refId="Package\RESB\Identify records.Inputs[Conditional Split Input].Columns[MANDT]"
+                      refId="Package\RESB\Identify Records.Inputs[Conditional Split Input].Columns[MANDT]"
                       cachedDataType="wstr"
                       cachedLength="3"
                       cachedName="MANDT"
                       cachedSortKeyPosition="1"
                       lineageId="Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
                     <inputColumn
-                      refId="Package\RESB\Identify records.Inputs[Conditional Split Input].Columns[MANDT (1)]"
+                      refId="Package\RESB\Identify Records.Inputs[Conditional Split Input].Columns[MANDT (1)]"
                       cachedDataType="wstr"
                       cachedLength="3"
                       cachedName="MANDT (1)"
@@ -447,13 +861,13 @@
               </inputs>
               <outputs>
                 <output
-                  refId="Package\RESB\Identify records.Outputs[UPDATE]"
+                  refId="Package\RESB\Identify Records.Outputs[update]"
                   description="Output 1 of the Conditional Split Transformation"
                   errorOrTruncationOperation="Computation"
                   errorRowDisposition="FailComponent"
                   exclusionGroup="1"
-                  name="UPDATE"
-                  synchronousInputId="Package\RESB\Identify records.Inputs[Conditional Split Input]"
+                  name="update"
+                  synchronousInputId="Package\RESB\Identify Records.Inputs[Conditional Split Input]"
                   truncationRowDisposition="FailComponent">
                   <properties>
                     <property
@@ -475,13 +889,13 @@
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\RESB\Identify records.Outputs[INSERT]"
+                  refId="Package\RESB\Identify Records.Outputs[insert]"
                   description="Output 2 of the Conditional Split Transformation"
                   errorOrTruncationOperation="Computation"
                   errorRowDisposition="FailComponent"
                   exclusionGroup="1"
-                  name="INSERT"
-                  synchronousInputId="Package\RESB\Identify records.Inputs[Conditional Split Input]"
+                  name="insert"
+                  synchronousInputId="Package\RESB\Identify Records.Inputs[Conditional Split Input]"
                   truncationRowDisposition="FailComponent">
                   <properties>
                     <property
@@ -503,13 +917,13 @@
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\RESB\Identify records.Outputs[DELETE]"
+                  refId="Package\RESB\Identify Records.Outputs[delete]"
                   description="Output 3 of the Conditional Split Transformation"
                   errorOrTruncationOperation="Computation"
                   errorRowDisposition="FailComponent"
                   exclusionGroup="1"
-                  name="DELETE"
-                  synchronousInputId="Package\RESB\Identify records.Inputs[Conditional Split Input]"
+                  name="delete"
+                  synchronousInputId="Package\RESB\Identify Records.Inputs[Conditional Split Input]"
                   truncationRowDisposition="FailComponent">
                   <properties>
                     <property
@@ -531,11 +945,11 @@
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\RESB\Identify records.Outputs[Conditional Split Default Output]"
+                  refId="Package\RESB\Identify Records.Outputs[Conditional Split Default Output]"
                   description="Default Output of the Conditional Split Transformation"
                   exclusionGroup="1"
                   name="Conditional Split Default Output"
-                  synchronousInputId="Package\RESB\Identify records.Inputs[Conditional Split Input]">
+                  synchronousInputId="Package\RESB\Identify Records.Inputs[Conditional Split Input]">
                   <properties>
                     <property
                       dataType="System.Boolean"
@@ -544,23 +958,23 @@
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\RESB\Identify records.Outputs[Conditional Split Error Output]"
+                  refId="Package\RESB\Identify Records.Outputs[Conditional Split Error Output]"
                   description="Error Output of the Conditional Split Transformation"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="Conditional Split Error Output"
-                  synchronousInputId="Package\RESB\Identify records.Inputs[Conditional Split Input]">
+                  synchronousInputId="Package\RESB\Identify Records.Inputs[Conditional Split Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\RESB\Identify records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      refId="Package\RESB\Identify Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\RESB\Identify records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      lineageId="Package\RESB\Identify Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\RESB\Identify records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      refId="Package\RESB\Identify Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\RESB\Identify records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\RESB\Identify Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -859,77 +1273,77 @@
                       cachedLength="3"
                       cachedName="MANDT"
                       cachedSortKeyPosition="1"
-                      lineageId="Package\RESB\SAP.Outputs[OLE DB Source Output].Columns[MANDT]" />
+                      lineageId="Package\RESB\DB SAP.Outputs[OLE DB Source Output].Columns[MANDT]" />
                     <inputColumn
                       refId="Package\RESB\Merge Join.Inputs[Merge Join Left Input].Columns[RSNUM]"
                       cachedDataType="wstr"
                       cachedLength="10"
                       cachedName="RSNUM"
                       cachedSortKeyPosition="2"
-                      lineageId="Package\RESB\SAP.Outputs[OLE DB Source Output].Columns[RSNUM]" />
+                      lineageId="Package\RESB\DB SAP.Outputs[OLE DB Source Output].Columns[RSNUM]" />
                     <inputColumn
                       refId="Package\RESB\Merge Join.Inputs[Merge Join Left Input].Columns[RSPOS]"
                       cachedDataType="wstr"
                       cachedLength="4"
                       cachedName="RSPOS"
                       cachedSortKeyPosition="3"
-                      lineageId="Package\RESB\SAP.Outputs[OLE DB Source Output].Columns[RSPOS]" />
+                      lineageId="Package\RESB\DB SAP.Outputs[OLE DB Source Output].Columns[RSPOS]" />
                     <inputColumn
                       refId="Package\RESB\Merge Join.Inputs[Merge Join Left Input].Columns[RSART]"
                       cachedDataType="wstr"
                       cachedLength="1"
                       cachedName="RSART"
                       cachedSortKeyPosition="4"
-                      lineageId="Package\RESB\SAP.Outputs[OLE DB Source Output].Columns[RSART]" />
+                      lineageId="Package\RESB\DB SAP.Outputs[OLE DB Source Output].Columns[RSART]" />
                     <inputColumn
                       refId="Package\RESB\Merge Join.Inputs[Merge Join Left Input].Columns[MATNR]"
                       cachedDataType="wstr"
                       cachedLength="18"
                       cachedName="MATNR"
-                      lineageId="Package\RESB\SAP.Outputs[OLE DB Source Output].Columns[MATNR]" />
+                      lineageId="Package\RESB\DB SAP.Outputs[OLE DB Source Output].Columns[MATNR]" />
                     <inputColumn
                       refId="Package\RESB\Merge Join.Inputs[Merge Join Left Input].Columns[AUFNR]"
                       cachedDataType="wstr"
                       cachedLength="12"
                       cachedName="AUFNR"
-                      lineageId="Package\RESB\SAP.Outputs[OLE DB Source Output].Columns[AUFNR]" />
+                      lineageId="Package\RESB\DB SAP.Outputs[OLE DB Source Output].Columns[AUFNR]" />
                     <inputColumn
                       refId="Package\RESB\Merge Join.Inputs[Merge Join Left Input].Columns[BDART]"
                       cachedDataType="wstr"
                       cachedLength="2"
                       cachedName="BDART"
-                      lineageId="Package\RESB\SAP.Outputs[OLE DB Source Output].Columns[BDART]" />
+                      lineageId="Package\RESB\DB SAP.Outputs[OLE DB Source Output].Columns[BDART]" />
                     <inputColumn
                       refId="Package\RESB\Merge Join.Inputs[Merge Join Left Input].Columns[XLOEK]"
                       cachedDataType="wstr"
                       cachedLength="1"
                       cachedName="XLOEK"
-                      lineageId="Package\RESB\SAP.Outputs[OLE DB Source Output].Columns[XLOEK]" />
+                      lineageId="Package\RESB\DB SAP.Outputs[OLE DB Source Output].Columns[XLOEK]" />
                     <inputColumn
                       refId="Package\RESB\Merge Join.Inputs[Merge Join Left Input].Columns[WERKS]"
                       cachedDataType="wstr"
                       cachedLength="4"
                       cachedName="WERKS"
-                      lineageId="Package\RESB\SAP.Outputs[OLE DB Source Output].Columns[WERKS]" />
+                      lineageId="Package\RESB\DB SAP.Outputs[OLE DB Source Output].Columns[WERKS]" />
                     <inputColumn
                       refId="Package\RESB\Merge Join.Inputs[Merge Join Left Input].Columns[BDMNG]"
                       cachedDataType="numeric"
                       cachedName="BDMNG"
                       cachedPrecision="13"
                       cachedScale="3"
-                      lineageId="Package\RESB\SAP.Outputs[OLE DB Source Output].Columns[BDMNG]" />
+                      lineageId="Package\RESB\DB SAP.Outputs[OLE DB Source Output].Columns[BDMNG]" />
                     <inputColumn
                       refId="Package\RESB\Merge Join.Inputs[Merge Join Left Input].Columns[SHKZG]"
                       cachedDataType="wstr"
                       cachedLength="1"
                       cachedName="SHKZG"
-                      lineageId="Package\RESB\SAP.Outputs[OLE DB Source Output].Columns[SHKZG]" />
+                      lineageId="Package\RESB\DB SAP.Outputs[OLE DB Source Output].Columns[SHKZG]" />
                     <inputColumn
                       refId="Package\RESB\Merge Join.Inputs[Merge Join Left Input].Columns[BDTER]"
                       cachedDataType="wstr"
                       cachedLength="8"
                       cachedName="BDTER"
-                      lineageId="Package\RESB\SAP.Outputs[OLE DB Source Output].Columns[BDTER]" />
+                      lineageId="Package\RESB\DB SAP.Outputs[OLE DB Source Output].Columns[BDTER]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
@@ -944,77 +1358,28 @@
                       cachedLength="3"
                       cachedName="MANDT"
                       cachedSortKeyPosition="1"
-                      lineageId="Package\RESB\PBI.Outputs[OLE DB Source Output].Columns[MANDT]" />
+                      lineageId="Package\RESB\DB PBI.Outputs[OLE DB Source Output].Columns[MANDT]" />
                     <inputColumn
                       refId="Package\RESB\Merge Join.Inputs[Merge Join Right Input].Columns[RSNUM]"
                       cachedDataType="wstr"
                       cachedLength="10"
                       cachedName="RSNUM"
                       cachedSortKeyPosition="2"
-                      lineageId="Package\RESB\PBI.Outputs[OLE DB Source Output].Columns[RSNUM]" />
+                      lineageId="Package\RESB\DB PBI.Outputs[OLE DB Source Output].Columns[RSNUM]" />
                     <inputColumn
                       refId="Package\RESB\Merge Join.Inputs[Merge Join Right Input].Columns[RSPOS]"
                       cachedDataType="wstr"
                       cachedLength="4"
                       cachedName="RSPOS"
                       cachedSortKeyPosition="3"
-                      lineageId="Package\RESB\PBI.Outputs[OLE DB Source Output].Columns[RSPOS]" />
+                      lineageId="Package\RESB\DB PBI.Outputs[OLE DB Source Output].Columns[RSPOS]" />
                     <inputColumn
                       refId="Package\RESB\Merge Join.Inputs[Merge Join Right Input].Columns[RSART]"
                       cachedDataType="wstr"
                       cachedLength="1"
                       cachedName="RSART"
                       cachedSortKeyPosition="4"
-                      lineageId="Package\RESB\PBI.Outputs[OLE DB Source Output].Columns[RSART]" />
-                    <inputColumn
-                      refId="Package\RESB\Merge Join.Inputs[Merge Join Right Input].Columns[MATNR]"
-                      cachedDataType="wstr"
-                      cachedLength="18"
-                      cachedName="MATNR"
-                      lineageId="Package\RESB\PBI.Outputs[OLE DB Source Output].Columns[MATNR]" />
-                    <inputColumn
-                      refId="Package\RESB\Merge Join.Inputs[Merge Join Right Input].Columns[AUFNR]"
-                      cachedDataType="wstr"
-                      cachedLength="12"
-                      cachedName="AUFNR"
-                      lineageId="Package\RESB\PBI.Outputs[OLE DB Source Output].Columns[AUFNR]" />
-                    <inputColumn
-                      refId="Package\RESB\Merge Join.Inputs[Merge Join Right Input].Columns[BDART]"
-                      cachedDataType="wstr"
-                      cachedLength="2"
-                      cachedName="BDART"
-                      lineageId="Package\RESB\PBI.Outputs[OLE DB Source Output].Columns[BDART]" />
-                    <inputColumn
-                      refId="Package\RESB\Merge Join.Inputs[Merge Join Right Input].Columns[XLOEK]"
-                      cachedDataType="wstr"
-                      cachedLength="1"
-                      cachedName="XLOEK"
-                      lineageId="Package\RESB\PBI.Outputs[OLE DB Source Output].Columns[XLOEK]" />
-                    <inputColumn
-                      refId="Package\RESB\Merge Join.Inputs[Merge Join Right Input].Columns[WERKS]"
-                      cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="WERKS"
-                      lineageId="Package\RESB\PBI.Outputs[OLE DB Source Output].Columns[WERKS]" />
-                    <inputColumn
-                      refId="Package\RESB\Merge Join.Inputs[Merge Join Right Input].Columns[BDMNG]"
-                      cachedDataType="numeric"
-                      cachedName="BDMNG"
-                      cachedPrecision="13"
-                      cachedScale="3"
-                      lineageId="Package\RESB\PBI.Outputs[OLE DB Source Output].Columns[BDMNG]" />
-                    <inputColumn
-                      refId="Package\RESB\Merge Join.Inputs[Merge Join Right Input].Columns[SHKZG]"
-                      cachedDataType="wstr"
-                      cachedLength="1"
-                      cachedName="SHKZG"
-                      lineageId="Package\RESB\PBI.Outputs[OLE DB Source Output].Columns[SHKZG]" />
-                    <inputColumn
-                      refId="Package\RESB\Merge Join.Inputs[Merge Join Right Input].Columns[BDTER]"
-                      cachedDataType="wstr"
-                      cachedLength="8"
-                      cachedName="BDTER"
-                      lineageId="Package\RESB\PBI.Outputs[OLE DB Source Output].Columns[BDTER]" />
+                      lineageId="Package\RESB\DB PBI.Outputs[OLE DB Source Output].Columns[RSART]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
@@ -1114,6 +1479,91 @@
                       </properties>
                     </outputColumn>
                     <outputColumn
+                      refId="Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[BDART]"
+                      dataType="wstr"
+                      length="2"
+                      lineageId="Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[BDART]"
+                      name="BDART">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\RESB\Merge Join.Inputs[Merge Join Left Input].Columns[BDART]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[XLOEK]"
+                      dataType="wstr"
+                      length="1"
+                      lineageId="Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[XLOEK]"
+                      name="XLOEK">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\RESB\Merge Join.Inputs[Merge Join Left Input].Columns[XLOEK]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[WERKS]"
+                      dataType="wstr"
+                      length="4"
+                      lineageId="Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[WERKS]"
+                      name="WERKS">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\RESB\Merge Join.Inputs[Merge Join Left Input].Columns[WERKS]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[BDMNG]"
+                      dataType="numeric"
+                      lineageId="Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[BDMNG]"
+                      name="BDMNG"
+                      precision="13"
+                      scale="3">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\RESB\Merge Join.Inputs[Merge Join Left Input].Columns[BDMNG]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[SHKZG]"
+                      dataType="wstr"
+                      length="1"
+                      lineageId="Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[SHKZG]"
+                      name="SHKZG">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\RESB\Merge Join.Inputs[Merge Join Left Input].Columns[SHKZG]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[BDTER]"
+                      dataType="wstr"
+                      length="8"
+                      lineageId="Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[BDTER]"
+                      name="BDTER">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\RESB\Merge Join.Inputs[Merge Join Left Input].Columns[BDTER]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
                       refId="Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]"
                       dataType="wstr"
                       length="3"
@@ -1169,937 +1619,6 @@
                           name="InputColumnID">#{Package\RESB\Merge Join.Inputs[Merge Join Right Input].Columns[RSART]}</property>
                       </properties>
                     </outputColumn>
-                    <outputColumn
-                      refId="Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[MATNR (1)]"
-                      dataType="wstr"
-                      length="18"
-                      lineageId="Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[MATNR (1)]"
-                      name="MATNR (1)">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\RESB\Merge Join.Inputs[Merge Join Right Input].Columns[MATNR]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[AUFNR (1)]"
-                      dataType="wstr"
-                      length="12"
-                      lineageId="Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[AUFNR (1)]"
-                      name="AUFNR (1)">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\RESB\Merge Join.Inputs[Merge Join Right Input].Columns[AUFNR]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[BDART]"
-                      dataType="wstr"
-                      length="2"
-                      lineageId="Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[BDART]"
-                      name="BDART">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\RESB\Merge Join.Inputs[Merge Join Left Input].Columns[BDART]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[XLOEK]"
-                      dataType="wstr"
-                      length="1"
-                      lineageId="Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[XLOEK]"
-                      name="XLOEK">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\RESB\Merge Join.Inputs[Merge Join Left Input].Columns[XLOEK]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[BDART (1)]"
-                      dataType="wstr"
-                      length="2"
-                      lineageId="Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[BDART (1)]"
-                      name="BDART (1)">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\RESB\Merge Join.Inputs[Merge Join Right Input].Columns[BDART]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[XLOEK (1)]"
-                      dataType="wstr"
-                      length="1"
-                      lineageId="Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[XLOEK (1)]"
-                      name="XLOEK (1)">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\RESB\Merge Join.Inputs[Merge Join Right Input].Columns[XLOEK]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[WERKS]"
-                      dataType="wstr"
-                      length="4"
-                      lineageId="Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[WERKS]"
-                      name="WERKS">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\RESB\Merge Join.Inputs[Merge Join Left Input].Columns[WERKS]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[BDMNG]"
-                      dataType="numeric"
-                      lineageId="Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[BDMNG]"
-                      name="BDMNG"
-                      precision="13"
-                      scale="3">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\RESB\Merge Join.Inputs[Merge Join Left Input].Columns[BDMNG]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[SHKZG]"
-                      dataType="wstr"
-                      length="1"
-                      lineageId="Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[SHKZG]"
-                      name="SHKZG">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\RESB\Merge Join.Inputs[Merge Join Left Input].Columns[SHKZG]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[WERKS (1)]"
-                      dataType="wstr"
-                      length="4"
-                      lineageId="Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[WERKS (1)]"
-                      name="WERKS (1)">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\RESB\Merge Join.Inputs[Merge Join Right Input].Columns[WERKS]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[BDMNG (1)]"
-                      dataType="numeric"
-                      lineageId="Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[BDMNG (1)]"
-                      name="BDMNG (1)"
-                      precision="13"
-                      scale="3">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\RESB\Merge Join.Inputs[Merge Join Right Input].Columns[BDMNG]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[SHKZG (1)]"
-                      dataType="wstr"
-                      length="1"
-                      lineageId="Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[SHKZG (1)]"
-                      name="SHKZG (1)">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\RESB\Merge Join.Inputs[Merge Join Right Input].Columns[SHKZG]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[BDTER]"
-                      dataType="wstr"
-                      length="8"
-                      lineageId="Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[BDTER]"
-                      name="BDTER">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\RESB\Merge Join.Inputs[Merge Join Left Input].Columns[BDTER]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[BDTER (1)]"
-                      dataType="wstr"
-                      length="8"
-                      lineageId="Package\RESB\Merge Join.Outputs[Merge Join Output].Columns[BDTER (1)]"
-                      name="BDTER (1)">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\RESB\Merge Join.Inputs[Merge Join Right Input].Columns[BDTER]}</property>
-                      </properties>
-                    </outputColumn>
-                  </outputColumns>
-                  <externalMetadataColumns />
-                </output>
-              </outputs>
-            </component>
-            <component
-              refId="Package\RESB\PBI"
-              componentClassID="Microsoft.OLEDBSource"
-              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
-              description="OLE DB Source"
-              name="PBI"
-              usesDispositions="true"
-              version="7">
-              <properties>
-                <property
-                  dataType="System.Int32"
-                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
-                  name="CommandTimeout">0</property>
-                <property
-                  dataType="System.String"
-                  description="Specifies the name of the database object used to open a rowset."
-                  name="OpenRowset"></property>
-                <property
-                  dataType="System.String"
-                  description="Specifies the variable that contains the name of the database object used to open a rowset."
-                  name="OpenRowsetVariable"></property>
-                <property
-                  dataType="System.String"
-                  description="The SQL command to be executed."
-                  name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT [MANDT]
-    ,[RSNUM]
-    ,[RSPOS]
-    ,[RSART]
-    ,[BDART]
-    ,[XLOEK]
-    ,[MATNR]
-    ,[WERKS]
-    ,[BDTER]
-    ,[BDMNG]
-    ,[SHKZG]
-    ,[AUFNR]
-FROM [RESB] (NOLOCK)
-WHERE [MANDT] = '105'
-ORDER BY [MANDT]
-    ,[RSNUM]
-    ,[RSPOS]
-    ,[RSART]</property>
-                <property
-                  dataType="System.String"
-                  description="The variable that contains the SQL command to be executed."
-                  name="SqlCommandVariable"></property>
-                <property
-                  dataType="System.Int32"
-                  description="Specifies the column code page to use when code page information is unavailable from the data source."
-                  name="DefaultCodePage">1252</property>
-                <property
-                  dataType="System.Boolean"
-                  description="Forces the use of the DefaultCodePage property value when describing character data."
-                  name="AlwaysUseDefaultCodePage">false</property>
-                <property
-                  dataType="System.Int32"
-                  description="Specifies the mode used to access the database."
-                  name="AccessMode"
-                  typeConverter="AccessMode">2</property>
-                <property
-                  dataType="System.String"
-                  description="The mappings between the parameters in the SQL command and variables."
-                  name="ParameterMapping"></property>
-              </properties>
-              <connections>
-                <connection
-                  refId="Package\RESB\PBI.Connections[OleDbConnection]"
-                  connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
-                  connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
-                  description="The OLE DB runtime connection used to access the database."
-                  name="OleDbConnection" />
-              </connections>
-              <outputs>
-                <output
-                  refId="Package\RESB\PBI.Outputs[OLE DB Source Output]"
-                  isSorted="true"
-                  name="OLE DB Source Output">
-                  <outputColumns>
-                    <outputColumn
-                      refId="Package\RESB\PBI.Outputs[OLE DB Source Output].Columns[MANDT]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\RESB\PBI.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
-                      length="3"
-                      lineageId="Package\RESB\PBI.Outputs[OLE DB Source Output].Columns[MANDT]"
-                      name="MANDT"
-                      sortKeyPosition="1"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\RESB\PBI.Outputs[OLE DB Source Output].Columns[RSNUM]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\RESB\PBI.Outputs[OLE DB Source Output].ExternalColumns[RSNUM]"
-                      length="10"
-                      lineageId="Package\RESB\PBI.Outputs[OLE DB Source Output].Columns[RSNUM]"
-                      name="RSNUM"
-                      sortKeyPosition="2"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\RESB\PBI.Outputs[OLE DB Source Output].Columns[RSPOS]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\RESB\PBI.Outputs[OLE DB Source Output].ExternalColumns[RSPOS]"
-                      length="4"
-                      lineageId="Package\RESB\PBI.Outputs[OLE DB Source Output].Columns[RSPOS]"
-                      name="RSPOS"
-                      sortKeyPosition="3"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\RESB\PBI.Outputs[OLE DB Source Output].Columns[RSART]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\RESB\PBI.Outputs[OLE DB Source Output].ExternalColumns[RSART]"
-                      length="1"
-                      lineageId="Package\RESB\PBI.Outputs[OLE DB Source Output].Columns[RSART]"
-                      name="RSART"
-                      sortKeyPosition="4"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\RESB\PBI.Outputs[OLE DB Source Output].Columns[MATNR]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\RESB\PBI.Outputs[OLE DB Source Output].ExternalColumns[MATNR]"
-                      length="18"
-                      lineageId="Package\RESB\PBI.Outputs[OLE DB Source Output].Columns[MATNR]"
-                      name="MATNR"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\RESB\PBI.Outputs[OLE DB Source Output].Columns[AUFNR]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\RESB\PBI.Outputs[OLE DB Source Output].ExternalColumns[AUFNR]"
-                      length="12"
-                      lineageId="Package\RESB\PBI.Outputs[OLE DB Source Output].Columns[AUFNR]"
-                      name="AUFNR"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\RESB\PBI.Outputs[OLE DB Source Output].Columns[BDART]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\RESB\PBI.Outputs[OLE DB Source Output].ExternalColumns[BDART]"
-                      length="2"
-                      lineageId="Package\RESB\PBI.Outputs[OLE DB Source Output].Columns[BDART]"
-                      name="BDART"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\RESB\PBI.Outputs[OLE DB Source Output].Columns[XLOEK]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\RESB\PBI.Outputs[OLE DB Source Output].ExternalColumns[XLOEK]"
-                      length="1"
-                      lineageId="Package\RESB\PBI.Outputs[OLE DB Source Output].Columns[XLOEK]"
-                      name="XLOEK"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\RESB\PBI.Outputs[OLE DB Source Output].Columns[WERKS]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\RESB\PBI.Outputs[OLE DB Source Output].ExternalColumns[WERKS]"
-                      length="4"
-                      lineageId="Package\RESB\PBI.Outputs[OLE DB Source Output].Columns[WERKS]"
-                      name="WERKS"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\RESB\PBI.Outputs[OLE DB Source Output].Columns[BDMNG]"
-                      dataType="numeric"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\RESB\PBI.Outputs[OLE DB Source Output].ExternalColumns[BDMNG]"
-                      lineageId="Package\RESB\PBI.Outputs[OLE DB Source Output].Columns[BDMNG]"
-                      name="BDMNG"
-                      precision="13"
-                      scale="3"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\RESB\PBI.Outputs[OLE DB Source Output].Columns[SHKZG]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\RESB\PBI.Outputs[OLE DB Source Output].ExternalColumns[SHKZG]"
-                      length="1"
-                      lineageId="Package\RESB\PBI.Outputs[OLE DB Source Output].Columns[SHKZG]"
-                      name="SHKZG"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\RESB\PBI.Outputs[OLE DB Source Output].Columns[BDTER]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\RESB\PBI.Outputs[OLE DB Source Output].ExternalColumns[BDTER]"
-                      length="8"
-                      lineageId="Package\RESB\PBI.Outputs[OLE DB Source Output].Columns[BDTER]"
-                      name="BDTER"
-                      truncationRowDisposition="FailComponent" />
-                  </outputColumns>
-                  <externalMetadataColumns
-                    isUsed="True">
-                    <externalMetadataColumn
-                      refId="Package\RESB\PBI.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
-                      dataType="wstr"
-                      length="3"
-                      name="MANDT" />
-                    <externalMetadataColumn
-                      refId="Package\RESB\PBI.Outputs[OLE DB Source Output].ExternalColumns[RSNUM]"
-                      dataType="wstr"
-                      length="10"
-                      name="RSNUM" />
-                    <externalMetadataColumn
-                      refId="Package\RESB\PBI.Outputs[OLE DB Source Output].ExternalColumns[RSPOS]"
-                      dataType="wstr"
-                      length="4"
-                      name="RSPOS" />
-                    <externalMetadataColumn
-                      refId="Package\RESB\PBI.Outputs[OLE DB Source Output].ExternalColumns[RSART]"
-                      dataType="wstr"
-                      length="1"
-                      name="RSART" />
-                    <externalMetadataColumn
-                      refId="Package\RESB\PBI.Outputs[OLE DB Source Output].ExternalColumns[MATNR]"
-                      dataType="wstr"
-                      length="18"
-                      name="MATNR" />
-                    <externalMetadataColumn
-                      refId="Package\RESB\PBI.Outputs[OLE DB Source Output].ExternalColumns[AUFNR]"
-                      dataType="wstr"
-                      length="12"
-                      name="AUFNR" />
-                    <externalMetadataColumn
-                      refId="Package\RESB\PBI.Outputs[OLE DB Source Output].ExternalColumns[BDART]"
-                      dataType="wstr"
-                      length="2"
-                      name="BDART" />
-                    <externalMetadataColumn
-                      refId="Package\RESB\PBI.Outputs[OLE DB Source Output].ExternalColumns[XLOEK]"
-                      dataType="wstr"
-                      length="1"
-                      name="XLOEK" />
-                    <externalMetadataColumn
-                      refId="Package\RESB\PBI.Outputs[OLE DB Source Output].ExternalColumns[WERKS]"
-                      dataType="wstr"
-                      length="4"
-                      name="WERKS" />
-                    <externalMetadataColumn
-                      refId="Package\RESB\PBI.Outputs[OLE DB Source Output].ExternalColumns[BDMNG]"
-                      dataType="numeric"
-                      name="BDMNG"
-                      precision="13"
-                      scale="3" />
-                    <externalMetadataColumn
-                      refId="Package\RESB\PBI.Outputs[OLE DB Source Output].ExternalColumns[SHKZG]"
-                      dataType="wstr"
-                      length="1"
-                      name="SHKZG" />
-                    <externalMetadataColumn
-                      refId="Package\RESB\PBI.Outputs[OLE DB Source Output].ExternalColumns[BDTER]"
-                      dataType="wstr"
-                      length="8"
-                      name="BDTER" />
-                  </externalMetadataColumns>
-                </output>
-                <output
-                  refId="Package\RESB\PBI.Outputs[OLE DB Source Error Output]"
-                  isErrorOut="true"
-                  name="OLE DB Source Error Output">
-                  <outputColumns>
-                    <outputColumn
-                      refId="Package\RESB\PBI.Outputs[OLE DB Source Error Output].Columns[MANDT]"
-                      dataType="wstr"
-                      length="3"
-                      lineageId="Package\RESB\PBI.Outputs[OLE DB Source Error Output].Columns[MANDT]"
-                      name="MANDT" />
-                    <outputColumn
-                      refId="Package\RESB\PBI.Outputs[OLE DB Source Error Output].Columns[RSNUM]"
-                      dataType="wstr"
-                      length="10"
-                      lineageId="Package\RESB\PBI.Outputs[OLE DB Source Error Output].Columns[RSNUM]"
-                      name="RSNUM" />
-                    <outputColumn
-                      refId="Package\RESB\PBI.Outputs[OLE DB Source Error Output].Columns[RSPOS]"
-                      dataType="wstr"
-                      length="4"
-                      lineageId="Package\RESB\PBI.Outputs[OLE DB Source Error Output].Columns[RSPOS]"
-                      name="RSPOS" />
-                    <outputColumn
-                      refId="Package\RESB\PBI.Outputs[OLE DB Source Error Output].Columns[RSART]"
-                      dataType="wstr"
-                      length="1"
-                      lineageId="Package\RESB\PBI.Outputs[OLE DB Source Error Output].Columns[RSART]"
-                      name="RSART" />
-                    <outputColumn
-                      refId="Package\RESB\PBI.Outputs[OLE DB Source Error Output].Columns[BDART]"
-                      dataType="wstr"
-                      length="2"
-                      lineageId="Package\RESB\PBI.Outputs[OLE DB Source Error Output].Columns[BDART]"
-                      name="BDART" />
-                    <outputColumn
-                      refId="Package\RESB\PBI.Outputs[OLE DB Source Error Output].Columns[XLOEK]"
-                      dataType="wstr"
-                      length="1"
-                      lineageId="Package\RESB\PBI.Outputs[OLE DB Source Error Output].Columns[XLOEK]"
-                      name="XLOEK" />
-                    <outputColumn
-                      refId="Package\RESB\PBI.Outputs[OLE DB Source Error Output].Columns[MATNR]"
-                      dataType="wstr"
-                      length="18"
-                      lineageId="Package\RESB\PBI.Outputs[OLE DB Source Error Output].Columns[MATNR]"
-                      name="MATNR" />
-                    <outputColumn
-                      refId="Package\RESB\PBI.Outputs[OLE DB Source Error Output].Columns[WERKS]"
-                      dataType="wstr"
-                      length="4"
-                      lineageId="Package\RESB\PBI.Outputs[OLE DB Source Error Output].Columns[WERKS]"
-                      name="WERKS" />
-                    <outputColumn
-                      refId="Package\RESB\PBI.Outputs[OLE DB Source Error Output].Columns[BDTER]"
-                      dataType="wstr"
-                      length="8"
-                      lineageId="Package\RESB\PBI.Outputs[OLE DB Source Error Output].Columns[BDTER]"
-                      name="BDTER" />
-                    <outputColumn
-                      refId="Package\RESB\PBI.Outputs[OLE DB Source Error Output].Columns[BDMNG]"
-                      dataType="numeric"
-                      lineageId="Package\RESB\PBI.Outputs[OLE DB Source Error Output].Columns[BDMNG]"
-                      name="BDMNG"
-                      precision="13"
-                      scale="3" />
-                    <outputColumn
-                      refId="Package\RESB\PBI.Outputs[OLE DB Source Error Output].Columns[SHKZG]"
-                      dataType="wstr"
-                      length="1"
-                      lineageId="Package\RESB\PBI.Outputs[OLE DB Source Error Output].Columns[SHKZG]"
-                      name="SHKZG" />
-                    <outputColumn
-                      refId="Package\RESB\PBI.Outputs[OLE DB Source Error Output].Columns[AUFNR]"
-                      dataType="wstr"
-                      length="12"
-                      lineageId="Package\RESB\PBI.Outputs[OLE DB Source Error Output].Columns[AUFNR]"
-                      name="AUFNR" />
-                    <outputColumn
-                      refId="Package\RESB\PBI.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
-                      dataType="i4"
-                      lineageId="Package\RESB\PBI.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
-                      name="ErrorCode"
-                      specialFlags="1" />
-                    <outputColumn
-                      refId="Package\RESB\PBI.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
-                      dataType="i4"
-                      lineageId="Package\RESB\PBI.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
-                      name="ErrorColumn"
-                      specialFlags="2" />
-                  </outputColumns>
-                  <externalMetadataColumns />
-                </output>
-              </outputs>
-            </component>
-            <component
-              refId="Package\RESB\SAP"
-              componentClassID="Microsoft.OLEDBSource"
-              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
-              description="OLE DB Source"
-              name="SAP"
-              usesDispositions="true"
-              version="7">
-              <properties>
-                <property
-                  dataType="System.Int32"
-                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
-                  name="CommandTimeout">0</property>
-                <property
-                  dataType="System.String"
-                  description="Specifies the name of the database object used to open a rowset."
-                  name="OpenRowset"></property>
-                <property
-                  dataType="System.String"
-                  description="Specifies the variable that contains the name of the database object used to open a rowset."
-                  name="OpenRowsetVariable"></property>
-                <property
-                  dataType="System.String"
-                  description="The SQL command to be executed."
-                  name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT [MANDT]
-    ,[RSNUM]
-    ,[RSPOS]
-    ,[RSART]
-    ,[BDART]
-    ,[XLOEK]
-    ,[MATNR]
-    ,[WERKS]
-    ,[BDTER]
-    ,[BDMNG]
-    ,[SHKZG]
-    ,[AUFNR]
-FROM [ecp].[RESB] (NOLOCK)
-WHERE [MANDT] = '105'
-    AND [BDART] = 'AR'
-    AND [XLOEK] = ''
-    AND [KZEAR] = ''
-ORDER BY [MANDT]
-    ,[RSNUM]
-    ,[RSPOS]
-    ,[RSART]</property>
-                <property
-                  dataType="System.String"
-                  description="The variable that contains the SQL command to be executed."
-                  name="SqlCommandVariable"></property>
-                <property
-                  dataType="System.Int32"
-                  description="Specifies the column code page to use when code page information is unavailable from the data source."
-                  name="DefaultCodePage">1252</property>
-                <property
-                  dataType="System.Boolean"
-                  description="Forces the use of the DefaultCodePage property value when describing character data."
-                  name="AlwaysUseDefaultCodePage">false</property>
-                <property
-                  dataType="System.Int32"
-                  description="Specifies the mode used to access the database."
-                  name="AccessMode"
-                  typeConverter="AccessMode">2</property>
-                <property
-                  dataType="System.String"
-                  description="The mappings between the parameters in the SQL command and variables."
-                  name="ParameterMapping"></property>
-              </properties>
-              <connections>
-                <connection
-                  refId="Package\RESB\SAP.Connections[OleDbConnection]"
-                  connectionManagerID="{544CCAD9-2CB1-4D87-98D7-A7C478586195}:external"
-                  connectionManagerRefId="Project.ConnectionManagers[SQL_SAP]"
-                  description="The OLE DB runtime connection used to access the database."
-                  name="OleDbConnection" />
-              </connections>
-              <outputs>
-                <output
-                  refId="Package\RESB\SAP.Outputs[OLE DB Source Output]"
-                  isSorted="true"
-                  name="OLE DB Source Output">
-                  <outputColumns>
-                    <outputColumn
-                      refId="Package\RESB\SAP.Outputs[OLE DB Source Output].Columns[MANDT]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\RESB\SAP.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
-                      length="3"
-                      lineageId="Package\RESB\SAP.Outputs[OLE DB Source Output].Columns[MANDT]"
-                      name="MANDT"
-                      sortKeyPosition="1"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\RESB\SAP.Outputs[OLE DB Source Output].Columns[RSNUM]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\RESB\SAP.Outputs[OLE DB Source Output].ExternalColumns[RSNUM]"
-                      length="10"
-                      lineageId="Package\RESB\SAP.Outputs[OLE DB Source Output].Columns[RSNUM]"
-                      name="RSNUM"
-                      sortKeyPosition="2"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\RESB\SAP.Outputs[OLE DB Source Output].Columns[RSPOS]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\RESB\SAP.Outputs[OLE DB Source Output].ExternalColumns[RSPOS]"
-                      length="4"
-                      lineageId="Package\RESB\SAP.Outputs[OLE DB Source Output].Columns[RSPOS]"
-                      name="RSPOS"
-                      sortKeyPosition="3"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\RESB\SAP.Outputs[OLE DB Source Output].Columns[RSART]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\RESB\SAP.Outputs[OLE DB Source Output].ExternalColumns[RSART]"
-                      length="1"
-                      lineageId="Package\RESB\SAP.Outputs[OLE DB Source Output].Columns[RSART]"
-                      name="RSART"
-                      sortKeyPosition="4"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\RESB\SAP.Outputs[OLE DB Source Output].Columns[MATNR]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\RESB\SAP.Outputs[OLE DB Source Output].ExternalColumns[MATNR]"
-                      length="18"
-                      lineageId="Package\RESB\SAP.Outputs[OLE DB Source Output].Columns[MATNR]"
-                      name="MATNR"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\RESB\SAP.Outputs[OLE DB Source Output].Columns[AUFNR]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\RESB\SAP.Outputs[OLE DB Source Output].ExternalColumns[AUFNR]"
-                      length="12"
-                      lineageId="Package\RESB\SAP.Outputs[OLE DB Source Output].Columns[AUFNR]"
-                      name="AUFNR"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\RESB\SAP.Outputs[OLE DB Source Output].Columns[BDART]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\RESB\SAP.Outputs[OLE DB Source Output].ExternalColumns[BDART]"
-                      length="2"
-                      lineageId="Package\RESB\SAP.Outputs[OLE DB Source Output].Columns[BDART]"
-                      name="BDART"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\RESB\SAP.Outputs[OLE DB Source Output].Columns[XLOEK]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\RESB\SAP.Outputs[OLE DB Source Output].ExternalColumns[XLOEK]"
-                      length="1"
-                      lineageId="Package\RESB\SAP.Outputs[OLE DB Source Output].Columns[XLOEK]"
-                      name="XLOEK"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\RESB\SAP.Outputs[OLE DB Source Output].Columns[WERKS]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\RESB\SAP.Outputs[OLE DB Source Output].ExternalColumns[WERKS]"
-                      length="4"
-                      lineageId="Package\RESB\SAP.Outputs[OLE DB Source Output].Columns[WERKS]"
-                      name="WERKS"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\RESB\SAP.Outputs[OLE DB Source Output].Columns[BDMNG]"
-                      dataType="numeric"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\RESB\SAP.Outputs[OLE DB Source Output].ExternalColumns[BDMNG]"
-                      lineageId="Package\RESB\SAP.Outputs[OLE DB Source Output].Columns[BDMNG]"
-                      name="BDMNG"
-                      precision="13"
-                      scale="3"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\RESB\SAP.Outputs[OLE DB Source Output].Columns[SHKZG]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\RESB\SAP.Outputs[OLE DB Source Output].ExternalColumns[SHKZG]"
-                      length="1"
-                      lineageId="Package\RESB\SAP.Outputs[OLE DB Source Output].Columns[SHKZG]"
-                      name="SHKZG"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\RESB\SAP.Outputs[OLE DB Source Output].Columns[BDTER]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\RESB\SAP.Outputs[OLE DB Source Output].ExternalColumns[BDTER]"
-                      length="8"
-                      lineageId="Package\RESB\SAP.Outputs[OLE DB Source Output].Columns[BDTER]"
-                      name="BDTER"
-                      truncationRowDisposition="FailComponent" />
-                  </outputColumns>
-                  <externalMetadataColumns
-                    isUsed="True">
-                    <externalMetadataColumn
-                      refId="Package\RESB\SAP.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
-                      dataType="wstr"
-                      length="3"
-                      name="MANDT" />
-                    <externalMetadataColumn
-                      refId="Package\RESB\SAP.Outputs[OLE DB Source Output].ExternalColumns[RSNUM]"
-                      dataType="wstr"
-                      length="10"
-                      name="RSNUM" />
-                    <externalMetadataColumn
-                      refId="Package\RESB\SAP.Outputs[OLE DB Source Output].ExternalColumns[RSPOS]"
-                      dataType="wstr"
-                      length="4"
-                      name="RSPOS" />
-                    <externalMetadataColumn
-                      refId="Package\RESB\SAP.Outputs[OLE DB Source Output].ExternalColumns[RSART]"
-                      dataType="wstr"
-                      length="1"
-                      name="RSART" />
-                    <externalMetadataColumn
-                      refId="Package\RESB\SAP.Outputs[OLE DB Source Output].ExternalColumns[MATNR]"
-                      dataType="wstr"
-                      length="18"
-                      name="MATNR" />
-                    <externalMetadataColumn
-                      refId="Package\RESB\SAP.Outputs[OLE DB Source Output].ExternalColumns[AUFNR]"
-                      dataType="wstr"
-                      length="12"
-                      name="AUFNR" />
-                    <externalMetadataColumn
-                      refId="Package\RESB\SAP.Outputs[OLE DB Source Output].ExternalColumns[BDART]"
-                      dataType="wstr"
-                      length="2"
-                      name="BDART" />
-                    <externalMetadataColumn
-                      refId="Package\RESB\SAP.Outputs[OLE DB Source Output].ExternalColumns[XLOEK]"
-                      dataType="wstr"
-                      length="1"
-                      name="XLOEK" />
-                    <externalMetadataColumn
-                      refId="Package\RESB\SAP.Outputs[OLE DB Source Output].ExternalColumns[WERKS]"
-                      dataType="wstr"
-                      length="4"
-                      name="WERKS" />
-                    <externalMetadataColumn
-                      refId="Package\RESB\SAP.Outputs[OLE DB Source Output].ExternalColumns[BDMNG]"
-                      dataType="numeric"
-                      name="BDMNG"
-                      precision="13"
-                      scale="3" />
-                    <externalMetadataColumn
-                      refId="Package\RESB\SAP.Outputs[OLE DB Source Output].ExternalColumns[SHKZG]"
-                      dataType="wstr"
-                      length="1"
-                      name="SHKZG" />
-                    <externalMetadataColumn
-                      refId="Package\RESB\SAP.Outputs[OLE DB Source Output].ExternalColumns[BDTER]"
-                      dataType="wstr"
-                      length="8"
-                      name="BDTER" />
-                  </externalMetadataColumns>
-                </output>
-                <output
-                  refId="Package\RESB\SAP.Outputs[OLE DB Source Error Output]"
-                  isErrorOut="true"
-                  name="OLE DB Source Error Output">
-                  <outputColumns>
-                    <outputColumn
-                      refId="Package\RESB\SAP.Outputs[OLE DB Source Error Output].Columns[MANDT]"
-                      dataType="wstr"
-                      length="3"
-                      lineageId="Package\RESB\SAP.Outputs[OLE DB Source Error Output].Columns[MANDT]"
-                      name="MANDT" />
-                    <outputColumn
-                      refId="Package\RESB\SAP.Outputs[OLE DB Source Error Output].Columns[RSNUM]"
-                      dataType="wstr"
-                      length="10"
-                      lineageId="Package\RESB\SAP.Outputs[OLE DB Source Error Output].Columns[RSNUM]"
-                      name="RSNUM" />
-                    <outputColumn
-                      refId="Package\RESB\SAP.Outputs[OLE DB Source Error Output].Columns[RSPOS]"
-                      dataType="wstr"
-                      length="4"
-                      lineageId="Package\RESB\SAP.Outputs[OLE DB Source Error Output].Columns[RSPOS]"
-                      name="RSPOS" />
-                    <outputColumn
-                      refId="Package\RESB\SAP.Outputs[OLE DB Source Error Output].Columns[RSART]"
-                      dataType="wstr"
-                      length="1"
-                      lineageId="Package\RESB\SAP.Outputs[OLE DB Source Error Output].Columns[RSART]"
-                      name="RSART" />
-                    <outputColumn
-                      refId="Package\RESB\SAP.Outputs[OLE DB Source Error Output].Columns[BDART]"
-                      dataType="wstr"
-                      length="2"
-                      lineageId="Package\RESB\SAP.Outputs[OLE DB Source Error Output].Columns[BDART]"
-                      name="BDART" />
-                    <outputColumn
-                      refId="Package\RESB\SAP.Outputs[OLE DB Source Error Output].Columns[XLOEK]"
-                      dataType="wstr"
-                      length="1"
-                      lineageId="Package\RESB\SAP.Outputs[OLE DB Source Error Output].Columns[XLOEK]"
-                      name="XLOEK" />
-                    <outputColumn
-                      refId="Package\RESB\SAP.Outputs[OLE DB Source Error Output].Columns[MATNR]"
-                      dataType="wstr"
-                      length="18"
-                      lineageId="Package\RESB\SAP.Outputs[OLE DB Source Error Output].Columns[MATNR]"
-                      name="MATNR" />
-                    <outputColumn
-                      refId="Package\RESB\SAP.Outputs[OLE DB Source Error Output].Columns[WERKS]"
-                      dataType="wstr"
-                      length="4"
-                      lineageId="Package\RESB\SAP.Outputs[OLE DB Source Error Output].Columns[WERKS]"
-                      name="WERKS" />
-                    <outputColumn
-                      refId="Package\RESB\SAP.Outputs[OLE DB Source Error Output].Columns[BDTER]"
-                      dataType="wstr"
-                      length="8"
-                      lineageId="Package\RESB\SAP.Outputs[OLE DB Source Error Output].Columns[BDTER]"
-                      name="BDTER" />
-                    <outputColumn
-                      refId="Package\RESB\SAP.Outputs[OLE DB Source Error Output].Columns[BDMNG]"
-                      dataType="numeric"
-                      lineageId="Package\RESB\SAP.Outputs[OLE DB Source Error Output].Columns[BDMNG]"
-                      name="BDMNG"
-                      precision="13"
-                      scale="3" />
-                    <outputColumn
-                      refId="Package\RESB\SAP.Outputs[OLE DB Source Error Output].Columns[SHKZG]"
-                      dataType="wstr"
-                      length="1"
-                      lineageId="Package\RESB\SAP.Outputs[OLE DB Source Error Output].Columns[SHKZG]"
-                      name="SHKZG" />
-                    <outputColumn
-                      refId="Package\RESB\SAP.Outputs[OLE DB Source Error Output].Columns[AUFNR]"
-                      dataType="wstr"
-                      length="12"
-                      lineageId="Package\RESB\SAP.Outputs[OLE DB Source Error Output].Columns[AUFNR]"
-                      name="AUFNR" />
-                    <outputColumn
-                      refId="Package\RESB\SAP.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
-                      dataType="i4"
-                      lineageId="Package\RESB\SAP.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
-                      name="ErrorCode"
-                      specialFlags="1" />
-                    <outputColumn
-                      refId="Package\RESB\SAP.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
-                      dataType="i4"
-                      lineageId="Package\RESB\SAP.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
-                      name="ErrorColumn"
-                      specialFlags="2" />
                   </outputColumns>
                   <externalMetadataColumns />
                 </output>
@@ -2361,40 +1880,35 @@ ORDER BY [MANDT]
           </components>
           <paths>
             <path
-              refId="Package\RESB.Paths[DELETE]"
+              refId="Package\RESB.Paths[delete]"
               endId="Package\RESB\DELETE Table.Inputs[OLE DB Destination Input]"
-              name="DELETE"
-              startId="Package\RESB\Identify records.Outputs[DELETE]" />
+              name="delete"
+              startId="Package\RESB\Identify Records.Outputs[delete]" />
             <path
-              refId="Package\RESB.Paths[INSERT]"
+              refId="Package\RESB.Paths[insert]"
               endId="Package\RESB\INSERT Table.Inputs[OLE DB Destination Input]"
-              name="INSERT"
-              startId="Package\RESB\Identify records.Outputs[INSERT]" />
+              name="insert"
+              startId="Package\RESB\Identify Records.Outputs[insert]" />
             <path
               refId="Package\RESB.Paths[Merge Join Output]"
-              endId="Package\RESB\Identify records.Inputs[Conditional Split Input]"
+              endId="Package\RESB\Identify Records.Inputs[Conditional Split Input]"
               name="Merge Join Output"
               startId="Package\RESB\Merge Join.Outputs[Merge Join Output]" />
             <path
               refId="Package\RESB.Paths[OLE DB Source Output]"
               endId="Package\RESB\Merge Join.Inputs[Merge Join Left Input]"
               name="OLE DB Source Output"
-              startId="Package\RESB\SAP.Outputs[OLE DB Source Output]" />
+              startId="Package\RESB\DB SAP.Outputs[OLE DB Source Output]" />
             <path
               refId="Package\RESB.Paths[OLE DB Source Output1]"
               endId="Package\RESB\Merge Join.Inputs[Merge Join Right Input]"
               name="OLE DB Source Output"
-              startId="Package\RESB\PBI.Outputs[OLE DB Source Output]" />
+              startId="Package\RESB\DB PBI.Outputs[OLE DB Source Output]" />
             <path
-              refId="Package\RESB.Paths[UPDATE]"
-              endId="Package\RESB\Identify Changed Records.Inputs[Conditional Split Input]"
-              name="UPDATE"
-              startId="Package\RESB\Identify records.Outputs[UPDATE]" />
-            <path
-              refId="Package\RESB.Paths[UPDATE1]"
+              refId="Package\RESB.Paths[update]"
               endId="Package\RESB\UPDATE Table.Inputs[OLE DB Destination Input]"
-              name="UPDATE"
-              startId="Package\RESB\Identify Changed Records.Outputs[UPDATE]" />
+              name="update"
+              startId="Package\RESB\Identify Records.Outputs[update]" />
           </paths>
         </pipeline>
       </DTS:ObjectData>
@@ -2416,6 +1930,22 @@ ORDER BY [MANDT]
           SQLTask:SqlStatementSource="UPDATE A01&#xA;SET A01.[BDART] = B01.[BDART]&#xA;    ,A01.[XLOEK] = B01.[XLOEK]&#xA;    ,A01.[MATNR] = B01.[MATNR]&#xA;    ,A01.[WERKS] = B01.[WERKS]&#xA;    ,A01.[BDTER] = B01.[BDTER]&#xA;    ,A01.[BDMNG] = B01.[BDMNG]&#xA;    ,A01.[SHKZG] = B01.[SHKZG]&#xA;    ,A01.[AUFNR] = B01.[AUFNR]&#xA;FROM [RESB] A01&#xA;INNER JOIN [RESB_STAGE_UPDATE] B01&#xA;ON A01.MANDT = B01.MANDT&#xA;&#x9;AND A01.RSNUM = B01.RSNUM&#xA;&#x9;AND A01.RSPOS = B01.RSPOS&#xA;&#x9;AND A01.RSART = B01.RSART" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Update MinDate"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{948de489-8768-4797-b78d-7480e70bc1d5}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Update MinDate"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="UPDATE&#xA;   zzJOB_ETL &#xA;SET&#xA;   LAST_SUCCESS_RUN = GETDATE()&#xA;   ,SUCCESS_DATE = dbo.GetBegDate(GETDATE())&#xA;   ,BEG_FISCAL_DATE = dbo.GetBegFiscalYearDate(GETDATE())&#xA;   ,MIN_DATE = EOMONTH( GETDATE(), -3 )&#xA;WHERE&#xA;   TABLE_NAME = 'RESB'" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
   </DTS:Executables>
   <DTS:PrecedenceConstraints>
     <DTS:PrecedenceConstraint
@@ -2429,27 +1959,43 @@ ORDER BY [MANDT]
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
       DTS:CreationName=""
-      DTS:DTSID="{A48C3371-EF8C-4ED1-9DBA-B136EA561974}"
+      DTS:DTSID="{F7CBE5FE-1F67-4C6E-A08D-3B8A416F8EDE}"
       DTS:From="Package\RESB"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 1"
-      DTS:To="Package\DELETE" />
+      DTS:To="Package\UPDATE" />
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
       DTS:CreationName=""
-      DTS:DTSID="{AAD7EE2F-5A66-4845-8A72-DB4D7B71B684}"
-      DTS:From="Package\DELETE"
+      DTS:DTSID="{A4E29C60-9922-4330-9C18-260F5B2BD356}"
+      DTS:From="Package\UPDATE"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 2"
-      DTS:To="Package\UPDATE" />
+      DTS:To="Package\DELETE" />
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 3]"
       DTS:CreationName=""
-      DTS:DTSID="{B2E931E7-0336-4A24-BDA0-62184CF40698}"
-      DTS:From="Package\UPDATE"
+      DTS:DTSID="{898AD158-2A51-4B19-ABB8-68C094F20F42}"
+      DTS:From="Package\DELETE"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 3"
       DTS:To="Package\INSERT" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 4]"
+      DTS:CreationName=""
+      DTS:DTSID="{20E8930F-1F89-49D9-A1FA-3C9A69D19F38}"
+      DTS:From="Package\Get MinDate"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 4"
+      DTS:To="Package\Clean Stage" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 5]"
+      DTS:CreationName=""
+      DTS:DTSID="{AC260BE6-CE6B-4669-B778-3917BA9EA380}"
+      DTS:From="Package\INSERT"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 5"
+      DTS:To="Package\Update MinDate" />
   </DTS:PrecedenceConstraints>
   <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
 <!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
@@ -2464,39 +2010,43 @@ ORDER BY [MANDT]
       <GraphLayout
         Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
-          Size="135,42"
+          Size="158,42"
           Id="Package\Clean Stage"
-          TopLeft="126,43" />
+          TopLeft="39,113.333333333333" />
         <NodeLayout
-          Size="135,42"
-          Id="Package\DELETE"
-          TopLeft="126,215" />
+          Size="158,42"
+          Id="Package\Get MinDate"
+          TopLeft="39,28" />
         <NodeLayout
-          Size="135,42"
+          Size="158,42"
           Id="Package\INSERT"
-          TopLeft="126,387" />
+          TopLeft="39,454.666666666667" />
         <NodeLayout
-          Size="135,42"
+          Size="158,42"
           Id="Package\RESB"
-          TopLeft="126,129" />
+          TopLeft="40,198.666666666667" />
         <NodeLayout
-          Size="135,42"
+          Size="158,42"
           Id="Package\UPDATE"
-          TopLeft="126,301" />
+          TopLeft="39,284" />
+        <NodeLayout
+          Size="158,42"
+          Id="Package\Update MinDate"
+          TopLeft="39,540" />
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint]"
-          TopLeft="193.5,85">
+          TopLeft="118.5,155.333333333333">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,44"
+              EndConnector="0,43.3333333333333"
               Start="0,0"
-              End="0,36.5">
+              End="0,35.8333333333333">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,36.5" />
+                    End="0,35.8333333333333" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -2507,18 +2057,18 @@ ORDER BY [MANDT]
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 1]"
-          TopLeft="193.5,171">
+          TopLeft="118.5,240.666666666667">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,44"
+              EndConnector="0,43.3333333333333"
               Start="0,0"
-              End="0,36.5">
+              End="0,35.8333333333333">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,36.5" />
+                    End="0,35.8333333333333" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -2528,19 +2078,45 @@ ORDER BY [MANDT]
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package.PrecedenceConstraints[Constraint 2]"
-          TopLeft="193.5,257">
+          Id="Package.PrecedenceConstraints[Constraint 4]"
+          TopLeft="118,70">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,44"
+              EndConnector="0,43.3333333333333"
               Start="0,0"
-              End="0,36.5">
+              End="0,35.8333333333333">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,36.5" />
+                    End="0,35.8333333333333" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="158,42"
+          Id="Package\DELETE"
+          TopLeft="39,369.333333333333" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 2]"
+          TopLeft="118,326">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,43.3333333333333"
+              Start="0,0"
+              End="0,35.8333333333333">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,35.8333333333333" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -2551,18 +2127,40 @@ ORDER BY [MANDT]
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 3]"
-          TopLeft="193.5,343">
+          TopLeft="118,411.333333333333">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,44"
+              EndConnector="0,43.3333333333333"
               Start="0,0"
-              End="0,36.5">
+              End="0,35.8333333333333">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,36.5" />
+                    End="0,35.8333333333333" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 5]"
+          TopLeft="118,496.666666666667">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,43.3333333333334"
+              Start="0,0"
+              End="0,35.8333333333334">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,35.8333333333334" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -2580,147 +2178,85 @@ ORDER BY [MANDT]
       <GraphLayout
         Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
-          Size="130,42"
-          Id="Package\RESB\Merge Join"
-          TopLeft="299,139" />
-        <NodeLayout
-          Size="97,42"
-          Id="Package\RESB\SAP"
-          TopLeft="155,46" />
-        <NodeLayout
-          Size="147,42"
-          Id="Package\RESB\UPDATE Table"
-          TopLeft="284,485" />
-        <NodeLayout
-          Size="201,42"
-          Id="Package\RESB\Identify Changed Records"
-          TopLeft="263,386" />
-        <NodeLayout
-          Size="95,42"
-          Id="Package\RESB\PBI"
-          TopLeft="477,47" />
+          Size="119,42"
+          Id="Package\RESB\DB SAP"
+          TopLeft="156,47" />
         <NodeLayout
           Size="144,42"
           Id="Package\RESB\INSERT Table"
-          TopLeft="27,356" />
+          TopLeft="40,373" />
         <NodeLayout
-          Size="153,42"
-          Id="Package\RESB\Identify records"
-          TopLeft="286,240" />
+          Size="147,42"
+          Id="Package\RESB\UPDATE Table"
+          TopLeft="315.5,367" />
         <NodeLayout
-          Size="145,42"
-          Id="Package\RESB\DELETE Table"
-          TopLeft="555,350" />
+          Size="115,42"
+          Id="Package\RESB\DB PBI"
+          TopLeft="493,49" />
+        <NodeLayout
+          Size="133,42"
+          Id="Package\RESB\Merge Join"
+          TopLeft="322.5,129" />
         <EdgeLayout
-          Id="Package\RESB.Paths[DELETE]"
-          TopLeft="386.666666666667,282">
+          Id="Package\RESB.Paths[OLE DB Source Output]"
+          TopLeft="215.5,89">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="240.833333333333,68"
+              EndConnector="152.666666666667,40"
               Start="0,0"
-              End="240.833333333333,60.5">
+              End="152.666666666667,32.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,23.6222509702458" />
+                    End="0,19.7147102526003" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,23.6222509702458"
-                    Point2="0,27.6222509702458"
-                    Point3="4,27.6222509702458" />
+                    Point1="0,19.7147102526003"
+                    Point2="0,23.7147102526003"
+                    Point3="4,23.7147102526003" />
                   <mssgle:LineSegment
-                    End="236.833333333333,27.6222509702458" />
+                    End="148.666666666667,23.7147102526003" />
                   <mssgle:CubicBezierSegment
-                    Point1="236.833333333333,27.6222509702458"
-                    Point2="240.833333333333,27.6222509702458"
-                    Point3="240.833333333333,31.6222509702458" />
+                    Point1="148.666666666667,23.7147102526003"
+                    Point2="152.666666666667,23.7147102526003"
+                    Point3="152.666666666667,27.7147102526003" />
                   <mssgle:LineSegment
-                    End="240.833333333333,60.5" />
+                    End="152.666666666667,32.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="102.733717447917,32.6222509702458,35.3658984375,9.2705078125"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\RESB.Paths[UPDATE1]"
-          TopLeft="360.5,428">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,57"
-              Start="0,0"
-              End="0,49.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,49.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-18.66189453125,20.0390625,37.3237890625,9.421875"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\RESB.Paths[UPDATE]"
-          TopLeft="363,282">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,104"
-              Start="0,0"
-              End="0,96.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,96.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-18.66189453125,43.5390625,37.3237890625,9.421875"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\RESB.Paths[OLE DB Source Output1]"
-          TopLeft="524.5,89">
+          TopLeft="550.5,91">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-140.166666666667,50"
+              EndConnector="-140.666666666667,38"
               Start="0,0"
-              End="-140.166666666667,42.5">
+              End="-140.666666666667,30.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,25.6352583586626" />
+                    End="0,18.5289747399703" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,25.6352583586626"
-                    Point2="0,29.6352583586626"
-                    Point3="-4,29.6352583586626" />
+                    Point1="0,18.5289747399703"
+                    Point2="0,22.5289747399703"
+                    Point3="-4,22.5289747399703" />
                   <mssgle:LineSegment
-                    End="-136.166666666667,29.6352583586626" />
+                    End="-136.666666666667,22.5289747399703" />
                   <mssgle:CubicBezierSegment
-                    Point1="-136.166666666667,29.6352583586626"
-                    Point2="-140.166666666667,29.6352583586626"
-                    Point3="-140.166666666667,33.6352583586626" />
+                    Point1="-136.666666666667,22.5289747399703"
+                    Point2="-140.666666666667,22.5289747399703"
+                    Point3="-140.666666666667,26.5289747399703" />
                   <mssgle:LineSegment
-                    End="-140.166666666667,42.5" />
+                    End="-140.666666666667,30.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -2729,54 +2265,24 @@ ORDER BY [MANDT]
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
-        <EdgeLayout
-          Id="Package\RESB.Paths[OLE DB Source Output]"
-          TopLeft="203.5,88">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="140.166666666667,51"
-              Start="0,0"
-              End="140.166666666667,43.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,26.2279635258359" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,26.2279635258359"
-                    Point2="0,30.2279635258359"
-                    Point3="4,30.2279635258359" />
-                  <mssgle:LineSegment
-                    End="136.166666666667,30.2279635258359" />
-                  <mssgle:CubicBezierSegment
-                    Point1="136.166666666667,30.2279635258359"
-                    Point2="140.166666666667,30.2279635258359"
-                    Point3="140.166666666667,34.2279635258359" />
-                  <mssgle:LineSegment
-                    End="140.166666666667,43.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
+        <NodeLayout
+          Size="158,42"
+          Id="Package\RESB\Identify Records"
+          TopLeft="310,235" />
         <EdgeLayout
           Id="Package\RESB.Paths[Merge Join Output]"
-          TopLeft="363.25,181">
+          TopLeft="389,171">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,59"
+              EndConnector="0,64"
               Start="0,0"
-              End="0,51.5">
+              End="0,56.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,51.5" />
+                    End="0,56.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -2786,38 +2292,114 @@ ORDER BY [MANDT]
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\RESB.Paths[INSERT]"
-          TopLeft="326.25,282">
+          Id="Package\RESB.Paths[insert]"
+          TopLeft="364,277">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-227.25,74"
+              EndConnector="-252,96"
               Start="0,0"
-              End="-227.25,66.5">
+              End="-252,88.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,21.5117773019272" />
+                    End="0,34.9774436090226" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,21.5117773019272"
-                    Point2="0,25.5117773019272"
-                    Point3="-4,25.5117773019272" />
+                    Point1="0,34.9774436090226"
+                    Point2="0,38.9774436090226"
+                    Point3="-4,38.9774436090226" />
                   <mssgle:LineSegment
-                    End="-223.25,25.5117773019272" />
+                    End="-248,38.9774436090226" />
                   <mssgle:CubicBezierSegment
-                    Point1="-223.25,25.5117773019272"
-                    Point2="-227.25,25.5117773019272"
-                    Point3="-227.25,29.5117773019272" />
+                    Point1="-248,38.9774436090226"
+                    Point2="-252,38.9774436090226"
+                    Point3="-252,42.9774436090226" />
                   <mssgle:LineSegment
-                    End="-227.25,66.5" />
+                    End="-252,88.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="-131.2153125,30.5117773019272,35.180625,9.5341796875"
+              BoundingBox="-138.94998046875,43.9774436090226,25.8999609375,9.451171875"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\RESB.Paths[update]"
+          TopLeft="414,277">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-25,90"
+              Start="0,0"
+              End="-25,82.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,32.5413533834586" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,32.5413533834586"
+                    Point2="0,36.5413533834586"
+                    Point3="-4,36.5413533834586" />
+                  <mssgle:LineSegment
+                    End="-21,36.5413533834586" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-21,36.5413533834586"
+                    Point2="-25,36.5413533834586"
+                    Point3="-25,40.5413533834586" />
+                  <mssgle:LineSegment
+                    End="-25,82.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-28.3025,41.5413533834586,31.605,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="152,42"
+          Id="Package\RESB\DELETE Table"
+          TopLeft="584,366" />
+        <EdgeLayout
+          Id="Package\RESB.Paths[delete]"
+          TopLeft="426.5,277">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="233.5,89"
+              Start="0,0"
+              End="233.5,81.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,26.6514522821577" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,26.6514522821577"
+                    Point2="0,30.6514522821577"
+                    Point3="4,30.6514522821577" />
+                  <mssgle:LineSegment
+                    End="229.5,30.6514522821577" />
+                  <mssgle:CubicBezierSegment
+                    Point1="229.5,30.6514522821577"
+                    Point2="233.5,30.6514522821577"
+                    Point3="233.5,34.6514522821577" />
+                  <mssgle:LineSegment
+                    End="233.5,81.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="102.55404296875,35.6514522821577,28.3919140625,9.7490234375"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
@@ -2825,10 +2407,23 @@ ORDER BY [MANDT]
     </LayoutInfo>
   </TaskHost>
   <PipelineComponentMetadata
-    design-time-name="Package\RESB\SAP">
+    design-time-name="Package\RESB\DB SAP">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\RESB\INSERT Table">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
       </Property>
     </Properties>
   </PipelineComponentMetadata>
@@ -2846,23 +2441,10 @@ ORDER BY [MANDT]
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\RESB\PBI">
+    design-time-name="Package\RESB\DB PBI">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
-    design-time-name="Package\RESB\INSERT Table">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-      <Property>
-        <Name>TableInfoObjectType</Name>
-        <Value
-          type="q2:string">Table</Value>
       </Property>
     </Properties>
   </PipelineComponentMetadata>

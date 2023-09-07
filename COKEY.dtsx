@@ -1,30 +1,47 @@
-﻿<?xml version="1.0"?>
+<?xml version="1.0"?>
 <DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
   DTS:refId="Package"
-  DTS:CreationDate="4/19/2021 12:36:24 PM"
+  DTS:CreationDate="4/19/2021 12:51:06 PM"
   DTS:CreationName="Microsoft.Package"
   DTS:CreatorComputerName="ARLPBIDEV"
   DTS:CreatorName="DOMAIN\RPETRELLA"
-  DTS:DTSID="{2182B6AA-0D88-495E-9626-34751E08532B}"
+  DTS:DTSID="{1451F32B-2BB5-489F-8781-79706EE60AEB}"
   DTS:ExecutableType="Microsoft.Package"
-  DTS:LastModifiedProductVersion="15.0.2000.152"
+  DTS:LastModifiedProductVersion="16.0.5270.0"
   DTS:LocaleID="1033"
-  DTS:ObjectName="CEPC"
+  DTS:ObjectName="COKEY"
   DTS:PackageType="5"
-  DTS:VersionBuild="5"
-  DTS:VersionGUID="{59504112-8870-40AF-A012-0B932E3F7A5B}">
+  DTS:VersionBuild="23"
+  DTS:VersionGUID="{661CD55B-D483-434F-88C2-B9549CBDA2FC}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:Variables />
   <DTS:Executables>
     <DTS:Executable
-      DTS:refId="Package\CEPC"
+      DTS:refId="Package\Clean Stage"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{937776F4-1B98-4276-B0C8-2C5BF2E6D93C}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Clean Stage"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="TRUNCATE TABLE [COKEY_STAGE_UPDATE]&#xA;go&#xA;TRUNCATE TABLE [COKEY_STAGE_DELETE]&#xA;go&#xA;TRUNCATE TABLE [COKEY_STAGE_INSERT]&#xA;go" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\COKEY"
       DTS:CreationName="Microsoft.Pipeline"
       DTS:Description="Data Flow Task"
-      DTS:DTSID="{7e34a716-c521-4700-9379-788afb1ef0cc}"
+      DTS:DTSID="{4BDF19E0-32DF-4B91-9EE8-BAC27B16FE4C}"
       DTS:ExecutableType="Microsoft.Pipeline"
       DTS:LocaleID="-1"
-      DTS:ObjectName="CEPC"
+      DTS:ObjectName="COKEY"
       DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
       <DTS:Variables />
       <DTS:ObjectData>
@@ -32,7 +49,7 @@
           version="1">
           <components>
             <component
-              refId="Package\CEPC\DB PBI"
+              refId="Package\COKEY\DB PBI"
               componentClassID="Microsoft.OLEDBSource"
               contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
               description="OLE DB Source"
@@ -56,16 +73,16 @@
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT A01.[MANDT]
-      ,A01.[PRCTR]
-      ,A01.[DATBI]
-      ,A01.[KOKRS]
-      ,A01.[SPRAS]
-FROM [CEPC] A01 (NOLOCK)
-ORDER BY A01.[MANDT]
-      ,A01.[PRCTR]
-      ,A01.[DATBI]
-      ,A01.[KOKRS]</property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT 
+  [MANDT], 
+  [HRKFT], 
+  [WERKS], 
+  [MATNR] 
+FROM 
+  [COKEY] (NOLOCK) 
+ORDER BY 
+  [MANDT], 
+  [HRKFT]</property>
                 <property
                   dataType="System.String"
                   description="The variable that contains the SQL command to be executed."
@@ -90,7 +107,7 @@ ORDER BY A01.[MANDT]
               </properties>
               <connections>
                 <connection
-                  refId="Package\CEPC\DB PBI.Connections[OleDbConnection]"
+                  refId="Package\COKEY\DB PBI.Connections[OleDbConnection]"
                   connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
                   connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
                   description="The OLE DB runtime connection used to access the database."
@@ -98,139 +115,116 @@ ORDER BY A01.[MANDT]
               </connections>
               <outputs>
                 <output
-                  refId="Package\CEPC\DB PBI.Outputs[OLE DB Source Output]"
+                  refId="Package\COKEY\DB PBI.Outputs[OLE DB Source Output]"
                   isSorted="true"
                   name="OLE DB Source Output">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\CEPC\DB PBI.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      refId="Package\COKEY\DB PBI.Outputs[OLE DB Source Output].Columns[MANDT]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\CEPC\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      externalMetadataColumnId="Package\COKEY\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
                       length="3"
-                      lineageId="Package\CEPC\DB PBI.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      lineageId="Package\COKEY\DB PBI.Outputs[OLE DB Source Output].Columns[MANDT]"
                       name="MANDT"
                       sortKeyPosition="1"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\CEPC\DB PBI.Outputs[OLE DB Source Output].Columns[PRCTR]"
+                      refId="Package\COKEY\DB PBI.Outputs[OLE DB Source Output].Columns[HRKFT]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\CEPC\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[PRCTR]"
-                      length="10"
-                      lineageId="Package\CEPC\DB PBI.Outputs[OLE DB Source Output].Columns[PRCTR]"
-                      name="PRCTR"
+                      externalMetadataColumnId="Package\COKEY\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[HRKFT]"
+                      length="14"
+                      lineageId="Package\COKEY\DB PBI.Outputs[OLE DB Source Output].Columns[HRKFT]"
+                      name="HRKFT"
                       sortKeyPosition="2"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\CEPC\DB PBI.Outputs[OLE DB Source Output].Columns[DATBI]"
+                      refId="Package\COKEY\DB PBI.Outputs[OLE DB Source Output].Columns[WERKS]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\CEPC\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[DATBI]"
-                      length="8"
-                      lineageId="Package\CEPC\DB PBI.Outputs[OLE DB Source Output].Columns[DATBI]"
-                      name="DATBI"
-                      sortKeyPosition="3"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\CEPC\DB PBI.Outputs[OLE DB Source Output].Columns[KOKRS]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\CEPC\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[KOKRS]"
+                      externalMetadataColumnId="Package\COKEY\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[WERKS]"
                       length="4"
-                      lineageId="Package\CEPC\DB PBI.Outputs[OLE DB Source Output].Columns[KOKRS]"
-                      name="KOKRS"
-                      sortKeyPosition="4"
+                      lineageId="Package\COKEY\DB PBI.Outputs[OLE DB Source Output].Columns[WERKS]"
+                      name="WERKS"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\CEPC\DB PBI.Outputs[OLE DB Source Output].Columns[SPRAS]"
+                      refId="Package\COKEY\DB PBI.Outputs[OLE DB Source Output].Columns[MATNR]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\CEPC\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[SPRAS]"
-                      length="1"
-                      lineageId="Package\CEPC\DB PBI.Outputs[OLE DB Source Output].Columns[SPRAS]"
-                      name="SPRAS"
+                      externalMetadataColumnId="Package\COKEY\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[MATNR]"
+                      length="18"
+                      lineageId="Package\COKEY\DB PBI.Outputs[OLE DB Source Output].Columns[MATNR]"
+                      name="MATNR"
                       truncationRowDisposition="FailComponent" />
                   </outputColumns>
                   <externalMetadataColumns
                     isUsed="True">
                     <externalMetadataColumn
-                      refId="Package\CEPC\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      refId="Package\COKEY\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
                       dataType="wstr"
                       length="3"
                       name="MANDT" />
                     <externalMetadataColumn
-                      refId="Package\CEPC\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[PRCTR]"
+                      refId="Package\COKEY\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[HRKFT]"
                       dataType="wstr"
-                      length="10"
-                      name="PRCTR" />
+                      length="14"
+                      name="HRKFT" />
                     <externalMetadataColumn
-                      refId="Package\CEPC\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[DATBI]"
-                      dataType="wstr"
-                      length="8"
-                      name="DATBI" />
-                    <externalMetadataColumn
-                      refId="Package\CEPC\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[KOKRS]"
+                      refId="Package\COKEY\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[WERKS]"
                       dataType="wstr"
                       length="4"
-                      name="KOKRS" />
+                      name="WERKS" />
                     <externalMetadataColumn
-                      refId="Package\CEPC\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[SPRAS]"
+                      refId="Package\COKEY\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[MATNR]"
                       dataType="wstr"
-                      length="1"
-                      name="SPRAS" />
+                      length="18"
+                      name="MATNR" />
                   </externalMetadataColumns>
                 </output>
                 <output
-                  refId="Package\CEPC\DB PBI.Outputs[OLE DB Source Error Output]"
+                  refId="Package\COKEY\DB PBI.Outputs[OLE DB Source Error Output]"
                   isErrorOut="true"
                   name="OLE DB Source Error Output">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\CEPC\DB PBI.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      refId="Package\COKEY\DB PBI.Outputs[OLE DB Source Error Output].Columns[MANDT]"
                       dataType="wstr"
                       length="3"
-                      lineageId="Package\CEPC\DB PBI.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      lineageId="Package\COKEY\DB PBI.Outputs[OLE DB Source Error Output].Columns[MANDT]"
                       name="MANDT" />
                     <outputColumn
-                      refId="Package\CEPC\DB PBI.Outputs[OLE DB Source Error Output].Columns[PRCTR]"
+                      refId="Package\COKEY\DB PBI.Outputs[OLE DB Source Error Output].Columns[HRKFT]"
                       dataType="wstr"
-                      length="10"
-                      lineageId="Package\CEPC\DB PBI.Outputs[OLE DB Source Error Output].Columns[PRCTR]"
-                      name="PRCTR" />
+                      length="14"
+                      lineageId="Package\COKEY\DB PBI.Outputs[OLE DB Source Error Output].Columns[HRKFT]"
+                      name="HRKFT" />
                     <outputColumn
-                      refId="Package\CEPC\DB PBI.Outputs[OLE DB Source Error Output].Columns[DATBI]"
-                      dataType="wstr"
-                      length="8"
-                      lineageId="Package\CEPC\DB PBI.Outputs[OLE DB Source Error Output].Columns[DATBI]"
-                      name="DATBI" />
-                    <outputColumn
-                      refId="Package\CEPC\DB PBI.Outputs[OLE DB Source Error Output].Columns[KOKRS]"
+                      refId="Package\COKEY\DB PBI.Outputs[OLE DB Source Error Output].Columns[WERKS]"
                       dataType="wstr"
                       length="4"
-                      lineageId="Package\CEPC\DB PBI.Outputs[OLE DB Source Error Output].Columns[KOKRS]"
-                      name="KOKRS" />
+                      lineageId="Package\COKEY\DB PBI.Outputs[OLE DB Source Error Output].Columns[WERKS]"
+                      name="WERKS" />
                     <outputColumn
-                      refId="Package\CEPC\DB PBI.Outputs[OLE DB Source Error Output].Columns[SPRAS]"
+                      refId="Package\COKEY\DB PBI.Outputs[OLE DB Source Error Output].Columns[MATNR]"
                       dataType="wstr"
-                      length="1"
-                      lineageId="Package\CEPC\DB PBI.Outputs[OLE DB Source Error Output].Columns[SPRAS]"
-                      name="SPRAS" />
+                      length="18"
+                      lineageId="Package\COKEY\DB PBI.Outputs[OLE DB Source Error Output].Columns[MATNR]"
+                      name="MATNR" />
                     <outputColumn
-                      refId="Package\CEPC\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      refId="Package\COKEY\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\CEPC\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      lineageId="Package\COKEY\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\CEPC\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      refId="Package\COKEY\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\CEPC\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\COKEY\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -239,7 +233,7 @@ ORDER BY A01.[MANDT]
               </outputs>
             </component>
             <component
-              refId="Package\CEPC\DB SAP"
+              refId="Package\COKEY\DB SAP"
               componentClassID="Microsoft.OLEDBSource"
               contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
               description="OLE DB Source"
@@ -263,16 +257,16 @@ ORDER BY A01.[MANDT]
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT A01.[MANDT]
-      ,A01.[PRCTR]
-      ,A01.[DATBI]
-      ,A01.[KOKRS]
-      ,A01.[SPRAS]
-FROM [ecp].[CEPC] A01 (NOLOCK)
-ORDER BY A01.[MANDT]
-      ,A01.[PRCTR]
-      ,A01.[DATBI]
-      ,A01.[KOKRS]</property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT 
+  [MANDT], 
+  [HRKFT], 
+  [WERKS], 
+  [MATNR] 
+FROM 
+  [ecp].[COKEY] (NOLOCK) 
+ORDER BY 
+  [MANDT], 
+  [HRKFT]</property>
                 <property
                   dataType="System.String"
                   description="The variable that contains the SQL command to be executed."
@@ -297,7 +291,7 @@ ORDER BY A01.[MANDT]
               </properties>
               <connections>
                 <connection
-                  refId="Package\CEPC\DB SAP.Connections[OleDbConnection]"
+                  refId="Package\COKEY\DB SAP.Connections[OleDbConnection]"
                   connectionManagerID="{544CCAD9-2CB1-4D87-98D7-A7C478586195}:external"
                   connectionManagerRefId="Project.ConnectionManagers[SQL_SAP]"
                   description="The OLE DB runtime connection used to access the database."
@@ -305,139 +299,116 @@ ORDER BY A01.[MANDT]
               </connections>
               <outputs>
                 <output
-                  refId="Package\CEPC\DB SAP.Outputs[OLE DB Source Output]"
+                  refId="Package\COKEY\DB SAP.Outputs[OLE DB Source Output]"
                   isSorted="true"
                   name="OLE DB Source Output">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\CEPC\DB SAP.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      refId="Package\COKEY\DB SAP.Outputs[OLE DB Source Output].Columns[MANDT]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\CEPC\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      externalMetadataColumnId="Package\COKEY\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
                       length="3"
-                      lineageId="Package\CEPC\DB SAP.Outputs[OLE DB Source Output].Columns[MANDT]"
+                      lineageId="Package\COKEY\DB SAP.Outputs[OLE DB Source Output].Columns[MANDT]"
                       name="MANDT"
                       sortKeyPosition="1"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\CEPC\DB SAP.Outputs[OLE DB Source Output].Columns[PRCTR]"
+                      refId="Package\COKEY\DB SAP.Outputs[OLE DB Source Output].Columns[HRKFT]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\CEPC\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[PRCTR]"
-                      length="10"
-                      lineageId="Package\CEPC\DB SAP.Outputs[OLE DB Source Output].Columns[PRCTR]"
-                      name="PRCTR"
+                      externalMetadataColumnId="Package\COKEY\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[HRKFT]"
+                      length="14"
+                      lineageId="Package\COKEY\DB SAP.Outputs[OLE DB Source Output].Columns[HRKFT]"
+                      name="HRKFT"
                       sortKeyPosition="2"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\CEPC\DB SAP.Outputs[OLE DB Source Output].Columns[DATBI]"
+                      refId="Package\COKEY\DB SAP.Outputs[OLE DB Source Output].Columns[WERKS]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\CEPC\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[DATBI]"
-                      length="8"
-                      lineageId="Package\CEPC\DB SAP.Outputs[OLE DB Source Output].Columns[DATBI]"
-                      name="DATBI"
-                      sortKeyPosition="3"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\CEPC\DB SAP.Outputs[OLE DB Source Output].Columns[KOKRS]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\CEPC\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[KOKRS]"
+                      externalMetadataColumnId="Package\COKEY\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[WERKS]"
                       length="4"
-                      lineageId="Package\CEPC\DB SAP.Outputs[OLE DB Source Output].Columns[KOKRS]"
-                      name="KOKRS"
-                      sortKeyPosition="4"
+                      lineageId="Package\COKEY\DB SAP.Outputs[OLE DB Source Output].Columns[WERKS]"
+                      name="WERKS"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\CEPC\DB SAP.Outputs[OLE DB Source Output].Columns[SPRAS]"
+                      refId="Package\COKEY\DB SAP.Outputs[OLE DB Source Output].Columns[MATNR]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\CEPC\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[SPRAS]"
-                      length="1"
-                      lineageId="Package\CEPC\DB SAP.Outputs[OLE DB Source Output].Columns[SPRAS]"
-                      name="SPRAS"
+                      externalMetadataColumnId="Package\COKEY\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[MATNR]"
+                      length="18"
+                      lineageId="Package\COKEY\DB SAP.Outputs[OLE DB Source Output].Columns[MATNR]"
+                      name="MATNR"
                       truncationRowDisposition="FailComponent" />
                   </outputColumns>
                   <externalMetadataColumns
                     isUsed="True">
                     <externalMetadataColumn
-                      refId="Package\CEPC\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
+                      refId="Package\COKEY\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[MANDT]"
                       dataType="wstr"
                       length="3"
                       name="MANDT" />
                     <externalMetadataColumn
-                      refId="Package\CEPC\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[PRCTR]"
+                      refId="Package\COKEY\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[HRKFT]"
                       dataType="wstr"
-                      length="10"
-                      name="PRCTR" />
+                      length="14"
+                      name="HRKFT" />
                     <externalMetadataColumn
-                      refId="Package\CEPC\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[DATBI]"
-                      dataType="wstr"
-                      length="8"
-                      name="DATBI" />
-                    <externalMetadataColumn
-                      refId="Package\CEPC\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[KOKRS]"
+                      refId="Package\COKEY\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[WERKS]"
                       dataType="wstr"
                       length="4"
-                      name="KOKRS" />
+                      name="WERKS" />
                     <externalMetadataColumn
-                      refId="Package\CEPC\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[SPRAS]"
+                      refId="Package\COKEY\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[MATNR]"
                       dataType="wstr"
-                      length="1"
-                      name="SPRAS" />
+                      length="18"
+                      name="MATNR" />
                   </externalMetadataColumns>
                 </output>
                 <output
-                  refId="Package\CEPC\DB SAP.Outputs[OLE DB Source Error Output]"
+                  refId="Package\COKEY\DB SAP.Outputs[OLE DB Source Error Output]"
                   isErrorOut="true"
                   name="OLE DB Source Error Output">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\CEPC\DB SAP.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      refId="Package\COKEY\DB SAP.Outputs[OLE DB Source Error Output].Columns[MANDT]"
                       dataType="wstr"
                       length="3"
-                      lineageId="Package\CEPC\DB SAP.Outputs[OLE DB Source Error Output].Columns[MANDT]"
+                      lineageId="Package\COKEY\DB SAP.Outputs[OLE DB Source Error Output].Columns[MANDT]"
                       name="MANDT" />
                     <outputColumn
-                      refId="Package\CEPC\DB SAP.Outputs[OLE DB Source Error Output].Columns[PRCTR]"
+                      refId="Package\COKEY\DB SAP.Outputs[OLE DB Source Error Output].Columns[HRKFT]"
                       dataType="wstr"
-                      length="10"
-                      lineageId="Package\CEPC\DB SAP.Outputs[OLE DB Source Error Output].Columns[PRCTR]"
-                      name="PRCTR" />
+                      length="14"
+                      lineageId="Package\COKEY\DB SAP.Outputs[OLE DB Source Error Output].Columns[HRKFT]"
+                      name="HRKFT" />
                     <outputColumn
-                      refId="Package\CEPC\DB SAP.Outputs[OLE DB Source Error Output].Columns[DATBI]"
-                      dataType="wstr"
-                      length="8"
-                      lineageId="Package\CEPC\DB SAP.Outputs[OLE DB Source Error Output].Columns[DATBI]"
-                      name="DATBI" />
-                    <outputColumn
-                      refId="Package\CEPC\DB SAP.Outputs[OLE DB Source Error Output].Columns[KOKRS]"
+                      refId="Package\COKEY\DB SAP.Outputs[OLE DB Source Error Output].Columns[WERKS]"
                       dataType="wstr"
                       length="4"
-                      lineageId="Package\CEPC\DB SAP.Outputs[OLE DB Source Error Output].Columns[KOKRS]"
-                      name="KOKRS" />
+                      lineageId="Package\COKEY\DB SAP.Outputs[OLE DB Source Error Output].Columns[WERKS]"
+                      name="WERKS" />
                     <outputColumn
-                      refId="Package\CEPC\DB SAP.Outputs[OLE DB Source Error Output].Columns[SPRAS]"
+                      refId="Package\COKEY\DB SAP.Outputs[OLE DB Source Error Output].Columns[MATNR]"
                       dataType="wstr"
-                      length="1"
-                      lineageId="Package\CEPC\DB SAP.Outputs[OLE DB Source Error Output].Columns[SPRAS]"
-                      name="SPRAS" />
+                      length="18"
+                      lineageId="Package\COKEY\DB SAP.Outputs[OLE DB Source Error Output].Columns[MATNR]"
+                      name="MATNR" />
                     <outputColumn
-                      refId="Package\CEPC\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      refId="Package\COKEY\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\CEPC\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      lineageId="Package\COKEY\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\CEPC\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      refId="Package\COKEY\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\CEPC\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\COKEY\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -446,7 +417,7 @@ ORDER BY A01.[MANDT]
               </outputs>
             </component>
             <component
-              refId="Package\CEPC\Find Changed Records"
+              refId="Package\COKEY\Find Changed Records"
               componentClassID="Microsoft.ConditionalSplit"
               contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
               description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
@@ -454,48 +425,60 @@ ORDER BY A01.[MANDT]
               usesDispositions="true">
               <inputs>
                 <input
-                  refId="Package\CEPC\Find Changed Records.Inputs[Conditional Split Input]"
+                  refId="Package\COKEY\Find Changed Records.Inputs[Conditional Split Input]"
                   description="Input to the Conditional Split Transformation"
                   name="Conditional Split Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\CEPC\Find Changed Records.Inputs[Conditional Split Input].Columns[SPRAS]"
+                      refId="Package\COKEY\Find Changed Records.Inputs[Conditional Split Input].Columns[WERKS]"
                       cachedDataType="wstr"
-                      cachedLength="1"
-                      cachedName="SPRAS"
-                      lineageId="Package\CEPC\Merge Join.Outputs[Merge Join Output].Columns[SPRAS]" />
+                      cachedLength="4"
+                      cachedName="WERKS"
+                      lineageId="Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[WERKS]" />
                     <inputColumn
-                      refId="Package\CEPC\Find Changed Records.Inputs[Conditional Split Input].Columns[SPRAS (1)]"
+                      refId="Package\COKEY\Find Changed Records.Inputs[Conditional Split Input].Columns[MATNR]"
                       cachedDataType="wstr"
-                      cachedLength="1"
-                      cachedName="SPRAS (1)"
-                      lineageId="Package\CEPC\Merge Join.Outputs[Merge Join Output].Columns[SPRAS (1)]" />
+                      cachedLength="18"
+                      cachedName="MATNR"
+                      lineageId="Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[MATNR]" />
+                    <inputColumn
+                      refId="Package\COKEY\Find Changed Records.Inputs[Conditional Split Input].Columns[WERKS (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="WERKS (1)"
+                      lineageId="Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[WERKS (1)]" />
+                    <inputColumn
+                      refId="Package\COKEY\Find Changed Records.Inputs[Conditional Split Input].Columns[MATNR (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="18"
+                      cachedName="MATNR (1)"
+                      lineageId="Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[MATNR (1)]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\CEPC\Find Changed Records.Outputs[update]"
+                  refId="Package\COKEY\Find Changed Records.Outputs[update]"
                   description="Output 1 of the Conditional Split Transformation"
                   errorOrTruncationOperation="Computation"
                   errorRowDisposition="FailComponent"
                   exclusionGroup="1"
                   name="update"
-                  synchronousInputId="Package\CEPC\Find Changed Records.Inputs[Conditional Split Input]"
+                  synchronousInputId="Package\COKEY\Find Changed Records.Inputs[Conditional Split Input]"
                   truncationRowDisposition="FailComponent">
                   <properties>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
-                      name="Expression">#{Package\CEPC\Merge Join.Outputs[Merge Join Output].Columns[SPRAS]} != #{Package\CEPC\Merge Join.Outputs[Merge Join Output].Columns[SPRAS (1)]}</property>
+                      name="Expression">#{Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[WERKS]} != #{Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[WERKS (1)]} || #{Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[MATNR]} != #{Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[MATNR (1)]}</property>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the friendly version of the expression. This expression version uses column names."
                       expressionType="Notify"
-                      name="FriendlyExpression">SPRAS != [SPRAS (1)]</property>
+                      name="FriendlyExpression">WERKS != [WERKS (1)] || MATNR != [MATNR (1)]</property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
@@ -504,11 +487,11 @@ ORDER BY A01.[MANDT]
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\CEPC\Find Changed Records.Outputs[Conditional Split Default Output]"
+                  refId="Package\COKEY\Find Changed Records.Outputs[Conditional Split Default Output]"
                   description="Default Output of the Conditional Split Transformation"
                   exclusionGroup="1"
                   name="Conditional Split Default Output"
-                  synchronousInputId="Package\CEPC\Find Changed Records.Inputs[Conditional Split Input]">
+                  synchronousInputId="Package\COKEY\Find Changed Records.Inputs[Conditional Split Input]">
                   <properties>
                     <property
                       dataType="System.Boolean"
@@ -517,23 +500,23 @@ ORDER BY A01.[MANDT]
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\CEPC\Find Changed Records.Outputs[Conditional Split Error Output]"
+                  refId="Package\COKEY\Find Changed Records.Outputs[Conditional Split Error Output]"
                   description="Error Output of the Conditional Split Transformation"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="Conditional Split Error Output"
-                  synchronousInputId="Package\CEPC\Find Changed Records.Inputs[Conditional Split Input]">
+                  synchronousInputId="Package\COKEY\Find Changed Records.Inputs[Conditional Split Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\CEPC\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      refId="Package\COKEY\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\CEPC\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      lineageId="Package\COKEY\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\CEPC\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      refId="Package\COKEY\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\CEPC\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\COKEY\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -542,7 +525,7 @@ ORDER BY A01.[MANDT]
               </outputs>
             </component>
             <component
-              refId="Package\CEPC\Identity records"
+              refId="Package\COKEY\Identity records"
               componentClassID="Microsoft.ConditionalSplit"
               contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
               description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
@@ -550,43 +533,43 @@ ORDER BY A01.[MANDT]
               usesDispositions="true">
               <inputs>
                 <input
-                  refId="Package\CEPC\Identity records.Inputs[Conditional Split Input]"
+                  refId="Package\COKEY\Identity records.Inputs[Conditional Split Input]"
                   description="Input to the Conditional Split Transformation"
                   name="Conditional Split Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\CEPC\Identity records.Inputs[Conditional Split Input].Columns[MANDT]"
+                      refId="Package\COKEY\Identity records.Inputs[Conditional Split Input].Columns[MANDT]"
                       cachedDataType="wstr"
                       cachedLength="3"
                       cachedName="MANDT"
                       cachedSortKeyPosition="1"
-                      lineageId="Package\CEPC\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
+                      lineageId="Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
                     <inputColumn
-                      refId="Package\CEPC\Identity records.Inputs[Conditional Split Input].Columns[MANDT (1)]"
+                      refId="Package\COKEY\Identity records.Inputs[Conditional Split Input].Columns[MANDT (1)]"
                       cachedDataType="wstr"
                       cachedLength="3"
                       cachedName="MANDT (1)"
-                      lineageId="Package\CEPC\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]" />
+                      lineageId="Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\CEPC\Identity records.Outputs[update]"
+                  refId="Package\COKEY\Identity records.Outputs[update]"
                   description="Output 1 of the Conditional Split Transformation"
                   errorOrTruncationOperation="Computation"
                   errorRowDisposition="FailComponent"
                   exclusionGroup="1"
                   name="update"
-                  synchronousInputId="Package\CEPC\Identity records.Inputs[Conditional Split Input]"
+                  synchronousInputId="Package\COKEY\Identity records.Inputs[Conditional Split Input]"
                   truncationRowDisposition="FailComponent">
                   <properties>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
-                      name="Expression">![ISNULL](#{Package\CEPC\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; ![ISNULL](#{Package\CEPC\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
+                      name="Expression">![ISNULL](#{Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; ![ISNULL](#{Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
                     <property
                       containsID="true"
                       dataType="System.String"
@@ -601,20 +584,20 @@ ORDER BY A01.[MANDT]
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\CEPC\Identity records.Outputs[insert]"
+                  refId="Package\COKEY\Identity records.Outputs[insert]"
                   description="Output 2 of the Conditional Split Transformation"
                   errorOrTruncationOperation="Computation"
                   errorRowDisposition="FailComponent"
                   exclusionGroup="1"
                   name="insert"
-                  synchronousInputId="Package\CEPC\Identity records.Inputs[Conditional Split Input]"
+                  synchronousInputId="Package\COKEY\Identity records.Inputs[Conditional Split Input]"
                   truncationRowDisposition="FailComponent">
                   <properties>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
-                      name="Expression">![ISNULL](#{Package\CEPC\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; [ISNULL](#{Package\CEPC\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
+                      name="Expression">![ISNULL](#{Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; [ISNULL](#{Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
                     <property
                       containsID="true"
                       dataType="System.String"
@@ -629,20 +612,20 @@ ORDER BY A01.[MANDT]
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\CEPC\Identity records.Outputs[delete]"
+                  refId="Package\COKEY\Identity records.Outputs[delete]"
                   description="Output 3 of the Conditional Split Transformation"
                   errorOrTruncationOperation="Computation"
                   errorRowDisposition="FailComponent"
                   exclusionGroup="1"
                   name="delete"
-                  synchronousInputId="Package\CEPC\Identity records.Inputs[Conditional Split Input]"
+                  synchronousInputId="Package\COKEY\Identity records.Inputs[Conditional Split Input]"
                   truncationRowDisposition="FailComponent">
                   <properties>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
-                      name="Expression">[ISNULL](#{Package\CEPC\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; ![ISNULL](#{Package\CEPC\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
+                      name="Expression">[ISNULL](#{Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; ![ISNULL](#{Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
                     <property
                       containsID="true"
                       dataType="System.String"
@@ -657,11 +640,11 @@ ORDER BY A01.[MANDT]
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\CEPC\Identity records.Outputs[Conditional Split Default Output]"
+                  refId="Package\COKEY\Identity records.Outputs[Conditional Split Default Output]"
                   description="Default Output of the Conditional Split Transformation"
                   exclusionGroup="1"
                   name="Conditional Split Default Output"
-                  synchronousInputId="Package\CEPC\Identity records.Inputs[Conditional Split Input]">
+                  synchronousInputId="Package\COKEY\Identity records.Inputs[Conditional Split Input]">
                   <properties>
                     <property
                       dataType="System.Boolean"
@@ -670,23 +653,23 @@ ORDER BY A01.[MANDT]
                   <externalMetadataColumns />
                 </output>
                 <output
-                  refId="Package\CEPC\Identity records.Outputs[Conditional Split Error Output]"
+                  refId="Package\COKEY\Identity records.Outputs[Conditional Split Error Output]"
                   description="Error Output of the Conditional Split Transformation"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="Conditional Split Error Output"
-                  synchronousInputId="Package\CEPC\Identity records.Inputs[Conditional Split Input]">
+                  synchronousInputId="Package\COKEY\Identity records.Inputs[Conditional Split Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\CEPC\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      refId="Package\COKEY\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\CEPC\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                      lineageId="Package\COKEY\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\CEPC\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      refId="Package\COKEY\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\CEPC\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\COKEY\Identity records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -695,7 +678,7 @@ ORDER BY A01.[MANDT]
               </outputs>
             </component>
             <component
-              refId="Package\CEPC\insert new records"
+              refId="Package\COKEY\insert new records"
               componentClassID="Microsoft.OLEDBDestination"
               contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
               description="OLE DB Destination"
@@ -710,7 +693,7 @@ ORDER BY A01.[MANDT]
                 <property
                   dataType="System.String"
                   description="Specifies the name of the database object used to open a rowset."
-                  name="OpenRowset">[dbo].[CEPC_STAGE_INSERT]</property>
+                  name="OpenRowset">[dbo].[COKEY_STAGE_INSERT]</property>
                 <property
                   dataType="System.String"
                   description="Specifies the variable that contains the name of the database object used to open a rowset."
@@ -752,7 +735,7 @@ ORDER BY A01.[MANDT]
               </properties>
               <connections>
                 <connection
-                  refId="Package\CEPC\insert new records.Connections[OleDbConnection]"
+                  refId="Package\COKEY\insert new records.Connections[OleDbConnection]"
                   connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
                   connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
                   description="The OLE DB runtime connection used to access the database."
@@ -760,100 +743,86 @@ ORDER BY A01.[MANDT]
               </connections>
               <inputs>
                 <input
-                  refId="Package\CEPC\insert new records.Inputs[OLE DB Destination Input]"
+                  refId="Package\COKEY\insert new records.Inputs[OLE DB Destination Input]"
                   errorOrTruncationOperation="Insert"
                   errorRowDisposition="FailComponent"
                   hasSideEffects="true"
                   name="OLE DB Destination Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\CEPC\insert new records.Inputs[OLE DB Destination Input].Columns[MANDT]"
+                      refId="Package\COKEY\insert new records.Inputs[OLE DB Destination Input].Columns[MANDT]"
                       cachedDataType="wstr"
                       cachedLength="3"
                       cachedName="MANDT"
                       cachedSortKeyPosition="1"
-                      externalMetadataColumnId="Package\CEPC\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
-                      lineageId="Package\CEPC\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
+                      externalMetadataColumnId="Package\COKEY\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      lineageId="Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
                     <inputColumn
-                      refId="Package\CEPC\insert new records.Inputs[OLE DB Destination Input].Columns[PRCTR]"
+                      refId="Package\COKEY\insert new records.Inputs[OLE DB Destination Input].Columns[HRKFT]"
                       cachedDataType="wstr"
-                      cachedLength="10"
-                      cachedName="PRCTR"
+                      cachedLength="14"
+                      cachedName="HRKFT"
                       cachedSortKeyPosition="2"
-                      externalMetadataColumnId="Package\CEPC\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[PRCTR]"
-                      lineageId="Package\CEPC\Merge Join.Outputs[Merge Join Output].Columns[PRCTR]" />
+                      externalMetadataColumnId="Package\COKEY\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[HRKFT]"
+                      lineageId="Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[HRKFT]" />
                     <inputColumn
-                      refId="Package\CEPC\insert new records.Inputs[OLE DB Destination Input].Columns[DATBI]"
-                      cachedDataType="wstr"
-                      cachedLength="8"
-                      cachedName="DATBI"
-                      cachedSortKeyPosition="3"
-                      externalMetadataColumnId="Package\CEPC\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[DATBI]"
-                      lineageId="Package\CEPC\Merge Join.Outputs[Merge Join Output].Columns[DATBI]" />
-                    <inputColumn
-                      refId="Package\CEPC\insert new records.Inputs[OLE DB Destination Input].Columns[KOKRS]"
+                      refId="Package\COKEY\insert new records.Inputs[OLE DB Destination Input].Columns[WERKS]"
                       cachedDataType="wstr"
                       cachedLength="4"
-                      cachedName="KOKRS"
-                      cachedSortKeyPosition="4"
-                      externalMetadataColumnId="Package\CEPC\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[KOKRS]"
-                      lineageId="Package\CEPC\Merge Join.Outputs[Merge Join Output].Columns[KOKRS]" />
+                      cachedName="WERKS"
+                      externalMetadataColumnId="Package\COKEY\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[WERKS]"
+                      lineageId="Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[WERKS]" />
                     <inputColumn
-                      refId="Package\CEPC\insert new records.Inputs[OLE DB Destination Input].Columns[SPRAS]"
+                      refId="Package\COKEY\insert new records.Inputs[OLE DB Destination Input].Columns[MATNR]"
                       cachedDataType="wstr"
-                      cachedLength="1"
-                      cachedName="SPRAS"
-                      externalMetadataColumnId="Package\CEPC\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[SPRAS]"
-                      lineageId="Package\CEPC\Merge Join.Outputs[Merge Join Output].Columns[SPRAS]" />
+                      cachedLength="18"
+                      cachedName="MATNR"
+                      externalMetadataColumnId="Package\COKEY\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MATNR]"
+                      lineageId="Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[MATNR]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
                     <externalMetadataColumn
-                      refId="Package\CEPC\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      refId="Package\COKEY\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
                       dataType="wstr"
                       length="3"
                       name="MANDT" />
                     <externalMetadataColumn
-                      refId="Package\CEPC\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[PRCTR]"
+                      refId="Package\COKEY\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[HRKFT]"
                       dataType="wstr"
-                      length="10"
-                      name="PRCTR" />
+                      length="14"
+                      name="HRKFT" />
                     <externalMetadataColumn
-                      refId="Package\CEPC\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[DATBI]"
-                      dataType="wstr"
-                      length="8"
-                      name="DATBI" />
-                    <externalMetadataColumn
-                      refId="Package\CEPC\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[KOKRS]"
+                      refId="Package\COKEY\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[WERKS]"
                       dataType="wstr"
                       length="4"
-                      name="KOKRS" />
+                      name="WERKS" />
                     <externalMetadataColumn
-                      refId="Package\CEPC\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[SPRAS]"
+                      refId="Package\COKEY\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MATNR]"
                       dataType="wstr"
-                      length="1"
-                      name="SPRAS" />
+                      length="18"
+                      name="MATNR" />
                   </externalMetadataColumns>
                 </input>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\CEPC\insert new records.Outputs[OLE DB Destination Error Output]"
+                  refId="Package\COKEY\insert new records.Outputs[OLE DB Destination Error Output]"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="OLE DB Destination Error Output"
-                  synchronousInputId="Package\CEPC\insert new records.Inputs[OLE DB Destination Input]">
+                  synchronousInputId="Package\COKEY\insert new records.Inputs[OLE DB Destination Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\CEPC\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      refId="Package\COKEY\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\CEPC\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      lineageId="Package\COKEY\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\CEPC\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      refId="Package\COKEY\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\CEPC\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\COKEY\insert new records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -862,7 +831,7 @@ ORDER BY A01.[MANDT]
               </outputs>
             </component>
             <component
-              refId="Package\CEPC\Merge Join"
+              refId="Package\COKEY\Merge Join"
               componentClassID="Microsoft.MergeJoin"
               contactInfo="Merge Join;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
               description="Combine two sorted data flows into one using the FULL, LEFT, or INNER join. We recommend this transformation when data flows can be sorted at their sources."
@@ -877,7 +846,7 @@ ORDER BY A01.[MANDT]
                 <property
                   dataType="System.Int32"
                   description="Specifies the number of columns in the ordering key."
-                  name="NumKeyColumns">4</property>
+                  name="NumKeyColumns">2</property>
                 <property
                   dataType="System.Boolean"
                   description="Indicates whether the null values are treated as equal values."
@@ -889,101 +858,85 @@ ORDER BY A01.[MANDT]
               </properties>
               <inputs>
                 <input
-                  refId="Package\CEPC\Merge Join.Inputs[Merge Join Left Input]"
+                  refId="Package\COKEY\Merge Join.Inputs[Merge Join Left Input]"
                   hasSideEffects="true"
                   name="Merge Join Left Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\CEPC\Merge Join.Inputs[Merge Join Left Input].Columns[MANDT]"
+                      refId="Package\COKEY\Merge Join.Inputs[Merge Join Left Input].Columns[MANDT]"
                       cachedDataType="wstr"
                       cachedLength="3"
                       cachedName="MANDT"
                       cachedSortKeyPosition="1"
-                      lineageId="Package\CEPC\DB SAP.Outputs[OLE DB Source Output].Columns[MANDT]" />
+                      lineageId="Package\COKEY\DB SAP.Outputs[OLE DB Source Output].Columns[MANDT]" />
                     <inputColumn
-                      refId="Package\CEPC\Merge Join.Inputs[Merge Join Left Input].Columns[PRCTR]"
+                      refId="Package\COKEY\Merge Join.Inputs[Merge Join Left Input].Columns[HRKFT]"
                       cachedDataType="wstr"
-                      cachedLength="10"
-                      cachedName="PRCTR"
+                      cachedLength="14"
+                      cachedName="HRKFT"
                       cachedSortKeyPosition="2"
-                      lineageId="Package\CEPC\DB SAP.Outputs[OLE DB Source Output].Columns[PRCTR]" />
+                      lineageId="Package\COKEY\DB SAP.Outputs[OLE DB Source Output].Columns[HRKFT]" />
                     <inputColumn
-                      refId="Package\CEPC\Merge Join.Inputs[Merge Join Left Input].Columns[DATBI]"
-                      cachedDataType="wstr"
-                      cachedLength="8"
-                      cachedName="DATBI"
-                      cachedSortKeyPosition="3"
-                      lineageId="Package\CEPC\DB SAP.Outputs[OLE DB Source Output].Columns[DATBI]" />
-                    <inputColumn
-                      refId="Package\CEPC\Merge Join.Inputs[Merge Join Left Input].Columns[KOKRS]"
+                      refId="Package\COKEY\Merge Join.Inputs[Merge Join Left Input].Columns[WERKS]"
                       cachedDataType="wstr"
                       cachedLength="4"
-                      cachedName="KOKRS"
-                      cachedSortKeyPosition="4"
-                      lineageId="Package\CEPC\DB SAP.Outputs[OLE DB Source Output].Columns[KOKRS]" />
+                      cachedName="WERKS"
+                      lineageId="Package\COKEY\DB SAP.Outputs[OLE DB Source Output].Columns[WERKS]" />
                     <inputColumn
-                      refId="Package\CEPC\Merge Join.Inputs[Merge Join Left Input].Columns[SPRAS]"
+                      refId="Package\COKEY\Merge Join.Inputs[Merge Join Left Input].Columns[MATNR]"
                       cachedDataType="wstr"
-                      cachedLength="1"
-                      cachedName="SPRAS"
-                      lineageId="Package\CEPC\DB SAP.Outputs[OLE DB Source Output].Columns[SPRAS]" />
+                      cachedLength="18"
+                      cachedName="MATNR"
+                      lineageId="Package\COKEY\DB SAP.Outputs[OLE DB Source Output].Columns[MATNR]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
                 <input
-                  refId="Package\CEPC\Merge Join.Inputs[Merge Join Right Input]"
+                  refId="Package\COKEY\Merge Join.Inputs[Merge Join Right Input]"
                   hasSideEffects="true"
                   name="Merge Join Right Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\CEPC\Merge Join.Inputs[Merge Join Right Input].Columns[MANDT]"
+                      refId="Package\COKEY\Merge Join.Inputs[Merge Join Right Input].Columns[MANDT]"
                       cachedDataType="wstr"
                       cachedLength="3"
                       cachedName="MANDT"
                       cachedSortKeyPosition="1"
-                      lineageId="Package\CEPC\DB PBI.Outputs[OLE DB Source Output].Columns[MANDT]" />
+                      lineageId="Package\COKEY\DB PBI.Outputs[OLE DB Source Output].Columns[MANDT]" />
                     <inputColumn
-                      refId="Package\CEPC\Merge Join.Inputs[Merge Join Right Input].Columns[PRCTR]"
+                      refId="Package\COKEY\Merge Join.Inputs[Merge Join Right Input].Columns[HRKFT]"
                       cachedDataType="wstr"
-                      cachedLength="10"
-                      cachedName="PRCTR"
+                      cachedLength="14"
+                      cachedName="HRKFT"
                       cachedSortKeyPosition="2"
-                      lineageId="Package\CEPC\DB PBI.Outputs[OLE DB Source Output].Columns[PRCTR]" />
+                      lineageId="Package\COKEY\DB PBI.Outputs[OLE DB Source Output].Columns[HRKFT]" />
                     <inputColumn
-                      refId="Package\CEPC\Merge Join.Inputs[Merge Join Right Input].Columns[DATBI]"
-                      cachedDataType="wstr"
-                      cachedLength="8"
-                      cachedName="DATBI"
-                      cachedSortKeyPosition="3"
-                      lineageId="Package\CEPC\DB PBI.Outputs[OLE DB Source Output].Columns[DATBI]" />
-                    <inputColumn
-                      refId="Package\CEPC\Merge Join.Inputs[Merge Join Right Input].Columns[KOKRS]"
+                      refId="Package\COKEY\Merge Join.Inputs[Merge Join Right Input].Columns[WERKS]"
                       cachedDataType="wstr"
                       cachedLength="4"
-                      cachedName="KOKRS"
-                      cachedSortKeyPosition="4"
-                      lineageId="Package\CEPC\DB PBI.Outputs[OLE DB Source Output].Columns[KOKRS]" />
+                      cachedName="WERKS"
+                      lineageId="Package\COKEY\DB PBI.Outputs[OLE DB Source Output].Columns[WERKS]" />
                     <inputColumn
-                      refId="Package\CEPC\Merge Join.Inputs[Merge Join Right Input].Columns[SPRAS]"
+                      refId="Package\COKEY\Merge Join.Inputs[Merge Join Right Input].Columns[MATNR]"
                       cachedDataType="wstr"
-                      cachedLength="1"
-                      cachedName="SPRAS"
-                      lineageId="Package\CEPC\DB PBI.Outputs[OLE DB Source Output].Columns[SPRAS]" />
+                      cachedLength="18"
+                      cachedName="MATNR"
+                      lineageId="Package\COKEY\DB PBI.Outputs[OLE DB Source Output].Columns[MATNR]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\CEPC\Merge Join.Outputs[Merge Join Output]"
+                  refId="Package\COKEY\Merge Join.Outputs[Merge Join Output]"
                   isSorted="true"
                   name="Merge Join Output">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\CEPC\Merge Join.Outputs[Merge Join Output].Columns[MANDT]"
+                      refId="Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[MANDT]"
                       dataType="wstr"
                       length="3"
-                      lineageId="Package\CEPC\Merge Join.Outputs[Merge Join Output].Columns[MANDT]"
+                      lineageId="Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[MANDT]"
                       name="MANDT"
                       sortKeyPosition="1">
                       <properties>
@@ -991,136 +944,106 @@ ORDER BY A01.[MANDT]
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\CEPC\Merge Join.Inputs[Merge Join Left Input].Columns[MANDT]}</property>
+                          name="InputColumnID">#{Package\COKEY\Merge Join.Inputs[Merge Join Left Input].Columns[MANDT]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\CEPC\Merge Join.Outputs[Merge Join Output].Columns[PRCTR]"
+                      refId="Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[HRKFT]"
                       dataType="wstr"
-                      length="10"
-                      lineageId="Package\CEPC\Merge Join.Outputs[Merge Join Output].Columns[PRCTR]"
-                      name="PRCTR"
+                      length="14"
+                      lineageId="Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[HRKFT]"
+                      name="HRKFT"
                       sortKeyPosition="2">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\CEPC\Merge Join.Inputs[Merge Join Left Input].Columns[PRCTR]}</property>
+                          name="InputColumnID">#{Package\COKEY\Merge Join.Inputs[Merge Join Left Input].Columns[HRKFT]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\CEPC\Merge Join.Outputs[Merge Join Output].Columns[DATBI]"
-                      dataType="wstr"
-                      length="8"
-                      lineageId="Package\CEPC\Merge Join.Outputs[Merge Join Output].Columns[DATBI]"
-                      name="DATBI"
-                      sortKeyPosition="3">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\CEPC\Merge Join.Inputs[Merge Join Left Input].Columns[DATBI]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\CEPC\Merge Join.Outputs[Merge Join Output].Columns[KOKRS]"
+                      refId="Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[WERKS]"
                       dataType="wstr"
                       length="4"
-                      lineageId="Package\CEPC\Merge Join.Outputs[Merge Join Output].Columns[KOKRS]"
-                      name="KOKRS"
-                      sortKeyPosition="4">
+                      lineageId="Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[WERKS]"
+                      name="WERKS">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\CEPC\Merge Join.Inputs[Merge Join Left Input].Columns[KOKRS]}</property>
+                          name="InputColumnID">#{Package\COKEY\Merge Join.Inputs[Merge Join Left Input].Columns[WERKS]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\CEPC\Merge Join.Outputs[Merge Join Output].Columns[SPRAS]"
+                      refId="Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[MATNR]"
                       dataType="wstr"
-                      length="1"
-                      lineageId="Package\CEPC\Merge Join.Outputs[Merge Join Output].Columns[SPRAS]"
-                      name="SPRAS">
+                      length="18"
+                      lineageId="Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[MATNR]"
+                      name="MATNR">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\CEPC\Merge Join.Inputs[Merge Join Left Input].Columns[SPRAS]}</property>
+                          name="InputColumnID">#{Package\COKEY\Merge Join.Inputs[Merge Join Left Input].Columns[MATNR]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\CEPC\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]"
+                      refId="Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]"
                       dataType="wstr"
                       length="3"
-                      lineageId="Package\CEPC\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]"
+                      lineageId="Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]"
                       name="MANDT (1)">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\CEPC\Merge Join.Inputs[Merge Join Right Input].Columns[MANDT]}</property>
+                          name="InputColumnID">#{Package\COKEY\Merge Join.Inputs[Merge Join Right Input].Columns[MANDT]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\CEPC\Merge Join.Outputs[Merge Join Output].Columns[PRCTR (1)]"
+                      refId="Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[HRKFT (1)]"
                       dataType="wstr"
-                      length="10"
-                      lineageId="Package\CEPC\Merge Join.Outputs[Merge Join Output].Columns[PRCTR (1)]"
-                      name="PRCTR (1)">
+                      length="14"
+                      lineageId="Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[HRKFT (1)]"
+                      name="HRKFT (1)">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\CEPC\Merge Join.Inputs[Merge Join Right Input].Columns[PRCTR]}</property>
+                          name="InputColumnID">#{Package\COKEY\Merge Join.Inputs[Merge Join Right Input].Columns[HRKFT]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\CEPC\Merge Join.Outputs[Merge Join Output].Columns[DATBI (1)]"
-                      dataType="wstr"
-                      length="8"
-                      lineageId="Package\CEPC\Merge Join.Outputs[Merge Join Output].Columns[DATBI (1)]"
-                      name="DATBI (1)">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\CEPC\Merge Join.Inputs[Merge Join Right Input].Columns[DATBI]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\CEPC\Merge Join.Outputs[Merge Join Output].Columns[KOKRS (1)]"
+                      refId="Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[WERKS (1)]"
                       dataType="wstr"
                       length="4"
-                      lineageId="Package\CEPC\Merge Join.Outputs[Merge Join Output].Columns[KOKRS (1)]"
-                      name="KOKRS (1)">
+                      lineageId="Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[WERKS (1)]"
+                      name="WERKS (1)">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\CEPC\Merge Join.Inputs[Merge Join Right Input].Columns[KOKRS]}</property>
+                          name="InputColumnID">#{Package\COKEY\Merge Join.Inputs[Merge Join Right Input].Columns[WERKS]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\CEPC\Merge Join.Outputs[Merge Join Output].Columns[SPRAS (1)]"
+                      refId="Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[MATNR (1)]"
                       dataType="wstr"
-                      length="1"
-                      lineageId="Package\CEPC\Merge Join.Outputs[Merge Join Output].Columns[SPRAS (1)]"
-                      name="SPRAS (1)">
+                      length="18"
+                      lineageId="Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[MATNR (1)]"
+                      name="MATNR (1)">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\CEPC\Merge Join.Inputs[Merge Join Right Input].Columns[SPRAS]}</property>
+                          name="InputColumnID">#{Package\COKEY\Merge Join.Inputs[Merge Join Right Input].Columns[MATNR]}</property>
                       </properties>
                     </outputColumn>
                   </outputColumns>
@@ -1129,7 +1052,7 @@ ORDER BY A01.[MANDT]
               </outputs>
             </component>
             <component
-              refId="Package\CEPC\stage changed records"
+              refId="Package\COKEY\stage changed records"
               componentClassID="Microsoft.OLEDBDestination"
               contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
               description="OLE DB Destination"
@@ -1144,7 +1067,7 @@ ORDER BY A01.[MANDT]
                 <property
                   dataType="System.String"
                   description="Specifies the name of the database object used to open a rowset."
-                  name="OpenRowset">[dbo].[CEPC_STAGE_UPDATE]</property>
+                  name="OpenRowset">[dbo].[COKEY_STAGE_UPDATE]</property>
                 <property
                   dataType="System.String"
                   description="Specifies the variable that contains the name of the database object used to open a rowset."
@@ -1186,7 +1109,7 @@ ORDER BY A01.[MANDT]
               </properties>
               <connections>
                 <connection
-                  refId="Package\CEPC\stage changed records.Connections[OleDbConnection]"
+                  refId="Package\COKEY\stage changed records.Connections[OleDbConnection]"
                   connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
                   connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
                   description="The OLE DB runtime connection used to access the database."
@@ -1194,100 +1117,86 @@ ORDER BY A01.[MANDT]
               </connections>
               <inputs>
                 <input
-                  refId="Package\CEPC\stage changed records.Inputs[OLE DB Destination Input]"
+                  refId="Package\COKEY\stage changed records.Inputs[OLE DB Destination Input]"
                   errorOrTruncationOperation="Insert"
                   errorRowDisposition="FailComponent"
                   hasSideEffects="true"
                   name="OLE DB Destination Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\CEPC\stage changed records.Inputs[OLE DB Destination Input].Columns[MANDT]"
+                      refId="Package\COKEY\stage changed records.Inputs[OLE DB Destination Input].Columns[MANDT]"
                       cachedDataType="wstr"
                       cachedLength="3"
                       cachedName="MANDT"
                       cachedSortKeyPosition="1"
-                      externalMetadataColumnId="Package\CEPC\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
-                      lineageId="Package\CEPC\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
+                      externalMetadataColumnId="Package\COKEY\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      lineageId="Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
                     <inputColumn
-                      refId="Package\CEPC\stage changed records.Inputs[OLE DB Destination Input].Columns[PRCTR]"
+                      refId="Package\COKEY\stage changed records.Inputs[OLE DB Destination Input].Columns[HRKFT]"
                       cachedDataType="wstr"
-                      cachedLength="10"
-                      cachedName="PRCTR"
+                      cachedLength="14"
+                      cachedName="HRKFT"
                       cachedSortKeyPosition="2"
-                      externalMetadataColumnId="Package\CEPC\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[PRCTR]"
-                      lineageId="Package\CEPC\Merge Join.Outputs[Merge Join Output].Columns[PRCTR]" />
+                      externalMetadataColumnId="Package\COKEY\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[HRKFT]"
+                      lineageId="Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[HRKFT]" />
                     <inputColumn
-                      refId="Package\CEPC\stage changed records.Inputs[OLE DB Destination Input].Columns[DATBI]"
-                      cachedDataType="wstr"
-                      cachedLength="8"
-                      cachedName="DATBI"
-                      cachedSortKeyPosition="3"
-                      externalMetadataColumnId="Package\CEPC\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[DATBI]"
-                      lineageId="Package\CEPC\Merge Join.Outputs[Merge Join Output].Columns[DATBI]" />
-                    <inputColumn
-                      refId="Package\CEPC\stage changed records.Inputs[OLE DB Destination Input].Columns[KOKRS]"
+                      refId="Package\COKEY\stage changed records.Inputs[OLE DB Destination Input].Columns[WERKS]"
                       cachedDataType="wstr"
                       cachedLength="4"
-                      cachedName="KOKRS"
-                      cachedSortKeyPosition="4"
-                      externalMetadataColumnId="Package\CEPC\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[KOKRS]"
-                      lineageId="Package\CEPC\Merge Join.Outputs[Merge Join Output].Columns[KOKRS]" />
+                      cachedName="WERKS"
+                      externalMetadataColumnId="Package\COKEY\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[WERKS]"
+                      lineageId="Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[WERKS]" />
                     <inputColumn
-                      refId="Package\CEPC\stage changed records.Inputs[OLE DB Destination Input].Columns[SPRAS]"
+                      refId="Package\COKEY\stage changed records.Inputs[OLE DB Destination Input].Columns[MATNR]"
                       cachedDataType="wstr"
-                      cachedLength="1"
-                      cachedName="SPRAS"
-                      externalMetadataColumnId="Package\CEPC\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[SPRAS]"
-                      lineageId="Package\CEPC\Merge Join.Outputs[Merge Join Output].Columns[SPRAS]" />
+                      cachedLength="18"
+                      cachedName="MATNR"
+                      externalMetadataColumnId="Package\COKEY\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MATNR]"
+                      lineageId="Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[MATNR]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
                     <externalMetadataColumn
-                      refId="Package\CEPC\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      refId="Package\COKEY\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
                       dataType="wstr"
                       length="3"
                       name="MANDT" />
                     <externalMetadataColumn
-                      refId="Package\CEPC\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[PRCTR]"
+                      refId="Package\COKEY\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[HRKFT]"
                       dataType="wstr"
-                      length="10"
-                      name="PRCTR" />
+                      length="14"
+                      name="HRKFT" />
                     <externalMetadataColumn
-                      refId="Package\CEPC\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[DATBI]"
-                      dataType="wstr"
-                      length="8"
-                      name="DATBI" />
-                    <externalMetadataColumn
-                      refId="Package\CEPC\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[KOKRS]"
+                      refId="Package\COKEY\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[WERKS]"
                       dataType="wstr"
                       length="4"
-                      name="KOKRS" />
+                      name="WERKS" />
                     <externalMetadataColumn
-                      refId="Package\CEPC\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[SPRAS]"
+                      refId="Package\COKEY\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MATNR]"
                       dataType="wstr"
-                      length="1"
-                      name="SPRAS" />
+                      length="18"
+                      name="MATNR" />
                   </externalMetadataColumns>
                 </input>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\CEPC\stage changed records.Outputs[OLE DB Destination Error Output]"
+                  refId="Package\COKEY\stage changed records.Outputs[OLE DB Destination Error Output]"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="OLE DB Destination Error Output"
-                  synchronousInputId="Package\CEPC\stage changed records.Inputs[OLE DB Destination Input]">
+                  synchronousInputId="Package\COKEY\stage changed records.Inputs[OLE DB Destination Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\CEPC\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      refId="Package\COKEY\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\CEPC\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      lineageId="Package\COKEY\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\CEPC\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      refId="Package\COKEY\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\CEPC\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\COKEY\stage changed records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -1296,7 +1205,7 @@ ORDER BY A01.[MANDT]
               </outputs>
             </component>
             <component
-              refId="Package\CEPC\stage deleted records"
+              refId="Package\COKEY\stage deleted records"
               componentClassID="Microsoft.OLEDBDestination"
               contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
               description="OLE DB Destination"
@@ -1311,7 +1220,7 @@ ORDER BY A01.[MANDT]
                 <property
                   dataType="System.String"
                   description="Specifies the name of the database object used to open a rowset."
-                  name="OpenRowset">[dbo].[CEPC_STAGE_DELETE]</property>
+                  name="OpenRowset">[dbo].[COKEY_STAGE_DELETE]</property>
                 <property
                   dataType="System.String"
                   description="Specifies the variable that contains the name of the database object used to open a rowset."
@@ -1353,7 +1262,7 @@ ORDER BY A01.[MANDT]
               </properties>
               <connections>
                 <connection
-                  refId="Package\CEPC\stage deleted records.Connections[OleDbConnection]"
+                  refId="Package\COKEY\stage deleted records.Connections[OleDbConnection]"
                   connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
                   connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
                   description="The OLE DB runtime connection used to access the database."
@@ -1361,84 +1270,60 @@ ORDER BY A01.[MANDT]
               </connections>
               <inputs>
                 <input
-                  refId="Package\CEPC\stage deleted records.Inputs[OLE DB Destination Input]"
+                  refId="Package\COKEY\stage deleted records.Inputs[OLE DB Destination Input]"
                   errorOrTruncationOperation="Insert"
                   errorRowDisposition="FailComponent"
                   hasSideEffects="true"
                   name="OLE DB Destination Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\CEPC\stage deleted records.Inputs[OLE DB Destination Input].Columns[MANDT (1)]"
+                      refId="Package\COKEY\stage deleted records.Inputs[OLE DB Destination Input].Columns[MANDT (1)]"
                       cachedDataType="wstr"
                       cachedLength="3"
                       cachedName="MANDT (1)"
-                      externalMetadataColumnId="Package\CEPC\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
-                      lineageId="Package\CEPC\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]" />
+                      externalMetadataColumnId="Package\COKEY\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      lineageId="Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]" />
                     <inputColumn
-                      refId="Package\CEPC\stage deleted records.Inputs[OLE DB Destination Input].Columns[PRCTR (1)]"
+                      refId="Package\COKEY\stage deleted records.Inputs[OLE DB Destination Input].Columns[HRKFT (1)]"
                       cachedDataType="wstr"
-                      cachedLength="10"
-                      cachedName="PRCTR (1)"
-                      externalMetadataColumnId="Package\CEPC\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[PRCTR]"
-                      lineageId="Package\CEPC\Merge Join.Outputs[Merge Join Output].Columns[PRCTR (1)]" />
-                    <inputColumn
-                      refId="Package\CEPC\stage deleted records.Inputs[OLE DB Destination Input].Columns[DATBI (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="8"
-                      cachedName="DATBI (1)"
-                      externalMetadataColumnId="Package\CEPC\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[DATBI]"
-                      lineageId="Package\CEPC\Merge Join.Outputs[Merge Join Output].Columns[DATBI (1)]" />
-                    <inputColumn
-                      refId="Package\CEPC\stage deleted records.Inputs[OLE DB Destination Input].Columns[KOKRS (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="KOKRS (1)"
-                      externalMetadataColumnId="Package\CEPC\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[KOKRS]"
-                      lineageId="Package\CEPC\Merge Join.Outputs[Merge Join Output].Columns[KOKRS (1)]" />
+                      cachedLength="14"
+                      cachedName="HRKFT (1)"
+                      externalMetadataColumnId="Package\COKEY\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[HRKFT]"
+                      lineageId="Package\COKEY\Merge Join.Outputs[Merge Join Output].Columns[HRKFT (1)]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
                     <externalMetadataColumn
-                      refId="Package\CEPC\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
+                      refId="Package\COKEY\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
                       dataType="wstr"
                       length="3"
                       name="MANDT" />
                     <externalMetadataColumn
-                      refId="Package\CEPC\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[PRCTR]"
+                      refId="Package\COKEY\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[HRKFT]"
                       dataType="wstr"
-                      length="10"
-                      name="PRCTR" />
-                    <externalMetadataColumn
-                      refId="Package\CEPC\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[DATBI]"
-                      dataType="wstr"
-                      length="8"
-                      name="DATBI" />
-                    <externalMetadataColumn
-                      refId="Package\CEPC\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[KOKRS]"
-                      dataType="wstr"
-                      length="4"
-                      name="KOKRS" />
+                      length="14"
+                      name="HRKFT" />
                   </externalMetadataColumns>
                 </input>
               </inputs>
               <outputs>
                 <output
-                  refId="Package\CEPC\stage deleted records.Outputs[OLE DB Destination Error Output]"
+                  refId="Package\COKEY\stage deleted records.Outputs[OLE DB Destination Error Output]"
                   exclusionGroup="1"
                   isErrorOut="true"
                   name="OLE DB Destination Error Output"
-                  synchronousInputId="Package\CEPC\stage deleted records.Inputs[OLE DB Destination Input]">
+                  synchronousInputId="Package\COKEY\stage deleted records.Inputs[OLE DB Destination Input]">
                   <outputColumns>
                     <outputColumn
-                      refId="Package\CEPC\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      refId="Package\COKEY\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                       dataType="i4"
-                      lineageId="Package\CEPC\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      lineageId="Package\COKEY\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                       name="ErrorCode"
                       specialFlags="1" />
                     <outputColumn
-                      refId="Package\CEPC\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      refId="Package\COKEY\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                       dataType="i4"
-                      lineageId="Package\CEPC\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      lineageId="Package\COKEY\stage deleted records.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -1449,162 +1334,129 @@ ORDER BY A01.[MANDT]
           </components>
           <paths>
             <path
-              refId="Package\CEPC.Paths[delete]"
-              endId="Package\CEPC\stage deleted records.Inputs[OLE DB Destination Input]"
+              refId="Package\COKEY.Paths[delete]"
+              endId="Package\COKEY\stage deleted records.Inputs[OLE DB Destination Input]"
               name="delete"
-              startId="Package\CEPC\Identity records.Outputs[delete]" />
+              startId="Package\COKEY\Identity records.Outputs[delete]" />
             <path
-              refId="Package\CEPC.Paths[insert]"
-              endId="Package\CEPC\insert new records.Inputs[OLE DB Destination Input]"
+              refId="Package\COKEY.Paths[insert]"
+              endId="Package\COKEY\insert new records.Inputs[OLE DB Destination Input]"
               name="insert"
-              startId="Package\CEPC\Identity records.Outputs[insert]" />
+              startId="Package\COKEY\Identity records.Outputs[insert]" />
             <path
-              refId="Package\CEPC.Paths[Merge Join Output]"
-              endId="Package\CEPC\Identity records.Inputs[Conditional Split Input]"
+              refId="Package\COKEY.Paths[Merge Join Output]"
+              endId="Package\COKEY\Identity records.Inputs[Conditional Split Input]"
               name="Merge Join Output"
-              startId="Package\CEPC\Merge Join.Outputs[Merge Join Output]" />
+              startId="Package\COKEY\Merge Join.Outputs[Merge Join Output]" />
             <path
-              refId="Package\CEPC.Paths[OLE DB Source Output]"
-              endId="Package\CEPC\Merge Join.Inputs[Merge Join Left Input]"
+              refId="Package\COKEY.Paths[OLE DB Source Output]"
+              endId="Package\COKEY\Merge Join.Inputs[Merge Join Left Input]"
               name="OLE DB Source Output"
-              startId="Package\CEPC\DB SAP.Outputs[OLE DB Source Output]" />
+              startId="Package\COKEY\DB SAP.Outputs[OLE DB Source Output]" />
             <path
-              refId="Package\CEPC.Paths[OLE DB Source Output1]"
-              endId="Package\CEPC\Merge Join.Inputs[Merge Join Right Input]"
+              refId="Package\COKEY.Paths[OLE DB Source Output1]"
+              endId="Package\COKEY\Merge Join.Inputs[Merge Join Right Input]"
               name="OLE DB Source Output"
-              startId="Package\CEPC\DB PBI.Outputs[OLE DB Source Output]" />
+              startId="Package\COKEY\DB PBI.Outputs[OLE DB Source Output]" />
             <path
-              refId="Package\CEPC.Paths[update]"
-              endId="Package\CEPC\Find Changed Records.Inputs[Conditional Split Input]"
+              refId="Package\COKEY.Paths[update]"
+              endId="Package\COKEY\Find Changed Records.Inputs[Conditional Split Input]"
               name="update"
-              startId="Package\CEPC\Identity records.Outputs[update]" />
+              startId="Package\COKEY\Identity records.Outputs[update]" />
             <path
-              refId="Package\CEPC.Paths[update1]"
-              endId="Package\CEPC\stage changed records.Inputs[OLE DB Destination Input]"
+              refId="Package\COKEY.Paths[update1]"
+              endId="Package\COKEY\stage changed records.Inputs[OLE DB Destination Input]"
               name="update"
-              startId="Package\CEPC\Find Changed Records.Outputs[update]" />
+              startId="Package\COKEY\Find Changed Records.Outputs[update]" />
           </paths>
         </pipeline>
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
-      DTS:refId="Package\clean stage"
+      DTS:refId="Package\DELETE"
       DTS:CreationName="Microsoft.ExecuteSQLTask"
       DTS:Description="Execute SQL Task"
-      DTS:DTSID="{312ae138-9992-4ea4-9207-85eaa8f4ba8f}"
+      DTS:DTSID="{87E23DBC-EFE5-40D6-B259-43C615CF3A3C}"
       DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
-      DTS:ObjectName="clean stage"
+      DTS:ObjectName="DELETE"
       DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
       DTS:ThreadHint="0">
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
           SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-          SQLTask:SqlStatementSource="TRUNCATE TABLE [CEPC_STAGE_UPDATE]&#xA;go&#xA;TRUNCATE TABLE [CEPC_STAGE_DELETE]&#xA;go&#xA;TRUNCATE TABLE [CEPC_STAGE_INSERT]&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          SQLTask:SqlStatementSource="DELETE A01 &#xA;FROM &#xA;  [COKEY] A01 &#xA;  INNER JOIN [COKEY_STAGE_DELETE] B01 ON (&#xA;    A01.[MANDT] = B01.[MANDT] &#xA;    AND A01.[HRKFT] = B01.[HRKFT] &#xA;  )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
-      DTS:refId="Package\Sequence Container"
-      DTS:CreationName="STOCK:SEQUENCE"
-      DTS:Description="Sequence Container"
-      DTS:DTSID="{a2d427dc-da79-4336-93e0-3897217036e1}"
-      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:refId="Package\INSERT"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{DFC001C6-4D70-43BE-B38D-FA627FA88F8A}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
-      DTS:ObjectName="Sequence Container">
+      DTS:ObjectName="INSERT"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
       <DTS:Variables />
-      <DTS:Executables>
-        <DTS:Executable
-          DTS:refId="Package\Sequence Container\delete"
-          DTS:CreationName="Microsoft.ExecuteSQLTask"
-          DTS:Description="Execute SQL Task"
-          DTS:DTSID="{eef53650-a43d-4371-8a58-60d6bc6c2c5a}"
-          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
-          DTS:LocaleID="-1"
-          DTS:ObjectName="delete"
-          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="1">
-          <DTS:Variables />
-          <DTS:ObjectData>
-            <SQLTask:SqlTaskData
-              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-              SQLTask:SqlStatementSource="DELETE A01&#xA;FROM [CEPC] A01 INNER JOIN [CEPC_STAGE_DELETE] B01 ON ( A01.[MANDT] = B01.[MANDT]&#xA;                                                    AND A01.[PRCTR] = B01.[PRCTR]&#xA;                                                    AND A01.[DATBI] = B01.[DATBI]&#xA;                                                    AND A01.[KOKRS] = B01.[KOKRS] )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
-          </DTS:ObjectData>
-        </DTS:Executable>
-        <DTS:Executable
-          DTS:refId="Package\Sequence Container\update"
-          DTS:CreationName="Microsoft.ExecuteSQLTask"
-          DTS:Description="Execute SQL Task"
-          DTS:DTSID="{2068f43d-04b9-4b64-9d7e-42b2430fc4ad}"
-          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
-          DTS:LocaleID="-1"
-          DTS:ObjectName="update"
-          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="0">
-          <DTS:Variables />
-          <DTS:ObjectData>
-            <SQLTask:SqlTaskData
-              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-              SQLTask:SqlStatementSource="UPDATE A01&#xA;SET A01.[SPRAS] = B01.[SPRAS]&#xA;FROM [CEPC] A01 INNER JOIN [CEPC_STAGE_UPDATE] B01 ON ( A01.[MANDT] = B01.[MANDT]&#xA;                                                    AND A01.[PRCTR] = B01.[PRCTR]&#xA;                                                    AND A01.[DATBI] = B01.[DATBI]&#xA;                                                    AND A01.[KOKRS] = B01.[KOKRS] )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
-          </DTS:ObjectData>
-        </DTS:Executable>
-      </DTS:Executables>
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="INSERT INTO [COKEY]&#xA;SELECT * FROM [COKEY_STAGE_INSERT]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
-      DTS:refId="Package\Sequence Container 1"
-      DTS:CreationName="STOCK:SEQUENCE"
-      DTS:Description="Sequence Container"
-      DTS:DTSID="{8b244b53-3ad5-42c5-b536-f1876abfe0a4}"
-      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:refId="Package\UPDATE"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{D6602F8D-349C-4E8A-B5D4-6C3686DF83D6}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
-      DTS:ObjectName="Sequence Container 1">
+      DTS:ObjectName="UPDATE"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
       <DTS:Variables />
-      <DTS:Executables>
-        <DTS:Executable
-          DTS:refId="Package\Sequence Container 1\Insert"
-          DTS:CreationName="Microsoft.ExecuteSQLTask"
-          DTS:Description="Execute SQL Task"
-          DTS:DTSID="{b42c9bd8-c81a-4ca0-b184-2c55b2407d40}"
-          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
-          DTS:LocaleID="-1"
-          DTS:ObjectName="Insert"
-          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="0">
-          <DTS:Variables />
-          <DTS:ObjectData>
-            <SQLTask:SqlTaskData
-              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-              SQLTask:SqlStatementSource="INSERT INTO [CEPC]&#xA;SELECT * FROM [CEPC_STAGE_INSERT]&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
-          </DTS:ObjectData>
-        </DTS:Executable>
-      </DTS:Executables>
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="UPDATE &#xA;  A01 &#xA;SET &#xA;  A01.[WERKS] = B01.[WERKS], &#xA;  A01.[MATNR] = B01.[MATNR]&#xA;FROM &#xA;  [COKEY] A01 &#xA;  INNER JOIN [COKEY_STAGE_UPDATE] B01 ON (&#xA;    A01.[MANDT] = B01.[MANDT] &#xA;    AND A01.[HRKFT] = B01.[HRKFT]&#xA;  )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
     </DTS:Executable>
   </DTS:Executables>
   <DTS:PrecedenceConstraints>
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint]"
       DTS:CreationName=""
-      DTS:DTSID="{8b0e3b50-8af7-45c6-82af-c7cb07d8e050}"
-      DTS:From="Package\CEPC"
+      DTS:DTSID="{D0F7CEA0-6F8A-4E0D-BC12-7723146404B0}"
+      DTS:From="Package\COKEY"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint"
-      DTS:To="Package\Sequence Container" />
+      DTS:To="Package\UPDATE" />
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
       DTS:CreationName=""
-      DTS:DTSID="{6A17FFD7-EBA4-4DC1-AF07-30E6F32DC72A}"
-      DTS:From="Package\clean stage"
+      DTS:DTSID="{0A200C7A-2192-4660-A064-37BB9D4A1C0F}"
+      DTS:From="Package\Clean Stage"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 1"
-      DTS:To="Package\CEPC" />
+      DTS:To="Package\COKEY" />
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
       DTS:CreationName=""
-      DTS:DTSID="{93F6C3E7-D799-4ECD-A3B2-E70896EEEEF2}"
-      DTS:From="Package\Sequence Container"
+      DTS:DTSID="{CF3D3C25-FECA-4DC6-A2E5-CC82C08A2E6F}"
+      DTS:From="Package\UPDATE"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 2"
-      DTS:To="Package\Sequence Container 1" />
+      DTS:To="Package\DELETE" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 3]"
+      DTS:CreationName=""
+      DTS:DTSID="{41E7AA3E-B590-4BF7-B2F4-DB118D1E4E28}"
+      DTS:From="Package\DELETE"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 3"
+      DTS:To="Package\INSERT" />
   </DTS:PrecedenceConstraints>
   <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
 <!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
@@ -1619,42 +1471,39 @@ ORDER BY A01.[MANDT]
       <GraphLayout
         Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
-          Size="104,42"
-          Id="Package\CEPC"
-          TopLeft="192,58" />
+          Size="135,42"
+          Id="Package\Clean Stage"
+          TopLeft="46,22" />
         <NodeLayout
-          Size="132,42"
-          Id="Package\clean stage"
-          TopLeft="364,52" />
+          Size="135,42"
+          Id="Package\COKEY"
+          TopLeft="46,103" />
         <NodeLayout
-          Size="108,42"
-          Id="Package\Sequence Container\delete"
-          TopLeft="195,39" />
+          Size="135,42"
+          Id="Package\DELETE"
+          TopLeft="46,265" />
         <NodeLayout
-          Size="112,42"
-          Id="Package\Sequence Container\update"
-          TopLeft="17,42" />
-        <ContainerLayout
-          HeaderHeight="43"
-          IsExpanded="True"
-          PanelSize="383,139"
-          Size="383,182"
-          Id="Package\Sequence Container"
-          TopLeft="60,174" />
+          Size="135,42"
+          Id="Package\INSERT"
+          TopLeft="46,346" />
+        <NodeLayout
+          Size="135,42"
+          Id="Package\UPDATE"
+          TopLeft="46,184" />
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint]"
-          TopLeft="247.75,100">
+          TopLeft="113.5,145">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,74"
+              EndConnector="0,39"
               Start="0,0"
-              End="0,66.5">
+              End="0,31.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,66.5" />
+                    End="0,31.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -1665,18 +1514,18 @@ ORDER BY A01.[MANDT]
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 1]"
-          TopLeft="364,76">
+          TopLeft="113.5,64">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-68,0"
+              EndConnector="0,39"
               Start="0,0"
-              End="-60.5,0">
+              End="0,31.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="-60.5,0" />
+                    End="0,31.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -1685,31 +1534,42 @@ ORDER BY A01.[MANDT]
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
-        <NodeLayout
-          Size="107,42"
-          Id="Package\Sequence Container 1\Insert"
-          TopLeft="126,44" />
-        <ContainerLayout
-          HeaderHeight="43"
-          IsExpanded="True"
-          PanelSize="383,139"
-          Size="383,182"
-          Id="Package\Sequence Container 1"
-          TopLeft="60,416" />
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 2]"
-          TopLeft="251.5,356">
+          TopLeft="113.5,226">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,60"
+              EndConnector="0,39"
               Start="0,0"
-              End="0,52.5">
+              End="0,31.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,52.5" />
+                    End="0,31.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 3]"
+          TopLeft="113.5,307">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,39"
+              Start="0,0"
+              End="0,31.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,31.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -1722,45 +1582,41 @@ ORDER BY A01.[MANDT]
     </LayoutInfo>
   </Package>
   <TaskHost
-    design-time-name="Package\CEPC">
+    design-time-name="Package\COKEY">
     <LayoutInfo>
       <GraphLayout
         Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
-          Size="114,42"
-          Id="Package\CEPC\DB SAP"
-          TopLeft="199,46" />
-        <NodeLayout
           Size="180,42"
-          Id="Package\CEPC\stage deleted records"
+          Id="Package\COKEY\stage deleted records"
           TopLeft="687,371" />
         <NodeLayout
-          Size="166,42"
-          Id="Package\CEPC\insert new records"
-          TopLeft="159,370" />
+          Size="153,42"
+          Id="Package\COKEY\Identity records"
+          TopLeft="437,237" />
+        <NodeLayout
+          Size="114,42"
+          Id="Package\COKEY\DB SAP"
+          TopLeft="199,46" />
         <NodeLayout
           Size="186,42"
-          Id="Package\CEPC\stage changed records"
-          TopLeft="422,479" />
-        <NodeLayout
-          Size="153,42"
-          Id="Package\CEPC\Identity records"
-          TopLeft="432,236" />
-        <NodeLayout
-          Size="130,42"
-          Id="Package\CEPC\Merge Join"
-          TopLeft="451,137" />
-        <NodeLayout
-          Size="112,42"
-          Id="Package\CEPC\DB PBI"
-          TopLeft="671,48" />
+          Id="Package\COKEY\stage changed records"
+          TopLeft="423,479" />
         <NodeLayout
           Size="184,42"
-          Id="Package\CEPC\Find Changed Records"
+          Id="Package\COKEY\Find Changed Records"
           TopLeft="420,366" />
+        <NodeLayout
+          Size="112,42"
+          Id="Package\COKEY\DB PBI"
+          TopLeft="671,48" />
+        <NodeLayout
+          Size="166,42"
+          Id="Package\COKEY\insert new records"
+          TopLeft="159,370" />
         <EdgeLayout
-          Id="Package\CEPC.Paths[update1]"
-          TopLeft="513.5,408">
+          Id="Package\COKEY.Paths[update1]"
+          TopLeft="514,408">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -1783,128 +1639,74 @@ ORDER BY A01.[MANDT]
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\CEPC.Paths[update]"
-          TopLeft="510.25,278">
+          Id="Package\COKEY.Paths[update]"
+          TopLeft="512.75,279">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,88"
+              EndConnector="0,87"
               Start="0,0"
-              End="0,80.5">
+              End="0,79.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,80.5" />
+                    End="0,79.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="-15.8025,34.4453125,31.605,11.609375"
+              BoundingBox="-15.8025,33.9453125,31.605,11.609375"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\CEPC.Paths[OLE DB Source Output1]"
-          TopLeft="727,90">
+          Id="Package\COKEY.Paths[insert]"
+          TopLeft="477.25,279">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-190.666666666667,47"
+              EndConnector="-235.25,91"
               Start="0,0"
-              End="-190.666666666667,39.5">
+              End="-235.25,83.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,23.8571428571429" />
+                    End="0,27.372591006424" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,23.8571428571429"
-                    Point2="0,27.8571428571429"
-                    Point3="-4,27.8571428571429" />
+                    Point1="0,27.372591006424"
+                    Point2="0,31.372591006424"
+                    Point3="-4,31.372591006424" />
                   <mssgle:LineSegment
-                    End="-186.666666666667,27.8571428571429" />
+                    End="-231.25,31.372591006424" />
                   <mssgle:CubicBezierSegment
-                    Point1="-186.666666666667,27.8571428571429"
-                    Point2="-190.666666666667,27.8571428571429"
-                    Point3="-190.666666666667,31.8571428571429" />
+                    Point1="-231.25,31.372591006424"
+                    Point2="-235.25,31.372591006424"
+                    Point3="-235.25,35.372591006424" />
                   <mssgle:LineSegment
-                    End="-190.666666666667,39.5" />
+                    End="-235.25,83.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="-130.57498046875,36.372591006424,25.8999609375,9.451171875"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\CEPC.Paths[OLE DB Source Output]"
-          TopLeft="256,88">
+          Id="Package\COKEY.Paths[delete]"
+          TopLeft="549.75,279">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="260,49"
+              EndConnector="227.25,92"
               Start="0,0"
-              End="260,41.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,20.5" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,20.5"
-                    Point2="0,24.5"
-                    Point3="4,24.5" />
-                  <mssgle:LineSegment
-                    End="256,24.5" />
-                  <mssgle:CubicBezierSegment
-                    Point1="256,24.5"
-                    Point2="260,24.5"
-                    Point3="260,28.5" />
-                  <mssgle:LineSegment
-                    End="260,41.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\CEPC.Paths[Merge Join Output]"
-          TopLeft="512.25,179">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,57"
-              Start="0,0"
-              End="0,49.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,49.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\CEPC.Paths[insert]"
-          TopLeft="472.25,278">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="-230.25,92"
-              Start="0,0"
-              End="-230.25,84.5">
+              End="227.25,84.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
@@ -1913,74 +1715,124 @@ ORDER BY A01.[MANDT]
                   <mssgle:CubicBezierSegment
                     Point1="0,27.7173447537473"
                     Point2="0,31.7173447537473"
-                    Point3="-4,31.7173447537473" />
+                    Point3="4,31.7173447537473" />
                   <mssgle:LineSegment
-                    End="-226.25,31.7173447537473" />
+                    End="223.25,31.7173447537473" />
                   <mssgle:CubicBezierSegment
-                    Point1="-226.25,31.7173447537473"
-                    Point2="-230.25,31.7173447537473"
-                    Point3="-230.25,35.7173447537473" />
+                    Point1="223.25,31.7173447537473"
+                    Point2="227.25,31.7173447537473"
+                    Point3="227.25,35.7173447537473" />
                   <mssgle:LineSegment
-                    End="-230.25,84.5" />
+                    End="227.25,84.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="-128.07498046875,36.7173447537473,25.8999609375,9.451171875"
+              BoundingBox="99.42904296875,36.7173447537473,28.3919140625,9.7490234375"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
+        <NodeLayout
+          Size="130,42"
+          Id="Package\COKEY\Merge Join"
+          TopLeft="442,122" />
         <EdgeLayout
-          Id="Package\CEPC.Paths[delete]"
-          TopLeft="544.75,278">
+          Id="Package\COKEY.Paths[OLE DB Source Output]"
+          TopLeft="256,88">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="232.25,93"
+              EndConnector="251,34"
               Start="0,0"
-              End="232.25,85.5">
+              End="251,26.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,28.0620985010707" />
+                    End="0,13" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,28.0620985010707"
-                    Point2="0,32.0620985010707"
-                    Point3="4,32.0620985010707" />
+                    Point1="0,13"
+                    Point2="0,17"
+                    Point3="4,17" />
                   <mssgle:LineSegment
-                    End="228.25,32.0620985010707" />
+                    End="247,17" />
                   <mssgle:CubicBezierSegment
-                    Point1="228.25,32.0620985010707"
-                    Point2="232.25,32.0620985010707"
-                    Point3="232.25,36.0620985010707" />
+                    Point1="247,17"
+                    Point2="251,17"
+                    Point3="251,21" />
                   <mssgle:LineSegment
-                    End="232.25,85.5" />
+                    End="251,26.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="101.92904296875,37.0620985010707,28.3919140625,9.7490234375"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\COKEY.Paths[OLE DB Source Output1]"
+          TopLeft="727,90">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-199.666666666667,32"
+              Start="0,0"
+              End="-199.666666666667,24.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,14.9665653495441" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,14.9665653495441"
+                    Point2="0,18.9665653495441"
+                    Point3="-4,18.9665653495441" />
+                  <mssgle:LineSegment
+                    End="-195.666666666667,18.9665653495441" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-195.666666666667,18.9665653495441"
+                    Point2="-199.666666666667,18.9665653495441"
+                    Point3="-199.666666666667,22.9665653495441" />
+                  <mssgle:LineSegment
+                    End="-199.666666666667,24.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\COKEY.Paths[Merge Join Output]"
+          TopLeft="510.25,164">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,73"
+              Start="0,0"
+              End="0,65.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,65.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
     </LayoutInfo>
   </TaskHost>
   <PipelineComponentMetadata
-    design-time-name="Package\CEPC\DB SAP">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
-    design-time-name="Package\CEPC\stage deleted records">
+    design-time-name="Package\COKEY\stage deleted records">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -1993,7 +1845,15 @@ ORDER BY A01.[MANDT]
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\CEPC\insert new records">
+    design-time-name="Package\COKEY\DB SAP">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\COKEY\stage changed records">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -2006,7 +1866,15 @@ ORDER BY A01.[MANDT]
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\CEPC\stage changed records">
+    design-time-name="Package\COKEY\DB PBI">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\COKEY\insert new records">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -2015,14 +1883,6 @@ ORDER BY A01.[MANDT]
         <Name>TableInfoObjectType</Name>
         <Value
           type="q2:string">Table</Value>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
-    design-time-name="Package\CEPC\DB PBI">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
       </Property>
     </Properties>
   </PipelineComponentMetadata>

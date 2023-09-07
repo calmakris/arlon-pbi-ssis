@@ -1,4 +1,4 @@
-﻿<?xml version="1.0"?>
+<?xml version="1.0"?>
 <DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
   DTS:refId="Package"
   DTS:CreationDate="2/10/2021 6:49:29 PM"
@@ -7,15 +7,26 @@
   DTS:CreatorName="DOMAIN\RPETRELLA"
   DTS:DTSID="{20922400-2329-46AB-BEE3-CAE0ECB85E7A}"
   DTS:ExecutableType="Microsoft.Package"
-  DTS:LastModifiedProductVersion="16.0.694.0"
+  DTS:LastModifiedProductVersion="16.0.5270.0"
   DTS:LocaleID="1033"
   DTS:ObjectName="ACCTIT"
   DTS:PackageType="5"
-  DTS:VersionBuild="52"
-  DTS:VersionGUID="{420855C2-CEC8-4630-B12E-2B168FBC2B1B}">
+  DTS:VersionBuild="62"
+  DTS:VersionGUID="{814D015D-E5CF-4627-95DD-F9C80EA855CE}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
-  <DTS:Variables />
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{45DCBFCB-EAA6-46C3-82C4-35AD2F3E2969}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="MinDate">
+      <DTS:VariableValue
+        DTS:DataType="8"
+        xml:space="preserve"></DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
   <DTS:Executables>
     <DTS:Executable
       DTS:refId="Package\ACCTIT"
@@ -56,7 +67,7 @@
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
                 <property
                   dataType="System.Int32"
                   description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -497,7 +508,7 @@
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT [MANDT]
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT [MANDT]
     ,[AWTYP]
     ,[AWREF]
     ,[AWORG]
@@ -506,6 +517,7 @@
     ,[BELNR]
     ,[BUZEI]
     ,[GJAHR]
+    ,[BLDAT]
     ,[KUNNR]
     ,[HKONT]
     ,[AUFNR]
@@ -520,6 +532,7 @@
     ,[SGTXT]
 FROM [ACCTIT] (NOLOCK)
 WHERE [MANDT] = '105'
+    AND [BLDAT] &gt; ?
 ORDER BY [MANDT]
     ,[AWTYP]
     ,[AWREF]
@@ -545,7 +558,7 @@ ORDER BY [MANDT]
                 <property
                   dataType="System.String"
                   description="The mappings between the parameters in the SQL command and variables."
-                  name="ParameterMapping"></property>
+                  name="ParameterMapping">"Parameter0:Input",{45DCBFCB-EAA6-46C3-82C4-35AD2F3E2969};</property>
               </properties>
               <connections>
                 <connection
@@ -777,6 +790,16 @@ ORDER BY [MANDT]
                       lineageId="Package\ACCTIT\From PBI.Outputs[OLE DB Source Output].Columns[SGTXT]"
                       name="SGTXT"
                       truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\ACCTIT\From PBI.Outputs[OLE DB Source Output].Columns[BLDAT]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\ACCTIT\From PBI.Outputs[OLE DB Source Output].ExternalColumns[BLDAT]"
+                      length="8"
+                      lineageId="Package\ACCTIT\From PBI.Outputs[OLE DB Source Output].Columns[BLDAT]"
+                      name="BLDAT"
+                      truncationRowDisposition="FailComponent" />
                   </outputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -886,6 +909,11 @@ ORDER BY [MANDT]
                       dataType="wstr"
                       length="50"
                       name="SGTXT" />
+                    <externalMetadataColumn
+                      refId="Package\ACCTIT\From PBI.Outputs[OLE DB Source Output].ExternalColumns[BLDAT]"
+                      dataType="wstr"
+                      length="8"
+                      name="BLDAT" />
                   </externalMetadataColumns>
                 </output>
                 <output
@@ -947,6 +975,12 @@ ORDER BY [MANDT]
                       length="4"
                       lineageId="Package\ACCTIT\From PBI.Outputs[OLE DB Source Error Output].Columns[GJAHR]"
                       name="GJAHR" />
+                    <outputColumn
+                      refId="Package\ACCTIT\From PBI.Outputs[OLE DB Source Error Output].Columns[BLDAT]"
+                      dataType="wstr"
+                      length="8"
+                      lineageId="Package\ACCTIT\From PBI.Outputs[OLE DB Source Error Output].Columns[BLDAT]"
+                      name="BLDAT" />
                     <outputColumn
                       refId="Package\ACCTIT\From PBI.Outputs[OLE DB Source Error Output].Columns[KUNNR]"
                       dataType="wstr"
@@ -1062,7 +1096,7 @@ ORDER BY [MANDT]
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT [MANDT]
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT [MANDT]
     ,[AWTYP]
     ,[AWREF]
     ,[AWORG]
@@ -1071,6 +1105,7 @@ ORDER BY [MANDT]
     ,[BELNR]
     ,[BUZEI]
     ,[GJAHR]
+    ,[BLDAT]
     ,[KUNNR]
     ,[HKONT]
     ,[AUFNR]
@@ -1085,6 +1120,7 @@ ORDER BY [MANDT]
     ,[SGTXT]
 FROM [ecp].[ACCTIT] (NOLOCK)
 WHERE [MANDT] = '105'
+   AND [BLDAT] &gt; ?
 ORDER BY [MANDT]
     ,[AWTYP]
     ,[AWREF]
@@ -1110,7 +1146,7 @@ ORDER BY [MANDT]
                 <property
                   dataType="System.String"
                   description="The mappings between the parameters in the SQL command and variables."
-                  name="ParameterMapping"></property>
+                  name="ParameterMapping">"Parameter0:Input",{45DCBFCB-EAA6-46C3-82C4-35AD2F3E2969};</property>
               </properties>
               <connections>
                 <connection
@@ -1342,6 +1378,16 @@ ORDER BY [MANDT]
                       lineageId="Package\ACCTIT\From SAP.Outputs[OLE DB Source Output].Columns[SGTXT]"
                       name="SGTXT"
                       truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\ACCTIT\From SAP.Outputs[OLE DB Source Output].Columns[BLDAT]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\ACCTIT\From SAP.Outputs[OLE DB Source Output].ExternalColumns[BLDAT]"
+                      length="8"
+                      lineageId="Package\ACCTIT\From SAP.Outputs[OLE DB Source Output].Columns[BLDAT]"
+                      name="BLDAT"
+                      truncationRowDisposition="FailComponent" />
                   </outputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -1451,6 +1497,11 @@ ORDER BY [MANDT]
                       dataType="wstr"
                       length="50"
                       name="SGTXT" />
+                    <externalMetadataColumn
+                      refId="Package\ACCTIT\From SAP.Outputs[OLE DB Source Output].ExternalColumns[BLDAT]"
+                      dataType="wstr"
+                      length="8"
+                      name="BLDAT" />
                   </externalMetadataColumns>
                 </output>
                 <output
@@ -1512,6 +1563,12 @@ ORDER BY [MANDT]
                       length="4"
                       lineageId="Package\ACCTIT\From SAP.Outputs[OLE DB Source Error Output].Columns[GJAHR]"
                       name="GJAHR" />
+                    <outputColumn
+                      refId="Package\ACCTIT\From SAP.Outputs[OLE DB Source Error Output].Columns[BLDAT]"
+                      dataType="wstr"
+                      length="8"
+                      lineageId="Package\ACCTIT\From SAP.Outputs[OLE DB Source Error Output].Columns[BLDAT]"
+                      name="BLDAT" />
                     <outputColumn
                       refId="Package\ACCTIT\From SAP.Outputs[OLE DB Source Error Output].Columns[KUNNR]"
                       dataType="wstr"
@@ -1780,7 +1837,7 @@ ORDER BY [MANDT]
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
                 <property
                   dataType="System.Int32"
                   description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -1980,6 +2037,13 @@ ORDER BY [MANDT]
                       cachedName="SGTXT"
                       externalMetadataColumnId="Package\ACCTIT\Insert STAGE.Inputs[OLE DB Destination Input].ExternalColumns[SGTXT]"
                       lineageId="Package\ACCTIT\Merge Join.Outputs[Merge Join Output].Columns[SGTXT]" />
+                    <inputColumn
+                      refId="Package\ACCTIT\Insert STAGE.Inputs[OLE DB Destination Input].Columns[BLDAT]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="BLDAT"
+                      externalMetadataColumnId="Package\ACCTIT\Insert STAGE.Inputs[OLE DB Destination Input].ExternalColumns[BLDAT]"
+                      lineageId="Package\ACCTIT\Merge Join.Outputs[Merge Join Output].Columns[BLDAT]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -2089,6 +2153,11 @@ ORDER BY [MANDT]
                       dataType="wstr"
                       length="50"
                       name="SGTXT" />
+                    <externalMetadataColumn
+                      refId="Package\ACCTIT\Insert STAGE.Inputs[OLE DB Destination Input].ExternalColumns[BLDAT]"
+                      dataType="wstr"
+                      length="8"
+                      name="BLDAT" />
                   </externalMetadataColumns>
                 </input>
               </inputs>
@@ -2281,6 +2350,12 @@ ORDER BY [MANDT]
                       cachedLength="50"
                       cachedName="SGTXT"
                       lineageId="Package\ACCTIT\From SAP.Outputs[OLE DB Source Output].Columns[SGTXT]" />
+                    <inputColumn
+                      refId="Package\ACCTIT\Merge Join.Inputs[Merge Join Left Input].Columns[BLDAT]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="BLDAT"
+                      lineageId="Package\ACCTIT\From SAP.Outputs[OLE DB Source Output].Columns[BLDAT]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
@@ -2421,6 +2496,12 @@ ORDER BY [MANDT]
                       cachedLength="50"
                       cachedName="SGTXT"
                       lineageId="Package\ACCTIT\From PBI.Outputs[OLE DB Source Output].Columns[SGTXT]" />
+                    <inputColumn
+                      refId="Package\ACCTIT\Merge Join.Inputs[Merge Join Right Input].Columns[BLDAT]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="BLDAT"
+                      lineageId="Package\ACCTIT\From PBI.Outputs[OLE DB Source Output].Columns[BLDAT]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
@@ -3026,6 +3107,34 @@ ORDER BY [MANDT]
                           name="InputColumnID">#{Package\ACCTIT\Merge Join.Inputs[Merge Join Right Input].Columns[SGTXT]}</property>
                       </properties>
                     </outputColumn>
+                    <outputColumn
+                      refId="Package\ACCTIT\Merge Join.Outputs[Merge Join Output].Columns[BLDAT]"
+                      dataType="wstr"
+                      length="8"
+                      lineageId="Package\ACCTIT\Merge Join.Outputs[Merge Join Output].Columns[BLDAT]"
+                      name="BLDAT">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\ACCTIT\Merge Join.Inputs[Merge Join Left Input].Columns[BLDAT]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\ACCTIT\Merge Join.Outputs[Merge Join Output].Columns[BLDAT (1)]"
+                      dataType="wstr"
+                      length="8"
+                      lineageId="Package\ACCTIT\Merge Join.Outputs[Merge Join Output].Columns[BLDAT (1)]"
+                      name="BLDAT (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\ACCTIT\Merge Join.Inputs[Merge Join Right Input].Columns[BLDAT]}</property>
+                      </properties>
+                    </outputColumn>
                   </outputColumns>
                   <externalMetadataColumns />
                 </output>
@@ -3056,7 +3165,7 @@ ORDER BY [MANDT]
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
                 <property
                   dataType="System.Int32"
                   description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -3256,6 +3365,13 @@ ORDER BY [MANDT]
                       cachedName="SGTXT"
                       externalMetadataColumnId="Package\ACCTIT\Update STAGE.Inputs[OLE DB Destination Input].ExternalColumns[SGTXT]"
                       lineageId="Package\ACCTIT\Merge Join.Outputs[Merge Join Output].Columns[SGTXT]" />
+                    <inputColumn
+                      refId="Package\ACCTIT\Update STAGE.Inputs[OLE DB Destination Input].Columns[BLDAT]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="BLDAT"
+                      externalMetadataColumnId="Package\ACCTIT\Update STAGE.Inputs[OLE DB Destination Input].ExternalColumns[BLDAT]"
+                      lineageId="Package\ACCTIT\Merge Join.Outputs[Merge Join Output].Columns[BLDAT]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -3365,6 +3481,11 @@ ORDER BY [MANDT]
                       dataType="wstr"
                       length="50"
                       name="SGTXT" />
+                    <externalMetadataColumn
+                      refId="Package\ACCTIT\Update STAGE.Inputs[OLE DB Destination Input].ExternalColumns[BLDAT]"
+                      dataType="wstr"
+                      length="8"
+                      name="BLDAT" />
                   </externalMetadataColumns>
                 </input>
               </inputs>
@@ -3435,13 +3556,13 @@ ORDER BY [MANDT]
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
-      DTS:refId="Package\clean stage"
+      DTS:refId="Package\Clean Stage"
       DTS:CreationName="Microsoft.ExecuteSQLTask"
       DTS:Description="Execute SQL Task"
       DTS:DTSID="{FD838BB4-5106-4C81-A084-3E7FE540228B}"
       DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
-      DTS:ObjectName="clean stage"
+      DTS:ObjectName="Clean Stage"
       DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
       DTS:ThreadHint="0">
       <DTS:Variables />
@@ -3452,13 +3573,13 @@ ORDER BY [MANDT]
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
-      DTS:refId="Package\delete"
+      DTS:refId="Package\DELETE"
       DTS:CreationName="Microsoft.ExecuteSQLTask"
       DTS:Description="Execute SQL Task"
       DTS:DTSID="{E47ECA15-D0AE-4919-9708-2B886A97156F}"
       DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
-      DTS:ObjectName="delete"
+      DTS:ObjectName="DELETE"
       DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
       DTS:ThreadHint="0">
       <DTS:Variables />
@@ -3469,13 +3590,34 @@ ORDER BY [MANDT]
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
-      DTS:refId="Package\insert"
+      DTS:refId="Package\Get MinDate"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{54eb4b1e-d9c4-4be0-8f4b-fc873550667f}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Get MinDate"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="SELECT FORMAT( ISNULL( MIN_DATE, dbo.GetBegFiscalYearDate( GETDATE() ) ), 'yyyyMMdd' ) AS MinDate&#xA;FROM zzJOB_ETL&#xA;WHERE TABLE_NAME = 'ACCTIT'"
+          SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ResultBinding
+            SQLTask:ResultName="MinDate"
+            SQLTask:DtsVariableName="User::MinDate" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\INSERT"
       DTS:CreationName="Microsoft.ExecuteSQLTask"
       DTS:Description="Execute SQL Task"
       DTS:DTSID="{423B45C2-6835-48A2-BA49-A517125B1F22}"
       DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
-      DTS:ObjectName="insert"
+      DTS:ObjectName="INSERT"
       DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
       DTS:ThreadHint="0">
       <DTS:Variables />
@@ -3486,20 +3628,36 @@ ORDER BY [MANDT]
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
-      DTS:refId="Package\update"
+      DTS:refId="Package\UPDATE"
       DTS:CreationName="Microsoft.ExecuteSQLTask"
       DTS:Description="Execute SQL Task"
       DTS:DTSID="{F3746573-1591-4C7F-8C15-DC32A1D264EA}"
       DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
-      DTS:ObjectName="update"
+      DTS:ObjectName="UPDATE"
       DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
       DTS:ThreadHint="0">
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
           SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-          SQLTask:SqlStatementSource="UPDATE A01&#xA;SET A01.[BUKRS] = B01.[BUKRS]&#xA;    ,A01.[BELNR] = B01.[BELNR]&#xA;    ,A01.[BUZEI] = B01.[BUZEI]&#xA;    ,A01.[GJAHR] = B01.[GJAHR]&#xA;    ,A01.[KUNNR] = B01.[KUNNR]&#xA;    ,A01.[HKONT] = B01.[HKONT]&#xA;    ,A01.[AUFNR] = B01.[AUFNR]&#xA;    ,A01.[MATNR] = B01.[MATNR]&#xA;    ,A01.[BWART] = B01.[BWART]&#xA;    ,A01.[EBELN] = B01.[EBELN]&#xA;    ,A01.[EBELP] = B01.[EBELP]&#xA;    ,A01.[BKLAS] = B01.[BKLAS]&#xA;    ,A01.[ERFMG] = B01.[ERFMG]&#xA;    ,A01.[ERFME] = B01.[ERFME]&#xA;    ,A01.[ZEILE] = B01.[ZEILE]&#xA;    ,A01.[SGTXT] = B01.[SGTXT]&#xA;FROM [ACCTIT] A01&#xA;INNER JOIN [ACCTIT_STAGE_UPDATE] B01&#xA;ON A01.[MANDT] = B01.[MANDT]&#xA;&#x9;AND A01.[AWTYP] = B01.[AWTYP]&#xA;&#x9;AND A01.[AWREF] = B01.[AWREF]&#xA;&#x9;AND A01.[AWORG] = B01.[AWORG]&#xA;&#x9;AND A01.[POSNR] = B01.[POSNR]&#xA;&#x9;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          SQLTask:SqlStatementSource="UPDATE A01&#xA;SET A01.[BUKRS] = B01.[BUKRS]&#xA;    ,A01.[BELNR] = B01.[BELNR]&#xA;    ,A01.[BUZEI] = B01.[BUZEI]&#xA;    ,A01.[GJAHR] = B01.[GJAHR]&#xA;    ,A01.[BLDAT] = B01.[BLDAT]&#xA;    ,A01.[KUNNR] = B01.[KUNNR]&#xA;    ,A01.[HKONT] = B01.[HKONT]&#xA;    ,A01.[AUFNR] = B01.[AUFNR]&#xA;    ,A01.[MATNR] = B01.[MATNR]&#xA;    ,A01.[BWART] = B01.[BWART]&#xA;    ,A01.[EBELN] = B01.[EBELN]&#xA;    ,A01.[EBELP] = B01.[EBELP]&#xA;    ,A01.[BKLAS] = B01.[BKLAS]&#xA;    ,A01.[ERFMG] = B01.[ERFMG]&#xA;    ,A01.[ERFME] = B01.[ERFME]&#xA;    ,A01.[ZEILE] = B01.[ZEILE]&#xA;    ,A01.[SGTXT] = B01.[SGTXT]&#xA;FROM [ACCTIT] A01&#xA;INNER JOIN [ACCTIT_STAGE_UPDATE] B01&#xA;ON A01.[MANDT] = B01.[MANDT]&#xA;&#x9;AND A01.[AWTYP] = B01.[AWTYP]&#xA;&#x9;AND A01.[AWREF] = B01.[AWREF]&#xA;&#x9;AND A01.[AWORG] = B01.[AWORG]&#xA;&#x9;AND A01.[POSNR] = B01.[POSNR]&#xA;&#x9;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Update MinDate"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{fe7adfa8-6a5d-4ced-9e64-fe105638eeb6}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Update MinDate"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="UPDATE&#xA;   zzJOB_ETL &#xA;SET&#xA;   LAST_SUCCESS_RUN = GETDATE()&#xA;   ,SUCCESS_DATE = dbo.GetBegDate(GETDATE())&#xA;   ,BEG_FISCAL_DATE = dbo.GetBegFiscalYearDate(GETDATE())&#xA;   ,MIN_DATE = EOMONTH( GETDATE(), -1 )&#xA;WHERE&#xA;   TABLE_NAME = 'ACCTIT'" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
   </DTS:Executables>
@@ -3511,12 +3669,12 @@ ORDER BY [MANDT]
       DTS:From="Package\ACCTIT"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint"
-      DTS:To="Package\update" />
+      DTS:To="Package\UPDATE" />
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
       DTS:CreationName=""
       DTS:DTSID="{64957CBB-D3E1-4787-9E3F-55DAD44CBDC5}"
-      DTS:From="Package\clean stage"
+      DTS:From="Package\Clean Stage"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 1"
       DTS:To="Package\ACCTIT" />
@@ -3524,18 +3682,34 @@ ORDER BY [MANDT]
       DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
       DTS:CreationName=""
       DTS:DTSID="{54BD18E8-DFBC-43CD-BAC5-2F3E07AA0D5D}"
-      DTS:From="Package\update"
+      DTS:From="Package\UPDATE"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 2"
-      DTS:To="Package\delete" />
+      DTS:To="Package\DELETE" />
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 3]"
       DTS:CreationName=""
       DTS:DTSID="{0564B826-3831-45A2-AACB-C487CAD18419}"
-      DTS:From="Package\delete"
+      DTS:From="Package\DELETE"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 3"
-      DTS:To="Package\insert" />
+      DTS:To="Package\INSERT" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 4]"
+      DTS:CreationName=""
+      DTS:DTSID="{EEB11156-7134-41F4-9513-996D35B85DC7}"
+      DTS:From="Package\Get MinDate"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 4"
+      DTS:To="Package\Clean Stage" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 5]"
+      DTS:CreationName=""
+      DTS:DTSID="{85C02924-07CD-41CE-91BA-3020B15E024F}"
+      DTS:From="Package\INSERT"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 5"
+      DTS:To="Package\Update MinDate" />
   </DTS:PrecedenceConstraints>
   <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
 <!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
@@ -3550,39 +3724,47 @@ ORDER BY [MANDT]
       <GraphLayout
         Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
-          Size="115,42"
+          Size="158,42"
           Id="Package\ACCTIT"
-          TopLeft="350,43" />
+          TopLeft="59,195.083333333333" />
         <NodeLayout
-          Size="132,42"
-          Id="Package\clean stage"
-          TopLeft="116,44.333333333333" />
+          Size="158,42"
+          Id="Package\Clean Stage"
+          TopLeft="59,118.916666666667" />
         <NodeLayout
-          Size="115,42"
-          Id="Package\delete"
-          TopLeft="350,187.5" />
+          Size="158,42"
+          Id="Package\DELETE"
+          TopLeft="59,347.416666666667" />
         <NodeLayout
-          Size="115,42"
-          Id="Package\insert"
-          TopLeft="350,259.75" />
+          Size="158,42"
+          Id="Package\Get MinDate"
+          TopLeft="59,42.75" />
         <NodeLayout
-          Size="115,42"
-          Id="Package\update"
-          TopLeft="350,115.25" />
+          Size="158,42"
+          Id="Package\INSERT"
+          TopLeft="59,423.583333333333" />
+        <NodeLayout
+          Size="158,42"
+          Id="Package\UPDATE"
+          TopLeft="59,271.25" />
+        <NodeLayout
+          Size="158,42"
+          Id="Package\Update MinDate"
+          TopLeft="59,499.75" />
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint]"
-          TopLeft="407.5,85">
+          TopLeft="138,237.083333333333">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,30.25"
+              EndConnector="0,34.1666666666667"
               Start="0,0"
-              End="0,22.75">
+              End="0,26.6666666666667">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,22.75" />
+                    End="0,26.6666666666667" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -3593,18 +3775,18 @@ ORDER BY [MANDT]
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 1]"
-          TopLeft="248,64.6666666666665">
+          TopLeft="138,160.916666666667">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="102,0"
+              EndConnector="0,34.1666666666667"
               Start="0,0"
-              End="94.5,0">
+              End="0,26.6666666666667">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="94.5,0" />
+                    End="0,26.6666666666667" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -3615,18 +3797,18 @@ ORDER BY [MANDT]
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 2]"
-          TopLeft="407.5,157.25">
+          TopLeft="138,313.25">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,30.25"
+              EndConnector="0,34.1666666666667"
               Start="0,0"
-              End="0,22.75">
+              End="0,26.6666666666667">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,22.75" />
+                    End="0,26.6666666666667" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -3637,18 +3819,62 @@ ORDER BY [MANDT]
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 3]"
-          TopLeft="407.5,229.5">
+          TopLeft="138,389.416666666667">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,30.25"
+              EndConnector="0,34.1666666666667"
               Start="0,0"
-              End="0,22.75">
+              End="0,26.6666666666667">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,22.75" />
+                    End="0,26.6666666666667" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 4]"
+          TopLeft="138,84.75">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,34.1666666666667"
+              Start="0,0"
+              End="0,26.6666666666667">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,26.6666666666667" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 5]"
+          TopLeft="138,465.583333333333">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,34.1666666666666"
+              Start="0,0"
+              End="0,26.6666666666666">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,26.6666666666666" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -3666,29 +3892,21 @@ ORDER BY [MANDT]
       <GraphLayout
         Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
-          Size="156,42"
-          Id="Package\ACCTIT\Identify Records"
-          TopLeft="228,198" />
-        <NodeLayout
-          Size="130,42"
-          Id="Package\ACCTIT\Merge Join"
-          TopLeft="241,119" />
-        <NodeLayout
-          Size="144,42"
-          Id="Package\ACCTIT\Delete STAGE"
-          TopLeft="456.25,320" />
+          Size="125,42"
+          Id="Package\ACCTIT\From SAP"
+          TopLeft="126.75,51" />
         <NodeLayout
           Size="184,42"
           Id="Package\ACCTIT\Find Changed Records"
           TopLeft="213.75,317.5" />
         <NodeLayout
-          Size="125,42"
-          Id="Package\ACCTIT\From SAP"
-          TopLeft="126.75,51" />
-        <NodeLayout
           Size="142,42"
           Id="Package\ACCTIT\Insert STAGE"
           TopLeft="21.75,319.5" />
+        <NodeLayout
+          Size="156,42"
+          Id="Package\ACCTIT\Identify Records"
+          TopLeft="228,198" />
         <NodeLayout
           Size="123,42"
           Id="Package\ACCTIT\From PBI"
@@ -3697,6 +3915,14 @@ ORDER BY [MANDT]
           Size="148,42"
           Id="Package\ACCTIT\Update STAGE"
           TopLeft="236.25,397.5" />
+        <NodeLayout
+          Size="144,42"
+          Id="Package\ACCTIT\Delete STAGE"
+          TopLeft="456.25,320" />
+        <NodeLayout
+          Size="130,42"
+          Id="Package\ACCTIT\Merge Join"
+          TopLeft="241,119" />
         <EdgeLayout
           Id="Package\ACCTIT.Paths[update1]"
           TopLeft="308,359.5">
@@ -3911,7 +4137,7 @@ ORDER BY [MANDT]
     </LayoutInfo>
   </TaskHost>
   <PipelineComponentMetadata
-    design-time-name="Package\ACCTIT\Delete STAGE">
+    design-time-name="Package\ACCTIT\Update STAGE">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -3920,14 +4146,6 @@ ORDER BY [MANDT]
         <Name>TableInfoObjectType</Name>
         <Value
           type="q2:string">Table</Value>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
-    design-time-name="Package\ACCTIT\From SAP">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
       </Property>
     </Properties>
   </PipelineComponentMetadata>
@@ -3953,7 +4171,7 @@ ORDER BY [MANDT]
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\ACCTIT\Update STAGE">
+    design-time-name="Package\ACCTIT\Delete STAGE">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -3962,6 +4180,14 @@ ORDER BY [MANDT]
         <Name>TableInfoObjectType</Name>
         <Value
           type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\ACCTIT\From SAP">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
       </Property>
     </Properties>
   </PipelineComponentMetadata>

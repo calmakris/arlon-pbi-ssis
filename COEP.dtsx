@@ -7,24 +7,34 @@
   DTS:CreatorName="DOMAIN\RPETRELLA"
   DTS:DTSID="{3D6CA3D9-C149-4F76-A5D1-EE268FC98FA9}"
   DTS:ExecutableType="Microsoft.Package"
-  DTS:LastModifiedProductVersion="15.0.2000.152"
+  DTS:LastModifiedProductVersion="16.0.5270.0"
   DTS:LocaleID="1033"
   DTS:ObjectName="COEP"
   DTS:PackageType="5"
-  DTS:VersionBuild="14"
-  DTS:VersionGUID="{19C9B16A-D57A-4880-A5D6-A2FB92CF7D94}">
+  DTS:VersionBuild="47"
+  DTS:VersionGUID="{2549384E-9BF4-4408-A23C-9DAB22F0CD7F}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
-  <DTS:Variables />
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{F82308A8-B732-4D14-B726-961178456CA1}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="LastTimestamp">
+      <DTS:VariableValue
+        DTS:DataType="20">0</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
   <DTS:Executables>
     <DTS:Executable
-      DTS:refId="Package\clean stage"
+      DTS:refId="Package\Clean Stage"
       DTS:CreationName="Microsoft.ExecuteSQLTask"
       DTS:Description="Execute SQL Task"
       DTS:DTSID="{4F15814C-AA8D-41BA-9E66-92DB4F2F8415}"
       DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
-      DTS:ObjectName="clean stage"
+      DTS:ObjectName="Clean Stage"
       DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
       DTS:ThreadHint="0">
       <DTS:Variables />
@@ -73,31 +83,41 @@
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT A01.[MANDT]
-      ,A01.[KOKRS]
-      ,A01.[BELNR]
-      ,A01.[BUZEI]
-      ,A01.[PERIO]
-      ,A01.[WKGBTR]
-      ,A01.[MBGBTR]
-      ,A01.[OBJNR]
-      ,A01.[GJAHR]
-      ,A01.[WRTTP]
-      ,A01.[KSTAR]
-      ,A01.[BUKRS]
-      ,A01.[EBELN]
-      ,A01.[EBELP]
-      ,A01.[GKONT]
-      ,A01.[GKOAR]
-      ,A01.[MATNR]
-      ,A01.[REFBZ]
-      ,A01.[SGTXT]
-      ,A01.[WERKS]
-FROM [COEP] A01 (NOLOCK)
-ORDER BY A01.[MANDT]
-        ,A01.[KOKRS]
-        ,A01.[BELNR]
-        ,A01.[BUZEI]</property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT 
+  [MANDT], 
+  [KOKRS], 
+  [BELNR], 
+  [BUZEI], 
+  [PERIO], 
+  [WKGBTR], 
+  [MBGBTR], 
+  [OBJNR], 
+  [GJAHR], 
+  [WRTTP], 
+  [KSTAR], 
+  [VRGNG],
+  [PAROB1],
+  [BUKRS], 
+  [EBELN], 
+  [EBELP], 
+  [GKONT], 
+  [GKOAR], 
+  [MATNR], 
+  [REFBZ], 
+  [SGTXT], 
+  [WERKS], 
+  [TIMESTMP]
+FROM 
+  [COEP] AS item (NOLOCK)
+WHERE 
+  [VRGNG] IN ('RKL', 'RKLN', 'COIN') 
+  AND LEFT([KSTAR], 3) IN ('005', '006', '009')
+  AND [TIMESTMP] &gt;= ?
+ORDER BY 
+  [MANDT], 
+  [KOKRS], 
+  [BELNR], 
+  [BUZEI]</property>
                 <property
                   dataType="System.String"
                   description="The variable that contains the SQL command to be executed."
@@ -118,7 +138,7 @@ ORDER BY A01.[MANDT]
                 <property
                   dataType="System.String"
                   description="The mappings between the parameters in the SQL command and variables."
-                  name="ParameterMapping"></property>
+                  name="ParameterMapping">"Parameter0:Input",{F82308A8-B732-4D14-B726-961178456CA1};</property>
               </properties>
               <connections>
                 <connection
@@ -340,6 +360,36 @@ ORDER BY A01.[MANDT]
                       lineageId="Package\COEP\DB PBI.Outputs[OLE DB Source Output].Columns[WERKS]"
                       name="WERKS"
                       truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\COEP\DB PBI.Outputs[OLE DB Source Output].Columns[VRGNG]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\COEP\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[VRGNG]"
+                      length="4"
+                      lineageId="Package\COEP\DB PBI.Outputs[OLE DB Source Output].Columns[VRGNG]"
+                      name="VRGNG"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\COEP\DB PBI.Outputs[OLE DB Source Output].Columns[PAROB1]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\COEP\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[PAROB1]"
+                      length="22"
+                      lineageId="Package\COEP\DB PBI.Outputs[OLE DB Source Output].Columns[PAROB1]"
+                      name="PAROB1"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\COEP\DB PBI.Outputs[OLE DB Source Output].Columns[TIMESTMP]"
+                      dataType="numeric"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\COEP\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[TIMESTMP]"
+                      lineageId="Package\COEP\DB PBI.Outputs[OLE DB Source Output].Columns[TIMESTMP]"
+                      name="TIMESTMP"
+                      precision="16"
+                      truncationRowDisposition="FailComponent" />
                   </outputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -445,6 +495,21 @@ ORDER BY A01.[MANDT]
                       dataType="wstr"
                       length="4"
                       name="WERKS" />
+                    <externalMetadataColumn
+                      refId="Package\COEP\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[VRGNG]"
+                      dataType="wstr"
+                      length="4"
+                      name="VRGNG" />
+                    <externalMetadataColumn
+                      refId="Package\COEP\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[PAROB1]"
+                      dataType="wstr"
+                      length="22"
+                      name="PAROB1" />
+                    <externalMetadataColumn
+                      refId="Package\COEP\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[TIMESTMP]"
+                      dataType="numeric"
+                      name="TIMESTMP"
+                      precision="16" />
                   </externalMetadataColumns>
                 </output>
                 <output
@@ -521,6 +586,18 @@ ORDER BY A01.[MANDT]
                       lineageId="Package\COEP\DB PBI.Outputs[OLE DB Source Error Output].Columns[KSTAR]"
                       name="KSTAR" />
                     <outputColumn
+                      refId="Package\COEP\DB PBI.Outputs[OLE DB Source Error Output].Columns[VRGNG]"
+                      dataType="wstr"
+                      length="4"
+                      lineageId="Package\COEP\DB PBI.Outputs[OLE DB Source Error Output].Columns[VRGNG]"
+                      name="VRGNG" />
+                    <outputColumn
+                      refId="Package\COEP\DB PBI.Outputs[OLE DB Source Error Output].Columns[PAROB1]"
+                      dataType="wstr"
+                      length="22"
+                      lineageId="Package\COEP\DB PBI.Outputs[OLE DB Source Error Output].Columns[PAROB1]"
+                      name="PAROB1" />
+                    <outputColumn
                       refId="Package\COEP\DB PBI.Outputs[OLE DB Source Error Output].Columns[BUKRS]"
                       dataType="wstr"
                       length="4"
@@ -575,6 +652,12 @@ ORDER BY A01.[MANDT]
                       lineageId="Package\COEP\DB PBI.Outputs[OLE DB Source Error Output].Columns[WERKS]"
                       name="WERKS" />
                     <outputColumn
+                      refId="Package\COEP\DB PBI.Outputs[OLE DB Source Error Output].Columns[TIMESTMP]"
+                      dataType="numeric"
+                      lineageId="Package\COEP\DB PBI.Outputs[OLE DB Source Error Output].Columns[TIMESTMP]"
+                      name="TIMESTMP"
+                      precision="16" />
+                    <outputColumn
                       refId="Package\COEP\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
                       dataType="i4"
                       lineageId="Package\COEP\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
@@ -616,35 +699,41 @@ ORDER BY A01.[MANDT]
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT A01.[MANDT]
-      ,A01.[KOKRS]
-      ,A01.[BELNR]
-      ,A01.[BUZEI]
-      ,A01.[PERIO]
-      ,A01.[WKGBTR]
-      ,A01.[MBGBTR]
-      ,A01.[OBJNR]
-      ,A01.[GJAHR]
-      ,A01.[WRTTP]
-      ,A01.[KSTAR]
-      ,A01.[BUKRS]
-      ,A01.[EBELN]
-      ,A01.[EBELP]
-      ,A01.[GKONT]
-      ,A01.[GKOAR]
-      ,A01.[MATNR]
-      ,A01.[REFBZ]
-      ,A01.[SGTXT]
-      ,A01.[WERKS]
-FROM [ecp].[COEP] A01 (NOLOCK) INNER JOIN [ecp].[COBK] B01 (NOLOCK) ON ( A01.MANDT = B01.MANDT
-                                                            AND A01.KOKRS = B01.KOKRS
-                                                            AND A01.BELNR = B01.BELNR )
-WHERE B01.VRGNG IN ('RKL', 'RKLN', 'COIN')
-  AND LEFT(A01.KSTAR, 3) IN ('005','006','009')
-ORDER BY A01.[MANDT]
-        ,A01.[KOKRS]
-        ,A01.[BELNR]
-        ,A01.[BUZEI]</property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT 
+  [MANDT], 
+  [KOKRS], 
+  [BELNR], 
+  [BUZEI], 
+  [PERIO], 
+  [WKGBTR], 
+  [MBGBTR], 
+  [OBJNR], 
+  [GJAHR], 
+  [WRTTP], 
+  [KSTAR], 
+  [VRGNG],
+  [PAROB1],
+  [BUKRS], 
+  [EBELN], 
+  [EBELP], 
+  [GKONT], 
+  [GKOAR], 
+  [MATNR], 
+  [REFBZ], 
+  [SGTXT], 
+  [WERKS], 
+  [TIMESTMP]
+FROM 
+  [ecp].[COEP] AS item (NOLOCK)
+WHERE 
+  [VRGNG] IN ('RKL', 'RKLN', 'COIN') 
+  AND LEFT([KSTAR], 3) IN ('005', '006', '009')
+  AND [TIMESTMP] &gt;= ?
+ORDER BY 
+  [MANDT], 
+  [KOKRS], 
+  [BELNR], 
+  [BUZEI]</property>
                 <property
                   dataType="System.String"
                   description="The variable that contains the SQL command to be executed."
@@ -665,7 +754,7 @@ ORDER BY A01.[MANDT]
                 <property
                   dataType="System.String"
                   description="The mappings between the parameters in the SQL command and variables."
-                  name="ParameterMapping"></property>
+                  name="ParameterMapping">"Parameter0:Input",{F82308A8-B732-4D14-B726-961178456CA1};</property>
               </properties>
               <connections>
                 <connection
@@ -878,6 +967,36 @@ ORDER BY A01.[MANDT]
                       name="SGTXT"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
+                      refId="Package\COEP\DB SAP.Outputs[OLE DB Source Output].Columns[VRGNG]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\COEP\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[VRGNG]"
+                      length="4"
+                      lineageId="Package\COEP\DB SAP.Outputs[OLE DB Source Output].Columns[VRGNG]"
+                      name="VRGNG"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\COEP\DB SAP.Outputs[OLE DB Source Output].Columns[PAROB1]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\COEP\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[PAROB1]"
+                      length="22"
+                      lineageId="Package\COEP\DB SAP.Outputs[OLE DB Source Output].Columns[PAROB1]"
+                      name="PAROB1"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\COEP\DB SAP.Outputs[OLE DB Source Output].Columns[TIMESTMP]"
+                      dataType="numeric"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\COEP\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[TIMESTMP]"
+                      lineageId="Package\COEP\DB SAP.Outputs[OLE DB Source Output].Columns[TIMESTMP]"
+                      name="TIMESTMP"
+                      precision="16"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
                       refId="Package\COEP\DB SAP.Outputs[OLE DB Source Output].Columns[WERKS]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
@@ -988,6 +1107,21 @@ ORDER BY A01.[MANDT]
                       length="50"
                       name="SGTXT" />
                     <externalMetadataColumn
+                      refId="Package\COEP\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[VRGNG]"
+                      dataType="wstr"
+                      length="4"
+                      name="VRGNG" />
+                    <externalMetadataColumn
+                      refId="Package\COEP\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[PAROB1]"
+                      dataType="wstr"
+                      length="22"
+                      name="PAROB1" />
+                    <externalMetadataColumn
+                      refId="Package\COEP\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[TIMESTMP]"
+                      dataType="numeric"
+                      name="TIMESTMP"
+                      precision="16" />
+                    <externalMetadataColumn
                       refId="Package\COEP\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[WERKS]"
                       dataType="wstr"
                       length="4"
@@ -1068,6 +1202,18 @@ ORDER BY A01.[MANDT]
                       lineageId="Package\COEP\DB SAP.Outputs[OLE DB Source Error Output].Columns[KSTAR]"
                       name="KSTAR" />
                     <outputColumn
+                      refId="Package\COEP\DB SAP.Outputs[OLE DB Source Error Output].Columns[VRGNG]"
+                      dataType="wstr"
+                      length="4"
+                      lineageId="Package\COEP\DB SAP.Outputs[OLE DB Source Error Output].Columns[VRGNG]"
+                      name="VRGNG" />
+                    <outputColumn
+                      refId="Package\COEP\DB SAP.Outputs[OLE DB Source Error Output].Columns[PAROB1]"
+                      dataType="wstr"
+                      length="22"
+                      lineageId="Package\COEP\DB SAP.Outputs[OLE DB Source Error Output].Columns[PAROB1]"
+                      name="PAROB1" />
+                    <outputColumn
                       refId="Package\COEP\DB SAP.Outputs[OLE DB Source Error Output].Columns[BUKRS]"
                       dataType="wstr"
                       length="4"
@@ -1121,6 +1267,12 @@ ORDER BY A01.[MANDT]
                       length="4"
                       lineageId="Package\COEP\DB SAP.Outputs[OLE DB Source Error Output].Columns[WERKS]"
                       name="WERKS" />
+                    <outputColumn
+                      refId="Package\COEP\DB SAP.Outputs[OLE DB Source Error Output].Columns[TIMESTMP]"
+                      dataType="numeric"
+                      lineageId="Package\COEP\DB SAP.Outputs[OLE DB Source Error Output].Columns[TIMESTMP]"
+                      name="TIMESTMP"
+                      precision="16" />
                     <outputColumn
                       refId="Package\COEP\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
                       dataType="i4"
@@ -1196,49 +1348,181 @@ ORDER BY A01.[MANDT]
                       cachedName="KSTAR"
                       lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[KSTAR]" />
                     <inputColumn
-                      refId="Package\COEP\Find Changed Records.Inputs[Conditional Split Input].Columns[PERIO (2)]"
+                      refId="Package\COEP\Find Changed Records.Inputs[Conditional Split Input].Columns[PERIO (1)]"
                       cachedDataType="wstr"
                       cachedLength="3"
-                      cachedName="PERIO (2)"
-                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[PERIO (2)]" />
+                      cachedName="PERIO (1)"
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[PERIO (1)]" />
                     <inputColumn
-                      refId="Package\COEP\Find Changed Records.Inputs[Conditional Split Input].Columns[WKGBTR (2)]"
+                      refId="Package\COEP\Find Changed Records.Inputs[Conditional Split Input].Columns[WKGBTR (1)]"
                       cachedDataType="numeric"
-                      cachedName="WKGBTR (2)"
+                      cachedName="WKGBTR (1)"
                       cachedPrecision="15"
                       cachedScale="2"
-                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[WKGBTR (2)]" />
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[WKGBTR (1)]" />
                     <inputColumn
-                      refId="Package\COEP\Find Changed Records.Inputs[Conditional Split Input].Columns[MBGBTR (2)]"
+                      refId="Package\COEP\Find Changed Records.Inputs[Conditional Split Input].Columns[MBGBTR (1)]"
                       cachedDataType="numeric"
-                      cachedName="MBGBTR (2)"
+                      cachedName="MBGBTR (1)"
                       cachedPrecision="15"
                       cachedScale="3"
-                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[MBGBTR (2)]" />
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[MBGBTR (1)]" />
                     <inputColumn
-                      refId="Package\COEP\Find Changed Records.Inputs[Conditional Split Input].Columns[OBJNR (2)]"
+                      refId="Package\COEP\Find Changed Records.Inputs[Conditional Split Input].Columns[OBJNR (1)]"
                       cachedDataType="wstr"
                       cachedLength="22"
-                      cachedName="OBJNR (2)"
-                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[OBJNR (2)]" />
+                      cachedName="OBJNR (1)"
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[OBJNR (1)]" />
                     <inputColumn
-                      refId="Package\COEP\Find Changed Records.Inputs[Conditional Split Input].Columns[GJAHR (2)]"
+                      refId="Package\COEP\Find Changed Records.Inputs[Conditional Split Input].Columns[GJAHR (1)]"
                       cachedDataType="wstr"
                       cachedLength="4"
-                      cachedName="GJAHR (2)"
-                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[GJAHR (2)]" />
+                      cachedName="GJAHR (1)"
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[GJAHR (1)]" />
                     <inputColumn
-                      refId="Package\COEP\Find Changed Records.Inputs[Conditional Split Input].Columns[WRTTP (2)]"
+                      refId="Package\COEP\Find Changed Records.Inputs[Conditional Split Input].Columns[WRTTP (1)]"
                       cachedDataType="wstr"
                       cachedLength="2"
-                      cachedName="WRTTP (2)"
-                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[WRTTP (2)]" />
+                      cachedName="WRTTP (1)"
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[WRTTP (1)]" />
                     <inputColumn
-                      refId="Package\COEP\Find Changed Records.Inputs[Conditional Split Input].Columns[KSTAR (2)]"
+                      refId="Package\COEP\Find Changed Records.Inputs[Conditional Split Input].Columns[KSTAR (1)]"
                       cachedDataType="wstr"
                       cachedLength="10"
-                      cachedName="KSTAR (2)"
-                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[KSTAR (2)]" />
+                      cachedName="KSTAR (1)"
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[KSTAR (1)]" />
+                    <inputColumn
+                      refId="Package\COEP\Find Changed Records.Inputs[Conditional Split Input].Columns[VRGNG]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="VRGNG"
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[VRGNG]" />
+                    <inputColumn
+                      refId="Package\COEP\Find Changed Records.Inputs[Conditional Split Input].Columns[PAROB1]"
+                      cachedDataType="wstr"
+                      cachedLength="22"
+                      cachedName="PAROB1"
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[PAROB1]" />
+                    <inputColumn
+                      refId="Package\COEP\Find Changed Records.Inputs[Conditional Split Input].Columns[VRGNG (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="VRGNG (1)"
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[VRGNG (1)]" />
+                    <inputColumn
+                      refId="Package\COEP\Find Changed Records.Inputs[Conditional Split Input].Columns[PAROB1 (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="22"
+                      cachedName="PAROB1 (1)"
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[PAROB1 (1)]" />
+                    <inputColumn
+                      refId="Package\COEP\Find Changed Records.Inputs[Conditional Split Input].Columns[BUKRS]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="BUKRS"
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[BUKRS]" />
+                    <inputColumn
+                      refId="Package\COEP\Find Changed Records.Inputs[Conditional Split Input].Columns[EBELN]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="EBELN"
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[EBELN]" />
+                    <inputColumn
+                      refId="Package\COEP\Find Changed Records.Inputs[Conditional Split Input].Columns[EBELP]"
+                      cachedDataType="wstr"
+                      cachedLength="5"
+                      cachedName="EBELP"
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[EBELP]" />
+                    <inputColumn
+                      refId="Package\COEP\Find Changed Records.Inputs[Conditional Split Input].Columns[GKONT]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="GKONT"
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[GKONT]" />
+                    <inputColumn
+                      refId="Package\COEP\Find Changed Records.Inputs[Conditional Split Input].Columns[GKOAR]"
+                      cachedDataType="wstr"
+                      cachedLength="1"
+                      cachedName="GKOAR"
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[GKOAR]" />
+                    <inputColumn
+                      refId="Package\COEP\Find Changed Records.Inputs[Conditional Split Input].Columns[MATNR]"
+                      cachedDataType="wstr"
+                      cachedLength="18"
+                      cachedName="MATNR"
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[MATNR]" />
+                    <inputColumn
+                      refId="Package\COEP\Find Changed Records.Inputs[Conditional Split Input].Columns[REFBZ]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="REFBZ"
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[REFBZ]" />
+                    <inputColumn
+                      refId="Package\COEP\Find Changed Records.Inputs[Conditional Split Input].Columns[SGTXT]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="SGTXT"
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[SGTXT]" />
+                    <inputColumn
+                      refId="Package\COEP\Find Changed Records.Inputs[Conditional Split Input].Columns[WERKS]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="WERKS"
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[WERKS]" />
+                    <inputColumn
+                      refId="Package\COEP\Find Changed Records.Inputs[Conditional Split Input].Columns[BUKRS (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="BUKRS (1)"
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[BUKRS (1)]" />
+                    <inputColumn
+                      refId="Package\COEP\Find Changed Records.Inputs[Conditional Split Input].Columns[EBELN (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="EBELN (1)"
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[EBELN (1)]" />
+                    <inputColumn
+                      refId="Package\COEP\Find Changed Records.Inputs[Conditional Split Input].Columns[EBELP (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="5"
+                      cachedName="EBELP (1)"
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[EBELP (1)]" />
+                    <inputColumn
+                      refId="Package\COEP\Find Changed Records.Inputs[Conditional Split Input].Columns[GKONT (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="GKONT (1)"
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[GKONT (1)]" />
+                    <inputColumn
+                      refId="Package\COEP\Find Changed Records.Inputs[Conditional Split Input].Columns[GKOAR (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="1"
+                      cachedName="GKOAR (1)"
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[GKOAR (1)]" />
+                    <inputColumn
+                      refId="Package\COEP\Find Changed Records.Inputs[Conditional Split Input].Columns[MATNR (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="18"
+                      cachedName="MATNR (1)"
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[MATNR (1)]" />
+                    <inputColumn
+                      refId="Package\COEP\Find Changed Records.Inputs[Conditional Split Input].Columns[REFBZ (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="3"
+                      cachedName="REFBZ (1)"
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[REFBZ (1)]" />
+                    <inputColumn
+                      refId="Package\COEP\Find Changed Records.Inputs[Conditional Split Input].Columns[SGTXT (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="SGTXT (1)"
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[SGTXT (1)]" />
+                    <inputColumn
+                      refId="Package\COEP\Find Changed Records.Inputs[Conditional Split Input].Columns[WERKS (1)]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="WERKS (1)"
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[WERKS (1)]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
@@ -1258,13 +1542,13 @@ ORDER BY A01.[MANDT]
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
-                      name="Expression">#{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[PERIO]} != #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[PERIO (2)]} || #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[WKGBTR]} != #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[WKGBTR (2)]} || #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[MBGBTR]} != #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[MBGBTR (2)]} || #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[OBJNR]} != #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[OBJNR (2)]} || #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[GJAHR]} != #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[GJAHR (2)]} || #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[WRTTP]} != #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[WRTTP (2)]} || #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[KSTAR]} != #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[KSTAR (2)]}</property>
+                      name="Expression">#{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[PERIO]} != #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[PERIO (1)]} || #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[WKGBTR]} != #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[WKGBTR (1)]} || #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[MBGBTR]} != #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[MBGBTR (1)]} || #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[OBJNR]} != #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[OBJNR (1)]} || #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[GJAHR]} != #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[GJAHR (1)]} || #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[WRTTP]} != #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[WRTTP (1)]} || #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[KSTAR]} != #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[KSTAR (1)]} || #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[VRGNG]} != #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[VRGNG (1)]} || #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[PAROB1]} != #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[PAROB1 (1)]} || #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[BUKRS]} != #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[BUKRS (1)]} || #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[EBELN]} != #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[EBELN (1)]} || #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[EBELP]} != #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[EBELP (1)]} || #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[GKONT]} != #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[GKONT (1)]} || #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[GKOAR]} != #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[GKOAR (1)]} || #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[MATNR]} != #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[MATNR (1)]} || #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[REFBZ]} != #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[REFBZ (1)]} || #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[SGTXT]} != #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[SGTXT (1)]} || #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[WERKS]} != #{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[WERKS (1)]}</property>
                     <property
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the friendly version of the expression. This expression version uses column names."
                       expressionType="Notify"
-                      name="FriendlyExpression">PERIO != [PERIO (1)] || WKGBTR != [WKGBTR (1)] || MBGBTR != [MBGBTR (1)] || OBJNR != [OBJNR (1)] || GJAHR != [GJAHR (1)] || WRTTP != [WRTTP (1)] || KSTAR != [KSTAR (1)]</property>
+                      name="FriendlyExpression">PERIO != [PERIO (1)] || WKGBTR != [WKGBTR (1)] || MBGBTR != [MBGBTR (1)] || OBJNR != [OBJNR (1)] || GJAHR != [GJAHR (1)] || WRTTP != [WRTTP (1)] || KSTAR != [KSTAR (1)] || VRGNG != [VRGNG (1)] || PAROB1 != [PAROB1 (1)] || BUKRS != [BUKRS (1)] || EBELN != [EBELN (1)] || EBELP != [EBELP (1)] || GKONT != [GKONT (1)] || GKOAR != [GKOAR (1)] || MATNR != [MATNR (1)] || REFBZ != [REFBZ (1)] || SGTXT != [SGTXT (1)] || WERKS != [WERKS (1)]</property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
@@ -1331,11 +1615,11 @@ ORDER BY A01.[MANDT]
                       cachedSortKeyPosition="1"
                       lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[MANDT]" />
                     <inputColumn
-                      refId="Package\COEP\Identity records.Inputs[Conditional Split Input].Columns[MANDT (2)]"
+                      refId="Package\COEP\Identity records.Inputs[Conditional Split Input].Columns[MANDT (1)]"
                       cachedDataType="wstr"
                       cachedLength="3"
-                      cachedName="MANDT (2)"
-                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[MANDT (2)]" />
+                      cachedName="MANDT (1)"
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
@@ -1355,7 +1639,7 @@ ORDER BY A01.[MANDT]
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
-                      name="Expression">![ISNULL](#{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; ![ISNULL](#{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[MANDT (2)]})</property>
+                      name="Expression">![ISNULL](#{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; ![ISNULL](#{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
                     <property
                       containsID="true"
                       dataType="System.String"
@@ -1383,7 +1667,7 @@ ORDER BY A01.[MANDT]
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
-                      name="Expression">![ISNULL](#{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; [ISNULL](#{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[MANDT (2)]})</property>
+                      name="Expression">![ISNULL](#{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; [ISNULL](#{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
                     <property
                       containsID="true"
                       dataType="System.String"
@@ -1411,7 +1695,7 @@ ORDER BY A01.[MANDT]
                       containsID="true"
                       dataType="System.String"
                       description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
-                      name="Expression">[ISNULL](#{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; ![ISNULL](#{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[MANDT (2)]})</property>
+                      name="Expression">[ISNULL](#{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[MANDT]}) &amp;&amp; ![ISNULL](#{Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]})</property>
                     <property
                       containsID="true"
                       dataType="System.String"
@@ -1488,7 +1772,7 @@ ORDER BY A01.[MANDT]
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                 <property
                   dataType="System.Int32"
                   description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -1681,6 +1965,27 @@ ORDER BY A01.[MANDT]
                       cachedName="WERKS"
                       externalMetadataColumnId="Package\COEP\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[WERKS]"
                       lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[WERKS]" />
+                    <inputColumn
+                      refId="Package\COEP\insert new records.Inputs[OLE DB Destination Input].Columns[VRGNG]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="VRGNG"
+                      externalMetadataColumnId="Package\COEP\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[VRGNG]"
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[VRGNG]" />
+                    <inputColumn
+                      refId="Package\COEP\insert new records.Inputs[OLE DB Destination Input].Columns[PAROB1]"
+                      cachedDataType="wstr"
+                      cachedLength="22"
+                      cachedName="PAROB1"
+                      externalMetadataColumnId="Package\COEP\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[PAROB1]"
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[PAROB1]" />
+                    <inputColumn
+                      refId="Package\COEP\insert new records.Inputs[OLE DB Destination Input].Columns[TIMESTMP]"
+                      cachedDataType="numeric"
+                      cachedName="TIMESTMP"
+                      cachedPrecision="16"
+                      externalMetadataColumnId="Package\COEP\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[TIMESTMP]"
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[TIMESTMP]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -1786,6 +2091,21 @@ ORDER BY A01.[MANDT]
                       dataType="wstr"
                       length="4"
                       name="WERKS" />
+                    <externalMetadataColumn
+                      refId="Package\COEP\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[VRGNG]"
+                      dataType="wstr"
+                      length="4"
+                      name="VRGNG" />
+                    <externalMetadataColumn
+                      refId="Package\COEP\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[PAROB1]"
+                      dataType="wstr"
+                      length="22"
+                      name="PAROB1" />
+                    <externalMetadataColumn
+                      refId="Package\COEP\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[TIMESTMP]"
+                      dataType="numeric"
+                      name="TIMESTMP"
+                      precision="16" />
                   </externalMetadataColumns>
                 </input>
               </inputs>
@@ -1972,6 +2292,24 @@ ORDER BY A01.[MANDT]
                       cachedLength="4"
                       cachedName="WERKS"
                       lineageId="Package\COEP\DB SAP.Outputs[OLE DB Source Output].Columns[WERKS]" />
+                    <inputColumn
+                      refId="Package\COEP\Merge Join.Inputs[Merge Join Left Input].Columns[VRGNG]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="VRGNG"
+                      lineageId="Package\COEP\DB SAP.Outputs[OLE DB Source Output].Columns[VRGNG]" />
+                    <inputColumn
+                      refId="Package\COEP\Merge Join.Inputs[Merge Join Left Input].Columns[PAROB1]"
+                      cachedDataType="wstr"
+                      cachedLength="22"
+                      cachedName="PAROB1"
+                      lineageId="Package\COEP\DB SAP.Outputs[OLE DB Source Output].Columns[PAROB1]" />
+                    <inputColumn
+                      refId="Package\COEP\Merge Join.Inputs[Merge Join Left Input].Columns[TIMESTMP]"
+                      cachedDataType="numeric"
+                      cachedName="TIMESTMP"
+                      cachedPrecision="16"
+                      lineageId="Package\COEP\DB SAP.Outputs[OLE DB Source Output].Columns[TIMESTMP]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
@@ -2106,6 +2444,18 @@ ORDER BY A01.[MANDT]
                       cachedLength="4"
                       cachedName="WERKS"
                       lineageId="Package\COEP\DB PBI.Outputs[OLE DB Source Output].Columns[WERKS]" />
+                    <inputColumn
+                      refId="Package\COEP\Merge Join.Inputs[Merge Join Right Input].Columns[VRGNG]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="VRGNG"
+                      lineageId="Package\COEP\DB PBI.Outputs[OLE DB Source Output].Columns[VRGNG]" />
+                    <inputColumn
+                      refId="Package\COEP\Merge Join.Inputs[Merge Join Right Input].Columns[PAROB1]"
+                      cachedDataType="wstr"
+                      cachedLength="22"
+                      cachedName="PAROB1"
+                      lineageId="Package\COEP\DB PBI.Outputs[OLE DB Source Output].Columns[PAROB1]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
@@ -2277,11 +2627,11 @@ ORDER BY A01.[MANDT]
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[MANDT (2)]"
+                      refId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]"
                       dataType="wstr"
                       length="3"
-                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[MANDT (2)]"
-                      name="MANDT (2)">
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]"
+                      name="MANDT (1)">
                       <properties>
                         <property
                           containsID="true"
@@ -2291,11 +2641,11 @@ ORDER BY A01.[MANDT]
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[KOKRS (2)]"
+                      refId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[KOKRS (1)]"
                       dataType="wstr"
                       length="4"
-                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[KOKRS (2)]"
-                      name="KOKRS (2)">
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[KOKRS (1)]"
+                      name="KOKRS (1)">
                       <properties>
                         <property
                           containsID="true"
@@ -2305,11 +2655,11 @@ ORDER BY A01.[MANDT]
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[BELNR (2)]"
+                      refId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[BELNR (1)]"
                       dataType="wstr"
                       length="10"
-                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[BELNR (2)]"
-                      name="BELNR (2)">
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[BELNR (1)]"
+                      name="BELNR (1)">
                       <properties>
                         <property
                           containsID="true"
@@ -2319,11 +2669,11 @@ ORDER BY A01.[MANDT]
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[BUZEI (2)]"
+                      refId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[BUZEI (1)]"
                       dataType="wstr"
                       length="3"
-                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[BUZEI (2)]"
-                      name="BUZEI (2)">
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[BUZEI (1)]"
+                      name="BUZEI (1)">
                       <properties>
                         <property
                           containsID="true"
@@ -2333,11 +2683,11 @@ ORDER BY A01.[MANDT]
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[PERIO (2)]"
+                      refId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[PERIO (1)]"
                       dataType="wstr"
                       length="3"
-                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[PERIO (2)]"
-                      name="PERIO (2)">
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[PERIO (1)]"
+                      name="PERIO (1)">
                       <properties>
                         <property
                           containsID="true"
@@ -2347,10 +2697,10 @@ ORDER BY A01.[MANDT]
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[WKGBTR (2)]"
+                      refId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[WKGBTR (1)]"
                       dataType="numeric"
-                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[WKGBTR (2)]"
-                      name="WKGBTR (2)"
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[WKGBTR (1)]"
+                      name="WKGBTR (1)"
                       precision="15"
                       scale="2">
                       <properties>
@@ -2362,10 +2712,10 @@ ORDER BY A01.[MANDT]
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[MBGBTR (2)]"
+                      refId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[MBGBTR (1)]"
                       dataType="numeric"
-                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[MBGBTR (2)]"
-                      name="MBGBTR (2)"
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[MBGBTR (1)]"
+                      name="MBGBTR (1)"
                       precision="15"
                       scale="3">
                       <properties>
@@ -2377,11 +2727,11 @@ ORDER BY A01.[MANDT]
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[OBJNR (2)]"
+                      refId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[OBJNR (1)]"
                       dataType="wstr"
                       length="22"
-                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[OBJNR (2)]"
-                      name="OBJNR (2)">
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[OBJNR (1)]"
+                      name="OBJNR (1)">
                       <properties>
                         <property
                           containsID="true"
@@ -2391,11 +2741,11 @@ ORDER BY A01.[MANDT]
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[GJAHR (2)]"
+                      refId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[GJAHR (1)]"
                       dataType="wstr"
                       length="4"
-                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[GJAHR (2)]"
-                      name="GJAHR (2)">
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[GJAHR (1)]"
+                      name="GJAHR (1)">
                       <properties>
                         <property
                           containsID="true"
@@ -2405,11 +2755,11 @@ ORDER BY A01.[MANDT]
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[WRTTP (2)]"
+                      refId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[WRTTP (1)]"
                       dataType="wstr"
                       length="2"
-                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[WRTTP (2)]"
-                      name="WRTTP (2)">
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[WRTTP (1)]"
+                      name="WRTTP (1)">
                       <properties>
                         <property
                           containsID="true"
@@ -2419,11 +2769,11 @@ ORDER BY A01.[MANDT]
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[KSTAR (2)]"
+                      refId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[KSTAR (1)]"
                       dataType="wstr"
                       length="10"
-                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[KSTAR (2)]"
-                      name="KSTAR (2)">
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[KSTAR (1)]"
+                      name="KSTAR (1)">
                       <properties>
                         <property
                           containsID="true"
@@ -2684,6 +3034,76 @@ ORDER BY A01.[MANDT]
                           name="InputColumnID">#{Package\COEP\Merge Join.Inputs[Merge Join Right Input].Columns[WERKS]}</property>
                       </properties>
                     </outputColumn>
+                    <outputColumn
+                      refId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[VRGNG]"
+                      dataType="wstr"
+                      length="4"
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[VRGNG]"
+                      name="VRGNG">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\COEP\Merge Join.Inputs[Merge Join Left Input].Columns[VRGNG]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[PAROB1]"
+                      dataType="wstr"
+                      length="22"
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[PAROB1]"
+                      name="PAROB1">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\COEP\Merge Join.Inputs[Merge Join Left Input].Columns[PAROB1]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[VRGNG (1)]"
+                      dataType="wstr"
+                      length="4"
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[VRGNG (1)]"
+                      name="VRGNG (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\COEP\Merge Join.Inputs[Merge Join Right Input].Columns[VRGNG]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[PAROB1 (1)]"
+                      dataType="wstr"
+                      length="22"
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[PAROB1 (1)]"
+                      name="PAROB1 (1)">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\COEP\Merge Join.Inputs[Merge Join Right Input].Columns[PAROB1]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[TIMESTMP]"
+                      dataType="numeric"
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[TIMESTMP]"
+                      name="TIMESTMP"
+                      precision="16">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\COEP\Merge Join.Inputs[Merge Join Left Input].Columns[TIMESTMP]}</property>
+                      </properties>
+                    </outputColumn>
                   </outputColumns>
                   <externalMetadataColumns />
                 </output>
@@ -2714,7 +3134,7 @@ ORDER BY A01.[MANDT]
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                 <property
                   dataType="System.Int32"
                   description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -2907,6 +3327,27 @@ ORDER BY A01.[MANDT]
                       cachedName="WERKS"
                       externalMetadataColumnId="Package\COEP\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[WERKS]"
                       lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[WERKS]" />
+                    <inputColumn
+                      refId="Package\COEP\stage changed records.Inputs[OLE DB Destination Input].Columns[VRGNG]"
+                      cachedDataType="wstr"
+                      cachedLength="4"
+                      cachedName="VRGNG"
+                      externalMetadataColumnId="Package\COEP\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[VRGNG]"
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[VRGNG]" />
+                    <inputColumn
+                      refId="Package\COEP\stage changed records.Inputs[OLE DB Destination Input].Columns[PAROB1]"
+                      cachedDataType="wstr"
+                      cachedLength="22"
+                      cachedName="PAROB1"
+                      externalMetadataColumnId="Package\COEP\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[PAROB1]"
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[PAROB1]" />
+                    <inputColumn
+                      refId="Package\COEP\stage changed records.Inputs[OLE DB Destination Input].Columns[TIMESTMP]"
+                      cachedDataType="numeric"
+                      cachedName="TIMESTMP"
+                      cachedPrecision="16"
+                      externalMetadataColumnId="Package\COEP\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[TIMESTMP]"
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[TIMESTMP]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -3012,6 +3453,21 @@ ORDER BY A01.[MANDT]
                       dataType="wstr"
                       length="4"
                       name="WERKS" />
+                    <externalMetadataColumn
+                      refId="Package\COEP\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[VRGNG]"
+                      dataType="wstr"
+                      length="4"
+                      name="VRGNG" />
+                    <externalMetadataColumn
+                      refId="Package\COEP\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[PAROB1]"
+                      dataType="wstr"
+                      length="22"
+                      name="PAROB1" />
+                    <externalMetadataColumn
+                      refId="Package\COEP\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[TIMESTMP]"
+                      dataType="numeric"
+                      name="TIMESTMP"
+                      precision="16" />
                   </externalMetadataColumns>
                 </input>
               </inputs>
@@ -3065,7 +3521,7 @@ ORDER BY A01.[MANDT]
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                 <property
                   dataType="System.Int32"
                   description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -3113,33 +3569,33 @@ ORDER BY A01.[MANDT]
                   name="OLE DB Destination Input">
                   <inputColumns>
                     <inputColumn
-                      refId="Package\COEP\stage deleted records.Inputs[OLE DB Destination Input].Columns[MANDT (2)]"
+                      refId="Package\COEP\stage deleted records.Inputs[OLE DB Destination Input].Columns[MANDT (1)]"
                       cachedDataType="wstr"
                       cachedLength="3"
-                      cachedName="MANDT (2)"
+                      cachedName="MANDT (1)"
                       externalMetadataColumnId="Package\COEP\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[MANDT]"
-                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[MANDT (2)]" />
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[MANDT (1)]" />
                     <inputColumn
-                      refId="Package\COEP\stage deleted records.Inputs[OLE DB Destination Input].Columns[KOKRS (2)]"
+                      refId="Package\COEP\stage deleted records.Inputs[OLE DB Destination Input].Columns[KOKRS (1)]"
                       cachedDataType="wstr"
                       cachedLength="4"
-                      cachedName="KOKRS (2)"
+                      cachedName="KOKRS (1)"
                       externalMetadataColumnId="Package\COEP\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[KOKRS]"
-                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[KOKRS (2)]" />
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[KOKRS (1)]" />
                     <inputColumn
-                      refId="Package\COEP\stage deleted records.Inputs[OLE DB Destination Input].Columns[BELNR (2)]"
+                      refId="Package\COEP\stage deleted records.Inputs[OLE DB Destination Input].Columns[BELNR (1)]"
                       cachedDataType="wstr"
                       cachedLength="10"
-                      cachedName="BELNR (2)"
+                      cachedName="BELNR (1)"
                       externalMetadataColumnId="Package\COEP\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[BELNR]"
-                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[BELNR (2)]" />
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[BELNR (1)]" />
                     <inputColumn
-                      refId="Package\COEP\stage deleted records.Inputs[OLE DB Destination Input].Columns[BUZEI (2)]"
+                      refId="Package\COEP\stage deleted records.Inputs[OLE DB Destination Input].Columns[BUZEI (1)]"
                       cachedDataType="wstr"
                       cachedLength="3"
-                      cachedName="BUZEI (2)"
+                      cachedName="BUZEI (1)"
                       externalMetadataColumnId="Package\COEP\stage deleted records.Inputs[OLE DB Destination Input].ExternalColumns[BUZEI]"
-                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[BUZEI (2)]" />
+                      lineageId="Package\COEP\Merge Join.Outputs[Merge Join Output].Columns[BUZEI (1)]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -3233,106 +3689,143 @@ ORDER BY A01.[MANDT]
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
-      DTS:refId="Package\Sequence Container"
-      DTS:CreationName="STOCK:SEQUENCE"
-      DTS:Description="Sequence Container"
-      DTS:DTSID="{6E14F67B-23E2-4C92-962C-FD636F76371D}"
-      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:refId="Package\DELETE"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{A61781E6-657B-4D40-BC60-527DC19D57A7}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
-      DTS:ObjectName="Sequence Container">
+      DTS:ObjectName="DELETE"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
       <DTS:Variables />
-      <DTS:Executables>
-        <DTS:Executable
-          DTS:refId="Package\Sequence Container\delete"
-          DTS:CreationName="Microsoft.ExecuteSQLTask"
-          DTS:Description="Execute SQL Task"
-          DTS:DTSID="{A61781E6-657B-4D40-BC60-527DC19D57A7}"
-          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
-          DTS:LocaleID="-1"
-          DTS:ObjectName="delete"
-          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="1">
-          <DTS:Variables />
-          <DTS:ObjectData>
-            <SQLTask:SqlTaskData
-              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-              SQLTask:SqlStatementSource="DELETE A01&#xA;FROM [COEP] A01 INNER JOIN [COEP_STAGE_DELETE] B01 ON ( A01.[MANDT] = B01.[MANDT]&#xA;                                                    AND A01.[KOKRS] = B01.[KOKRS]&#xA;                                                    AND A01.[BELNR] = B01.[BELNR]&#xA;                                                    AND A01.[BUZEI] = B01.[BUZEI] )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
-          </DTS:ObjectData>
-        </DTS:Executable>
-        <DTS:Executable
-          DTS:refId="Package\Sequence Container\update"
-          DTS:CreationName="Microsoft.ExecuteSQLTask"
-          DTS:Description="Execute SQL Task"
-          DTS:DTSID="{A5DC83CF-98D6-4198-B228-50109F4DB238}"
-          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
-          DTS:LocaleID="-1"
-          DTS:ObjectName="update"
-          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="0">
-          <DTS:Variables />
-          <DTS:ObjectData>
-            <SQLTask:SqlTaskData
-              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-              SQLTask:SqlStatementSource="UPDATE A01&#xA;SET A01.[PERIO] = B01.[PERIO]&#xA;   ,A01.[WKGBTR] = B01.[WKGBTR]&#xA;   ,A01.[MBGBTR] = B01.[MBGBTR]&#xA;   ,A01.[OBJNR] = B01.[OBJNR]&#xA;   ,A01.[GJAHR] = B01.[GJAHR]&#xA;   ,A01.[WRTTP] = B01.[WRTTP]&#xA;   ,A01.[KSTAR] = B01.[KSTAR]&#xA;   ,A01.[BUKRS] = B01.[BUKRS]&#xA;   ,A01.[EBELN] = B01.[EBELN]&#xA;   ,A01.[EBELP] = B01.[EBELP]&#xA;   ,A01.[GKONT] = B01.[GKONT]&#xA;   ,A01.[GKOAR] = B01.[GKOAR]&#xA;   ,A01.[MATNR] = B01.[MATNR]&#xA;   ,A01.[REFBZ] = B01.[REFBZ]&#xA;   ,A01.[SGTXT] = B01.[SGTXT]&#xA;   ,A01.[WERKS] = B01.[WERKS]&#xA;FROM [COEP] A01 INNER JOIN [COEP_STAGE_UPDATE] B01 ON ( A01.[MANDT] = B01.[MANDT]&#xA;                                                    AND A01.[KOKRS] = B01.[KOKRS]&#xA;                                                    AND A01.[BELNR] = B01.[BELNR]&#xA;                                                    AND A01.[BUZEI] = B01.[BUZEI] )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
-          </DTS:ObjectData>
-        </DTS:Executable>
-      </DTS:Executables>
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="DELETE A01&#xA;FROM [COEP] A01 INNER JOIN [COEP_STAGE_DELETE] B01 ON ( A01.[MANDT] = B01.[MANDT]&#xA;                                                    AND A01.[KOKRS] = B01.[KOKRS]&#xA;                                                    AND A01.[BELNR] = B01.[BELNR]&#xA;                                                    AND A01.[BUZEI] = B01.[BUZEI] )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
-      DTS:refId="Package\Sequence Container 1"
-      DTS:CreationName="STOCK:SEQUENCE"
-      DTS:Description="Sequence Container"
-      DTS:DTSID="{C65EC59F-93B7-4DBE-BB70-D054EF87E0B2}"
-      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:refId="Package\Get LastTimestamp"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{9b180177-98a6-47f3-9634-795f9b95beb1}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
-      DTS:ObjectName="Sequence Container 1">
+      DTS:ObjectName="Get LastTimestamp"
+      DTS:ThreadHint="0">
       <DTS:Variables />
-      <DTS:Executables>
-        <DTS:Executable
-          DTS:refId="Package\Sequence Container 1\Insert"
-          DTS:CreationName="Microsoft.ExecuteSQLTask"
-          DTS:Description="Execute SQL Task"
-          DTS:DTSID="{C5FE0807-7188-484F-81B4-7D73391BAE2B}"
-          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
-          DTS:LocaleID="-1"
-          DTS:ObjectName="Insert"
-          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="0">
-          <DTS:Variables />
-          <DTS:ObjectData>
-            <SQLTask:SqlTaskData
-              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-              SQLTask:SqlStatementSource="INSERT INTO [COEP]&#xA;SELECT * FROM [COEP_STAGE_INSERT]&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
-          </DTS:ObjectData>
-        </DTS:Executable>
-      </DTS:Executables>
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="SELECT MAX( TIMESTMP ) AS LastTimestamp&#xA;FROM zzJOB_ETL_LARGETBL&#xA;WHERE TABLE_NAME = 'COEP'"
+          SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ResultBinding
+            SQLTask:ResultName="LastTimestamp"
+            SQLTask:DtsVariableName="User::LastTimestamp" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\INSERT"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{C5FE0807-7188-484F-81B4-7D73391BAE2B}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="INSERT"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="INSERT INTO [COEP]&#xA;SELECT * FROM [COEP_STAGE_INSERT]&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\UPDATE"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{A5DC83CF-98D6-4198-B228-50109F4DB238}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="UPDATE"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="UPDATE &#xA;  A01 &#xA;SET &#xA;  A01.[PERIO] = B01.[PERIO], &#xA;  A01.[WKGBTR] = B01.[WKGBTR], &#xA;  A01.[MBGBTR] = B01.[MBGBTR], &#xA;  A01.[OBJNR] = B01.[OBJNR], &#xA;  A01.[GJAHR] = B01.[GJAHR], &#xA;  A01.[WRTTP] = B01.[WRTTP], &#xA;  A01.[KSTAR] = B01.[KSTAR], &#xA;  A01.[VRGNG] = B01.[VRGNG], &#xA;  A01.[PAROB1] = B01.[PAROB1], &#xA;  A01.[BUKRS] = B01.[BUKRS], &#xA;  A01.[EBELN] = B01.[EBELN], &#xA;  A01.[EBELP] = B01.[EBELP], &#xA;  A01.[GKONT] = B01.[GKONT], &#xA;  A01.[GKOAR] = B01.[GKOAR], &#xA;  A01.[MATNR] = B01.[MATNR], &#xA;  A01.[REFBZ] = B01.[REFBZ], &#xA;  A01.[SGTXT] = B01.[SGTXT], &#xA;  A01.[WERKS] = B01.[WERKS],&#xA;  A01.[TIMESTMP] = B01.[TIMESTMP] &#xA;FROM &#xA;  [COEP] A01 &#xA;  INNER JOIN [COEP_STAGE_UPDATE] B01 ON (&#xA;    A01.[MANDT] = B01.[MANDT] &#xA;    AND A01.[KOKRS] = B01.[KOKRS] &#xA;    AND A01.[BELNR] = B01.[BELNR] &#xA;    AND A01.[BUZEI] = B01.[BUZEI]&#xA;  )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Update LastTimestamp"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{5507cd15-812b-4825-b56c-7b2052d5e155}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Update LastTimestamp"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="UPDATE &#xA;  zzJOB_ETL_LARGETBL &#xA;SET &#xA;  TIMESTMP = ( SELECT MAX(TIMESTMP) FROM COEP ) &#xA;WHERE &#xA;  TABLE_NAME = 'COEP'" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
     </DTS:Executable>
   </DTS:Executables>
   <DTS:PrecedenceConstraints>
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint]"
       DTS:CreationName=""
-      DTS:DTSID="{BC97F37C-988B-41CF-A836-15E8715119ED}"
+      DTS:DTSID="{83C89AA0-7475-4AEB-B5D7-7E146C39F3A0}"
       DTS:From="Package\COEP"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint"
-      DTS:To="Package\Sequence Container" />
+      DTS:To="Package\UPDATE" />
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
       DTS:CreationName=""
       DTS:DTSID="{EFBD6C62-5524-43C3-BDC2-5A734FCED895}"
-      DTS:From="Package\clean stage"
+      DTS:From="Package\Clean Stage"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 1"
       DTS:To="Package\COEP" />
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
       DTS:CreationName=""
-      DTS:DTSID="{C075A4E5-C145-42DC-A385-AB9492D24657}"
-      DTS:From="Package\Sequence Container"
+      DTS:DTSID="{3295060A-E4E8-4C8D-B9CD-423116197A83}"
+      DTS:From="Package\UPDATE"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 2"
-      DTS:To="Package\Sequence Container 1" />
+      DTS:To="Package\DELETE" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 3]"
+      DTS:CreationName=""
+      DTS:DTSID="{58C8FEF8-F3FD-44A4-B259-2F0C282F8818}"
+      DTS:From="Package\DELETE"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 3"
+      DTS:To="Package\INSERT" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 4]"
+      DTS:CreationName=""
+      DTS:DTSID="{40F89B95-2051-4FB5-A73D-FA13E2D958BA}"
+      DTS:From="Package\Get LastTimestamp"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 4"
+      DTS:To="Package\Clean Stage" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 5]"
+      DTS:CreationName=""
+      DTS:DTSID="{5C833F4B-16C6-4044-90C5-CFFAC9FA72F5}"
+      DTS:From="Package\INSERT"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 5"
+      DTS:To="Package\Update LastTimestamp" />
   </DTS:PrecedenceConstraints>
   <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
 <!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
@@ -3347,53 +3840,47 @@ ORDER BY A01.[MANDT]
       <GraphLayout
         Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
-          Size="132,42"
-          Id="Package\clean stage"
-          TopLeft="359,27" />
+          Size="158,42"
+          Id="Package\Clean Stage"
+          TopLeft="35.7142857142857,93.666666666667" />
         <NodeLayout
-          Size="106,42"
+          Size="158,42"
           Id="Package\COEP"
-          TopLeft="197,56" />
+          TopLeft="35.7142857142857,177.333333333333" />
         <NodeLayout
-          Size="108,42"
-          Id="Package\Sequence Container\delete"
-          TopLeft="221,40" />
+          Size="158,42"
+          Id="Package\DELETE"
+          TopLeft="35.7142857142857,344.666666666667" />
         <NodeLayout
-          Size="112,42"
-          Id="Package\Sequence Container\update"
-          TopLeft="47,41" />
-        <ContainerLayout
-          HeaderHeight="43"
-          IsExpanded="True"
-          PanelSize="383,139"
-          Size="383,182"
-          Id="Package\Sequence Container"
-          TopLeft="60,174" />
+          Size="193,42"
+          Id="Package\Get LastTimestamp"
+          TopLeft="22,23" />
         <NodeLayout
-          Size="107,42"
-          Id="Package\Sequence Container 1\Insert"
-          TopLeft="133,43" />
-        <ContainerLayout
-          HeaderHeight="43"
-          IsExpanded="True"
-          PanelSize="383,139"
-          Size="383,182"
-          Id="Package\Sequence Container 1"
-          TopLeft="60,416" />
+          Size="158,42"
+          Id="Package\INSERT"
+          TopLeft="35.7142857142857,428.333333333333" />
+        <NodeLayout
+          Size="158,42"
+          Id="Package\UPDATE"
+          TopLeft="35.7142857142857,261" />
+        <NodeLayout
+          Size="193,42"
+          Id="Package\Update LastTimestamp"
+          TopLeft="22,501" />
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint]"
-          TopLeft="250.75,98">
+          TopLeft="114.714285714286,219.333333333333">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,76"
+              EndConnector="0,41.666666666667"
               Start="0,0"
-              End="0,68.5">
+              End="0,34.166666666667">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,68.5" />
+                    End="0,34.166666666667" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -3404,30 +3891,18 @@ ORDER BY A01.[MANDT]
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 1]"
-          TopLeft="359,48">
+          TopLeft="114.714285714286,135.666666666667">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-56,29"
+              EndConnector="0,41.666666666666"
               Start="0,0"
-              End="-48.5,29">
+              End="0,34.166666666666">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="-24,0" />
-                  <mssgle:CubicBezierSegment
-                    Point1="-24,0"
-                    Point2="-28,0"
-                    Point3="-28,4" />
-                  <mssgle:LineSegment
-                    End="-28,25" />
-                  <mssgle:CubicBezierSegment
-                    Point1="-28,25"
-                    Point2="-28,29"
-                    Point3="-32,29" />
-                  <mssgle:LineSegment
-                    End="-48.5,29" />
+                    End="0,34.166666666666" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -3438,18 +3913,84 @@ ORDER BY A01.[MANDT]
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 2]"
-          TopLeft="251.5,356">
+          TopLeft="114.714285714286,303">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,60"
+              EndConnector="0,41.666666666667"
               Start="0,0"
-              End="0,52.5">
+              End="0,34.166666666667">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,52.5" />
+                    End="0,34.166666666667" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 3]"
+          TopLeft="114.714285714286,386.666666666667">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,41.6666666666659"
+              Start="0,0"
+              End="0,34.1666666666659">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,34.1666666666659" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 4]"
+          TopLeft="116.607142857143,65">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,28.666666666667"
+              Start="0,0"
+              End="0,21.166666666667">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,21.166666666667" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 5]"
+          TopLeft="116.607142857143,470.333333333333">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,30.666666666667"
+              Start="0,0"
+              End="0,23.166666666667">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,23.166666666667" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -3467,37 +4008,37 @@ ORDER BY A01.[MANDT]
       <GraphLayout
         Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
-          Size="114,42"
-          Id="Package\COEP\DB SAP"
-          TopLeft="199,46" />
-        <NodeLayout
           Size="186,42"
           Id="Package\COEP\stage changed records"
           TopLeft="421,481" />
-        <NodeLayout
-          Size="184,42"
-          Id="Package\COEP\Find Changed Records"
-          TopLeft="420,366" />
-        <NodeLayout
-          Size="166,42"
-          Id="Package\COEP\insert new records"
-          TopLeft="159,370" />
-        <NodeLayout
-          Size="153,42"
-          Id="Package\COEP\Identity records"
-          TopLeft="436,236" />
-        <NodeLayout
-          Size="112,42"
-          Id="Package\COEP\DB PBI"
-          TopLeft="671,48" />
         <NodeLayout
           Size="180,42"
           Id="Package\COEP\stage deleted records"
           TopLeft="687,371" />
         <NodeLayout
+          Size="153,42"
+          Id="Package\COEP\Identity records"
+          TopLeft="436,236" />
+        <NodeLayout
           Size="130,42"
           Id="Package\COEP\Merge Join"
           TopLeft="451,130" />
+        <NodeLayout
+          Size="184,42"
+          Id="Package\COEP\Find Changed Records"
+          TopLeft="420,366" />
+        <NodeLayout
+          Size="112,42"
+          Id="Package\COEP\DB PBI"
+          TopLeft="671,48" />
+        <NodeLayout
+          Size="114,42"
+          Id="Package\COEP\DB SAP"
+          TopLeft="199,46" />
+        <NodeLayout
+          Size="166,42"
+          Id="Package\COEP\insert new records"
+          TopLeft="159,370" />
         <EdgeLayout
           Id="Package\COEP.Paths[update1]"
           TopLeft="513,408">
@@ -3712,14 +4253,6 @@ ORDER BY A01.[MANDT]
     </LayoutInfo>
   </TaskHost>
   <PipelineComponentMetadata
-    design-time-name="Package\COEP\DB SAP">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
     design-time-name="Package\COEP\stage changed records">
     <Properties>
       <Property>
@@ -3733,7 +4266,7 @@ ORDER BY A01.[MANDT]
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\COEP\insert new records">
+    design-time-name="Package\COEP\stage deleted records">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -3754,7 +4287,15 @@ ORDER BY A01.[MANDT]
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\COEP\stage deleted records">
+    design-time-name="Package\COEP\DB SAP">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\COEP\insert new records">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0"?>
+<?xml version="1.0"?>
 <DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
   DTS:refId="Package"
   DTS:CreationDate="9/3/2021 10:32:49 AM"
@@ -7,15 +7,24 @@
   DTS:CreatorName="DOMAIN\kcalma"
   DTS:DTSID="{56EC1822-882E-43F8-B8A4-34BD422205C4}"
   DTS:ExecutableType="Microsoft.Package"
-  DTS:LastModifiedProductVersion="16.0.948.0"
+  DTS:LastModifiedProductVersion="16.0.5270.0"
   DTS:LocaleID="1033"
   DTS:ObjectName="zC3"
   DTS:PackageType="5"
-  DTS:VersionBuild="170"
-  DTS:VersionGUID="{14F83CFC-D5CA-493D-812E-7B5A93C48933}">
+  DTS:VersionBuild="182"
+  DTS:VersionGUID="{9B66E87B-37B3-47F8-9E4F-7E05A4408023}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{FA3AEA30-BCB5-4ED1-A5D3-87EFD15BEAB2}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="LastDatetime_JobData">
+      <DTS:VariableValue
+        DTS:DataType="7">7/26/2023 8:02:37 AM</DTS:VariableValue>
+    </DTS:Variable>
     <DTS:Variable
       DTS:CreationName=""
       DTS:DTSID="{A7E9D8BE-330B-43A3-A364-5129B6D0A3FC}"
@@ -33,6 +42,15 @@
       DTS:ObjectName="LastDatetime_Profile">
       <DTS:VariableValue
         DTS:DataType="7">4/6/2022 11:46:53 AM</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{7C0B9237-DD01-4A56-BF0C-E7ECBA0BC640}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="LastJobIndex">
+      <DTS:VariableValue
+        DTS:DataType="3">0</DTS:VariableValue>
     </DTS:Variable>
   </DTS:Variables>
   <DTS:Executables>
@@ -55,7 +73,7 @@
           DTS:LocaleID="-1"
           DTS:ObjectName="Clean Stage"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="3">
+          DTS:ThreadHint="0">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -72,12 +90,12 @@
           DTS:LocaleID="-1"
           DTS:ObjectName="Delete Data"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="3">
+          DTS:ThreadHint="0">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
               SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-              SQLTask:SqlStatementSource="DELETE A01&#xA;FROM [zC3_JOBDATA] A01 INNER JOIN [zC3_JOBDATA_STAGE_DELETE] B01 ON (A01.[RecordID] = B01.[RecordID])&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+              SQLTask:SqlStatementSource="DELETE A01 &#xA;FROM &#xA;  [zC3_JOBDATA] A01 &#xA;  INNER JOIN [zC3_JOBDATA_STAGE_DELETE] B01&#xA;  ON A01.[RecordID] = B01.[RecordID] &#xA;    AND A01.[DateTime] = B01.[DateTime]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
           </DTS:ObjectData>
         </DTS:Executable>
         <DTS:Executable
@@ -89,12 +107,34 @@
           DTS:LocaleID="-1"
           DTS:ObjectName="Insert Data"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="3">
+          DTS:ThreadHint="0">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
               SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
               SQLTask:SqlStatementSource="INSERT INTO [zC3_JOBDATA]&#xA;SELECT * FROM [zC3_JOBDATA_STAGE_INSERT]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Job Data\Last DateTime"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{550decfa-a2e4-4a41-ab5c-5d1d508ac312}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Last DateTime"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+              SQLTask:SqlStatementSource="SELECT ISNULL(DATEADD(DAY, -90, MAX(DateTime)), CAST('2019-10-01' AS datetime))&#xA;FROM zC3_JOBDATA"
+              SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ResultBinding
+                SQLTask:ResultName="0"
+                SQLTask:DtsVariableName="User::LastDatetime_JobData" />
+            </SQLTask:SqlTaskData>
           </DTS:ObjectData>
         </DTS:Executable>
         <DTS:Executable
@@ -136,12 +176,13 @@
                       dataType="System.String"
                       description="The SQL command to be executed."
                       name="SqlCommand"
-                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT [RecordID]
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT [RecordID]
     ,[DateTime]
     ,[JobIndex]
     ,[Footage]
     ,[Downtime]
-FROM [zC3_JOBDATA]</property>
+FROM [zC3_JOBDATA]
+WHERE [DateTime] &gt; ?</property>
                     <property
                       dataType="System.String"
                       description="The variable that contains the SQL command to be executed."
@@ -162,7 +203,7 @@ FROM [zC3_JOBDATA]</property>
                     <property
                       dataType="System.String"
                       description="The mappings between the parameters in the SQL command and variables."
-                      name="ParameterMapping"></property>
+                      name="ParameterMapping">"Parameter0:Input",{FA3AEA30-BCB5-4ED1-A5D3-87EFD15BEAB2};</property>
                   </properties>
                   <connections>
                     <connection
@@ -196,6 +237,7 @@ FROM [zC3_JOBDATA]</property>
                           externalMetadataColumnId="Package\Job Data\Staging\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[DateTime]"
                           lineageId="Package\Job Data\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[DateTime]"
                           name="DateTime"
+                          sortKeyPosition="2"
                           truncationRowDisposition="FailComponent" />
                         <outputColumn
                           refId="Package\Job Data\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[JobIndex]"
@@ -321,13 +363,13 @@ FROM [zC3_JOBDATA]</property>
                       dataType="System.String"
                       description="The SQL command to be executed."
                       name="SqlCommand"
-                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT Record_ID AS RecordID,
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT Record_ID AS RecordID,
     Date_Time AS [DateTime],
     JobIndex,
     LastRollFt AS Footage,
     DownTime AS Downtime
 FROM c3jobdata
-WHERE Date_Time IS NOT NULL
+WHERE Date_Time &gt; ?
 ORDER BY Record_ID,
     Date_Time</property>
                     <property
@@ -350,7 +392,7 @@ ORDER BY Record_ID,
                     <property
                       dataType="System.String"
                       description="The mappings between the parameters in the SQL command and variables."
-                      name="ParameterMapping"></property>
+                      name="ParameterMapping">"Parameter0:Input",{FA3AEA30-BCB5-4ED1-A5D3-87EFD15BEAB2};</property>
                   </properties>
                   <connections>
                     <connection
@@ -384,6 +426,7 @@ ORDER BY Record_ID,
                           externalMetadataColumnId="Package\Job Data\Staging\DB Runtime.Outputs[OLE DB Source Output].ExternalColumns[DateTime]"
                           lineageId="Package\Job Data\Staging\DB Runtime.Outputs[OLE DB Source Output].Columns[DateTime]"
                           name="DateTime"
+                          sortKeyPosition="2"
                           truncationRowDisposition="FailComponent" />
                         <outputColumn
                           refId="Package\Job Data\Staging\DB Runtime.Outputs[OLE DB Source Output].Columns[JobIndex]"
@@ -509,7 +552,7 @@ ORDER BY Record_ID,
                       dataType="System.String"
                       description="The SQL command to be executed."
                       name="SqlCommand"
-                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -562,6 +605,12 @@ ORDER BY Record_ID,
                           cachedName="RecordID (1)"
                           externalMetadataColumnId="Package\Job Data\Staging\DELETE Stage.Inputs[OLE DB Destination Input].ExternalColumns[RecordID]"
                           lineageId="Package\Job Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[RecordID (1)]" />
+                        <inputColumn
+                          refId="Package\Job Data\Staging\DELETE Stage.Inputs[OLE DB Destination Input].Columns[DateTime (1)]"
+                          cachedDataType="dbTimeStamp"
+                          cachedName="DateTime (1)"
+                          externalMetadataColumnId="Package\Job Data\Staging\DELETE Stage.Inputs[OLE DB Destination Input].ExternalColumns[DateTime]"
+                          lineageId="Package\Job Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[DateTime (1)]" />
                       </inputColumns>
                       <externalMetadataColumns
                         isUsed="True">
@@ -569,6 +618,10 @@ ORDER BY Record_ID,
                           refId="Package\Job Data\Staging\DELETE Stage.Inputs[OLE DB Destination Input].ExternalColumns[RecordID]"
                           dataType="i8"
                           name="RecordID" />
+                        <externalMetadataColumn
+                          refId="Package\Job Data\Staging\DELETE Stage.Inputs[OLE DB Destination Input].ExternalColumns[DateTime]"
+                          dataType="dbTimeStamp"
+                          name="DateTime" />
                       </externalMetadataColumns>
                     </input>
                   </inputs>
@@ -644,6 +697,7 @@ ORDER BY Record_ID,
                           refId="Package\Job Data\Staging\Find Changed Records.Inputs[Conditional Split Input].Columns[DateTime]"
                           cachedDataType="dbTimeStamp"
                           cachedName="DateTime"
+                          cachedSortKeyPosition="2"
                           lineageId="Package\Job Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[DateTime]" />
                         <inputColumn
                           refId="Package\Job Data\Staging\Find Changed Records.Inputs[Conditional Split Input].Columns[DateTime (1)]"
@@ -897,7 +951,7 @@ ORDER BY Record_ID,
                       dataType="System.String"
                       description="The SQL command to be executed."
                       name="SqlCommand"
-                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -955,6 +1009,7 @@ ORDER BY Record_ID,
                           refId="Package\Job Data\Staging\INSERT Stage.Inputs[OLE DB Destination Input].Columns[DateTime]"
                           cachedDataType="dbTimeStamp"
                           cachedName="DateTime"
+                          cachedSortKeyPosition="2"
                           externalMetadataColumnId="Package\Job Data\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[DateTime]"
                           lineageId="Package\Job Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[DateTime]" />
                         <inputColumn
@@ -1042,7 +1097,7 @@ ORDER BY Record_ID,
                     <property
                       dataType="System.Int32"
                       description="Specifies the number of columns in the ordering key."
-                      name="NumKeyColumns">1</property>
+                      name="NumKeyColumns">2</property>
                     <property
                       dataType="System.Boolean"
                       description="Indicates whether the null values are treated as equal values."
@@ -1068,6 +1123,7 @@ ORDER BY Record_ID,
                           refId="Package\Job Data\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[DateTime]"
                           cachedDataType="dbTimeStamp"
                           cachedName="DateTime"
+                          cachedSortKeyPosition="2"
                           lineageId="Package\Job Data\Staging\DB Runtime.Outputs[OLE DB Source Output].Columns[DateTime]" />
                         <inputColumn
                           refId="Package\Job Data\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[JobIndex]"
@@ -1102,6 +1158,7 @@ ORDER BY Record_ID,
                           refId="Package\Job Data\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[DateTime]"
                           cachedDataType="dbTimeStamp"
                           cachedName="DateTime"
+                          cachedSortKeyPosition="2"
                           lineageId="Package\Job Data\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[DateTime]" />
                         <inputColumn
                           refId="Package\Job Data\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[JobIndex]"
@@ -1146,7 +1203,8 @@ ORDER BY Record_ID,
                           refId="Package\Job Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[DateTime]"
                           dataType="dbTimeStamp"
                           lineageId="Package\Job Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[DateTime]"
-                          name="DateTime">
+                          name="DateTime"
+                          sortKeyPosition="2">
                           <properties>
                             <property
                               containsID="true"
@@ -1289,7 +1347,7 @@ ORDER BY Record_ID,
                       dataType="System.String"
                       description="The SQL command to be executed."
                       name="SqlCommand"
-                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -1347,6 +1405,7 @@ ORDER BY Record_ID,
                           refId="Package\Job Data\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].Columns[DateTime]"
                           cachedDataType="dbTimeStamp"
                           cachedName="DateTime"
+                          cachedSortKeyPosition="2"
                           externalMetadataColumnId="Package\Job Data\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[DateTime]"
                           lineageId="Package\Job Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[DateTime]" />
                         <inputColumn
@@ -1468,12 +1527,12 @@ ORDER BY Record_ID,
           DTS:LocaleID="-1"
           DTS:ObjectName="Update Data"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="3">
+          DTS:ThreadHint="0">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
               SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-              SQLTask:SqlStatementSource="UPDATE a&#xA;SET a.[JobIndex] = b.[JobIndex],&#xA; a.[DateTime]=b.[DateTime],&#xA; a.[Footage] = b.[Footage],&#xA; a.[Downtime] = b.[Downtime]&#xA;FROM [dbo].[zC3_JOBDATA] a&#xA;INNER JOIN zC3_JOBDATA_STAGE_UPDATE b&#xA;ON a.[RecordID] = b.[RecordID]&#xA;GO" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+              SQLTask:SqlStatementSource="UPDATE &#xA;  a &#xA;SET &#xA;  a.[JobIndex] = b.[JobIndex], &#xA;  a.[Footage] = b.[Footage], &#xA;  a.[Downtime] = b.[Downtime] &#xA;FROM &#xA;  [dbo].[zC3_JOBDATA] a &#xA;  INNER JOIN zC3_JOBDATA_STAGE_UPDATE b &#xA;  ON a.[RecordID] = b.[RecordID] &#xA;    AND a.[DateTime] = b.[DateTime] &#xA;GO&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
           </DTS:ObjectData>
         </DTS:Executable>
       </DTS:Executables>
@@ -1481,11 +1540,11 @@ ORDER BY Record_ID,
         <DTS:PrecedenceConstraint
           DTS:refId="Package\Job Data.PrecedenceConstraints[Constraint]"
           DTS:CreationName=""
-          DTS:DTSID="{FD7E3928-EB5A-48B4-B567-31CB86F9B6DA}"
+          DTS:DTSID="{3DFCD38E-C87E-40C8-B45C-6651F47DE09A}"
           DTS:From="Package\Job Data\Clean Stage"
           DTS:LogicalAnd="True"
           DTS:ObjectName="Constraint"
-          DTS:To="Package\Job Data\Staging" />
+          DTS:To="Package\Job Data\Last DateTime" />
         <DTS:PrecedenceConstraint
           DTS:refId="Package\Job Data.PrecedenceConstraints[Constraint 1]"
           DTS:CreationName=""
@@ -1510,6 +1569,14 @@ ORDER BY Record_ID,
           DTS:LogicalAnd="True"
           DTS:ObjectName="Constraint 3"
           DTS:To="Package\Job Data\Insert Data" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Job Data.PrecedenceConstraints[Constraint 4]"
+          DTS:CreationName=""
+          DTS:DTSID="{BD6984BF-793F-4677-89C4-892172F08393}"
+          DTS:From="Package\Job Data\Last DateTime"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 4"
+          DTS:To="Package\Job Data\Staging" />
       </DTS:PrecedenceConstraints>
     </DTS:Executable>
     <DTS:Executable
@@ -1554,6 +1621,27 @@ ORDER BY Record_ID,
             <SQLTask:SqlTaskData
               SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
               SQLTask:SqlStatementSource="INSERT INTO [zC3_PRIMARYSTRUCT]&#xA;SELECT * FROM [zC3_PRIMARYSTRUCT_STAGE_INSERT]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Primary Structure\LastJobIndex"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{c641920e-428f-4503-b833-ce894d2310f8}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="LastJobIndex"
+          DTS:ThreadHint="1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+              SQLTask:SqlStatementSource="SELECT MAX( PIndex ) - 1000 AS LastPIndex&#xA;FROM zC3_PRIMARYSTRUCT"
+              SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ResultBinding
+                SQLTask:ResultName="0"
+                SQLTask:DtsVariableName="User::LastJobIndex" />
+            </SQLTask:SqlTaskData>
           </DTS:ObjectData>
         </DTS:Executable>
         <DTS:Executable
@@ -1773,7 +1861,7 @@ ORDER BY Record_ID,
                       dataType="System.String"
                       description="The SQL command to be executed."
                       name="SqlCommand"
-                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT [PIndex]
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT [PIndex]
     ,[Category]
     ,[Causes]
     ,[FurtherDetail]
@@ -1783,6 +1871,7 @@ ORDER BY Record_ID,
     ,[ProcessOrderNo]
     ,[SpecLinespeed]
 FROM [zC3_PRIMARYSTRUCT]
+WHERE [PIndex] &gt; ?
 ORDER BY [PIndex]</property>
                     <property
                       dataType="System.String"
@@ -1804,7 +1893,7 @@ ORDER BY [PIndex]</property>
                     <property
                       dataType="System.String"
                       description="The mappings between the parameters in the SQL command and variables."
-                      name="ParameterMapping"></property>
+                      name="ParameterMapping">"Parameter0:Input",{7C0B9237-DD01-4A56-BF0C-E7ECBA0BC640};</property>
                   </properties>
                   <connections>
                     <connection
@@ -2056,7 +2145,7 @@ ORDER BY [PIndex]</property>
                       dataType="System.String"
                       description="The SQL command to be executed."
                       name="SqlCommand"
-                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT [PIndex],
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT [PIndex],
     [Category] AS Category,
     [Causes] AS Causes,
     [FurtherDetail] AS FurtherDetail,
@@ -2066,7 +2155,8 @@ ORDER BY [PIndex]</property>
     CSTR([ProcessOrder]) AS ProcessOrderNo,
     [SpecLS] AS SpecLinespeed
 FROM c3primarystructure
-WHERE [PIndex] IS NOT NULL
+WHERE [PIndex] &gt; ?
+    AND [Category] IS NOT NULL
 ORDER BY [PIndex]</property>
                     <property
                       dataType="System.String"
@@ -2088,7 +2178,7 @@ ORDER BY [PIndex]</property>
                     <property
                       dataType="System.String"
                       description="The mappings between the parameters in the SQL command and variables."
-                      name="ParameterMapping"></property>
+                      name="ParameterMapping">"Parameter0:Input",{7C0B9237-DD01-4A56-BF0C-E7ECBA0BC640};</property>
                   </properties>
                   <connections>
                     <connection
@@ -2336,7 +2426,7 @@ ORDER BY [PIndex]</property>
                       dataType="System.String"
                       description="The SQL command to be executed."
                       name="SqlCommand"
-                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -2600,7 +2690,7 @@ ORDER BY [PIndex]</property>
                       dataType="System.String"
                       description="The SQL command to be executed."
                       name="SqlCommand"
-                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -3218,7 +3308,7 @@ ORDER BY [PIndex]</property>
                       dataType="System.String"
                       description="The SQL command to be executed."
                       name="SqlCommand"
-                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -3464,11 +3554,11 @@ ORDER BY [PIndex]</property>
         <DTS:PrecedenceConstraint
           DTS:refId="Package\Primary Structure.PrecedenceConstraints[Constraint]"
           DTS:CreationName=""
-          DTS:DTSID="{B98CFC58-5B94-45D6-AD2D-197EB4236765}"
+          DTS:DTSID="{959857F1-0137-4CDA-BC9A-C210DAD2152F}"
           DTS:From="Package\Primary Structure\Clean Stage"
           DTS:LogicalAnd="True"
           DTS:ObjectName="Constraint"
-          DTS:To="Package\Primary Structure\Staging" />
+          DTS:To="Package\Primary Structure\LastJobIndex" />
         <DTS:PrecedenceConstraint
           DTS:refId="Package\Primary Structure.PrecedenceConstraints[Constraint 1]"
           DTS:CreationName=""
@@ -3485,6 +3575,14 @@ ORDER BY [PIndex]</property>
           DTS:LogicalAnd="True"
           DTS:ObjectName="Constraint 2"
           DTS:To="Package\Primary Structure\Insert Data" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Primary Structure.PrecedenceConstraints[Constraint 3]"
+          DTS:CreationName=""
+          DTS:DTSID="{BA5C0E51-5B17-4D31-B03D-ED36E03E590D}"
+          DTS:From="Package\Primary Structure\LastJobIndex"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 3"
+          DTS:To="Package\Primary Structure\Staging" />
       </DTS:PrecedenceConstraints>
     </DTS:Executable>
     <DTS:Executable
@@ -3562,7 +3660,7 @@ ORDER BY [PIndex]</property>
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
               SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-              SQLTask:SqlStatementSource="SELECT ISNULL(DATEADD(DAY, -30, MAX(Date_Time)), CAST('2019-10-01' AS datetime))&#xA;FROM zC3_PROCESSDATA"
+              SQLTask:SqlStatementSource="SELECT ISNULL( MAX(Date_Time), CAST('2019-10-01' AS datetime))&#xA;FROM zC3_PROCESSDATA"
               SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
               <SQLTask:ResultBinding
                 SQLTask:ResultName="0"
@@ -3609,7 +3707,7 @@ ORDER BY [PIndex]</property>
                       dataType="System.String"
                       description="The SQL command to be executed."
                       name="SqlCommand"
-                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT [Record_ID]
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT [Record_ID]
       ,[Date_Time]
       ,[JobIndex]
       ,[LineSpeed_FB]
@@ -3987,7 +4085,7 @@ ORDER BY [Date_Time]</property>
                       dataType="System.String"
                       description="The SQL command to be executed."
                       name="SqlCommand"
-                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT [Record_ID]
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT [Record_ID]
       ,[Date_Time]
       ,[JobIndex]
       ,[LineSpeed_FB]
@@ -4043,7 +4141,7 @@ ORDER BY [Date_Time]</property>
                       <outputColumns>
                         <outputColumn
                           refId="Package\Process Data\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[Record_ID]"
-                          dataType="i4"
+                          dataType="i8"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
                           externalMetadataColumnId="Package\Process Data\Staging\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[Record_ID]"
@@ -4188,7 +4286,7 @@ ORDER BY [Date_Time]</property>
                         isUsed="True">
                         <externalMetadataColumn
                           refId="Package\Process Data\Staging\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[Record_ID]"
-                          dataType="i4"
+                          dataType="i8"
                           name="Record_ID" />
                         <externalMetadataColumn
                           refId="Package\Process Data\Staging\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[Date_Time]"
@@ -4261,7 +4359,7 @@ ORDER BY [Date_Time]</property>
                       <outputColumns>
                         <outputColumn
                           refId="Package\Process Data\Staging\DB PBI.Outputs[OLE DB Source Error Output].Columns[Record_ID]"
-                          dataType="i4"
+                          dataType="i8"
                           lineageId="Package\Process Data\Staging\DB PBI.Outputs[OLE DB Source Error Output].Columns[Record_ID]"
                           name="Record_ID" />
                         <outputColumn
@@ -4382,7 +4480,7 @@ ORDER BY [Date_Time]</property>
                       dataType="System.String"
                       description="The SQL command to be executed."
                       name="SqlCommand"
-                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -4435,6 +4533,12 @@ ORDER BY [Date_Time]</property>
                           cachedName="Date_Time (1)"
                           externalMetadataColumnId="Package\Process Data\Staging\DELETE Stage.Inputs[OLE DB Destination Input].ExternalColumns[Date_Time]"
                           lineageId="Package\Process Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[Date_Time (1)]" />
+                        <inputColumn
+                          refId="Package\Process Data\Staging\DELETE Stage.Inputs[OLE DB Destination Input].Columns[Record_ID (1)]"
+                          cachedDataType="i8"
+                          cachedName="Record_ID (1)"
+                          externalMetadataColumnId="Package\Process Data\Staging\DELETE Stage.Inputs[OLE DB Destination Input].ExternalColumns[Record_ID]"
+                          lineageId="Package\Process Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[Record_ID (1)]" />
                       </inputColumns>
                       <externalMetadataColumns
                         isUsed="True">
@@ -4442,6 +4546,10 @@ ORDER BY [Date_Time]</property>
                           refId="Package\Process Data\Staging\DELETE Stage.Inputs[OLE DB Destination Input].ExternalColumns[Date_Time]"
                           dataType="dbTimeStamp"
                           name="Date_Time" />
+                        <externalMetadataColumn
+                          refId="Package\Process Data\Staging\DELETE Stage.Inputs[OLE DB Destination Input].ExternalColumns[Record_ID]"
+                          dataType="i8"
+                          name="Record_ID" />
                       </externalMetadataColumns>
                     </input>
                   </inputs>
@@ -4866,7 +4974,7 @@ ORDER BY [Date_Time]</property>
                       dataType="System.String"
                       description="The SQL command to be executed."
                       name="SqlCommand"
-                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -5009,7 +5117,7 @@ ORDER BY [Date_Time]</property>
                         isUsed="True">
                         <externalMetadataColumn
                           refId="Package\Process Data\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[Record_ID]"
-                          dataType="i4"
+                          dataType="i8"
                           name="Record_ID" />
                         <externalMetadataColumn
                           refId="Package\Process Data\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[Date_Time]"
@@ -5225,7 +5333,7 @@ ORDER BY [Date_Time]</property>
                           lineageId="Package\Process Data\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[Date_Time]" />
                         <inputColumn
                           refId="Package\Process Data\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[Record_ID]"
-                          cachedDataType="i4"
+                          cachedDataType="i8"
                           cachedName="Record_ID"
                           lineageId="Package\Process Data\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[Record_ID]" />
                         <inputColumn
@@ -5442,7 +5550,7 @@ ORDER BY [Date_Time]</property>
                         </outputColumn>
                         <outputColumn
                           refId="Package\Process Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[Record_ID (1)]"
-                          dataType="i4"
+                          dataType="i8"
                           lineageId="Package\Process Data\Staging\Merge Join.Outputs[Merge Join Output].Columns[Record_ID (1)]"
                           name="Record_ID (1)">
                           <properties>
@@ -5736,7 +5844,7 @@ ORDER BY [Date_Time]</property>
                       dataType="System.String"
                       description="The SQL command to be executed."
                       name="SqlCommand"
-                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -5879,7 +5987,7 @@ ORDER BY [Date_Time]</property>
                         isUsed="True">
                         <externalMetadataColumn
                           refId="Package\Process Data\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[Record_ID]"
-                          dataType="i4"
+                          dataType="i8"
                           name="Record_ID" />
                         <externalMetadataColumn
                           refId="Package\Process Data\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[Date_Time]"
@@ -6092,7 +6200,7 @@ ORDER BY [Date_Time]</property>
           DTS:LocaleID="-1"
           DTS:ObjectName="Clean Stage"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="0">
+          DTS:ThreadHint="3">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -6109,7 +6217,7 @@ ORDER BY [Date_Time]</property>
           DTS:LocaleID="-1"
           DTS:ObjectName="Delete Data"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="0">
+          DTS:ThreadHint="3">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -6126,7 +6234,7 @@ ORDER BY [Date_Time]</property>
           DTS:LocaleID="-1"
           DTS:ObjectName="Insert Data"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="0">
+          DTS:ThreadHint="3">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -6143,12 +6251,12 @@ ORDER BY [Date_Time]</property>
           DTS:LocaleID="-1"
           DTS:ObjectName="Last DateTime"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="0">
+          DTS:ThreadHint="3">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
               SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-              SQLTask:SqlStatementSource="SELECT ISNULL(DATEADD(DAY, -30, MAX(Date_Time)), CAST('2019-10-01' AS datetime))&#xA;FROM zC3_PROFILE"
+              SQLTask:SqlStatementSource="SELECT ISNULL( MAX(Date_Time), CAST('2019-10-01' AS datetime))&#xA;FROM zC3_PROFILE"
               SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
               <SQLTask:ResultBinding
                 SQLTask:ResultName="0"
@@ -6195,7 +6303,7 @@ ORDER BY [Date_Time]</property>
                       dataType="System.String"
                       description="The SQL command to be executed."
                       name="SqlCommand"
-                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT [Record_ID]
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT [Record_ID]
     ,[Date_Time]
     ,[JobIndex]
     ,[NDC Profile 1] AS NDC_Profile_1
@@ -6952,7 +7060,7 @@ ORDER BY [Date_Time]</property>
                       dataType="System.String"
                       description="The SQL command to be executed."
                       name="SqlCommand"
-                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT [Record_ID]
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT [Record_ID]
     ,[Date_Time]
     ,[JobIndex]
     ,[NDC_Profile_1]
@@ -7028,7 +7136,7 @@ ORDER BY [Date_Time]</property>
                       <outputColumns>
                         <outputColumn
                           refId="Package\Profile\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[Record_ID]"
-                          dataType="i4"
+                          dataType="i8"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
                           externalMetadataColumnId="Package\Profile\Staging\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[Record_ID]"
@@ -7347,7 +7455,7 @@ ORDER BY [Date_Time]</property>
                         isUsed="True">
                         <externalMetadataColumn
                           refId="Package\Profile\Staging\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[Record_ID]"
-                          dataType="i4"
+                          dataType="i8"
                           name="Record_ID" />
                         <externalMetadataColumn
                           refId="Package\Profile\Staging\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[Date_Time]"
@@ -7494,7 +7602,7 @@ ORDER BY [Date_Time]</property>
                       <outputColumns>
                         <outputColumn
                           refId="Package\Profile\Staging\DB PBI.Outputs[OLE DB Source Error Output].Columns[Record_ID]"
-                          dataType="i4"
+                          dataType="i8"
                           lineageId="Package\Profile\Staging\DB PBI.Outputs[OLE DB Source Error Output].Columns[Record_ID]"
                           name="Record_ID" />
                         <outputColumn
@@ -7709,7 +7817,7 @@ ORDER BY [Date_Time]</property>
                       dataType="System.String"
                       description="The SQL command to be executed."
                       name="SqlCommand"
-                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -7762,6 +7870,12 @@ ORDER BY [Date_Time]</property>
                           cachedName="Date_Time (1)"
                           externalMetadataColumnId="Package\Profile\Staging\DELETE Stage.Inputs[OLE DB Destination Input].ExternalColumns[Date_Time]"
                           lineageId="Package\Profile\Staging\Merge Join.Outputs[Merge Join Output].Columns[Date_Time (1)]" />
+                        <inputColumn
+                          refId="Package\Profile\Staging\DELETE Stage.Inputs[OLE DB Destination Input].Columns[Record_ID (1)]"
+                          cachedDataType="i8"
+                          cachedName="Record_ID (1)"
+                          externalMetadataColumnId="Package\Profile\Staging\DELETE Stage.Inputs[OLE DB Destination Input].ExternalColumns[Record_ID]"
+                          lineageId="Package\Profile\Staging\Merge Join.Outputs[Merge Join Output].Columns[Record_ID (1)]" />
                       </inputColumns>
                       <externalMetadataColumns
                         isUsed="True">
@@ -7769,6 +7883,10 @@ ORDER BY [Date_Time]</property>
                           refId="Package\Profile\Staging\DELETE Stage.Inputs[OLE DB Destination Input].ExternalColumns[Date_Time]"
                           dataType="dbTimeStamp"
                           name="Date_Time" />
+                        <externalMetadataColumn
+                          refId="Package\Profile\Staging\DELETE Stage.Inputs[OLE DB Destination Input].ExternalColumns[Record_ID]"
+                          dataType="i8"
+                          name="Record_ID" />
                       </externalMetadataColumns>
                     </input>
                   </inputs>
@@ -8387,7 +8505,7 @@ ORDER BY [Date_Time]</property>
                       dataType="System.String"
                       description="The SQL command to be executed."
                       name="SqlCommand"
-                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -8650,7 +8768,7 @@ ORDER BY [Date_Time]</property>
                         isUsed="True">
                         <externalMetadataColumn
                           refId="Package\Profile\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[Record_ID]"
-                          dataType="i4"
+                          dataType="i8"
                           name="Record_ID" />
                         <externalMetadataColumn
                           refId="Package\Profile\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[Date_Time]"
@@ -9040,7 +9158,7 @@ ORDER BY [Date_Time]</property>
                           lineageId="Package\Profile\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[Date_Time]" />
                         <inputColumn
                           refId="Package\Profile\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[Record_ID]"
-                          cachedDataType="i4"
+                          cachedDataType="i8"
                           cachedName="Record_ID"
                           lineageId="Package\Profile\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[Record_ID]" />
                         <inputColumn
@@ -9260,7 +9378,7 @@ ORDER BY [Date_Time]</property>
                         </outputColumn>
                         <outputColumn
                           refId="Package\Profile\Staging\Merge Join.Outputs[Merge Join Output].Columns[Record_ID (1)]"
-                          dataType="i4"
+                          dataType="i8"
                           lineageId="Package\Profile\Staging\Merge Join.Outputs[Merge Join Output].Columns[Record_ID (1)]"
                           name="Record_ID (1)">
                           <properties>
@@ -10159,7 +10277,7 @@ ORDER BY [Date_Time]</property>
                       dataType="System.String"
                       description="The SQL command to be executed."
                       name="SqlCommand"
-                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -10422,7 +10540,7 @@ ORDER BY [Date_Time]</property>
                         isUsed="True">
                         <externalMetadataColumn
                           refId="Package\Profile\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[Record_ID]"
-                          dataType="i4"
+                          dataType="i8"
                           name="Record_ID" />
                         <externalMetadataColumn
                           refId="Package\Profile\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[Date_Time]"
@@ -10638,7 +10756,7 @@ ORDER BY [Date_Time]</property>
           DTS:LocaleID="-1"
           DTS:ObjectName="Update Data"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="0">
+          DTS:ThreadHint="3">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -10704,39 +10822,43 @@ ORDER BY [Date_Time]</property>
       <GraphLayout
         Capacity="64" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
-          Size="138,42"
+          Size="147,42"
           Id="Package\Job Data\Clean Stage"
           TopLeft="17,17" />
         <NodeLayout
-          Size="138,42"
+          Size="147,42"
           Id="Package\Job Data\Delete Data"
-          TopLeft="17,171.5" />
+          TopLeft="17,249.2" />
         <NodeLayout
-          Size="138,42"
+          Size="147,42"
           Id="Package\Job Data\Insert Data"
-          TopLeft="17,326" />
+          TopLeft="17,404" />
         <NodeLayout
-          Size="138,42"
+          Size="147,42"
+          Id="Package\Job Data\Last DateTime"
+          TopLeft="17,94.4" />
+        <NodeLayout
+          Size="147,42"
           Id="Package\Job Data\Staging"
-          TopLeft="17,94.25" />
+          TopLeft="17,171.8" />
         <NodeLayout
-          Size="138,42"
+          Size="147,42"
           Id="Package\Job Data\Update Data"
-          TopLeft="17,248.75" />
+          TopLeft="17,326.6" />
         <EdgeLayout
           Id="Package\Job Data.PrecedenceConstraints[Constraint]"
-          TopLeft="86,59">
+          TopLeft="90.5,59">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,35.25"
+              EndConnector="0,35.4"
               Start="0,0"
-              End="0,27.75">
+              End="0,27.9">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,27.75" />
+                    End="0,27.9" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -10747,18 +10869,18 @@ ORDER BY [Date_Time]</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\Job Data.PrecedenceConstraints[Constraint 1]"
-          TopLeft="86,136.25">
+          TopLeft="90.5,213.8">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,35.25"
+              EndConnector="0,35.4"
               Start="0,0"
-              End="0,27.75">
+              End="0,27.9">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,27.75" />
+                    End="0,27.9" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -10769,18 +10891,18 @@ ORDER BY [Date_Time]</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\Job Data.PrecedenceConstraints[Constraint 2]"
-          TopLeft="86,213.5">
+          TopLeft="90.5,291.2">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,35.25"
+              EndConnector="0,35.4"
               Start="0,0"
-              End="0,27.75">
+              End="0,27.9">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,27.75" />
+                    End="0,27.9" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -10791,18 +10913,40 @@ ORDER BY [Date_Time]</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\Job Data.PrecedenceConstraints[Constraint 3]"
-          TopLeft="86,290.75">
+          TopLeft="90.5,368.6">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,35.25"
+              EndConnector="0,35.4"
               Start="0,0"
-              End="0,27.75">
+              End="0,27.9">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,27.75" />
+                    End="0,27.9" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Job Data.PrecedenceConstraints[Constraint 4]"
+          TopLeft="90.5,136.4">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,35.4"
+              Start="0,0"
+              End="0,27.9">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,27.9" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -10814,29 +10958,33 @@ ORDER BY [Date_Time]</property>
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="178,421"
-          Size="178,464"
+          PanelSize="178,504"
+          Size="178,547"
           Id="Package\Job Data"
           TopLeft="139,9" />
         <NodeLayout
-          Size="138,42"
+          Size="144,42"
           Id="Package\Primary Structure\Clean Stage"
           TopLeft="17,17" />
         <NodeLayout
-          Size="138,42"
+          Size="144,42"
           Id="Package\Primary Structure\Insert Data"
-          TopLeft="17,251" />
+          TopLeft="17,329" />
         <NodeLayout
-          Size="138,42"
-          Id="Package\Primary Structure\Staging"
+          Size="144,42"
+          Id="Package\Primary Structure\LastJobIndex"
           TopLeft="17,95" />
         <NodeLayout
-          Size="138,42"
-          Id="Package\Primary Structure\Update Data"
+          Size="144,42"
+          Id="Package\Primary Structure\Staging"
           TopLeft="17,173" />
+        <NodeLayout
+          Size="144,42"
+          Id="Package\Primary Structure\Update Data"
+          TopLeft="17,251" />
         <EdgeLayout
           Id="Package\Primary Structure.PrecedenceConstraints[Constraint]"
-          TopLeft="86,59">
+          TopLeft="89,59">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -10858,7 +11006,7 @@ ORDER BY [Date_Time]</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\Primary Structure.PrecedenceConstraints[Constraint 1]"
-          TopLeft="86,137">
+          TopLeft="89,215">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -10880,7 +11028,29 @@ ORDER BY [Date_Time]</property>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\Primary Structure.PrecedenceConstraints[Constraint 2]"
-          TopLeft="86,215">
+          TopLeft="89,293">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,36"
+              Start="0,0"
+              End="0,28.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,28.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Primary Structure.PrecedenceConstraints[Constraint 3]"
+          TopLeft="89,137">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -10903,8 +11073,8 @@ ORDER BY [Date_Time]</property>
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="185,405"
-          Size="185,448"
+          PanelSize="185,498"
+          Size="185,541"
           Id="Package\Primary Structure"
           TopLeft="325,10" />
         <NodeLayout
@@ -11216,7 +11386,7 @@ ORDER BY [Date_Time]</property>
         <NodeLayout
           Size="146,42"
           Id="Package\Job Data\Staging\DELETE Stage"
-          TopLeft="713,344" />
+          TopLeft="714,344" />
         <NodeLayout
           Size="148,42"
           Id="Package\Job Data\Staging\UPDATE Stage"
@@ -11320,9 +11490,7 @@ ORDER BY [Date_Time]</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -11356,9 +11524,7 @@ ORDER BY [Date_Time]</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -11380,9 +11546,7 @@ ORDER BY [Date_Time]</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -11427,9 +11591,9 @@ ORDER BY [Date_Time]</property>
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="330,59"
+              EndConnector="331,59"
               Start="0,0"
-              End="330,51.5">
+              End="331,51.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
@@ -11440,39 +11604,26 @@ ORDER BY [Date_Time]</property>
                     Point2="0,20.327731092437"
                     Point3="4,20.327731092437" />
                   <mssgle:LineSegment
-                    End="326,20.327731092437" />
+                    End="327,20.327731092437" />
                   <mssgle:CubicBezierSegment
-                    Point1="326,20.327731092437"
-                    Point2="330,20.327731092437"
-                    Point3="330,24.327731092437" />
+                    Point1="327,20.327731092437"
+                    Point2="331,20.327731092437"
+                    Point3="331,24.327731092437" />
                   <mssgle:LineSegment
-                    End="330,51.5" />
+                    End="331,51.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="150.80404296875,25.327731092437,28.3919140625,9.7490234375"
+              BoundingBox="151.30404296875,25.327731092437,28.3919140625,9.7490234375"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
     </LayoutInfo>
   </TaskHost>
-  <PipelineComponentMetadata
-    design-time-name="Package\Job Data\Staging\INSERT Stage">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-      <Property>
-        <Name>TableInfoObjectType</Name>
-        <Value
-          type="q2:string">Table</Value>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
   <PipelineComponentMetadata
     design-time-name="Package\Job Data\Staging\DB Runtime">
     <Properties>
@@ -11495,7 +11646,7 @@ ORDER BY [Date_Time]</property>
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\Job Data\Staging\UPDATE Stage">
+    design-time-name="Package\Job Data\Staging\INSERT Stage">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -11512,6 +11663,19 @@ ORDER BY [Date_Time]</property>
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Job Data\Staging\UPDATE Stage">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
       </Property>
     </Properties>
   </PipelineComponentMetadata>
@@ -11583,9 +11747,7 @@ ORDER BY [Date_Time]</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -11607,9 +11769,7 @@ ORDER BY [Date_Time]</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -11763,9 +11923,7 @@ ORDER BY [Date_Time]</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
@@ -12382,7 +12540,7 @@ ORDER BY [Date_Time]</property>
     </LayoutInfo>
   </TaskHost>
   <PipelineComponentMetadata
-    design-time-name="Package\Profile\Staging\INSERT Stage">
+    design-time-name="Package\Profile\Staging\UPDATE Stage">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -12424,7 +12582,7 @@ ORDER BY [Date_Time]</property>
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\Profile\Staging\UPDATE Stage">
+    design-time-name="Package\Profile\Staging\INSERT Stage">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>

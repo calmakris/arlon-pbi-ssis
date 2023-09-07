@@ -1,4 +1,4 @@
-﻿<?xml version="1.0"?>
+<?xml version="1.0"?>
 <DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
   DTS:refId="Package"
   DTS:CreationDate="4/19/2021 12:36:14 PM"
@@ -7,15 +7,26 @@
   DTS:CreatorName="DOMAIN\RPETRELLA"
   DTS:DTSID="{4D4680B3-ED90-473B-8127-A4452B16056D}"
   DTS:ExecutableType="Microsoft.Package"
-  DTS:LastModifiedProductVersion="15.0.2000.180"
+  DTS:LastModifiedProductVersion="16.0.5270.0"
   DTS:LocaleID="1033"
   DTS:ObjectName="CDHDR"
   DTS:PackageType="5"
-  DTS:VersionBuild="20"
-  DTS:VersionGUID="{917C56C9-7425-43CB-BB6A-DA46DECCFA56}">
+  DTS:VersionBuild="27"
+  DTS:VersionGUID="{92CA2B12-068F-44B3-A782-0BD6849D6C30}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
-  <DTS:Variables />
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{3C0E7D8E-896E-4778-9982-3C1E506B227B}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="MinDate">
+      <DTS:VariableValue
+        DTS:DataType="8"
+        xml:space="preserve"></DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
   <DTS:Executables>
     <DTS:Executable
       DTS:refId="Package\CDHDR"
@@ -56,24 +67,31 @@
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT A01.[MANDANT]
-      ,A01.[OBJECTCLAS]
-      ,A01.[OBJECTID]
-      ,A01.[CHANGENR]
-      ,A01.[USERNAME]
-      ,A01.[UDATE]
-      ,A01.[UDATE_X]
-      ,A01.[UTIME]
-      ,A01.[CHANGE_IND]
-      ,A01.[TCODE]
-FROM [CDHDR] A01 (NOLOCK)
-WHERE A01.MANDANT = '105'
-      AND A01.OBJECTCLAS = 'VERKBELEG'
-      AND A01.CHANGE_IND = 'U'
-ORDER BY A01.[MANDANT]
-      ,A01.[OBJECTCLAS]
-      ,A01.[OBJECTID]
-      ,A01.[CHANGENR]</property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT 
+  [MANDANT], 
+  [OBJECTCLAS], 
+  [OBJECTID], 
+  [CHANGENR], 
+  [USERNAME], 
+  [UDATE], 
+  CAST(
+    REPLACE([UDATE], '00010101', '19000101') AS DATETIME
+  ) AS [UDATE_X], 
+  [UTIME], 
+  [CHANGE_IND], 
+  [TCODE] 
+FROM 
+  [CDHDR] (NOLOCK) 
+WHERE 
+  MANDANT = '105' 
+  AND OBJECTCLAS = 'VERKBELEG' 
+  AND CHANGE_IND = 'U' 
+  AND UDATE &gt; ? 
+ORDER BY 
+  [MANDANT], 
+  [OBJECTCLAS], 
+  [OBJECTID], 
+  [CHANGENR]</property>
                 <property
                   dataType="System.String"
                   description="The variable that contains the SQL command to be executed."
@@ -94,7 +112,7 @@ ORDER BY A01.[MANDANT]
                 <property
                   dataType="System.String"
                   description="The mappings between the parameters in the SQL command and variables."
-                  name="ParameterMapping"></property>
+                  name="ParameterMapping">"Parameter0:Input",{3C0E7D8E-896E-4778-9982-3C1E506B227B};</property>
               </properties>
               <connections>
                 <connection
@@ -263,7 +281,7 @@ ORDER BY A01.[MANDANT]
                       name="TCODE" />
                     <externalMetadataColumn
                       refId="Package\CDHDR\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[UDATE_X]"
-                      dataType="dbDate"
+                      dataType="dbTimeStamp"
                       name="UDATE_X" />
                   </externalMetadataColumns>
                 </output>
@@ -310,7 +328,7 @@ ORDER BY A01.[MANDANT]
                       name="UDATE" />
                     <outputColumn
                       refId="Package\CDHDR\DB PBI.Outputs[OLE DB Source Error Output].Columns[UDATE_X]"
-                      dataType="dbDate"
+                      dataType="dbTimeStamp"
                       lineageId="Package\CDHDR\DB PBI.Outputs[OLE DB Source Error Output].Columns[UDATE_X]"
                       name="UDATE_X" />
                     <outputColumn
@@ -373,24 +391,31 @@ ORDER BY A01.[MANDANT]
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT A01.[MANDANT]
-      ,A01.[OBJECTCLAS]
-      ,A01.[OBJECTID]
-      ,A01.[CHANGENR]
-      ,A01.[USERNAME]
-      ,A01.[UDATE]
-      ,CAST(REPLACE(A01.[UDATE],'00010101','19000101') AS DATETIME) AS [UDATE_X]
-      ,A01.[UTIME]
-      ,A01.[CHANGE_IND]
-      ,A01.[TCODE]
-FROM [ecp].[CDHDR] A01 (NOLOCK)
-WHERE A01.MANDANT = '105'
-      AND A01.OBJECTCLAS = 'VERKBELEG'
-      AND A01.CHANGE_IND = 'U'
-ORDER BY A01.[MANDANT]
-      ,A01.[OBJECTCLAS]
-      ,A01.[OBJECTID]
-      ,A01.[CHANGENR]</property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT 
+  [MANDANT], 
+  [OBJECTCLAS], 
+  [OBJECTID], 
+  [CHANGENR], 
+  [USERNAME], 
+  [UDATE], 
+  CAST(
+    REPLACE([UDATE], '00010101', '19000101') AS DATETIME
+  ) AS [UDATE_X], 
+  [UTIME], 
+  [CHANGE_IND], 
+  [TCODE] 
+FROM 
+  [ecp].[CDHDR] (NOLOCK) 
+WHERE 
+  MANDANT = '105' 
+  AND OBJECTCLAS = 'VERKBELEG' 
+  AND CHANGE_IND = 'U' 
+  AND UDATE &gt; ? 
+ORDER BY 
+  [MANDANT], 
+  [OBJECTCLAS], 
+  [OBJECTID], 
+  [CHANGENR]</property>
                 <property
                   dataType="System.String"
                   description="The variable that contains the SQL command to be executed."
@@ -411,7 +436,7 @@ ORDER BY A01.[MANDANT]
                 <property
                   dataType="System.String"
                   description="The mappings between the parameters in the SQL command and variables."
-                  name="ParameterMapping"></property>
+                  name="ParameterMapping">"Parameter0:Input",{3C0E7D8E-896E-4778-9982-3C1E506B227B};</property>
               </properties>
               <connections>
                 <connection
@@ -2071,13 +2096,13 @@ ORDER BY A01.[MANDANT]
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
-      DTS:refId="Package\clean stage"
+      DTS:refId="Package\Clean Stage"
       DTS:CreationName="Microsoft.ExecuteSQLTask"
       DTS:Description="Execute SQL Task"
       DTS:DTSID="{5889b518-87e7-4b93-9ad1-d7f0dc13e365}"
       DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
-      DTS:ObjectName="clean stage"
+      DTS:ObjectName="Clean Stage"
       DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
       DTS:ThreadHint="0">
       <DTS:Variables />
@@ -2088,106 +2113,143 @@ ORDER BY A01.[MANDANT]
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
-      DTS:refId="Package\Sequence Container"
-      DTS:CreationName="STOCK:SEQUENCE"
-      DTS:Description="Sequence Container"
-      DTS:DTSID="{3b882486-a65e-497d-ac78-4dc11d2ceded}"
-      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:refId="Package\DELETE"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{9f2da067-606f-4d9c-82c8-b95b8f26206d}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
-      DTS:ObjectName="Sequence Container">
+      DTS:ObjectName="DELETE"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
       <DTS:Variables />
-      <DTS:Executables>
-        <DTS:Executable
-          DTS:refId="Package\Sequence Container\delete"
-          DTS:CreationName="Microsoft.ExecuteSQLTask"
-          DTS:Description="Execute SQL Task"
-          DTS:DTSID="{9f2da067-606f-4d9c-82c8-b95b8f26206d}"
-          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
-          DTS:LocaleID="-1"
-          DTS:ObjectName="delete"
-          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="0">
-          <DTS:Variables />
-          <DTS:ObjectData>
-            <SQLTask:SqlTaskData
-              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-              SQLTask:SqlStatementSource="DELETE A01&#xA;FROM [CDHDR] A01 INNER JOIN [CDHDR_STAGE_DELETE] B01 ON ( A01.[MANDANT] = B01.[MANDANT]&#xA;                                                    AND A01.[OBJECTCLAS] = B01.[OBJECTCLAS]&#xA;                                                    AND A01.[OBJECTID] = B01.[OBJECTID]&#xA;                                                    AND A01.[CHANGENR] = B01.[CHANGENR] )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
-          </DTS:ObjectData>
-        </DTS:Executable>
-        <DTS:Executable
-          DTS:refId="Package\Sequence Container\update"
-          DTS:CreationName="Microsoft.ExecuteSQLTask"
-          DTS:Description="Execute SQL Task"
-          DTS:DTSID="{a394fbd4-1c82-4393-9f0a-b983a5b8cdbe}"
-          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
-          DTS:LocaleID="-1"
-          DTS:ObjectName="update"
-          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="1">
-          <DTS:Variables />
-          <DTS:ObjectData>
-            <SQLTask:SqlTaskData
-              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-              SQLTask:SqlStatementSource="UPDATE A01&#xA;SET A01.[USERNAME] = B01.[USERNAME]&#xA;   ,A01.[UDATE] = B01.[UDATE]&#xA;   ,A01.[UDATE_X] = B01.[UDATE_X]&#xA;   ,A01.[UTIME] = B01.[UTIME]&#xA;   ,A01.[CHANGE_IND] = B01.[CHANGE_IND]&#xA;   ,A01.[TCODE] = B01.[TCODE]&#xA;FROM [CDHDR] A01 INNER JOIN [CDHDR_STAGE_UPDATE] B01 ON ( A01.[MANDANT] = B01.[MANDANT]&#xA;                                                    AND A01.[OBJECTCLAS] = B01.[OBJECTCLAS]&#xA;                                                    AND A01.[OBJECTID] = B01.[OBJECTID]&#xA;                                                    AND A01.[CHANGENR] = B01.[CHANGENR] )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
-          </DTS:ObjectData>
-        </DTS:Executable>
-      </DTS:Executables>
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="DELETE A01&#xA;FROM [CDHDR] A01 INNER JOIN [CDHDR_STAGE_DELETE] B01 ON ( A01.[MANDANT] = B01.[MANDANT]&#xA;                                                    AND A01.[OBJECTCLAS] = B01.[OBJECTCLAS]&#xA;                                                    AND A01.[OBJECTID] = B01.[OBJECTID]&#xA;                                                    AND A01.[CHANGENR] = B01.[CHANGENR] )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
-      DTS:refId="Package\Sequence Container 1"
-      DTS:CreationName="STOCK:SEQUENCE"
-      DTS:Description="Sequence Container"
-      DTS:DTSID="{ca935593-a670-4bfc-a22f-3e21f2a296ed}"
-      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:refId="Package\Get MinDate"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{211ba7a2-cffa-4653-93a8-bdae8e8d9428}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
-      DTS:ObjectName="Sequence Container 1">
+      DTS:ObjectName="Get MinDate"
+      DTS:ThreadHint="0">
       <DTS:Variables />
-      <DTS:Executables>
-        <DTS:Executable
-          DTS:refId="Package\Sequence Container 1\insert"
-          DTS:CreationName="Microsoft.ExecuteSQLTask"
-          DTS:Description="Execute SQL Task"
-          DTS:DTSID="{16b12d99-824e-4f47-9e3f-389f93f38be1}"
-          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
-          DTS:LocaleID="-1"
-          DTS:ObjectName="insert"
-          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="0">
-          <DTS:Variables />
-          <DTS:ObjectData>
-            <SQLTask:SqlTaskData
-              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-              SQLTask:SqlStatementSource="INSERT INTO [CDHDR]&#xA;SELECT * FROM [CDHDR_STAGE_INSERT]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
-          </DTS:ObjectData>
-        </DTS:Executable>
-      </DTS:Executables>
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="SELECT FORMAT( ISNULL( MIN_DATE, dbo.GetBegFiscalYearDate( GETDATE() ) ), 'yyyyMMdd' ) AS MinDate&#xA;FROM zzJOB_ETL&#xA;WHERE TABLE_NAME = 'CDHDR'"
+          SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ResultBinding
+            SQLTask:ResultName="MinDate"
+            SQLTask:DtsVariableName="User::MinDate" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\INSERT"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{16b12d99-824e-4f47-9e3f-389f93f38be1}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="INSERT"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="INSERT INTO [CDHDR]&#xA;SELECT * FROM [CDHDR_STAGE_INSERT]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\UPDATE"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{a394fbd4-1c82-4393-9f0a-b983a5b8cdbe}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="UPDATE"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="UPDATE A01&#xA;SET A01.[USERNAME] = B01.[USERNAME]&#xA;   ,A01.[UDATE] = B01.[UDATE]&#xA;   ,A01.[UDATE_X] = B01.[UDATE_X]&#xA;   ,A01.[UTIME] = B01.[UTIME]&#xA;   ,A01.[CHANGE_IND] = B01.[CHANGE_IND]&#xA;   ,A01.[TCODE] = B01.[TCODE]&#xA;FROM [CDHDR] A01 INNER JOIN [CDHDR_STAGE_UPDATE] B01 ON ( A01.[MANDANT] = B01.[MANDANT]&#xA;                                                    AND A01.[OBJECTCLAS] = B01.[OBJECTCLAS]&#xA;                                                    AND A01.[OBJECTID] = B01.[OBJECTID]&#xA;                                                    AND A01.[CHANGENR] = B01.[CHANGENR] )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Update MinDate"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{902da7c9-b6ea-4631-b20f-1eacd7df6f9b}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Update MinDate"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="UPDATE&#xA;   zzJOB_ETL &#xA;SET&#xA;   LAST_SUCCESS_RUN = GETDATE()&#xA;   ,SUCCESS_DATE = dbo.GetBegDate(GETDATE())&#xA;   ,BEG_FISCAL_DATE = dbo.GetBegFiscalYearDate(GETDATE())&#xA;   ,MIN_DATE = DATEADD( DAY, -3, GETDATE() )&#xA;WHERE&#xA;   TABLE_NAME = 'CDHDR'" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
     </DTS:Executable>
   </DTS:Executables>
   <DTS:PrecedenceConstraints>
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint]"
       DTS:CreationName=""
-      DTS:DTSID="{d2c2b3cd-19b7-402a-8623-ba0eceee1ee7}"
+      DTS:DTSID="{33450100-445F-49CB-AD87-C820F6D80B4D}"
       DTS:From="Package\CDHDR"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint"
-      DTS:To="Package\Sequence Container" />
+      DTS:To="Package\UPDATE" />
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
       DTS:CreationName=""
       DTS:DTSID="{2D2A9C90-21A7-499E-BD7D-C286F13C38FF}"
-      DTS:From="Package\clean stage"
+      DTS:From="Package\Clean Stage"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 1"
       DTS:To="Package\CDHDR" />
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
       DTS:CreationName=""
-      DTS:DTSID="{5F685E3B-5B5E-4446-90D2-239DB9894BB3}"
-      DTS:From="Package\Sequence Container"
+      DTS:DTSID="{858D17A3-7FEC-4471-851D-3FA99018ADF9}"
+      DTS:From="Package\UPDATE"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 2"
-      DTS:To="Package\Sequence Container 1" />
+      DTS:To="Package\DELETE" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 3]"
+      DTS:CreationName=""
+      DTS:DTSID="{5D807D4B-D802-4B65-A91C-C9F7F6F48272}"
+      DTS:From="Package\DELETE"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 3"
+      DTS:To="Package\INSERT" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 4]"
+      DTS:CreationName=""
+      DTS:DTSID="{0A27A4D9-AEF2-49A1-803D-D13F4546E3CC}"
+      DTS:From="Package\Get MinDate"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 4"
+      DTS:To="Package\Clean Stage" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 5]"
+      DTS:CreationName=""
+      DTS:DTSID="{73697D72-FF36-4FD4-954D-EA924E6879E0}"
+      DTS:From="Package\INSERT"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 5"
+      DTS:To="Package\Update MinDate" />
   </DTS:PrecedenceConstraints>
   <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
 <!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
@@ -2202,53 +2264,47 @@ ORDER BY A01.[MANDANT]
       <GraphLayout
         Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
-          Size="114,42"
+          Size="158,42"
           Id="Package\CDHDR"
-          TopLeft="193,60" />
+          TopLeft="26,169.5" />
         <NodeLayout
-          Size="132,42"
-          Id="Package\clean stage"
-          TopLeft="392,11" />
+          Size="158,42"
+          Id="Package\Clean Stage"
+          TopLeft="26,93.75" />
         <NodeLayout
-          Size="108,42"
-          Id="Package\Sequence Container\delete"
-          TopLeft="195,39" />
+          Size="158,42"
+          Id="Package\DELETE"
+          TopLeft="26,321" />
         <NodeLayout
-          Size="112,42"
-          Id="Package\Sequence Container\update"
-          TopLeft="17,42" />
-        <ContainerLayout
-          HeaderHeight="43"
-          IsExpanded="True"
-          PanelSize="383,139"
-          Size="383,182"
-          Id="Package\Sequence Container"
-          TopLeft="60,174" />
+          Size="158,42"
+          Id="Package\Get MinDate"
+          TopLeft="26,18" />
         <NodeLayout
-          Size="105,42"
-          Id="Package\Sequence Container 1\insert"
-          TopLeft="134,37" />
-        <ContainerLayout
-          HeaderHeight="43"
-          IsExpanded="True"
-          PanelSize="383,139"
-          Size="383,182"
-          Id="Package\Sequence Container 1"
-          TopLeft="61,411" />
+          Size="158,42"
+          Id="Package\INSERT"
+          TopLeft="26,396.75" />
+        <NodeLayout
+          Size="158,42"
+          Id="Package\UPDATE"
+          TopLeft="26,245.25" />
+        <NodeLayout
+          Size="158,42"
+          Id="Package\Update MinDate"
+          TopLeft="26,472.5" />
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint]"
-          TopLeft="250.75,102">
+          TopLeft="105,211.5">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,72"
+              EndConnector="0,33.75"
               Start="0,0"
-              End="0,64.5">
+              End="0,26.25">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,64.5" />
+                    End="0,26.25" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -2259,30 +2315,18 @@ ORDER BY A01.[MANDANT]
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 1]"
-          TopLeft="392,32">
+          TopLeft="105,135.75">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-85,49"
+              EndConnector="0,33.75"
               Start="0,0"
-              End="-77.5,49">
+              End="0,26.25">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="-38.5,0" />
-                  <mssgle:CubicBezierSegment
-                    Point1="-38.5,0"
-                    Point2="-42.5,0"
-                    Point3="-42.5,4" />
-                  <mssgle:LineSegment
-                    End="-42.5,45" />
-                  <mssgle:CubicBezierSegment
-                    Point1="-42.5,45"
-                    Point2="-42.5,49"
-                    Point3="-46.5,49" />
-                  <mssgle:LineSegment
-                    End="-77.5,49" />
+                    End="0,26.25" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -2293,18 +2337,84 @@ ORDER BY A01.[MANDANT]
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 2]"
-          TopLeft="252,356">
+          TopLeft="105,287.25">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,55"
+              EndConnector="0,33.75"
               Start="0,0"
-              End="0,47.5">
+              End="0,26.25">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,47.5" />
+                    End="0,26.25" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 3]"
+          TopLeft="105,363">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,33.75"
+              Start="0,0"
+              End="0,26.25">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,26.25" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 4]"
+          TopLeft="105,60">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,33.75"
+              Start="0,0"
+              End="0,26.25">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,26.25" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 5]"
+          TopLeft="105,438.75">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,33.75"
+              Start="0,0"
+              End="0,26.25">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,26.25" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
