@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+﻿<?xml version="1.0"?>
 <DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
   DTS:refId="Package"
   DTS:CreationDate="4/19/2021 12:55:01 PM"
@@ -11,20 +11,20 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="EKKO"
   DTS:PackageType="5"
-  DTS:VersionBuild="12"
-  DTS:VersionGUID="{F15BF115-7286-41B6-9482-F424A6BCA771}">
+  DTS:VersionBuild="15"
+  DTS:VersionGUID="{38794F7A-3B19-48B6-98DD-601A8EE8A285}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:Variables />
   <DTS:Executables>
     <DTS:Executable
-      DTS:refId="Package\clean stage"
+      DTS:refId="Package\Clean Stage"
       DTS:CreationName="Microsoft.ExecuteSQLTask"
       DTS:Description="Execute SQL Task"
       DTS:DTSID="{0ce662ee-e473-49fc-b3a3-170303c7ce11}"
       DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
-      DTS:ObjectName="clean stage"
+      DTS:ObjectName="Clean Stage"
       DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
       DTS:ThreadHint="0">
       <DTS:Variables />
@@ -32,6 +32,23 @@
         <SQLTask:SqlTaskData
           SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
           SQLTask:SqlStatementSource="TRUNCATE TABLE [EKKO_STAGE_UPDATE]&#xA;go&#xA;TRUNCATE TABLE [EKKO_STAGE_DELETE]&#xA;go&#xA;TRUNCATE TABLE [EKKO_STAGE_INSERT]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\DELETE"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{d7f9260a-3385-4d01-9b5b-cbff28bf4760}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="DELETE"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="DELETE A01 &#xA;FROM &#xA;  [EKKO] A01 &#xA;  INNER JOIN [EKKO_STAGE_DELETE] B01 ON (&#xA;    A01.[MANDT] = B01.[MANDT] &#xA;    AND A01.[EBELN] = B01.[EBELN]&#xA;  )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
@@ -73,19 +90,8 @@
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT A01.[MANDT]
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT A01.[MANDT]
       ,A01.[EBELN]
-      ,A01.[BSART]
-      ,A01.[AEDAT]
-      ,A01.[AEDAT_X]
-      ,A01.[ERNAM]
-      ,A01.[LIFNR]
-      ,A01.[WAERS]
-      ,A01.[RESWK]
-      ,A01.[WKURS]
-      ,A01.[BEDAT]
-      ,A01.[BEDAT_X]
-      ,A01.[BUKRS]
 FROM [EKKO] A01 (NOLOCK)
 ORDER BY A01.[MANDT]
       ,A01.[EBELN]</property>
@@ -147,115 +153,6 @@ ORDER BY A01.[MANDT]
                       name="EBELN"
                       sortKeyPosition="2"
                       truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\EKKO\DB PBI.Outputs[OLE DB Source Output].Columns[BSART]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\EKKO\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[BSART]"
-                      length="4"
-                      lineageId="Package\EKKO\DB PBI.Outputs[OLE DB Source Output].Columns[BSART]"
-                      name="BSART"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\EKKO\DB PBI.Outputs[OLE DB Source Output].Columns[AEDAT]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\EKKO\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[AEDAT]"
-                      length="8"
-                      lineageId="Package\EKKO\DB PBI.Outputs[OLE DB Source Output].Columns[AEDAT]"
-                      name="AEDAT"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\EKKO\DB PBI.Outputs[OLE DB Source Output].Columns[LIFNR]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\EKKO\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[LIFNR]"
-                      length="10"
-                      lineageId="Package\EKKO\DB PBI.Outputs[OLE DB Source Output].Columns[LIFNR]"
-                      name="LIFNR"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\EKKO\DB PBI.Outputs[OLE DB Source Output].Columns[WAERS]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\EKKO\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[WAERS]"
-                      length="5"
-                      lineageId="Package\EKKO\DB PBI.Outputs[OLE DB Source Output].Columns[WAERS]"
-                      name="WAERS"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\EKKO\DB PBI.Outputs[OLE DB Source Output].Columns[RESWK]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\EKKO\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[RESWK]"
-                      length="4"
-                      lineageId="Package\EKKO\DB PBI.Outputs[OLE DB Source Output].Columns[RESWK]"
-                      name="RESWK"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\EKKO\DB PBI.Outputs[OLE DB Source Output].Columns[BEDAT]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\EKKO\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[BEDAT]"
-                      length="8"
-                      lineageId="Package\EKKO\DB PBI.Outputs[OLE DB Source Output].Columns[BEDAT]"
-                      name="BEDAT"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\EKKO\DB PBI.Outputs[OLE DB Source Output].Columns[BEDAT_X]"
-                      dataType="dbDate"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\EKKO\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[BEDAT_X]"
-                      lineageId="Package\EKKO\DB PBI.Outputs[OLE DB Source Output].Columns[BEDAT_X]"
-                      name="BEDAT_X"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\EKKO\DB PBI.Outputs[OLE DB Source Output].Columns[BUKRS]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\EKKO\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[BUKRS]"
-                      length="4"
-                      lineageId="Package\EKKO\DB PBI.Outputs[OLE DB Source Output].Columns[BUKRS]"
-                      name="BUKRS"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\EKKO\DB PBI.Outputs[OLE DB Source Output].Columns[AEDAT_X]"
-                      dataType="dbDate"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\EKKO\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[AEDAT_X]"
-                      lineageId="Package\EKKO\DB PBI.Outputs[OLE DB Source Output].Columns[AEDAT_X]"
-                      name="AEDAT_X"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\EKKO\DB PBI.Outputs[OLE DB Source Output].Columns[ERNAM]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\EKKO\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[ERNAM]"
-                      length="12"
-                      lineageId="Package\EKKO\DB PBI.Outputs[OLE DB Source Output].Columns[ERNAM]"
-                      name="ERNAM"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\EKKO\DB PBI.Outputs[OLE DB Source Output].Columns[WKURS]"
-                      dataType="numeric"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\EKKO\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[WKURS]"
-                      lineageId="Package\EKKO\DB PBI.Outputs[OLE DB Source Output].Columns[WKURS]"
-                      name="WKURS"
-                      precision="9"
-                      scale="5"
-                      truncationRowDisposition="FailComponent" />
                   </outputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -269,60 +166,6 @@ ORDER BY A01.[MANDT]
                       dataType="wstr"
                       length="10"
                       name="EBELN" />
-                    <externalMetadataColumn
-                      refId="Package\EKKO\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[BSART]"
-                      dataType="wstr"
-                      length="4"
-                      name="BSART" />
-                    <externalMetadataColumn
-                      refId="Package\EKKO\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[AEDAT]"
-                      dataType="wstr"
-                      length="8"
-                      name="AEDAT" />
-                    <externalMetadataColumn
-                      refId="Package\EKKO\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[LIFNR]"
-                      dataType="wstr"
-                      length="10"
-                      name="LIFNR" />
-                    <externalMetadataColumn
-                      refId="Package\EKKO\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[WAERS]"
-                      dataType="wstr"
-                      length="5"
-                      name="WAERS" />
-                    <externalMetadataColumn
-                      refId="Package\EKKO\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[RESWK]"
-                      dataType="wstr"
-                      length="4"
-                      name="RESWK" />
-                    <externalMetadataColumn
-                      refId="Package\EKKO\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[BEDAT]"
-                      dataType="wstr"
-                      length="8"
-                      name="BEDAT" />
-                    <externalMetadataColumn
-                      refId="Package\EKKO\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[BEDAT_X]"
-                      dataType="dbDate"
-                      name="BEDAT_X" />
-                    <externalMetadataColumn
-                      refId="Package\EKKO\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[BUKRS]"
-                      dataType="wstr"
-                      length="4"
-                      name="BUKRS" />
-                    <externalMetadataColumn
-                      refId="Package\EKKO\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[AEDAT_X]"
-                      dataType="dbDate"
-                      name="AEDAT_X" />
-                    <externalMetadataColumn
-                      refId="Package\EKKO\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[ERNAM]"
-                      dataType="wstr"
-                      length="12"
-                      name="ERNAM" />
-                    <externalMetadataColumn
-                      refId="Package\EKKO\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[WKURS]"
-                      dataType="numeric"
-                      name="WKURS"
-                      precision="9"
-                      scale="5" />
                   </externalMetadataColumns>
                 </output>
                 <output
@@ -342,71 +185,6 @@ ORDER BY A01.[MANDT]
                       length="10"
                       lineageId="Package\EKKO\DB PBI.Outputs[OLE DB Source Error Output].Columns[EBELN]"
                       name="EBELN" />
-                    <outputColumn
-                      refId="Package\EKKO\DB PBI.Outputs[OLE DB Source Error Output].Columns[BSART]"
-                      dataType="wstr"
-                      length="4"
-                      lineageId="Package\EKKO\DB PBI.Outputs[OLE DB Source Error Output].Columns[BSART]"
-                      name="BSART" />
-                    <outputColumn
-                      refId="Package\EKKO\DB PBI.Outputs[OLE DB Source Error Output].Columns[AEDAT]"
-                      dataType="wstr"
-                      length="8"
-                      lineageId="Package\EKKO\DB PBI.Outputs[OLE DB Source Error Output].Columns[AEDAT]"
-                      name="AEDAT" />
-                    <outputColumn
-                      refId="Package\EKKO\DB PBI.Outputs[OLE DB Source Error Output].Columns[AEDAT_X]"
-                      dataType="dbDate"
-                      lineageId="Package\EKKO\DB PBI.Outputs[OLE DB Source Error Output].Columns[AEDAT_X]"
-                      name="AEDAT_X" />
-                    <outputColumn
-                      refId="Package\EKKO\DB PBI.Outputs[OLE DB Source Error Output].Columns[ERNAM]"
-                      dataType="wstr"
-                      length="12"
-                      lineageId="Package\EKKO\DB PBI.Outputs[OLE DB Source Error Output].Columns[ERNAM]"
-                      name="ERNAM" />
-                    <outputColumn
-                      refId="Package\EKKO\DB PBI.Outputs[OLE DB Source Error Output].Columns[LIFNR]"
-                      dataType="wstr"
-                      length="10"
-                      lineageId="Package\EKKO\DB PBI.Outputs[OLE DB Source Error Output].Columns[LIFNR]"
-                      name="LIFNR" />
-                    <outputColumn
-                      refId="Package\EKKO\DB PBI.Outputs[OLE DB Source Error Output].Columns[WAERS]"
-                      dataType="wstr"
-                      length="5"
-                      lineageId="Package\EKKO\DB PBI.Outputs[OLE DB Source Error Output].Columns[WAERS]"
-                      name="WAERS" />
-                    <outputColumn
-                      refId="Package\EKKO\DB PBI.Outputs[OLE DB Source Error Output].Columns[RESWK]"
-                      dataType="wstr"
-                      length="4"
-                      lineageId="Package\EKKO\DB PBI.Outputs[OLE DB Source Error Output].Columns[RESWK]"
-                      name="RESWK" />
-                    <outputColumn
-                      refId="Package\EKKO\DB PBI.Outputs[OLE DB Source Error Output].Columns[WKURS]"
-                      dataType="numeric"
-                      lineageId="Package\EKKO\DB PBI.Outputs[OLE DB Source Error Output].Columns[WKURS]"
-                      name="WKURS"
-                      precision="9"
-                      scale="5" />
-                    <outputColumn
-                      refId="Package\EKKO\DB PBI.Outputs[OLE DB Source Error Output].Columns[BEDAT]"
-                      dataType="wstr"
-                      length="8"
-                      lineageId="Package\EKKO\DB PBI.Outputs[OLE DB Source Error Output].Columns[BEDAT]"
-                      name="BEDAT" />
-                    <outputColumn
-                      refId="Package\EKKO\DB PBI.Outputs[OLE DB Source Error Output].Columns[BEDAT_X]"
-                      dataType="dbDate"
-                      lineageId="Package\EKKO\DB PBI.Outputs[OLE DB Source Error Output].Columns[BEDAT_X]"
-                      name="BEDAT_X" />
-                    <outputColumn
-                      refId="Package\EKKO\DB PBI.Outputs[OLE DB Source Error Output].Columns[BUKRS]"
-                      dataType="wstr"
-                      length="4"
-                      lineageId="Package\EKKO\DB PBI.Outputs[OLE DB Source Error Output].Columns[BUKRS]"
-                      name="BUKRS" />
                     <outputColumn
                       refId="Package\EKKO\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
                       dataType="i4"
@@ -449,7 +227,7 @@ ORDER BY A01.[MANDT]
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT A01.[MANDT]
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT A01.[MANDT]
       ,A01.[EBELN]
       ,A01.[BSART]
       ,A01.[AEDAT]
@@ -801,198 +579,6 @@ ORDER BY A01.[MANDT]
               </outputs>
             </component>
             <component
-              refId="Package\EKKO\Find Changed Records"
-              componentClassID="Microsoft.ConditionalSplit"
-              contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
-              description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
-              name="Find Changed Records"
-              usesDispositions="true">
-              <inputs>
-                <input
-                  refId="Package\EKKO\Find Changed Records.Inputs[Conditional Split Input]"
-                  description="Input to the Conditional Split Transformation"
-                  name="Conditional Split Input">
-                  <inputColumns>
-                    <inputColumn
-                      refId="Package\EKKO\Find Changed Records.Inputs[Conditional Split Input].Columns[BSART]"
-                      cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="BSART"
-                      lineageId="Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[BSART]" />
-                    <inputColumn
-                      refId="Package\EKKO\Find Changed Records.Inputs[Conditional Split Input].Columns[AEDAT]"
-                      cachedDataType="wstr"
-                      cachedLength="8"
-                      cachedName="AEDAT"
-                      lineageId="Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[AEDAT]" />
-                    <inputColumn
-                      refId="Package\EKKO\Find Changed Records.Inputs[Conditional Split Input].Columns[LIFNR]"
-                      cachedDataType="wstr"
-                      cachedLength="10"
-                      cachedName="LIFNR"
-                      lineageId="Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[LIFNR]" />
-                    <inputColumn
-                      refId="Package\EKKO\Find Changed Records.Inputs[Conditional Split Input].Columns[WAERS]"
-                      cachedDataType="wstr"
-                      cachedLength="5"
-                      cachedName="WAERS"
-                      lineageId="Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[WAERS]" />
-                    <inputColumn
-                      refId="Package\EKKO\Find Changed Records.Inputs[Conditional Split Input].Columns[RESWK]"
-                      cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="RESWK"
-                      lineageId="Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[RESWK]" />
-                    <inputColumn
-                      refId="Package\EKKO\Find Changed Records.Inputs[Conditional Split Input].Columns[BSART (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="BSART (1)"
-                      lineageId="Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[BSART (1)]" />
-                    <inputColumn
-                      refId="Package\EKKO\Find Changed Records.Inputs[Conditional Split Input].Columns[AEDAT (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="8"
-                      cachedName="AEDAT (1)"
-                      lineageId="Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[AEDAT (1)]" />
-                    <inputColumn
-                      refId="Package\EKKO\Find Changed Records.Inputs[Conditional Split Input].Columns[LIFNR (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="10"
-                      cachedName="LIFNR (1)"
-                      lineageId="Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[LIFNR (1)]" />
-                    <inputColumn
-                      refId="Package\EKKO\Find Changed Records.Inputs[Conditional Split Input].Columns[WAERS (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="5"
-                      cachedName="WAERS (1)"
-                      lineageId="Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[WAERS (1)]" />
-                    <inputColumn
-                      refId="Package\EKKO\Find Changed Records.Inputs[Conditional Split Input].Columns[RESWK (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="RESWK (1)"
-                      lineageId="Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[RESWK (1)]" />
-                    <inputColumn
-                      refId="Package\EKKO\Find Changed Records.Inputs[Conditional Split Input].Columns[BEDAT]"
-                      cachedDataType="wstr"
-                      cachedLength="8"
-                      cachedName="BEDAT"
-                      lineageId="Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[BEDAT]" />
-                    <inputColumn
-                      refId="Package\EKKO\Find Changed Records.Inputs[Conditional Split Input].Columns[BEDAT_X]"
-                      cachedDataType="dbTimeStamp"
-                      cachedName="BEDAT_X"
-                      lineageId="Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[BEDAT_X]" />
-                    <inputColumn
-                      refId="Package\EKKO\Find Changed Records.Inputs[Conditional Split Input].Columns[BEDAT (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="8"
-                      cachedName="BEDAT (1)"
-                      lineageId="Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[BEDAT (1)]" />
-                    <inputColumn
-                      refId="Package\EKKO\Find Changed Records.Inputs[Conditional Split Input].Columns[BEDAT_X (1)]"
-                      cachedDataType="dbDate"
-                      cachedName="BEDAT_X (1)"
-                      lineageId="Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[BEDAT_X (1)]" />
-                    <inputColumn
-                      refId="Package\EKKO\Find Changed Records.Inputs[Conditional Split Input].Columns[ERNAM]"
-                      cachedDataType="wstr"
-                      cachedLength="12"
-                      cachedName="ERNAM"
-                      lineageId="Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[ERNAM]" />
-                    <inputColumn
-                      refId="Package\EKKO\Find Changed Records.Inputs[Conditional Split Input].Columns[WKURS]"
-                      cachedDataType="numeric"
-                      cachedName="WKURS"
-                      cachedPrecision="9"
-                      cachedScale="5"
-                      lineageId="Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[WKURS]" />
-                    <inputColumn
-                      refId="Package\EKKO\Find Changed Records.Inputs[Conditional Split Input].Columns[ERNAM (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="12"
-                      cachedName="ERNAM (1)"
-                      lineageId="Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[ERNAM (1)]" />
-                    <inputColumn
-                      refId="Package\EKKO\Find Changed Records.Inputs[Conditional Split Input].Columns[WKURS (1)]"
-                      cachedDataType="numeric"
-                      cachedName="WKURS (1)"
-                      cachedPrecision="9"
-                      cachedScale="5"
-                      lineageId="Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[WKURS (1)]" />
-                  </inputColumns>
-                  <externalMetadataColumns />
-                </input>
-              </inputs>
-              <outputs>
-                <output
-                  refId="Package\EKKO\Find Changed Records.Outputs[update]"
-                  description="Output 1 of the Conditional Split Transformation"
-                  errorOrTruncationOperation="Computation"
-                  errorRowDisposition="FailComponent"
-                  exclusionGroup="1"
-                  name="update"
-                  synchronousInputId="Package\EKKO\Find Changed Records.Inputs[Conditional Split Input]"
-                  truncationRowDisposition="FailComponent">
-                  <properties>
-                    <property
-                      containsID="true"
-                      dataType="System.String"
-                      description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
-                      name="Expression">#{Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[BSART]} != #{Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[BSART (1)]} || #{Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[AEDAT]} != #{Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[AEDAT (1)]} || #{Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[LIFNR]} != #{Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[LIFNR (1)]} || #{Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[WAERS]} != #{Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[WAERS (1)]} || #{Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[RESWK]} != #{Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[RESWK (1)]} || #{Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[BEDAT]} != #{Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[BEDAT (1)]} || #{Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[BEDAT_X]} != #{Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[BEDAT_X (1)]} || #{Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[WKURS]} != #{Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[WKURS (1)]} || #{Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[ERNAM]} != #{Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[ERNAM (1)]}</property>
-                    <property
-                      containsID="true"
-                      dataType="System.String"
-                      description="Specifies the friendly version of the expression. This expression version uses column names."
-                      expressionType="Notify"
-                      name="FriendlyExpression">BSART != [BSART (1)] || AEDAT != [AEDAT (1)] || LIFNR != [LIFNR (1)] || WAERS != [WAERS (1)] || RESWK != [RESWK (1)] || BEDAT != [BEDAT (1)] || BEDAT_X != [BEDAT_X (1)] || WKURS != [WKURS (1)] || ERNAM != [ERNAM (1)]</property>
-                    <property
-                      dataType="System.Int32"
-                      description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
-                      name="EvaluationOrder">0</property>
-                  </properties>
-                  <externalMetadataColumns />
-                </output>
-                <output
-                  refId="Package\EKKO\Find Changed Records.Outputs[Conditional Split Default Output]"
-                  description="Default Output of the Conditional Split Transformation"
-                  exclusionGroup="1"
-                  name="Conditional Split Default Output"
-                  synchronousInputId="Package\EKKO\Find Changed Records.Inputs[Conditional Split Input]">
-                  <properties>
-                    <property
-                      dataType="System.Boolean"
-                      name="IsDefaultOut">true</property>
-                  </properties>
-                  <externalMetadataColumns />
-                </output>
-                <output
-                  refId="Package\EKKO\Find Changed Records.Outputs[Conditional Split Error Output]"
-                  description="Error Output of the Conditional Split Transformation"
-                  exclusionGroup="1"
-                  isErrorOut="true"
-                  name="Conditional Split Error Output"
-                  synchronousInputId="Package\EKKO\Find Changed Records.Inputs[Conditional Split Input]">
-                  <outputColumns>
-                    <outputColumn
-                      refId="Package\EKKO\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
-                      dataType="i4"
-                      lineageId="Package\EKKO\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
-                      name="ErrorCode"
-                      specialFlags="1" />
-                    <outputColumn
-                      refId="Package\EKKO\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
-                      dataType="i4"
-                      lineageId="Package\EKKO\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
-                      name="ErrorColumn"
-                      specialFlags="2" />
-                  </outputColumns>
-                  <externalMetadataColumns />
-                </output>
-              </outputs>
-            </component>
-            <component
               refId="Package\EKKO\Identity records"
               componentClassID="Microsoft.ConditionalSplit"
               contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
@@ -1170,7 +756,7 @@ ORDER BY A01.[MANDT]
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                 <property
                   dataType="System.Int32"
                   description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -1276,24 +862,12 @@ ORDER BY A01.[MANDT]
                       externalMetadataColumnId="Package\EKKO\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[BEDAT]"
                       lineageId="Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[BEDAT]" />
                     <inputColumn
-                      refId="Package\EKKO\insert new records.Inputs[OLE DB Destination Input].Columns[BEDAT_X]"
-                      cachedDataType="dbTimeStamp"
-                      cachedName="BEDAT_X"
-                      externalMetadataColumnId="Package\EKKO\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[BEDAT_X]"
-                      lineageId="Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[BEDAT_X]" />
-                    <inputColumn
                       refId="Package\EKKO\insert new records.Inputs[OLE DB Destination Input].Columns[BUKRS]"
                       cachedDataType="wstr"
                       cachedLength="4"
                       cachedName="BUKRS"
                       externalMetadataColumnId="Package\EKKO\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[BUKRS]"
                       lineageId="Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[BUKRS]" />
-                    <inputColumn
-                      refId="Package\EKKO\insert new records.Inputs[OLE DB Destination Input].Columns[AEDAT_X]"
-                      cachedDataType="dbTimeStamp"
-                      cachedName="AEDAT_X"
-                      externalMetadataColumnId="Package\EKKO\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[AEDAT_X]"
-                      lineageId="Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[AEDAT_X]" />
                     <inputColumn
                       refId="Package\EKKO\insert new records.Inputs[OLE DB Destination Input].Columns[ERNAM]"
                       cachedDataType="wstr"
@@ -1353,18 +927,10 @@ ORDER BY A01.[MANDT]
                       length="8"
                       name="BEDAT" />
                     <externalMetadataColumn
-                      refId="Package\EKKO\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[BEDAT_X]"
-                      dataType="dbDate"
-                      name="BEDAT_X" />
-                    <externalMetadataColumn
                       refId="Package\EKKO\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[BUKRS]"
                       dataType="wstr"
                       length="4"
                       name="BUKRS" />
-                    <externalMetadataColumn
-                      refId="Package\EKKO\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[AEDAT_X]"
-                      dataType="dbDate"
-                      name="AEDAT_X" />
                     <externalMetadataColumn
                       refId="Package\EKKO\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[ERNAM]"
                       dataType="wstr"
@@ -1537,71 +1103,6 @@ ORDER BY A01.[MANDT]
                       cachedName="EBELN"
                       cachedSortKeyPosition="2"
                       lineageId="Package\EKKO\DB PBI.Outputs[OLE DB Source Output].Columns[EBELN]" />
-                    <inputColumn
-                      refId="Package\EKKO\Merge Join.Inputs[Merge Join Right Input].Columns[BSART]"
-                      cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="BSART"
-                      lineageId="Package\EKKO\DB PBI.Outputs[OLE DB Source Output].Columns[BSART]" />
-                    <inputColumn
-                      refId="Package\EKKO\Merge Join.Inputs[Merge Join Right Input].Columns[AEDAT]"
-                      cachedDataType="wstr"
-                      cachedLength="8"
-                      cachedName="AEDAT"
-                      lineageId="Package\EKKO\DB PBI.Outputs[OLE DB Source Output].Columns[AEDAT]" />
-                    <inputColumn
-                      refId="Package\EKKO\Merge Join.Inputs[Merge Join Right Input].Columns[LIFNR]"
-                      cachedDataType="wstr"
-                      cachedLength="10"
-                      cachedName="LIFNR"
-                      lineageId="Package\EKKO\DB PBI.Outputs[OLE DB Source Output].Columns[LIFNR]" />
-                    <inputColumn
-                      refId="Package\EKKO\Merge Join.Inputs[Merge Join Right Input].Columns[WAERS]"
-                      cachedDataType="wstr"
-                      cachedLength="5"
-                      cachedName="WAERS"
-                      lineageId="Package\EKKO\DB PBI.Outputs[OLE DB Source Output].Columns[WAERS]" />
-                    <inputColumn
-                      refId="Package\EKKO\Merge Join.Inputs[Merge Join Right Input].Columns[RESWK]"
-                      cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="RESWK"
-                      lineageId="Package\EKKO\DB PBI.Outputs[OLE DB Source Output].Columns[RESWK]" />
-                    <inputColumn
-                      refId="Package\EKKO\Merge Join.Inputs[Merge Join Right Input].Columns[BEDAT]"
-                      cachedDataType="wstr"
-                      cachedLength="8"
-                      cachedName="BEDAT"
-                      lineageId="Package\EKKO\DB PBI.Outputs[OLE DB Source Output].Columns[BEDAT]" />
-                    <inputColumn
-                      refId="Package\EKKO\Merge Join.Inputs[Merge Join Right Input].Columns[BEDAT_X]"
-                      cachedDataType="dbDate"
-                      cachedName="BEDAT_X"
-                      lineageId="Package\EKKO\DB PBI.Outputs[OLE DB Source Output].Columns[BEDAT_X]" />
-                    <inputColumn
-                      refId="Package\EKKO\Merge Join.Inputs[Merge Join Right Input].Columns[BUKRS]"
-                      cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="BUKRS"
-                      lineageId="Package\EKKO\DB PBI.Outputs[OLE DB Source Output].Columns[BUKRS]" />
-                    <inputColumn
-                      refId="Package\EKKO\Merge Join.Inputs[Merge Join Right Input].Columns[AEDAT_X]"
-                      cachedDataType="dbDate"
-                      cachedName="AEDAT_X"
-                      lineageId="Package\EKKO\DB PBI.Outputs[OLE DB Source Output].Columns[AEDAT_X]" />
-                    <inputColumn
-                      refId="Package\EKKO\Merge Join.Inputs[Merge Join Right Input].Columns[ERNAM]"
-                      cachedDataType="wstr"
-                      cachedLength="12"
-                      cachedName="ERNAM"
-                      lineageId="Package\EKKO\DB PBI.Outputs[OLE DB Source Output].Columns[ERNAM]" />
-                    <inputColumn
-                      refId="Package\EKKO\Merge Join.Inputs[Merge Join Right Input].Columns[WKURS]"
-                      cachedDataType="numeric"
-                      cachedName="WKURS"
-                      cachedPrecision="9"
-                      cachedScale="5"
-                      lineageId="Package\EKKO\DB PBI.Outputs[OLE DB Source Output].Columns[WKURS]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
@@ -1741,76 +1242,6 @@ ORDER BY A01.[MANDT]
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[BSART (1)]"
-                      dataType="wstr"
-                      length="4"
-                      lineageId="Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[BSART (1)]"
-                      name="BSART (1)">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\EKKO\Merge Join.Inputs[Merge Join Right Input].Columns[BSART]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[AEDAT (1)]"
-                      dataType="wstr"
-                      length="8"
-                      lineageId="Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[AEDAT (1)]"
-                      name="AEDAT (1)">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\EKKO\Merge Join.Inputs[Merge Join Right Input].Columns[AEDAT]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[LIFNR (1)]"
-                      dataType="wstr"
-                      length="10"
-                      lineageId="Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[LIFNR (1)]"
-                      name="LIFNR (1)">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\EKKO\Merge Join.Inputs[Merge Join Right Input].Columns[LIFNR]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[WAERS (1)]"
-                      dataType="wstr"
-                      length="5"
-                      lineageId="Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[WAERS (1)]"
-                      name="WAERS (1)">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\EKKO\Merge Join.Inputs[Merge Join Right Input].Columns[WAERS]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[RESWK (1)]"
-                      dataType="wstr"
-                      length="4"
-                      lineageId="Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[RESWK (1)]"
-                      name="RESWK (1)">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\EKKO\Merge Join.Inputs[Merge Join Right Input].Columns[RESWK]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
                       refId="Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[BEDAT]"
                       dataType="wstr"
                       length="8"
@@ -1838,33 +1269,6 @@ ORDER BY A01.[MANDT]
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[BEDAT (1)]"
-                      dataType="wstr"
-                      length="8"
-                      lineageId="Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[BEDAT (1)]"
-                      name="BEDAT (1)">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\EKKO\Merge Join.Inputs[Merge Join Right Input].Columns[BEDAT]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[BEDAT_X (1)]"
-                      dataType="dbDate"
-                      lineageId="Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[BEDAT_X (1)]"
-                      name="BEDAT_X (1)">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\EKKO\Merge Join.Inputs[Merge Join Right Input].Columns[BEDAT_X]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
                       refId="Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[BUKRS]"
                       dataType="wstr"
                       length="4"
@@ -1879,20 +1283,6 @@ ORDER BY A01.[MANDT]
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[BUKRS (1)]"
-                      dataType="wstr"
-                      length="4"
-                      lineageId="Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[BUKRS (1)]"
-                      name="BUKRS (1)">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\EKKO\Merge Join.Inputs[Merge Join Right Input].Columns[BUKRS]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
                       refId="Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[AEDAT_X]"
                       dataType="dbTimeStamp"
                       lineageId="Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[AEDAT_X]"
@@ -1903,19 +1293,6 @@ ORDER BY A01.[MANDT]
                           dataType="System.Int32"
                           description="The input column associated with this output column"
                           name="InputColumnID">#{Package\EKKO\Merge Join.Inputs[Merge Join Left Input].Columns[AEDAT_X]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[AEDAT_X (1)]"
-                      dataType="dbDate"
-                      lineageId="Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[AEDAT_X (1)]"
-                      name="AEDAT_X (1)">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\EKKO\Merge Join.Inputs[Merge Join Right Input].Columns[AEDAT_X]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -1945,35 +1322,6 @@ ORDER BY A01.[MANDT]
                           dataType="System.Int32"
                           description="The input column associated with this output column"
                           name="InputColumnID">#{Package\EKKO\Merge Join.Inputs[Merge Join Left Input].Columns[WKURS]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[ERNAM (1)]"
-                      dataType="wstr"
-                      length="12"
-                      lineageId="Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[ERNAM (1)]"
-                      name="ERNAM (1)">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\EKKO\Merge Join.Inputs[Merge Join Right Input].Columns[ERNAM]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[WKURS (1)]"
-                      dataType="numeric"
-                      lineageId="Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[WKURS (1)]"
-                      name="WKURS (1)"
-                      precision="9"
-                      scale="5">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\EKKO\Merge Join.Inputs[Merge Join Right Input].Columns[WKURS]}</property>
                       </properties>
                     </outputColumn>
                   </outputColumns>
@@ -2006,7 +1354,7 @@ ORDER BY A01.[MANDT]
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                 <property
                   dataType="System.Int32"
                   description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -2112,24 +1460,12 @@ ORDER BY A01.[MANDT]
                       externalMetadataColumnId="Package\EKKO\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[BEDAT]"
                       lineageId="Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[BEDAT]" />
                     <inputColumn
-                      refId="Package\EKKO\stage changed records.Inputs[OLE DB Destination Input].Columns[BEDAT_X]"
-                      cachedDataType="dbTimeStamp"
-                      cachedName="BEDAT_X"
-                      externalMetadataColumnId="Package\EKKO\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[BEDAT_X]"
-                      lineageId="Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[BEDAT_X]" />
-                    <inputColumn
                       refId="Package\EKKO\stage changed records.Inputs[OLE DB Destination Input].Columns[BUKRS]"
                       cachedDataType="wstr"
                       cachedLength="4"
                       cachedName="BUKRS"
                       externalMetadataColumnId="Package\EKKO\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[BUKRS]"
                       lineageId="Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[BUKRS]" />
-                    <inputColumn
-                      refId="Package\EKKO\stage changed records.Inputs[OLE DB Destination Input].Columns[AEDAT_X]"
-                      cachedDataType="dbTimeStamp"
-                      cachedName="AEDAT_X"
-                      externalMetadataColumnId="Package\EKKO\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[AEDAT_X]"
-                      lineageId="Package\EKKO\Merge Join.Outputs[Merge Join Output].Columns[AEDAT_X]" />
                     <inputColumn
                       refId="Package\EKKO\stage changed records.Inputs[OLE DB Destination Input].Columns[ERNAM]"
                       cachedDataType="wstr"
@@ -2189,18 +1525,10 @@ ORDER BY A01.[MANDT]
                       length="8"
                       name="BEDAT" />
                     <externalMetadataColumn
-                      refId="Package\EKKO\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[BEDAT_X]"
-                      dataType="dbDate"
-                      name="BEDAT_X" />
-                    <externalMetadataColumn
                       refId="Package\EKKO\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[BUKRS]"
                       dataType="wstr"
                       length="4"
                       name="BUKRS" />
-                    <externalMetadataColumn
-                      refId="Package\EKKO\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[AEDAT_X]"
-                      dataType="dbDate"
-                      name="AEDAT_X" />
                     <externalMetadataColumn
                       refId="Package\EKKO\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[ERNAM]"
                       dataType="wstr"
@@ -2265,7 +1593,7 @@ ORDER BY A01.[MANDT]
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                 <property
                   dataType="System.Int32"
                   description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -2396,119 +1724,81 @@ ORDER BY A01.[MANDT]
               startId="Package\EKKO\DB PBI.Outputs[OLE DB Source Output]" />
             <path
               refId="Package\EKKO.Paths[update]"
-              endId="Package\EKKO\Find Changed Records.Inputs[Conditional Split Input]"
-              name="update"
-              startId="Package\EKKO\Identity records.Outputs[update]" />
-            <path
-              refId="Package\EKKO.Paths[update1]"
               endId="Package\EKKO\stage changed records.Inputs[OLE DB Destination Input]"
               name="update"
-              startId="Package\EKKO\Find Changed Records.Outputs[update]" />
+              startId="Package\EKKO\Identity records.Outputs[update]" />
           </paths>
         </pipeline>
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
-      DTS:refId="Package\Sequence Container"
-      DTS:CreationName="STOCK:SEQUENCE"
-      DTS:Description="Sequence Container"
-      DTS:DTSID="{0262dd0a-f51a-48d6-9afe-722ae72f1715}"
-      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:refId="Package\INSERT"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{d0cc9768-146c-4d69-ab33-0ca33098bbfe}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
-      DTS:ObjectName="Sequence Container">
+      DTS:ObjectName="INSERT"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
       <DTS:Variables />
-      <DTS:Executables>
-        <DTS:Executable
-          DTS:refId="Package\Sequence Container\delete"
-          DTS:CreationName="Microsoft.ExecuteSQLTask"
-          DTS:Description="Execute SQL Task"
-          DTS:DTSID="{d7f9260a-3385-4d01-9b5b-cbff28bf4760}"
-          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
-          DTS:LocaleID="-1"
-          DTS:ObjectName="delete"
-          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="0">
-          <DTS:Variables />
-          <DTS:ObjectData>
-            <SQLTask:SqlTaskData
-              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-              SQLTask:SqlStatementSource="DELETE A01&#xA;FROM [EKKO] A01 INNER JOIN [EKKO_STAGE_DELETE] B01 ON ( A01.[MANDT] = B01.[MANDT]&#xA;                                                    AND A01.[EBELN] = B01.[EBELN] )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
-          </DTS:ObjectData>
-        </DTS:Executable>
-        <DTS:Executable
-          DTS:refId="Package\Sequence Container\update"
-          DTS:CreationName="Microsoft.ExecuteSQLTask"
-          DTS:Description="Execute SQL Task"
-          DTS:DTSID="{b36fd7b7-1b5b-4371-af5e-d2acf5583802}"
-          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
-          DTS:LocaleID="-1"
-          DTS:ObjectName="update"
-          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="1">
-          <DTS:Variables />
-          <DTS:ObjectData>
-            <SQLTask:SqlTaskData
-              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-              SQLTask:SqlStatementSource="UPDATE A01&#xA;SET A01.[BSART] = B01.[BSART]&#xA;   ,A01.[AEDAT] = B01.[AEDAT]&#xA;   ,A01.[AEDAT_X] = B01.[AEDAT_X]&#xA;   ,A01.[ERNAM] = B01.[ERNAM]&#xA;   ,A01.[LIFNR] = B01.[LIFNR]&#xA;   ,A01.[WAERS] = B01.[WAERS]&#xA;   ,A01.[RESWK] = B01.[RESWK]&#xA;   ,A01.[WKURS] = B01.[WKURS]&#xA;   ,A01.[BEDAT] = B01.[BEDAT]&#xA;   ,A01.[BEDAT_X] = B01.[BEDAT_X]&#xA;   ,A01.[BUKRS] = B01.[BUKRS]&#xA;FROM [EKKO] A01 INNER JOIN [EKKO_STAGE_UPDATE] B01 ON ( A01.[MANDT] = B01.[MANDT]&#xA;                                                    AND A01.[EBELN] = B01.[EBELN] )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
-          </DTS:ObjectData>
-        </DTS:Executable>
-      </DTS:Executables>
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="INSERT INTO  [EKKO]&#xA;SELECT * FROM  [EKKO_STAGE_INSERT]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
-      DTS:refId="Package\Sequence Container 1"
-      DTS:CreationName="STOCK:SEQUENCE"
-      DTS:Description="Sequence Container"
-      DTS:DTSID="{6e1c9593-ac65-44c7-90f4-265b57c43075}"
-      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:refId="Package\UPDATE"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{b36fd7b7-1b5b-4371-af5e-d2acf5583802}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
-      DTS:ObjectName="Sequence Container 1">
+      DTS:ObjectName="UPDATE"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
       <DTS:Variables />
-      <DTS:Executables>
-        <DTS:Executable
-          DTS:refId="Package\Sequence Container 1\Insert"
-          DTS:CreationName="Microsoft.ExecuteSQLTask"
-          DTS:Description="Execute SQL Task"
-          DTS:DTSID="{d0cc9768-146c-4d69-ab33-0ca33098bbfe}"
-          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
-          DTS:LocaleID="-1"
-          DTS:ObjectName="Insert"
-          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="0">
-          <DTS:Variables />
-          <DTS:ObjectData>
-            <SQLTask:SqlTaskData
-              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-              SQLTask:SqlStatementSource="INSERT INTO  [EKKO]&#xA;SELECT * FROM  [EKKO_STAGE_INSERT]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
-          </DTS:ObjectData>
-        </DTS:Executable>
-      </DTS:Executables>
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="UPDATE &#xA;  A01 &#xA;SET &#xA;  A01.[BSART] = B01.[BSART], &#xA;  A01.[AEDAT] = B01.[AEDAT], &#xA;  A01.[ERNAM] = B01.[ERNAM], &#xA;  A01.[LIFNR] = B01.[LIFNR], &#xA;  A01.[WAERS] = B01.[WAERS], &#xA;  A01.[RESWK] = B01.[RESWK], &#xA;  A01.[WKURS] = B01.[WKURS], &#xA;  A01.[BEDAT] = B01.[BEDAT], &#xA;  A01.[BUKRS] = B01.[BUKRS] &#xA;FROM &#xA;  [EKKO] A01 &#xA;  INNER JOIN [EKKO_STAGE_UPDATE] B01 ON (&#xA;    A01.[MANDT] = B01.[MANDT] &#xA;    AND A01.[EBELN] = B01.[EBELN]&#xA;  )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
     </DTS:Executable>
   </DTS:Executables>
   <DTS:PrecedenceConstraints>
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint]"
       DTS:CreationName=""
-      DTS:DTSID="{f69e12e5-0455-4865-ab69-33173de62d73}"
+      DTS:DTSID="{3FD13422-B2DC-42EE-812B-A29AE7C880B0}"
       DTS:From="Package\EKKO"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint"
-      DTS:To="Package\Sequence Container" />
+      DTS:To="Package\UPDATE" />
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
       DTS:CreationName=""
       DTS:DTSID="{5ECED627-3F10-47CD-940A-EEC1DE7CCF12}"
-      DTS:From="Package\clean stage"
+      DTS:From="Package\Clean Stage"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 1"
       DTS:To="Package\EKKO" />
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
       DTS:CreationName=""
-      DTS:DTSID="{04D76475-C716-4C6E-A12B-3F8EED2332DD}"
-      DTS:From="Package\Sequence Container"
+      DTS:DTSID="{393CCFA1-D43B-4CE1-AFAE-03FC7790BE70}"
+      DTS:From="Package\UPDATE"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 2"
-      DTS:To="Package\Sequence Container 1" />
+      DTS:To="Package\DELETE" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 3]"
+      DTS:CreationName=""
+      DTS:DTSID="{3B37FDBF-B354-430B-A70A-16849798571F}"
+      DTS:From="Package\DELETE"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 3"
+      DTS:To="Package\INSERT" />
   </DTS:PrecedenceConstraints>
   <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
 <!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
@@ -2523,53 +1813,27 @@ ORDER BY A01.[MANDT]
       <GraphLayout
         Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
-          Size="132,42"
-          Id="Package\clean stage"
-          TopLeft="417,15" />
+          Size="139,42"
+          Id="Package\Clean Stage"
+          TopLeft="37,34" />
         <NodeLayout
-          Size="105,42"
+          Size="139,42"
           Id="Package\EKKO"
-          TopLeft="204,48" />
-        <NodeLayout
-          Size="108,42"
-          Id="Package\Sequence Container\delete"
-          TopLeft="195,39" />
-        <NodeLayout
-          Size="112,42"
-          Id="Package\Sequence Container\update"
-          TopLeft="17,42" />
-        <ContainerLayout
-          HeaderHeight="43"
-          IsExpanded="True"
-          PanelSize="383,139"
-          Size="383,182"
-          Id="Package\Sequence Container"
-          TopLeft="60,174" />
-        <NodeLayout
-          Size="107,42"
-          Id="Package\Sequence Container 1\Insert"
-          TopLeft="129,44" />
-        <ContainerLayout
-          HeaderHeight="43"
-          IsExpanded="True"
-          PanelSize="383,139"
-          Size="383,182"
-          Id="Package\Sequence Container 1"
-          TopLeft="60,416" />
+          TopLeft="37,109.25" />
         <EdgeLayout
-          Id="Package.PrecedenceConstraints[Constraint]"
-          TopLeft="254,90">
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="106.5,76">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,84"
+              EndConnector="0,33.25"
               Start="0,0"
-              End="0,76.5">
+              End="0,25.75">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,76.5" />
+                    End="0,25.75" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -2578,32 +1842,32 @@ ORDER BY A01.[MANDT]
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
+        <NodeLayout
+          Size="139,42"
+          Id="Package\UPDATE"
+          TopLeft="37,184.5" />
+        <NodeLayout
+          Size="139,42"
+          Id="Package\DELETE"
+          TopLeft="37,259.75" />
+        <NodeLayout
+          Size="139,42"
+          Id="Package\INSERT"
+          TopLeft="37,335" />
         <EdgeLayout
-          Id="Package.PrecedenceConstraints[Constraint 1]"
-          TopLeft="417,36">
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="106.5,151.25">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-108,33"
+              EndConnector="0,33.25"
               Start="0,0"
-              End="-100.5,33">
+              End="0,25.75">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="-50,0" />
-                  <mssgle:CubicBezierSegment
-                    Point1="-50,0"
-                    Point2="-54,0"
-                    Point3="-54,4" />
-                  <mssgle:LineSegment
-                    End="-54,29" />
-                  <mssgle:CubicBezierSegment
-                    Point1="-54,29"
-                    Point2="-54,33"
-                    Point3="-58,33" />
-                  <mssgle:LineSegment
-                    End="-100.5,33" />
+                    End="0,25.75" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -2614,18 +1878,40 @@ ORDER BY A01.[MANDT]
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 2]"
-          TopLeft="251.5,356">
+          TopLeft="106.5,226.5">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,60"
+              EndConnector="0,33.25"
               Start="0,0"
-              End="0,52.5">
+              End="0,25.75">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,52.5" />
+                    End="0,25.75" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 3]"
+          TopLeft="106.5,301.75">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,33.25"
+              Start="0,0"
+              End="0,25.75">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,25.75" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -2643,25 +1929,21 @@ ORDER BY A01.[MANDT]
       <GraphLayout
         Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
-          Size="114,42"
-          Id="Package\EKKO\DB SAP"
-          TopLeft="199,46" />
+          Size="130,42"
+          Id="Package\EKKO\Merge Join"
+          TopLeft="451,137" />
         <NodeLayout
-          Size="186,42"
-          Id="Package\EKKO\stage changed records"
-          TopLeft="424,480" />
-        <NodeLayout
-          Size="184,42"
-          Id="Package\EKKO\Find Changed Records"
-          TopLeft="420,366" />
+          Size="180,42"
+          Id="Package\EKKO\stage deleted records"
+          TopLeft="687,371" />
         <NodeLayout
           Size="166,42"
           Id="Package\EKKO\insert new records"
           TopLeft="159,370" />
         <NodeLayout
-          Size="180,42"
-          Id="Package\EKKO\stage deleted records"
-          TopLeft="687,371" />
+          Size="114,42"
+          Id="Package\EKKO\DB SAP"
+          TopLeft="199,46" />
         <NodeLayout
           Size="153,42"
           Id="Package\EKKO\Identity records"
@@ -2671,67 +1953,9 @@ ORDER BY A01.[MANDT]
           Id="Package\EKKO\DB PBI"
           TopLeft="671,48" />
         <NodeLayout
-          Size="130,42"
-          Id="Package\EKKO\Merge Join"
-          TopLeft="451,137" />
-        <EdgeLayout
-          Id="Package\EKKO.Paths[update]"
-          TopLeft="512.25,276">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,90"
-              Start="0,0"
-              End="0,82.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,82.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-15.8025,35.4453125,31.605,11.609375"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\EKKO.Paths[OLE DB Source Output1]"
-          TopLeft="727,90">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="-190.666666666667,47"
-              Start="0,0"
-              End="-190.666666666667,39.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,23.8571428571429" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,23.8571428571429"
-                    Point2="0,27.8571428571429"
-                    Point3="-4,27.8571428571429" />
-                  <mssgle:LineSegment
-                    End="-186.666666666667,27.8571428571429" />
-                  <mssgle:CubicBezierSegment
-                    Point1="-186.666666666667,27.8571428571429"
-                    Point2="-190.666666666667,27.8571428571429"
-                    Point3="-190.666666666667,31.8571428571429" />
-                  <mssgle:LineSegment
-                    End="-190.666666666667,39.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
+          Size="186,42"
+          Id="Package\EKKO\stage changed records"
+          TopLeft="424,480" />
         <EdgeLayout
           Id="Package\EKKO.Paths[OLE DB Source Output]"
           TopLeft="256,88">
@@ -2861,26 +2085,60 @@ ORDER BY A01.[MANDT]
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\EKKO.Paths[update1]"
-          TopLeft="514.5,408">
+          Id="Package\EKKO.Paths[OLE DB Source Output1]"
+          TopLeft="727,90">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,72"
+              EndConnector="-190.666666666667,47"
               Start="0,0"
-              End="0,64.5">
+              End="-190.666666666667,39.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,64.5" />
+                    End="0,23.8571428571429" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,23.8571428571429"
+                    Point2="0,27.8571428571429"
+                    Point3="-4,27.8571428571429" />
+                  <mssgle:LineSegment
+                    End="-186.666666666667,27.8571428571429" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-186.666666666667,27.8571428571429"
+                    Point2="-190.666666666667,27.8571428571429"
+                    Point3="-190.666666666667,31.8571428571429" />
+                  <mssgle:LineSegment
+                    End="-190.666666666667,39.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\EKKO.Paths[update]"
+          TopLeft="514.75,276">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,204"
+              Start="0,0"
+              End="0,196.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,196.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="-15.8025,26.4453125,31.605,11.609375"
+              BoundingBox="-15.8025,92.4453125,31.605,11.609375"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
@@ -2888,15 +2146,7 @@ ORDER BY A01.[MANDT]
     </LayoutInfo>
   </TaskHost>
   <PipelineComponentMetadata
-    design-time-name="Package\EKKO\DB SAP">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
-    design-time-name="Package\EKKO\stage changed records">
+    design-time-name="Package\EKKO\stage deleted records">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -2922,15 +2172,10 @@ ORDER BY A01.[MANDT]
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\EKKO\stage deleted records">
+    design-time-name="Package\EKKO\DB SAP">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
-      </Property>
-      <Property>
-        <Name>TableInfoObjectType</Name>
-        <Value
-          type="q2:string">Table</Value>
       </Property>
     </Properties>
   </PipelineComponentMetadata>
@@ -2939,6 +2184,19 @@ ORDER BY A01.[MANDT]
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\EKKO\stage changed records">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
       </Property>
     </Properties>
   </PipelineComponentMetadata>
