@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+﻿<?xml version="1.0"?>
 <DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
   DTS:refId="Package"
   DTS:CreationDate="2/10/2021 9:52:17 PM"
@@ -11,27 +11,61 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="Package1"
   DTS:PackageType="5"
-  DTS:VersionBuild="15"
-  DTS:VersionGUID="{2608DF22-BA00-4449-AB8E-5E172C3AE9C1}">
+  DTS:VersionBuild="20"
+  DTS:VersionGUID="{3339FFDF-FC9D-4154-9A6F-BDD53367FF65}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:Variables />
   <DTS:Executables>
     <DTS:Executable
-      DTS:refId="Package\clean stage"
+      DTS:refId="Package\Clean Stage"
       DTS:CreationName="Microsoft.ExecuteSQLTask"
       DTS:Description="Execute SQL Task"
       DTS:DTSID="{3E594235-3823-43E5-850D-9EDF9744BCE5}"
       DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
-      DTS:ObjectName="clean stage"
+      DTS:ObjectName="Clean Stage"
       DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
       DTS:ThreadHint="0">
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
           SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-          SQLTask:SqlStatementSource="TRUNCATE TABLE [LIPS_STAGE_UPDATE]&#xA;go&#xA;TRUNCATE TABLE [LIPS_STAGE_DELETE]&#xA;go&#xA;TRUNCATE TABLE [LIPS_STAGE_INSERT]&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          SQLTask:SqlStatementSource="TRUNCATE TABLE [LIPS_STAGE_UPDATE]&#xA;go&#xA;TRUNCATE TABLE [LIPS_STAGE_DELETE]&#xA;go&#xA;TRUNCATE TABLE [LIPS_STAGE_INSERT]&#xA;go" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\DELETE"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{A6AA835F-DC25-4B67-BD56-C6081BD11C5D}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="DELETE"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="DELETE A01&#xA;FROM&#xA;  [LIPS] A01&#xA;  INNER JOIN [LIPS_STAGE_DELETE] B01 ON (&#xA;    A01.[MANDT] = B01.[MANDT]&#xA;    AND A01.[VBELN] = B01.[VBELN]&#xA;    AND A01.[POSNR] = B01.[POSNR]&#xA;  )" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\INSERT"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{de0fbee8-75f9-4249-b1d8-cae0a2dd49c7}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="INSERT"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="INSERT INTO [LIPS]&#xA;SELECT * FROM [LIPS_STAGE_INSERT]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
@@ -73,18 +107,16 @@
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT A01.[MANDT]
-      ,A01.[VBELN]
-      ,A01.[POSNR]
-      ,A01.[VGBEL]
-      ,A01.[VGPOS]
-      ,A01.[LFIMG]
-      ,A01.[ERDAT]
-      ,A01.[CHARG]
-FROM [LIPS] A01 (NOLOCK)
-ORDER BY A01.[MANDT]
-        ,A01.[VBELN]
-        ,A01.[POSNR]</property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT
+  [MANDT],
+  [VBELN],
+  [POSNR]
+FROM
+  [LIPS] (NOLOCK)
+ORDER BY
+  [MANDT],
+  [VBELN],
+  [POSNR]</property>
                 <property
                   dataType="System.String"
                   description="The variable that contains the SQL command to be executed."
@@ -154,57 +186,6 @@ ORDER BY A01.[MANDT]
                       name="POSNR"
                       sortKeyPosition="3"
                       truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\LIPS\DB PBI LIPS.Outputs[OLE DB Source Output].Columns[VGBEL]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\LIPS\DB PBI LIPS.Outputs[OLE DB Source Output].ExternalColumns[VGBEL]"
-                      length="10"
-                      lineageId="Package\LIPS\DB PBI LIPS.Outputs[OLE DB Source Output].Columns[VGBEL]"
-                      name="VGBEL"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\LIPS\DB PBI LIPS.Outputs[OLE DB Source Output].Columns[VGPOS]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\LIPS\DB PBI LIPS.Outputs[OLE DB Source Output].ExternalColumns[VGPOS]"
-                      length="6"
-                      lineageId="Package\LIPS\DB PBI LIPS.Outputs[OLE DB Source Output].Columns[VGPOS]"
-                      name="VGPOS"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\LIPS\DB PBI LIPS.Outputs[OLE DB Source Output].Columns[LFIMG]"
-                      dataType="numeric"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\LIPS\DB PBI LIPS.Outputs[OLE DB Source Output].ExternalColumns[LFIMG]"
-                      lineageId="Package\LIPS\DB PBI LIPS.Outputs[OLE DB Source Output].Columns[LFIMG]"
-                      name="LFIMG"
-                      precision="13"
-                      scale="3"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\LIPS\DB PBI LIPS.Outputs[OLE DB Source Output].Columns[ERDAT]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\LIPS\DB PBI LIPS.Outputs[OLE DB Source Output].ExternalColumns[ERDAT]"
-                      length="8"
-                      lineageId="Package\LIPS\DB PBI LIPS.Outputs[OLE DB Source Output].Columns[ERDAT]"
-                      name="ERDAT"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\LIPS\DB PBI LIPS.Outputs[OLE DB Source Output].Columns[CHARG]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\LIPS\DB PBI LIPS.Outputs[OLE DB Source Output].ExternalColumns[CHARG]"
-                      length="10"
-                      lineageId="Package\LIPS\DB PBI LIPS.Outputs[OLE DB Source Output].Columns[CHARG]"
-                      name="CHARG"
-                      truncationRowDisposition="FailComponent" />
                   </outputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -223,32 +204,6 @@ ORDER BY A01.[MANDT]
                       dataType="wstr"
                       length="6"
                       name="POSNR" />
-                    <externalMetadataColumn
-                      refId="Package\LIPS\DB PBI LIPS.Outputs[OLE DB Source Output].ExternalColumns[VGBEL]"
-                      dataType="wstr"
-                      length="10"
-                      name="VGBEL" />
-                    <externalMetadataColumn
-                      refId="Package\LIPS\DB PBI LIPS.Outputs[OLE DB Source Output].ExternalColumns[VGPOS]"
-                      dataType="wstr"
-                      length="6"
-                      name="VGPOS" />
-                    <externalMetadataColumn
-                      refId="Package\LIPS\DB PBI LIPS.Outputs[OLE DB Source Output].ExternalColumns[LFIMG]"
-                      dataType="numeric"
-                      name="LFIMG"
-                      precision="13"
-                      scale="3" />
-                    <externalMetadataColumn
-                      refId="Package\LIPS\DB PBI LIPS.Outputs[OLE DB Source Output].ExternalColumns[ERDAT]"
-                      dataType="wstr"
-                      length="8"
-                      name="ERDAT" />
-                    <externalMetadataColumn
-                      refId="Package\LIPS\DB PBI LIPS.Outputs[OLE DB Source Output].ExternalColumns[CHARG]"
-                      dataType="wstr"
-                      length="10"
-                      name="CHARG" />
                   </externalMetadataColumns>
                 </output>
                 <output
@@ -274,37 +229,6 @@ ORDER BY A01.[MANDT]
                       length="6"
                       lineageId="Package\LIPS\DB PBI LIPS.Outputs[OLE DB Source Error Output].Columns[POSNR]"
                       name="POSNR" />
-                    <outputColumn
-                      refId="Package\LIPS\DB PBI LIPS.Outputs[OLE DB Source Error Output].Columns[VGBEL]"
-                      dataType="wstr"
-                      length="10"
-                      lineageId="Package\LIPS\DB PBI LIPS.Outputs[OLE DB Source Error Output].Columns[VGBEL]"
-                      name="VGBEL" />
-                    <outputColumn
-                      refId="Package\LIPS\DB PBI LIPS.Outputs[OLE DB Source Error Output].Columns[VGPOS]"
-                      dataType="wstr"
-                      length="6"
-                      lineageId="Package\LIPS\DB PBI LIPS.Outputs[OLE DB Source Error Output].Columns[VGPOS]"
-                      name="VGPOS" />
-                    <outputColumn
-                      refId="Package\LIPS\DB PBI LIPS.Outputs[OLE DB Source Error Output].Columns[LFIMG]"
-                      dataType="numeric"
-                      lineageId="Package\LIPS\DB PBI LIPS.Outputs[OLE DB Source Error Output].Columns[LFIMG]"
-                      name="LFIMG"
-                      precision="13"
-                      scale="3" />
-                    <outputColumn
-                      refId="Package\LIPS\DB PBI LIPS.Outputs[OLE DB Source Error Output].Columns[ERDAT]"
-                      dataType="wstr"
-                      length="8"
-                      lineageId="Package\LIPS\DB PBI LIPS.Outputs[OLE DB Source Error Output].Columns[ERDAT]"
-                      name="ERDAT" />
-                    <outputColumn
-                      refId="Package\LIPS\DB PBI LIPS.Outputs[OLE DB Source Error Output].Columns[CHARG]"
-                      dataType="wstr"
-                      length="10"
-                      lineageId="Package\LIPS\DB PBI LIPS.Outputs[OLE DB Source Error Output].Columns[CHARG]"
-                      name="CHARG" />
                     <outputColumn
                       refId="Package\LIPS\DB PBI LIPS.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
                       dataType="i4"
@@ -347,18 +271,22 @@ ORDER BY A01.[MANDT]
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT A01.[MANDT]
-      ,A01.[VBELN]
-      ,A01.[POSNR]
-      ,A01.[VGBEL]
-      ,A01.[VGPOS]
-      ,A01.[LFIMG]
-      ,A01.[ERDAT]
-      ,A01.[CHARG]
-FROM [ecp].[LIPS] A01 (NOLOCK)
-ORDER BY A01.[MANDT]
-        ,A01.[VBELN]
-        ,A01.[POSNR]</property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT
+  [MANDT],
+  [VBELN],
+  [POSNR],
+  [ERDAT],
+  [MATNR],
+  [CHARG],
+  [LFIMG],
+  [VGBEL],
+  [VGPOS]
+FROM
+  [ecp].[LIPS] (NOLOCK)
+ORDER BY
+  [MANDT],
+  [VBELN],
+  [POSNR]</property>
                 <property
                   dataType="System.String"
                   description="The variable that contains the SQL command to be executed."
@@ -479,6 +407,16 @@ ORDER BY A01.[MANDT]
                       lineageId="Package\LIPS\DB SAP LIPS.Outputs[OLE DB Source Output].Columns[CHARG]"
                       name="CHARG"
                       truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\LIPS\DB SAP LIPS.Outputs[OLE DB Source Output].Columns[MATNR]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\LIPS\DB SAP LIPS.Outputs[OLE DB Source Output].ExternalColumns[MATNR]"
+                      length="18"
+                      lineageId="Package\LIPS\DB SAP LIPS.Outputs[OLE DB Source Output].Columns[MATNR]"
+                      name="MATNR"
+                      truncationRowDisposition="FailComponent" />
                   </outputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -523,6 +461,11 @@ ORDER BY A01.[MANDT]
                       dataType="wstr"
                       length="10"
                       name="CHARG" />
+                    <externalMetadataColumn
+                      refId="Package\LIPS\DB SAP LIPS.Outputs[OLE DB Source Output].ExternalColumns[MATNR]"
+                      dataType="wstr"
+                      length="18"
+                      name="MATNR" />
                   </externalMetadataColumns>
                 </output>
                 <output
@@ -554,6 +497,12 @@ ORDER BY A01.[MANDT]
                       length="10"
                       lineageId="Package\LIPS\DB SAP LIPS.Outputs[OLE DB Source Error Output].Columns[VGBEL]"
                       name="VGBEL" />
+                    <outputColumn
+                      refId="Package\LIPS\DB SAP LIPS.Outputs[OLE DB Source Error Output].Columns[MATNR]"
+                      dataType="wstr"
+                      length="18"
+                      lineageId="Package\LIPS\DB SAP LIPS.Outputs[OLE DB Source Error Output].Columns[MATNR]"
+                      name="MATNR" />
                     <outputColumn
                       refId="Package\LIPS\DB SAP LIPS.Outputs[OLE DB Source Error Output].Columns[VGPOS]"
                       dataType="wstr"
@@ -589,154 +538,6 @@ ORDER BY A01.[MANDT]
                       refId="Package\LIPS\DB SAP LIPS.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
                       dataType="i4"
                       lineageId="Package\LIPS\DB SAP LIPS.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
-                      name="ErrorColumn"
-                      specialFlags="2" />
-                  </outputColumns>
-                  <externalMetadataColumns />
-                </output>
-              </outputs>
-            </component>
-            <component
-              refId="Package\LIPS\Find Changed Records"
-              componentClassID="Microsoft.ConditionalSplit"
-              contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
-              description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
-              name="Find Changed Records"
-              usesDispositions="true">
-              <inputs>
-                <input
-                  refId="Package\LIPS\Find Changed Records.Inputs[Conditional Split Input]"
-                  description="Input to the Conditional Split Transformation"
-                  name="Conditional Split Input">
-                  <inputColumns>
-                    <inputColumn
-                      refId="Package\LIPS\Find Changed Records.Inputs[Conditional Split Input].Columns[VGBEL]"
-                      cachedDataType="wstr"
-                      cachedLength="10"
-                      cachedName="VGBEL"
-                      cachedSortKeyPosition="4"
-                      lineageId="Package\LIPS\Merge Join.Outputs[Merge Join Output].Columns[VGBEL]" />
-                    <inputColumn
-                      refId="Package\LIPS\Find Changed Records.Inputs[Conditional Split Input].Columns[VGPOS]"
-                      cachedDataType="wstr"
-                      cachedLength="6"
-                      cachedName="VGPOS"
-                      cachedSortKeyPosition="5"
-                      lineageId="Package\LIPS\Merge Join.Outputs[Merge Join Output].Columns[VGPOS]" />
-                    <inputColumn
-                      refId="Package\LIPS\Find Changed Records.Inputs[Conditional Split Input].Columns[LFIMG]"
-                      cachedDataType="numeric"
-                      cachedName="LFIMG"
-                      cachedPrecision="13"
-                      cachedScale="3"
-                      lineageId="Package\LIPS\Merge Join.Outputs[Merge Join Output].Columns[LFIMG]" />
-                    <inputColumn
-                      refId="Package\LIPS\Find Changed Records.Inputs[Conditional Split Input].Columns[VGBEL (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="10"
-                      cachedName="VGBEL (1)"
-                      lineageId="Package\LIPS\Merge Join.Outputs[Merge Join Output].Columns[VGBEL (1)]" />
-                    <inputColumn
-                      refId="Package\LIPS\Find Changed Records.Inputs[Conditional Split Input].Columns[VGPOS (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="6"
-                      cachedName="VGPOS (1)"
-                      lineageId="Package\LIPS\Merge Join.Outputs[Merge Join Output].Columns[VGPOS (1)]" />
-                    <inputColumn
-                      refId="Package\LIPS\Find Changed Records.Inputs[Conditional Split Input].Columns[LFIMG (1)]"
-                      cachedDataType="numeric"
-                      cachedName="LFIMG (1)"
-                      cachedPrecision="13"
-                      cachedScale="3"
-                      lineageId="Package\LIPS\Merge Join.Outputs[Merge Join Output].Columns[LFIMG (1)]" />
-                    <inputColumn
-                      refId="Package\LIPS\Find Changed Records.Inputs[Conditional Split Input].Columns[ERDAT]"
-                      cachedDataType="wstr"
-                      cachedLength="8"
-                      cachedName="ERDAT"
-                      lineageId="Package\LIPS\Merge Join.Outputs[Merge Join Output].Columns[ERDAT]" />
-                    <inputColumn
-                      refId="Package\LIPS\Find Changed Records.Inputs[Conditional Split Input].Columns[CHARG]"
-                      cachedDataType="wstr"
-                      cachedLength="10"
-                      cachedName="CHARG"
-                      lineageId="Package\LIPS\Merge Join.Outputs[Merge Join Output].Columns[CHARG]" />
-                    <inputColumn
-                      refId="Package\LIPS\Find Changed Records.Inputs[Conditional Split Input].Columns[ERDAT (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="8"
-                      cachedName="ERDAT (1)"
-                      lineageId="Package\LIPS\Merge Join.Outputs[Merge Join Output].Columns[ERDAT (1)]" />
-                    <inputColumn
-                      refId="Package\LIPS\Find Changed Records.Inputs[Conditional Split Input].Columns[CHARG (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="10"
-                      cachedName="CHARG (1)"
-                      lineageId="Package\LIPS\Merge Join.Outputs[Merge Join Output].Columns[CHARG (1)]" />
-                  </inputColumns>
-                  <externalMetadataColumns />
-                </input>
-              </inputs>
-              <outputs>
-                <output
-                  refId="Package\LIPS\Find Changed Records.Outputs[update]"
-                  description="Output 1 of the Conditional Split Transformation"
-                  errorOrTruncationOperation="Computation"
-                  errorRowDisposition="FailComponent"
-                  exclusionGroup="1"
-                  name="update"
-                  synchronousInputId="Package\LIPS\Find Changed Records.Inputs[Conditional Split Input]"
-                  truncationRowDisposition="FailComponent">
-                  <properties>
-                    <property
-                      containsID="true"
-                      dataType="System.String"
-                      description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
-                      name="Expression">#{Package\LIPS\Merge Join.Outputs[Merge Join Output].Columns[VGBEL]} != #{Package\LIPS\Merge Join.Outputs[Merge Join Output].Columns[VGBEL (1)]} || #{Package\LIPS\Merge Join.Outputs[Merge Join Output].Columns[VGPOS]} != #{Package\LIPS\Merge Join.Outputs[Merge Join Output].Columns[VGPOS (1)]} || #{Package\LIPS\Merge Join.Outputs[Merge Join Output].Columns[LFIMG]} != #{Package\LIPS\Merge Join.Outputs[Merge Join Output].Columns[LFIMG (1)]} || #{Package\LIPS\Merge Join.Outputs[Merge Join Output].Columns[ERDAT]} != #{Package\LIPS\Merge Join.Outputs[Merge Join Output].Columns[ERDAT (1)]} || #{Package\LIPS\Merge Join.Outputs[Merge Join Output].Columns[CHARG]} != #{Package\LIPS\Merge Join.Outputs[Merge Join Output].Columns[CHARG (1)]}</property>
-                    <property
-                      containsID="true"
-                      dataType="System.String"
-                      description="Specifies the friendly version of the expression. This expression version uses column names."
-                      expressionType="Notify"
-                      name="FriendlyExpression">VGBEL != [VGBEL (1)] || VGPOS != [VGPOS (1)] || LFIMG != [LFIMG (1)] || ERDAT != [ERDAT (1)] || CHARG != [CHARG (1)]</property>
-                    <property
-                      dataType="System.Int32"
-                      description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
-                      name="EvaluationOrder">0</property>
-                  </properties>
-                  <externalMetadataColumns />
-                </output>
-                <output
-                  refId="Package\LIPS\Find Changed Records.Outputs[Conditional Split Default Output]"
-                  description="Default Output of the Conditional Split Transformation"
-                  exclusionGroup="1"
-                  name="Conditional Split Default Output"
-                  synchronousInputId="Package\LIPS\Find Changed Records.Inputs[Conditional Split Input]">
-                  <properties>
-                    <property
-                      dataType="System.Boolean"
-                      name="IsDefaultOut">true</property>
-                  </properties>
-                  <externalMetadataColumns />
-                </output>
-                <output
-                  refId="Package\LIPS\Find Changed Records.Outputs[Conditional Split Error Output]"
-                  description="Error Output of the Conditional Split Transformation"
-                  exclusionGroup="1"
-                  isErrorOut="true"
-                  name="Conditional Split Error Output"
-                  synchronousInputId="Package\LIPS\Find Changed Records.Inputs[Conditional Split Input]">
-                  <outputColumns>
-                    <outputColumn
-                      refId="Package\LIPS\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
-                      dataType="i4"
-                      lineageId="Package\LIPS\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
-                      name="ErrorCode"
-                      specialFlags="1" />
-                    <outputColumn
-                      refId="Package\LIPS\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
-                      dataType="i4"
-                      lineageId="Package\LIPS\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -922,7 +723,7 @@ ORDER BY A01.[MANDT]
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                 <property
                   dataType="System.Int32"
                   description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -1031,6 +832,13 @@ ORDER BY A01.[MANDT]
                       cachedName="CHARG"
                       externalMetadataColumnId="Package\LIPS\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[CHARG]"
                       lineageId="Package\LIPS\Merge Join.Outputs[Merge Join Output].Columns[CHARG]" />
+                    <inputColumn
+                      refId="Package\LIPS\insert new records.Inputs[OLE DB Destination Input].Columns[MATNR]"
+                      cachedDataType="wstr"
+                      cachedLength="18"
+                      cachedName="MATNR"
+                      externalMetadataColumnId="Package\LIPS\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MATNR]"
+                      lineageId="Package\LIPS\Merge Join.Outputs[Merge Join Output].Columns[MATNR]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -1075,6 +883,11 @@ ORDER BY A01.[MANDT]
                       dataType="wstr"
                       length="10"
                       name="CHARG" />
+                    <externalMetadataColumn
+                      refId="Package\LIPS\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MATNR]"
+                      dataType="wstr"
+                      length="18"
+                      name="MATNR" />
                   </externalMetadataColumns>
                 </input>
               </inputs>
@@ -1187,6 +1000,12 @@ ORDER BY A01.[MANDT]
                       cachedLength="10"
                       cachedName="CHARG"
                       lineageId="Package\LIPS\DB SAP LIPS.Outputs[OLE DB Source Output].Columns[CHARG]" />
+                    <inputColumn
+                      refId="Package\LIPS\Merge Join.Inputs[Merge Join Left Input].Columns[MATNR]"
+                      cachedDataType="wstr"
+                      cachedLength="18"
+                      cachedName="MATNR"
+                      lineageId="Package\LIPS\DB SAP LIPS.Outputs[OLE DB Source Output].Columns[MATNR]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
@@ -1216,37 +1035,6 @@ ORDER BY A01.[MANDT]
                       cachedName="POSNR"
                       cachedSortKeyPosition="3"
                       lineageId="Package\LIPS\DB PBI LIPS.Outputs[OLE DB Source Output].Columns[POSNR]" />
-                    <inputColumn
-                      refId="Package\LIPS\Merge Join.Inputs[Merge Join Right Input].Columns[VGBEL]"
-                      cachedDataType="wstr"
-                      cachedLength="10"
-                      cachedName="VGBEL"
-                      lineageId="Package\LIPS\DB PBI LIPS.Outputs[OLE DB Source Output].Columns[VGBEL]" />
-                    <inputColumn
-                      refId="Package\LIPS\Merge Join.Inputs[Merge Join Right Input].Columns[VGPOS]"
-                      cachedDataType="wstr"
-                      cachedLength="6"
-                      cachedName="VGPOS"
-                      lineageId="Package\LIPS\DB PBI LIPS.Outputs[OLE DB Source Output].Columns[VGPOS]" />
-                    <inputColumn
-                      refId="Package\LIPS\Merge Join.Inputs[Merge Join Right Input].Columns[LFIMG]"
-                      cachedDataType="numeric"
-                      cachedName="LFIMG"
-                      cachedPrecision="13"
-                      cachedScale="3"
-                      lineageId="Package\LIPS\DB PBI LIPS.Outputs[OLE DB Source Output].Columns[LFIMG]" />
-                    <inputColumn
-                      refId="Package\LIPS\Merge Join.Inputs[Merge Join Right Input].Columns[ERDAT]"
-                      cachedDataType="wstr"
-                      cachedLength="8"
-                      cachedName="ERDAT"
-                      lineageId="Package\LIPS\DB PBI LIPS.Outputs[OLE DB Source Output].Columns[ERDAT]" />
-                    <inputColumn
-                      refId="Package\LIPS\Merge Join.Inputs[Merge Join Right Input].Columns[CHARG]"
-                      cachedDataType="wstr"
-                      cachedLength="10"
-                      cachedName="CHARG"
-                      lineageId="Package\LIPS\DB PBI LIPS.Outputs[OLE DB Source Output].Columns[CHARG]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
@@ -1390,49 +1178,6 @@ ORDER BY A01.[MANDT]
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\LIPS\Merge Join.Outputs[Merge Join Output].Columns[VGBEL (1)]"
-                      dataType="wstr"
-                      length="10"
-                      lineageId="Package\LIPS\Merge Join.Outputs[Merge Join Output].Columns[VGBEL (1)]"
-                      name="VGBEL (1)">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\LIPS\Merge Join.Inputs[Merge Join Right Input].Columns[VGBEL]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\LIPS\Merge Join.Outputs[Merge Join Output].Columns[VGPOS (1)]"
-                      dataType="wstr"
-                      length="6"
-                      lineageId="Package\LIPS\Merge Join.Outputs[Merge Join Output].Columns[VGPOS (1)]"
-                      name="VGPOS (1)">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\LIPS\Merge Join.Inputs[Merge Join Right Input].Columns[VGPOS]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\LIPS\Merge Join.Outputs[Merge Join Output].Columns[LFIMG (1)]"
-                      dataType="numeric"
-                      lineageId="Package\LIPS\Merge Join.Outputs[Merge Join Output].Columns[LFIMG (1)]"
-                      name="LFIMG (1)"
-                      precision="13"
-                      scale="3">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\LIPS\Merge Join.Inputs[Merge Join Right Input].Columns[LFIMG]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
                       refId="Package\LIPS\Merge Join.Outputs[Merge Join Output].Columns[ERDAT]"
                       dataType="wstr"
                       length="8"
@@ -1461,31 +1206,17 @@ ORDER BY A01.[MANDT]
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\LIPS\Merge Join.Outputs[Merge Join Output].Columns[ERDAT (1)]"
+                      refId="Package\LIPS\Merge Join.Outputs[Merge Join Output].Columns[MATNR]"
                       dataType="wstr"
-                      length="8"
-                      lineageId="Package\LIPS\Merge Join.Outputs[Merge Join Output].Columns[ERDAT (1)]"
-                      name="ERDAT (1)">
+                      length="18"
+                      lineageId="Package\LIPS\Merge Join.Outputs[Merge Join Output].Columns[MATNR]"
+                      name="MATNR">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\LIPS\Merge Join.Inputs[Merge Join Right Input].Columns[ERDAT]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\LIPS\Merge Join.Outputs[Merge Join Output].Columns[CHARG (1)]"
-                      dataType="wstr"
-                      length="10"
-                      lineageId="Package\LIPS\Merge Join.Outputs[Merge Join Output].Columns[CHARG (1)]"
-                      name="CHARG (1)">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\LIPS\Merge Join.Inputs[Merge Join Right Input].Columns[CHARG]}</property>
+                          name="InputColumnID">#{Package\LIPS\Merge Join.Inputs[Merge Join Left Input].Columns[MATNR]}</property>
                       </properties>
                     </outputColumn>
                   </outputColumns>
@@ -1518,7 +1249,7 @@ ORDER BY A01.[MANDT]
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                 <property
                   dataType="System.Int32"
                   description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -1627,6 +1358,13 @@ ORDER BY A01.[MANDT]
                       cachedName="CHARG"
                       externalMetadataColumnId="Package\LIPS\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[CHARG]"
                       lineageId="Package\LIPS\Merge Join.Outputs[Merge Join Output].Columns[CHARG]" />
+                    <inputColumn
+                      refId="Package\LIPS\stage changed records.Inputs[OLE DB Destination Input].Columns[MATNR]"
+                      cachedDataType="wstr"
+                      cachedLength="18"
+                      cachedName="MATNR"
+                      externalMetadataColumnId="Package\LIPS\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MATNR]"
+                      lineageId="Package\LIPS\Merge Join.Outputs[Merge Join Output].Columns[MATNR]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -1671,6 +1409,11 @@ ORDER BY A01.[MANDT]
                       dataType="wstr"
                       length="10"
                       name="CHARG" />
+                    <externalMetadataColumn
+                      refId="Package\LIPS\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MATNR]"
+                      dataType="wstr"
+                      length="18"
+                      name="MATNR" />
                   </externalMetadataColumns>
                 </input>
               </inputs>
@@ -1724,7 +1467,7 @@ ORDER BY A01.[MANDT]
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                 <property
                   dataType="System.Int32"
                   description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -1867,119 +1610,64 @@ ORDER BY A01.[MANDT]
               startId="Package\LIPS\DB PBI LIPS.Outputs[OLE DB Source Output]" />
             <path
               refId="Package\LIPS.Paths[update]"
-              endId="Package\LIPS\Find Changed Records.Inputs[Conditional Split Input]"
-              name="update"
-              startId="Package\LIPS\Identify records.Outputs[update]" />
-            <path
-              refId="Package\LIPS.Paths[update1]"
               endId="Package\LIPS\stage changed records.Inputs[OLE DB Destination Input]"
               name="update"
-              startId="Package\LIPS\Find Changed Records.Outputs[update]" />
+              startId="Package\LIPS\Identify records.Outputs[update]" />
           </paths>
         </pipeline>
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
-      DTS:refId="Package\Sequence Container"
-      DTS:CreationName="STOCK:SEQUENCE"
-      DTS:Description="Sequence Container"
-      DTS:DTSID="{B53B39C6-3B8E-4E2B-95FC-1FAEB5F0F005}"
-      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:refId="Package\UPDATE"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{2E95BFEF-FB63-4796-A401-DABD47A726C2}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
-      DTS:ObjectName="Sequence Container">
+      DTS:ObjectName="UPDATE"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
       <DTS:Variables />
-      <DTS:Executables>
-        <DTS:Executable
-          DTS:refId="Package\Sequence Container\delete"
-          DTS:CreationName="Microsoft.ExecuteSQLTask"
-          DTS:Description="Execute SQL Task"
-          DTS:DTSID="{A6AA835F-DC25-4B67-BD56-C6081BD11C5D}"
-          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
-          DTS:LocaleID="-1"
-          DTS:ObjectName="delete"
-          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="0">
-          <DTS:Variables />
-          <DTS:ObjectData>
-            <SQLTask:SqlTaskData
-              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-              SQLTask:SqlStatementSource="DELETE A01&#xA;FROM [LIPS] A01 INNER JOIN [LIPS_STAGE_DELETE] B01 ON ( A01.[MANDT] = B01.[MANDT]&#xA;                                                    AND A01.[VBELN] = B01.[VBELN]&#xA;                                                    AND A01.[POSNR] = B01.[POSNR] )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
-          </DTS:ObjectData>
-        </DTS:Executable>
-        <DTS:Executable
-          DTS:refId="Package\Sequence Container\update"
-          DTS:CreationName="Microsoft.ExecuteSQLTask"
-          DTS:Description="Execute SQL Task"
-          DTS:DTSID="{2E95BFEF-FB63-4796-A401-DABD47A726C2}"
-          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
-          DTS:LocaleID="-1"
-          DTS:ObjectName="update"
-          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="1">
-          <DTS:Variables />
-          <DTS:ObjectData>
-            <SQLTask:SqlTaskData
-              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-              SQLTask:SqlStatementSource="UPDATE A01&#xA;SET A01.[VGBEL] = B01.[VGBEL]&#xA;   ,A01.[VGPOS] = B01.[VGPOS]&#xA;   ,A01.[LFIMG] = B01.[LFIMG]&#xA;   ,A01.[ERDAT] = B01.[ERDAT]&#xA;   ,A01.[CHARG] = B01.[CHARG]&#xA;FROM [LIPS] A01 INNER JOIN [LIPS_STAGE_UPDATE] B01 ON ( A01.[MANDT] = B01.[MANDT]&#xA;                                                    AND A01.[VBELN] = B01.[VBELN]&#xA;                                                    AND A01.[POSNR] = B01.[POSNR] )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
-          </DTS:ObjectData>
-        </DTS:Executable>
-      </DTS:Executables>
-    </DTS:Executable>
-    <DTS:Executable
-      DTS:refId="Package\Sequence Container 1"
-      DTS:CreationName="STOCK:SEQUENCE"
-      DTS:Description="Sequence Container"
-      DTS:DTSID="{18bbd5ea-a45b-4b03-9e56-fd858fe52a0b}"
-      DTS:ExecutableType="STOCK:SEQUENCE"
-      DTS:LocaleID="-1"
-      DTS:ObjectName="Sequence Container 1">
-      <DTS:Variables />
-      <DTS:Executables>
-        <DTS:Executable
-          DTS:refId="Package\Sequence Container 1\Insert"
-          DTS:CreationName="Microsoft.ExecuteSQLTask"
-          DTS:Description="Execute SQL Task"
-          DTS:DTSID="{de0fbee8-75f9-4249-b1d8-cae0a2dd49c7}"
-          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
-          DTS:LocaleID="-1"
-          DTS:ObjectName="Insert"
-          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="0">
-          <DTS:Variables />
-          <DTS:ObjectData>
-            <SQLTask:SqlTaskData
-              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-              SQLTask:SqlStatementSource="INSERT INTO [LIPS]&#xA;SELECT * FROM [LIPS_STAGE_INSERT]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
-          </DTS:ObjectData>
-        </DTS:Executable>
-      </DTS:Executables>
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="UPDATE&#xA;  A01&#xA;SET&#xA;  A01.[VGBEL] = B01.[VGBEL],&#xA;  A01.[VGPOS] = B01.[VGPOS],&#xA;  A01.[LFIMG] = B01.[LFIMG],&#xA;  A01.[ERDAT] = B01.[ERDAT],&#xA;  A01.[CHARG] = B01.[CHARG],&#xA;  A01.[MATNR] = B01.[MATNR]&#xA;FROM&#xA;  [LIPS] A01&#xA;  INNER JOIN [LIPS_STAGE_UPDATE] B01 ON (&#xA;    A01.[MANDT] = B01.[MANDT]&#xA;    AND A01.[VBELN] = B01.[VBELN]&#xA;    AND A01.[POSNR] = B01.[POSNR]&#xA;  )" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
     </DTS:Executable>
   </DTS:Executables>
   <DTS:PrecedenceConstraints>
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint]"
       DTS:CreationName=""
-      DTS:DTSID="{E7E97EEC-61D1-477E-9298-526B84B8CAD1}"
+      DTS:DTSID="{FF7416D0-30C7-4954-9CFD-43CB8A60983D}"
       DTS:From="Package\LIPS"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint"
-      DTS:To="Package\Sequence Container" />
+      DTS:To="Package\UPDATE" />
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
       DTS:CreationName=""
       DTS:DTSID="{93EEEB07-2446-4586-B8EB-6411BCF21EC8}"
-      DTS:From="Package\clean stage"
+      DTS:From="Package\Clean Stage"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 1"
       DTS:To="Package\LIPS" />
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
       DTS:CreationName=""
-      DTS:DTSID="{00703F36-034A-42EE-9804-40AAB63690A4}"
-      DTS:From="Package\Sequence Container"
+      DTS:DTSID="{F1D4635E-4A5F-4174-AD38-C3516F79D868}"
+      DTS:From="Package\UPDATE"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 2"
-      DTS:To="Package\Sequence Container 1" />
+      DTS:To="Package\DELETE" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 3]"
+      DTS:CreationName=""
+      DTS:DTSID="{4B3221C7-31FC-4A00-9792-582996E2595F}"
+      DTS:From="Package\DELETE"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 3"
+      DTS:To="Package\INSERT" />
   </DTS:PrecedenceConstraints>
   <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
 <!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
@@ -1994,64 +1682,27 @@ ORDER BY A01.[MANDT]
       <GraphLayout
         Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
-          Size="132,42"
-          Id="Package\clean stage"
-          TopLeft="480,21" />
+          Size="139,42"
+          Id="Package\Clean Stage"
+          TopLeft="13,10" />
         <NodeLayout
-          Size="100,42"
+          Size="139,42"
           Id="Package\LIPS"
-          TopLeft="307,17" />
-        <NodeLayout
-          Size="108,42"
-          Id="Package\Sequence Container\delete"
-          TopLeft="155,12" />
-        <NodeLayout
-          Size="112,42"
-          Id="Package\Sequence Container\update"
-          TopLeft="17,10" />
-        <ContainerLayout
-          HeaderHeight="43"
-          IsExpanded="True"
-          PanelSize="280,80"
-          Size="280,123"
-          Id="Package\Sequence Container"
-          TopLeft="211,124" />
-        <EdgeLayout
-          Id="Package.PrecedenceConstraints[Constraint]"
-          TopLeft="354,59">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,65"
-              Start="0,0"
-              End="0,57.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,57.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
+          TopLeft="13,77.25" />
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 1]"
-          TopLeft="480,40">
+          TopLeft="82.5,52">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-73,0"
+              EndConnector="0,25.25"
               Start="0,0"
-              End="-65.5,0">
+              End="0,17.75">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="-65.5,0" />
+                    End="0,17.75" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -2061,30 +1712,75 @@ ORDER BY A01.[MANDT]
           </EdgeLayout.Labels>
         </EdgeLayout>
         <NodeLayout
-          Size="107,42"
-          Id="Package\Sequence Container 1\Insert"
-          TopLeft="89,36" />
-        <ContainerLayout
-          HeaderHeight="43"
-          IsExpanded="True"
-          PanelSize="280,133"
-          Size="280,176"
-          Id="Package\Sequence Container 1"
-          TopLeft="211,282" />
+          Size="139,42"
+          Id="Package\UPDATE"
+          TopLeft="13,144.5" />
+        <NodeLayout
+          Size="139,42"
+          Id="Package\DELETE"
+          TopLeft="13,211.75" />
+        <NodeLayout
+          Size="139,42"
+          Id="Package\INSERT"
+          TopLeft="13,279" />
         <EdgeLayout
-          Id="Package.PrecedenceConstraints[Constraint 2]"
-          TopLeft="351,247">
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="82.5,119.25">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,35"
+              EndConnector="0,25.25"
               Start="0,0"
-              End="0,27.5">
+              End="0,17.75">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,27.5" />
+                    End="0,17.75" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 2]"
+          TopLeft="82.5,186.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,25.25"
+              Start="0,0"
+              End="0,17.75">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,17.75" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 3]"
+          TopLeft="82.5,253.75">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,25.25"
+              Start="0,0"
+              End="0,17.75">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,17.75" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -2105,10 +1801,6 @@ ORDER BY A01.[MANDT]
           Size="153,42"
           Id="Package\LIPS\Identify records"
           TopLeft="348.25,220.5" />
-        <NodeLayout
-          Size="184,42"
-          Id="Package\LIPS\Find Changed Records"
-          TopLeft="330,326.5" />
         <NodeLayout
           Size="180,42"
           Id="Package\LIPS\stage deleted records"
@@ -2296,50 +1988,26 @@ ORDER BY A01.[MANDT]
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\LIPS.Paths[update1]"
-          TopLeft="420.5,368.5">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,79.5"
-              Start="0,0"
-              End="0,72">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,72" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-15.8025,30.1953125,31.605,11.609375"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
           Id="Package\LIPS.Paths[update]"
-          TopLeft="423.375,262.5">
+          TopLeft="421.875,262.5">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,64"
+              EndConnector="0,185.5"
               Start="0,0"
-              End="0,56.5">
+              End="0,178">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,56.5" />
+                    End="0,178" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="-15.8025,22.4453125,31.605,11.609375"
+              BoundingBox="-15.8025,83.1953125,31.605,11.609375"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
