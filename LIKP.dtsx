@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+﻿<?xml version="1.0"?>
 <DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
   DTS:refId="Package"
   DTS:CreationDate="2/10/2021 9:50:18 PM"
@@ -11,27 +11,61 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="Package1"
   DTS:PackageType="5"
-  DTS:VersionBuild="33"
-  DTS:VersionGUID="{4AB43757-88F9-4480-879E-38E3C976A773}">
+  DTS:VersionBuild="38"
+  DTS:VersionGUID="{77E82B41-E851-4F09-BC93-257E7E834374}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:Variables />
   <DTS:Executables>
     <DTS:Executable
-      DTS:refId="Package\clean stage"
+      DTS:refId="Package\Clean Stage"
       DTS:CreationName="Microsoft.ExecuteSQLTask"
       DTS:Description="Execute SQL Task"
       DTS:DTSID="{CEBBB802-43F0-4D77-9130-A7C84AA387D5}"
       DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
-      DTS:ObjectName="clean stage"
+      DTS:ObjectName="Clean Stage"
       DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
       DTS:ThreadHint="0">
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
           SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-          SQLTask:SqlStatementSource="TRUNCATE TABLE [LIKP_STAGE_UPDATE]&#xA;go&#xA;TRUNCATE TABLE [LIKP_STAGE_DELETE]&#xA;go&#xA;TRUNCATE TABLE [LIKP_STAGE_INSERT]&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          SQLTask:SqlStatementSource="TRUNCATE TABLE [LIKP_STAGE_UPDATE]&#xA;go&#xA;TRUNCATE TABLE [LIKP_STAGE_DELETE]&#xA;go&#xA;TRUNCATE TABLE [LIKP_STAGE_INSERT]&#xA;go" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\DELETE"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{89986828-6B4E-4C54-B63A-CE0E69D9DACA}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="DELETE"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="DELETE A01 &#xA;FROM &#xA;  [LIKP] A01 &#xA;  INNER JOIN [LIKP_STAGE_DELETE] B01 ON (&#xA;    A01.[MANDT] = B01.[MANDT] &#xA;    AND A01.[VBELN] = B01.[VBELN]&#xA;  )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\INSERT"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{d04115f6-44ad-4c9c-9a33-3227c55eae22}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="INSERT"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="INSERT INTO [LIKP]&#xA;SELECT * FROM [LIKP_STAGE_INSERT]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
@@ -73,13 +107,16 @@
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT A01.[MANDT]
-      ,A01.[VBELN]
-      ,A01.[WADAT_IST]
-      ,A01.ERDAT
-FROM [LIKP] A01 (NOLOCK)
-ORDER BY A01.[MANDT]
-        ,A01.[VBELN]</property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT 
+  [MANDT], 
+  [VBELN]
+FROM 
+  [LIKP] (NOLOCK) 
+WHERE 
+  [MANDT] = '105' 
+ORDER BY 
+  [MANDT], 
+  [VBELN]</property>
                 <property
                   dataType="System.String"
                   description="The variable that contains the SQL command to be executed."
@@ -138,26 +175,6 @@ ORDER BY A01.[MANDT]
                       name="VBELN"
                       sortKeyPosition="2"
                       truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\LIKP\DB PBI LIKP.Outputs[OLE DB Source Output].Columns[WADAT_IST]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\LIKP\DB PBI LIKP.Outputs[OLE DB Source Output].ExternalColumns[WADAT_IST]"
-                      length="8"
-                      lineageId="Package\LIKP\DB PBI LIKP.Outputs[OLE DB Source Output].Columns[WADAT_IST]"
-                      name="WADAT_IST"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\LIKP\DB PBI LIKP.Outputs[OLE DB Source Output].Columns[ERDAT]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\LIKP\DB PBI LIKP.Outputs[OLE DB Source Output].ExternalColumns[ERDAT]"
-                      length="8"
-                      lineageId="Package\LIKP\DB PBI LIKP.Outputs[OLE DB Source Output].Columns[ERDAT]"
-                      name="ERDAT"
-                      truncationRowDisposition="FailComponent" />
                   </outputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -171,16 +188,6 @@ ORDER BY A01.[MANDT]
                       dataType="wstr"
                       length="10"
                       name="VBELN" />
-                    <externalMetadataColumn
-                      refId="Package\LIKP\DB PBI LIKP.Outputs[OLE DB Source Output].ExternalColumns[WADAT_IST]"
-                      dataType="wstr"
-                      length="8"
-                      name="WADAT_IST" />
-                    <externalMetadataColumn
-                      refId="Package\LIKP\DB PBI LIKP.Outputs[OLE DB Source Output].ExternalColumns[ERDAT]"
-                      dataType="wstr"
-                      length="8"
-                      name="ERDAT" />
                   </externalMetadataColumns>
                 </output>
                 <output
@@ -200,18 +207,6 @@ ORDER BY A01.[MANDT]
                       length="10"
                       lineageId="Package\LIKP\DB PBI LIKP.Outputs[OLE DB Source Error Output].Columns[VBELN]"
                       name="VBELN" />
-                    <outputColumn
-                      refId="Package\LIKP\DB PBI LIKP.Outputs[OLE DB Source Error Output].Columns[WADAT_IST]"
-                      dataType="wstr"
-                      length="8"
-                      lineageId="Package\LIKP\DB PBI LIKP.Outputs[OLE DB Source Error Output].Columns[WADAT_IST]"
-                      name="WADAT_IST" />
-                    <outputColumn
-                      refId="Package\LIKP\DB PBI LIKP.Outputs[OLE DB Source Error Output].Columns[ERDAT]"
-                      dataType="wstr"
-                      length="8"
-                      lineageId="Package\LIKP\DB PBI LIKP.Outputs[OLE DB Source Error Output].Columns[ERDAT]"
-                      name="ERDAT" />
                     <outputColumn
                       refId="Package\LIKP\DB PBI LIKP.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
                       dataType="i4"
@@ -254,14 +249,19 @@ ORDER BY A01.[MANDT]
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT A01.[MANDT]
-      ,A01.[VBELN]
-      ,A01.[WADAT_IST]
-      ,CAST(NULLIF(A01.[WADAT_IST],'00000000') AS DATETIME) AS [WADAT_IST_X]
-      ,A01.ERDAT
-FROM [ecp].[LIKP] A01 (NOLOCK)
-ORDER BY A01.[MANDT]
-        ,A01.[VBELN]</property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT 
+  [MANDT], 
+  [VBELN], 
+  [WADAT_IST], 
+  [KUNNR], 
+  [ERDAT] 
+FROM 
+  [ecp].[LIKP] (NOLOCK) 
+WHERE 
+  [MANDT] = '105' 
+ORDER BY 
+  [MANDT], 
+  [VBELN]</property>
                 <property
                   dataType="System.String"
                   description="The variable that contains the SQL command to be executed."
@@ -331,15 +331,6 @@ ORDER BY A01.[MANDT]
                       name="WADAT_IST"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\LIKP\DB SAP LIKP.Outputs[OLE DB Source Output].Columns[WADAT_IST_X]"
-                      dataType="dbTimeStamp"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\LIKP\DB SAP LIKP.Outputs[OLE DB Source Output].ExternalColumns[WADAT_IST_X]"
-                      lineageId="Package\LIKP\DB SAP LIKP.Outputs[OLE DB Source Output].Columns[WADAT_IST_X]"
-                      name="WADAT_IST_X"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
                       refId="Package\LIKP\DB SAP LIKP.Outputs[OLE DB Source Output].Columns[ERDAT]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
@@ -348,6 +339,16 @@ ORDER BY A01.[MANDT]
                       length="8"
                       lineageId="Package\LIKP\DB SAP LIKP.Outputs[OLE DB Source Output].Columns[ERDAT]"
                       name="ERDAT"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\LIKP\DB SAP LIKP.Outputs[OLE DB Source Output].Columns[KUNNR]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\LIKP\DB SAP LIKP.Outputs[OLE DB Source Output].ExternalColumns[KUNNR]"
+                      length="10"
+                      lineageId="Package\LIKP\DB SAP LIKP.Outputs[OLE DB Source Output].Columns[KUNNR]"
+                      name="KUNNR"
                       truncationRowDisposition="FailComponent" />
                   </outputColumns>
                   <externalMetadataColumns
@@ -368,14 +369,15 @@ ORDER BY A01.[MANDT]
                       length="8"
                       name="WADAT_IST" />
                     <externalMetadataColumn
-                      refId="Package\LIKP\DB SAP LIKP.Outputs[OLE DB Source Output].ExternalColumns[WADAT_IST_X]"
-                      dataType="dbTimeStamp"
-                      name="WADAT_IST_X" />
-                    <externalMetadataColumn
                       refId="Package\LIKP\DB SAP LIKP.Outputs[OLE DB Source Output].ExternalColumns[ERDAT]"
                       dataType="wstr"
                       length="8"
                       name="ERDAT" />
+                    <externalMetadataColumn
+                      refId="Package\LIKP\DB SAP LIKP.Outputs[OLE DB Source Output].ExternalColumns[KUNNR]"
+                      dataType="wstr"
+                      length="10"
+                      name="KUNNR" />
                   </externalMetadataColumns>
                 </output>
                 <output
@@ -402,10 +404,11 @@ ORDER BY A01.[MANDT]
                       lineageId="Package\LIKP\DB SAP LIKP.Outputs[OLE DB Source Error Output].Columns[WADAT_IST]"
                       name="WADAT_IST" />
                     <outputColumn
-                      refId="Package\LIKP\DB SAP LIKP.Outputs[OLE DB Source Error Output].Columns[WADAT_IST_X]"
-                      dataType="dbTimeStamp"
-                      lineageId="Package\LIKP\DB SAP LIKP.Outputs[OLE DB Source Error Output].Columns[WADAT_IST_X]"
-                      name="WADAT_IST_X" />
+                      refId="Package\LIKP\DB SAP LIKP.Outputs[OLE DB Source Error Output].Columns[KUNNR]"
+                      dataType="wstr"
+                      length="10"
+                      lineageId="Package\LIKP\DB SAP LIKP.Outputs[OLE DB Source Error Output].Columns[KUNNR]"
+                      name="KUNNR" />
                     <outputColumn
                       refId="Package\LIKP\DB SAP LIKP.Outputs[OLE DB Source Error Output].Columns[ERDAT]"
                       dataType="wstr"
@@ -422,115 +425,6 @@ ORDER BY A01.[MANDT]
                       refId="Package\LIKP\DB SAP LIKP.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
                       dataType="i4"
                       lineageId="Package\LIKP\DB SAP LIKP.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
-                      name="ErrorColumn"
-                      specialFlags="2" />
-                  </outputColumns>
-                  <externalMetadataColumns />
-                </output>
-              </outputs>
-            </component>
-            <component
-              refId="Package\LIKP\Find Changed Records"
-              componentClassID="Microsoft.ConditionalSplit"
-              contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
-              description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
-              name="Find Changed Records"
-              usesDispositions="true">
-              <inputs>
-                <input
-                  refId="Package\LIKP\Find Changed Records.Inputs[Conditional Split Input]"
-                  description="Input to the Conditional Split Transformation"
-                  name="Conditional Split Input">
-                  <inputColumns>
-                    <inputColumn
-                      refId="Package\LIKP\Find Changed Records.Inputs[Conditional Split Input].Columns[WADAT_IST]"
-                      cachedDataType="wstr"
-                      cachedLength="8"
-                      cachedName="WADAT_IST"
-                      cachedSortKeyPosition="3"
-                      lineageId="Package\LIKP\Merge Join.Outputs[Merge Join Output].Columns[WADAT_IST]" />
-                    <inputColumn
-                      refId="Package\LIKP\Find Changed Records.Inputs[Conditional Split Input].Columns[WADAT_IST (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="8"
-                      cachedName="WADAT_IST (1)"
-                      lineageId="Package\LIKP\Merge Join.Outputs[Merge Join Output].Columns[WADAT_IST (1)]" />
-                    <inputColumn
-                      refId="Package\LIKP\Find Changed Records.Inputs[Conditional Split Input].Columns[ERDAT]"
-                      cachedDataType="wstr"
-                      cachedLength="8"
-                      cachedName="ERDAT"
-                      lineageId="Package\LIKP\Merge Join.Outputs[Merge Join Output].Columns[ERDAT]" />
-                    <inputColumn
-                      refId="Package\LIKP\Find Changed Records.Inputs[Conditional Split Input].Columns[ERDAT (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="8"
-                      cachedName="ERDAT (1)"
-                      lineageId="Package\LIKP\Merge Join.Outputs[Merge Join Output].Columns[ERDAT (1)]" />
-                  </inputColumns>
-                  <externalMetadataColumns />
-                </input>
-              </inputs>
-              <outputs>
-                <output
-                  refId="Package\LIKP\Find Changed Records.Outputs[update]"
-                  description="Output 1 of the Conditional Split Transformation"
-                  errorOrTruncationOperation="Computation"
-                  errorRowDisposition="FailComponent"
-                  exclusionGroup="1"
-                  name="update"
-                  synchronousInputId="Package\LIKP\Find Changed Records.Inputs[Conditional Split Input]"
-                  truncationRowDisposition="FailComponent">
-                  <properties>
-                    <property
-                      containsID="true"
-                      dataType="System.String"
-                      description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
-                      name="Expression">#{Package\LIKP\Merge Join.Outputs[Merge Join Output].Columns[WADAT_IST]} != #{Package\LIKP\Merge Join.Outputs[Merge Join Output].Columns[WADAT_IST (1)]} || #{Package\LIKP\Merge Join.Outputs[Merge Join Output].Columns[ERDAT]} != #{Package\LIKP\Merge Join.Outputs[Merge Join Output].Columns[ERDAT (1)]}</property>
-                    <property
-                      containsID="true"
-                      dataType="System.String"
-                      description="Specifies the friendly version of the expression. This expression version uses column names."
-                      expressionType="Notify"
-                      name="FriendlyExpression">WADAT_IST != [WADAT_IST (1)] || ERDAT != [ERDAT (1)]</property>
-                    <property
-                      dataType="System.Int32"
-                      description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
-                      name="EvaluationOrder">0</property>
-                  </properties>
-                  <externalMetadataColumns />
-                </output>
-                <output
-                  refId="Package\LIKP\Find Changed Records.Outputs[Conditional Split Default Output]"
-                  description="Default Output of the Conditional Split Transformation"
-                  exclusionGroup="1"
-                  name="Conditional Split Default Output"
-                  synchronousInputId="Package\LIKP\Find Changed Records.Inputs[Conditional Split Input]">
-                  <properties>
-                    <property
-                      dataType="System.Boolean"
-                      name="IsDefaultOut">true</property>
-                  </properties>
-                  <externalMetadataColumns />
-                </output>
-                <output
-                  refId="Package\LIKP\Find Changed Records.Outputs[Conditional Split Error Output]"
-                  description="Error Output of the Conditional Split Transformation"
-                  exclusionGroup="1"
-                  isErrorOut="true"
-                  name="Conditional Split Error Output"
-                  synchronousInputId="Package\LIKP\Find Changed Records.Inputs[Conditional Split Input]">
-                  <outputColumns>
-                    <outputColumn
-                      refId="Package\LIKP\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
-                      dataType="i4"
-                      lineageId="Package\LIKP\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
-                      name="ErrorCode"
-                      specialFlags="1" />
-                    <outputColumn
-                      refId="Package\LIKP\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
-                      dataType="i4"
-                      lineageId="Package\LIKP\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -716,7 +610,7 @@ ORDER BY A01.[MANDT]
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                 <property
                   dataType="System.Int32"
                   description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -788,18 +682,19 @@ ORDER BY A01.[MANDT]
                       externalMetadataColumnId="Package\LIKP\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[WADAT_IST]"
                       lineageId="Package\LIKP\Merge Join.Outputs[Merge Join Output].Columns[WADAT_IST]" />
                     <inputColumn
-                      refId="Package\LIKP\insert new records.Inputs[OLE DB Destination Input].Columns[WADAT_IST_X]"
-                      cachedDataType="dbTimeStamp"
-                      cachedName="WADAT_IST_X"
-                      externalMetadataColumnId="Package\LIKP\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[WADAT_IST_X]"
-                      lineageId="Package\LIKP\Merge Join.Outputs[Merge Join Output].Columns[WADAT_IST_X]" />
-                    <inputColumn
                       refId="Package\LIKP\insert new records.Inputs[OLE DB Destination Input].Columns[ERDAT]"
                       cachedDataType="wstr"
                       cachedLength="8"
                       cachedName="ERDAT"
                       externalMetadataColumnId="Package\LIKP\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[ERDAT]"
                       lineageId="Package\LIKP\Merge Join.Outputs[Merge Join Output].Columns[ERDAT]" />
+                    <inputColumn
+                      refId="Package\LIKP\insert new records.Inputs[OLE DB Destination Input].Columns[KUNNR]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="KUNNR"
+                      externalMetadataColumnId="Package\LIKP\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[KUNNR]"
+                      lineageId="Package\LIKP\Merge Join.Outputs[Merge Join Output].Columns[KUNNR]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -819,14 +714,15 @@ ORDER BY A01.[MANDT]
                       length="8"
                       name="WADAT_IST" />
                     <externalMetadataColumn
-                      refId="Package\LIKP\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[WADAT_IST_X]"
-                      dataType="dbDate"
-                      name="WADAT_IST_X" />
-                    <externalMetadataColumn
                       refId="Package\LIKP\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[ERDAT]"
                       dataType="wstr"
                       length="8"
                       name="ERDAT" />
+                    <externalMetadataColumn
+                      refId="Package\LIKP\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[KUNNR]"
+                      dataType="wstr"
+                      length="10"
+                      name="KUNNR" />
                   </externalMetadataColumns>
                 </input>
               </inputs>
@@ -908,16 +804,17 @@ ORDER BY A01.[MANDT]
                       cachedName="WADAT_IST"
                       lineageId="Package\LIKP\DB SAP LIKP.Outputs[OLE DB Source Output].Columns[WADAT_IST]" />
                     <inputColumn
-                      refId="Package\LIKP\Merge Join.Inputs[Merge Join Left Input].Columns[WADAT_IST_X]"
-                      cachedDataType="dbTimeStamp"
-                      cachedName="WADAT_IST_X"
-                      lineageId="Package\LIKP\DB SAP LIKP.Outputs[OLE DB Source Output].Columns[WADAT_IST_X]" />
-                    <inputColumn
                       refId="Package\LIKP\Merge Join.Inputs[Merge Join Left Input].Columns[ERDAT]"
                       cachedDataType="wstr"
                       cachedLength="8"
                       cachedName="ERDAT"
                       lineageId="Package\LIKP\DB SAP LIKP.Outputs[OLE DB Source Output].Columns[ERDAT]" />
+                    <inputColumn
+                      refId="Package\LIKP\Merge Join.Inputs[Merge Join Left Input].Columns[KUNNR]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="KUNNR"
+                      lineageId="Package\LIKP\DB SAP LIKP.Outputs[OLE DB Source Output].Columns[KUNNR]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
@@ -940,18 +837,6 @@ ORDER BY A01.[MANDT]
                       cachedName="VBELN"
                       cachedSortKeyPosition="2"
                       lineageId="Package\LIKP\DB PBI LIKP.Outputs[OLE DB Source Output].Columns[VBELN]" />
-                    <inputColumn
-                      refId="Package\LIKP\Merge Join.Inputs[Merge Join Right Input].Columns[WADAT_IST]"
-                      cachedDataType="wstr"
-                      cachedLength="8"
-                      cachedName="WADAT_IST"
-                      lineageId="Package\LIKP\DB PBI LIKP.Outputs[OLE DB Source Output].Columns[WADAT_IST]" />
-                    <inputColumn
-                      refId="Package\LIKP\Merge Join.Inputs[Merge Join Right Input].Columns[ERDAT]"
-                      cachedDataType="wstr"
-                      cachedLength="8"
-                      cachedName="ERDAT"
-                      lineageId="Package\LIKP\DB PBI LIKP.Outputs[OLE DB Source Output].Columns[ERDAT]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
@@ -1036,33 +921,6 @@ ORDER BY A01.[MANDT]
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\LIKP\Merge Join.Outputs[Merge Join Output].Columns[WADAT_IST (1)]"
-                      dataType="wstr"
-                      length="8"
-                      lineageId="Package\LIKP\Merge Join.Outputs[Merge Join Output].Columns[WADAT_IST (1)]"
-                      name="WADAT_IST (1)">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\LIKP\Merge Join.Inputs[Merge Join Right Input].Columns[WADAT_IST]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\LIKP\Merge Join.Outputs[Merge Join Output].Columns[WADAT_IST_X]"
-                      dataType="dbTimeStamp"
-                      lineageId="Package\LIKP\Merge Join.Outputs[Merge Join Output].Columns[WADAT_IST_X]"
-                      name="WADAT_IST_X">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\LIKP\Merge Join.Inputs[Merge Join Left Input].Columns[WADAT_IST_X]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
                       refId="Package\LIKP\Merge Join.Outputs[Merge Join Output].Columns[ERDAT]"
                       dataType="wstr"
                       length="8"
@@ -1077,17 +935,17 @@ ORDER BY A01.[MANDT]
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\LIKP\Merge Join.Outputs[Merge Join Output].Columns[ERDAT (1)]"
+                      refId="Package\LIKP\Merge Join.Outputs[Merge Join Output].Columns[KUNNR]"
                       dataType="wstr"
-                      length="8"
-                      lineageId="Package\LIKP\Merge Join.Outputs[Merge Join Output].Columns[ERDAT (1)]"
-                      name="ERDAT (1)">
+                      length="10"
+                      lineageId="Package\LIKP\Merge Join.Outputs[Merge Join Output].Columns[KUNNR]"
+                      name="KUNNR">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\LIKP\Merge Join.Inputs[Merge Join Right Input].Columns[ERDAT]}</property>
+                          name="InputColumnID">#{Package\LIKP\Merge Join.Inputs[Merge Join Left Input].Columns[KUNNR]}</property>
                       </properties>
                     </outputColumn>
                   </outputColumns>
@@ -1120,7 +978,7 @@ ORDER BY A01.[MANDT]
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                 <property
                   dataType="System.Int32"
                   description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -1192,18 +1050,19 @@ ORDER BY A01.[MANDT]
                       externalMetadataColumnId="Package\LIKP\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[WADAT_IST]"
                       lineageId="Package\LIKP\Merge Join.Outputs[Merge Join Output].Columns[WADAT_IST]" />
                     <inputColumn
-                      refId="Package\LIKP\stage changed records.Inputs[OLE DB Destination Input].Columns[WADAT_IST_X]"
-                      cachedDataType="dbTimeStamp"
-                      cachedName="WADAT_IST_X"
-                      externalMetadataColumnId="Package\LIKP\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[WADAT_IST_X]"
-                      lineageId="Package\LIKP\Merge Join.Outputs[Merge Join Output].Columns[WADAT_IST_X]" />
-                    <inputColumn
                       refId="Package\LIKP\stage changed records.Inputs[OLE DB Destination Input].Columns[ERDAT]"
                       cachedDataType="wstr"
                       cachedLength="8"
                       cachedName="ERDAT"
                       externalMetadataColumnId="Package\LIKP\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[ERDAT]"
                       lineageId="Package\LIKP\Merge Join.Outputs[Merge Join Output].Columns[ERDAT]" />
+                    <inputColumn
+                      refId="Package\LIKP\stage changed records.Inputs[OLE DB Destination Input].Columns[KUNNR]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="KUNNR"
+                      externalMetadataColumnId="Package\LIKP\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[KUNNR]"
+                      lineageId="Package\LIKP\Merge Join.Outputs[Merge Join Output].Columns[KUNNR]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -1223,14 +1082,15 @@ ORDER BY A01.[MANDT]
                       length="8"
                       name="WADAT_IST" />
                     <externalMetadataColumn
-                      refId="Package\LIKP\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[WADAT_IST_X]"
-                      dataType="dbDate"
-                      name="WADAT_IST_X" />
-                    <externalMetadataColumn
                       refId="Package\LIKP\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[ERDAT]"
                       dataType="wstr"
                       length="8"
                       name="ERDAT" />
+                    <externalMetadataColumn
+                      refId="Package\LIKP\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[KUNNR]"
+                      dataType="wstr"
+                      length="10"
+                      name="KUNNR" />
                   </externalMetadataColumns>
                 </input>
               </inputs>
@@ -1284,7 +1144,7 @@ ORDER BY A01.[MANDT]
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                 <property
                   dataType="System.Int32"
                   description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -1415,119 +1275,64 @@ ORDER BY A01.[MANDT]
               startId="Package\LIKP\DB SAP LIKP.Outputs[OLE DB Source Output]" />
             <path
               refId="Package\LIKP.Paths[update]"
-              endId="Package\LIKP\Find Changed Records.Inputs[Conditional Split Input]"
-              name="update"
-              startId="Package\LIKP\Identify records.Outputs[update]" />
-            <path
-              refId="Package\LIKP.Paths[update1]"
               endId="Package\LIKP\stage changed records.Inputs[OLE DB Destination Input]"
               name="update"
-              startId="Package\LIKP\Find Changed Records.Outputs[update]" />
+              startId="Package\LIKP\Identify records.Outputs[update]" />
           </paths>
         </pipeline>
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
-      DTS:refId="Package\Sequence Container"
-      DTS:CreationName="STOCK:SEQUENCE"
-      DTS:Description="Sequence Container"
-      DTS:DTSID="{C1E32A98-C681-48E7-BD7B-6E19A5BAD60B}"
-      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:refId="Package\UPDATE"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{383F8500-FB3C-471D-94F1-B0A3DF0800A7}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
-      DTS:ObjectName="Sequence Container">
+      DTS:ObjectName="UPDATE"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
       <DTS:Variables />
-      <DTS:Executables>
-        <DTS:Executable
-          DTS:refId="Package\Sequence Container\delete"
-          DTS:CreationName="Microsoft.ExecuteSQLTask"
-          DTS:Description="Execute SQL Task"
-          DTS:DTSID="{89986828-6B4E-4C54-B63A-CE0E69D9DACA}"
-          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
-          DTS:LocaleID="-1"
-          DTS:ObjectName="delete"
-          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="0">
-          <DTS:Variables />
-          <DTS:ObjectData>
-            <SQLTask:SqlTaskData
-              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-              SQLTask:SqlStatementSource="DELETE A01&#xA;FROM [LIKP] A01 INNER JOIN [LIKP_STAGE_DELETE] B01 ON ( A01.[MANDT] = B01.[MANDT]&#xA;                                                    AND A01.[VBELN] = B01.[VBELN] )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
-          </DTS:ObjectData>
-        </DTS:Executable>
-        <DTS:Executable
-          DTS:refId="Package\Sequence Container\update"
-          DTS:CreationName="Microsoft.ExecuteSQLTask"
-          DTS:Description="Execute SQL Task"
-          DTS:DTSID="{383F8500-FB3C-471D-94F1-B0A3DF0800A7}"
-          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
-          DTS:LocaleID="-1"
-          DTS:ObjectName="update"
-          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="1">
-          <DTS:Variables />
-          <DTS:ObjectData>
-            <SQLTask:SqlTaskData
-              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-              SQLTask:SqlStatementSource="UPDATE A01&#xA;SET A01.[WADAT_IST] = B01.[WADAT_IST]&#xA;       ,A01.[WADAT_IST_X] = B01.[WADAT_IST_X]&#xA;       ,A01.[ERDAT] = B01.[ERDAT]&#xA;FROM [LIKP] A01 INNER JOIN [LIKP_STAGE_UPDATE] B01 ON ( A01.[MANDT] = B01.[MANDT]&#xA;                                                    AND A01.[VBELN] = B01.[VBELN] )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
-          </DTS:ObjectData>
-        </DTS:Executable>
-      </DTS:Executables>
-    </DTS:Executable>
-    <DTS:Executable
-      DTS:refId="Package\Sequence Container 1"
-      DTS:CreationName="STOCK:SEQUENCE"
-      DTS:Description="Sequence Container"
-      DTS:DTSID="{a723d890-31d9-4d4c-9a1f-ef09ab3b34d9}"
-      DTS:ExecutableType="STOCK:SEQUENCE"
-      DTS:LocaleID="-1"
-      DTS:ObjectName="Sequence Container 1">
-      <DTS:Variables />
-      <DTS:Executables>
-        <DTS:Executable
-          DTS:refId="Package\Sequence Container 1\Insert"
-          DTS:CreationName="Microsoft.ExecuteSQLTask"
-          DTS:Description="Execute SQL Task"
-          DTS:DTSID="{d04115f6-44ad-4c9c-9a33-3227c55eae22}"
-          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
-          DTS:LocaleID="-1"
-          DTS:ObjectName="Insert"
-          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="0">
-          <DTS:Variables />
-          <DTS:ObjectData>
-            <SQLTask:SqlTaskData
-              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-              SQLTask:SqlStatementSource="INSERT INTO [LIKP]&#xA;SELECT * FROM [LIKP_STAGE_INSERT]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
-          </DTS:ObjectData>
-        </DTS:Executable>
-      </DTS:Executables>
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="UPDATE &#xA;  A01 &#xA;SET &#xA;  A01.[WADAT_IST] = B01.[WADAT_IST], &#xA;  A01.[KUNNR] = B01.[KUNNR], &#xA;  A01.[ERDAT] = B01.[ERDAT] &#xA;FROM &#xA;  [LIKP] A01 &#xA;  INNER JOIN [LIKP_STAGE_UPDATE] B01 ON (&#xA;    A01.[MANDT] = B01.[MANDT] &#xA;    AND A01.[VBELN] = B01.[VBELN]&#xA;  )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
     </DTS:Executable>
   </DTS:Executables>
   <DTS:PrecedenceConstraints>
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint]"
       DTS:CreationName=""
-      DTS:DTSID="{662EEB3D-0D36-4FA8-B5DD-9948D3FFA571}"
+      DTS:DTSID="{516EF66B-2123-4A83-B925-202D4458BF15}"
       DTS:From="Package\LIKP"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint"
-      DTS:To="Package\Sequence Container" />
+      DTS:To="Package\UPDATE" />
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
       DTS:CreationName=""
       DTS:DTSID="{3C0C4B47-F0B5-43A4-A913-F212E8AEFF2F}"
-      DTS:From="Package\clean stage"
+      DTS:From="Package\Clean Stage"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 1"
       DTS:To="Package\LIKP" />
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
       DTS:CreationName=""
-      DTS:DTSID="{85F1EC86-BF35-43A3-9CDD-D924F71FADDF}"
-      DTS:From="Package\Sequence Container"
+      DTS:DTSID="{2B1C22A6-4467-413B-BF65-89B95B25E959}"
+      DTS:From="Package\UPDATE"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 2"
-      DTS:To="Package\Sequence Container 1" />
+      DTS:To="Package\DELETE" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 3]"
+      DTS:CreationName=""
+      DTS:DTSID="{E74866CC-3D84-41C9-A674-7E44C3B7BF06}"
+      DTS:From="Package\DELETE"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 3"
+      DTS:To="Package\INSERT" />
   </DTS:PrecedenceConstraints>
   <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
 <!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
@@ -1542,76 +1347,27 @@ ORDER BY A01.[MANDT]
       <GraphLayout
         Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
-          Size="132,42"
-          Id="Package\clean stage"
-          TopLeft="77,11" />
+          Size="139,42"
+          Id="Package\Clean Stage"
+          TopLeft="20,15" />
         <NodeLayout
-          Size="100,42"
+          Size="139,42"
           Id="Package\LIKP"
-          TopLeft="367,32" />
-        <NodeLayout
-          Size="108,42"
-          Id="Package\Sequence Container\delete"
-          TopLeft="135,16" />
-        <NodeLayout
-          Size="112,42"
-          Id="Package\Sequence Container\update"
-          TopLeft="13,16" />
-        <ContainerLayout
-          HeaderHeight="43"
-          IsExpanded="True"
-          PanelSize="262,76"
-          Size="262,119"
-          Id="Package\Sequence Container"
-          TopLeft="291,132" />
-        <EdgeLayout
-          Id="Package.PrecedenceConstraints[Constraint]"
-          TopLeft="419.5,74">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,58"
-              Start="0,0"
-              End="0,50.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,50.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
+          TopLeft="20,84.5" />
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 1]"
-          TopLeft="209,32">
+          TopLeft="89.5,57">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="158,21"
+              EndConnector="0,27.5"
               Start="0,0"
-              End="150.5,21">
+              End="0,20">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="75,0" />
-                  <mssgle:CubicBezierSegment
-                    Point1="75,0"
-                    Point2="79,0"
-                    Point3="79,4" />
-                  <mssgle:LineSegment
-                    End="79,17" />
-                  <mssgle:CubicBezierSegment
-                    Point1="79,17"
-                    Point2="79,21"
-                    Point3="83,21" />
-                  <mssgle:LineSegment
-                    End="150.5,21" />
+                    End="0,20" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -1621,30 +1377,75 @@ ORDER BY A01.[MANDT]
           </EdgeLayout.Labels>
         </EdgeLayout>
         <NodeLayout
-          Size="107,42"
-          Id="Package\Sequence Container 1\Insert"
-          TopLeft="72,17" />
-        <ContainerLayout
-          HeaderHeight="43"
-          IsExpanded="True"
-          PanelSize="262,114"
-          Size="262,157"
-          Id="Package\Sequence Container 1"
-          TopLeft="291,299" />
+          Size="139,42"
+          Id="Package\UPDATE"
+          TopLeft="20,154" />
+        <NodeLayout
+          Size="139,42"
+          Id="Package\DELETE"
+          TopLeft="20,223.5" />
+        <NodeLayout
+          Size="139,42"
+          Id="Package\INSERT"
+          TopLeft="20,293" />
         <EdgeLayout
-          Id="Package.PrecedenceConstraints[Constraint 2]"
-          TopLeft="422,251">
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="89.5,126.5">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,48"
+              EndConnector="0,27.5"
               Start="0,0"
-              End="0,40.5">
+              End="0,20">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,40.5" />
+                    End="0,20" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 2]"
+          TopLeft="89.5,196">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,27.5"
+              Start="0,0"
+              End="0,20">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,20" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 3]"
+          TopLeft="89.5,265.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,27.5"
+              Start="0,0"
+              End="0,20">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,20" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -1674,10 +1475,6 @@ ORDER BY A01.[MANDT]
           Id="Package\LIKP\insert new records"
           TopLeft="161.111111111111,322.888888888889" />
         <NodeLayout
-          Size="184,42"
-          Id="Package\LIKP\Find Changed Records"
-          TopLeft="382,311" />
-        <NodeLayout
           Size="153,42"
           Id="Package\LIKP\Identify records"
           TopLeft="399,219" />
@@ -1693,54 +1490,6 @@ ORDER BY A01.[MANDT]
           Size="137,42"
           Id="Package\LIKP\DB PBI LIKP"
           TopLeft="553,38" />
-        <EdgeLayout
-          Id="Package\LIKP.Paths[update1]"
-          TopLeft="473.5,353">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,34.3333333333334"
-              Start="0,0"
-              End="0,26.8333333333334">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,26.8333333333334" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-15.8025,7.6119791666667,31.605,11.609375"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\LIKP.Paths[update]"
-          TopLeft="474.75,261">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,50"
-              Start="0,0"
-              End="0,42.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,42.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-15.8025,15.4453125,31.605,11.609375"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
         <EdgeLayout
           Id="Package\LIKP.Paths[OLE DB Source Output1]"
           TopLeft="336.5,64">
@@ -1900,6 +1649,30 @@ ORDER BY A01.[MANDT]
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
               BoundingBox="115.484598524305,25.570306923626,28.3919140625,9.7490234375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\LIKP.Paths[update]"
+          TopLeft="474.25,261">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,126.333333333333"
+              Start="0,0"
+              End="0,118.833333333333">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,118.833333333333" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-15.8025,53.6119791666665,31.605,11.609375"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
