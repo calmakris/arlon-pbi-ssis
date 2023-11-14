@@ -11,8 +11,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="Package1"
   DTS:PackageType="5"
-  DTS:VersionBuild="33"
-  DTS:VersionGUID="{DDC9CE9B-D21F-4165-8B88-9A45C9551A63}">
+  DTS:VersionBuild="36"
+  DTS:VersionGUID="{C7E853BE-BEBA-4459-9125-11CAB0818701}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:Variables />
@@ -82,7 +82,7 @@
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
           SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-          SQLTask:SqlStatementSource="UPDATE &#xA;  A01 &#xA;SET &#xA;  A01.[MATNR] = B01.[MATNR], &#xA;  A01.[KWMENG] = B01.[KWMENG], &#xA;  A01.[WERKS] = B01.[WERKS], &#xA;  A01.[ROUTE] = B01.[ROUTE], &#xA;  A01.[NETWR] = B01.[NETWR], &#xA;  A01.[ABGRU] = B01.[ABGRU], &#xA;  A01.[CMKUA] = B01.[CMKUA], &#xA;  A01.[MATKL] = B01.[MATKL], &#xA;  A01.[ARKTX] = B01.[ARKTX], &#xA;  A01.[MEINS] = B01.[MEINS], &#xA;  A01.[WAERK] = B01.[WAERK], &#xA;  A01.[KLMENG] = B01.[KLMENG], &#xA;  A01.[ERDAT] = B01.[ERDAT], &#xA;  A01.[NETPR] = B01.[NETPR], &#xA;  A01.[KPEIN] = B01.[KPEIN], &#xA;  A01.[WAVWR] = B01.[WAVWR], &#xA;  A01.[STCUR] = B01.[STCUR], &#xA;  A01.[AEDAT] = B01.[AEDAT], &#xA;  A01.[GEWEI] = B01.[GEWEI], &#xA;  A01.[BRGEW] = B01.[BRGEW], &#xA;  A01.[BEDAE] = B01.[BEDAE], &#xA;  A01.[ORDKEY] = B01.[ORDKEY] &#xA;FROM &#xA;  [VBAP] A01 &#xA;  INNER JOIN [VBAP_STAGE_UPDATE] B01 ON (&#xA;    A01.[MANDT] = B01.[MANDT] &#xA;    AND A01.[VBELN] = B01.[VBELN] &#xA;    AND A01.[POSNR] = B01.[POSNR]&#xA;  )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          SQLTask:SqlStatementSource="UPDATE &#xA;  A01 &#xA;SET &#xA;  A01.[MATNR] = B01.[MATNR], &#xA;  A01.[KWMENG] = B01.[KWMENG], &#xA;  A01.[WERKS] = B01.[WERKS], &#xA;  A01.[ROUTE] = B01.[ROUTE], &#xA;  A01.[NETWR] = B01.[NETWR], &#xA;  A01.[ABGRU] = B01.[ABGRU], &#xA;  A01.[CMKUA] = B01.[CMKUA], &#xA;  A01.[MATKL] = B01.[MATKL], &#xA;  A01.[ARKTX] = B01.[ARKTX], &#xA;  A01.[MEINS] = B01.[MEINS], &#xA;  A01.[WAERK] = B01.[WAERK], &#xA;  A01.[KLMENG] = B01.[KLMENG], &#xA;  A01.[ERDAT] = B01.[ERDAT], &#xA;  A01.[NETPR] = B01.[NETPR], &#xA;  A01.[KPEIN] = B01.[KPEIN], &#xA;  A01.[WAVWR] = B01.[WAVWR], &#xA;  A01.[STCUR] = B01.[STCUR], &#xA;  A01.[AEDAT] = B01.[AEDAT], &#xA;  A01.[GEWEI] = B01.[GEWEI], &#xA;  A01.[BRGEW] = B01.[BRGEW], &#xA;  A01.[BEDAE] = B01.[BEDAE], &#xA;  A01.[ZORDKEY] = B01.[ZORDKEY],&#xA;  A01.[ZMATPLANT] = B01.[ZMATPLANT] &#xA;FROM &#xA;  [VBAP] A01 &#xA;  INNER JOIN [VBAP_STAGE_UPDATE] B01 ON (&#xA;    A01.[MANDT] = B01.[MANDT] &#xA;    AND A01.[VBELN] = B01.[VBELN] &#xA;    AND A01.[POSNR] = B01.[POSNR]&#xA;  )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
@@ -796,7 +796,8 @@ ORDER BY A01.[MANDT]
   [GEWEI], 
   [BRGEW], 
   [BEDAE], 
-  CONCAT([VBELN], '|', [POSNR]) AS ORDKEY 
+  CONCAT([VBELN], '|', [POSNR]) AS ZORDKEY, 
+  CONCAT([MATNR], '|', [WERKS]) AS ZMATPLANT 
 FROM 
   [ecp].[VBAP] (NOLOCK) 
 ORDER BY 
@@ -1091,14 +1092,24 @@ ORDER BY
                       name="BEDAE"
                       truncationRowDisposition="FailComponent" />
                     <outputColumn
-                      refId="Package\VBAP\DB SAP VBAP.Outputs[OLE DB Source Output].Columns[ORDKEY]"
+                      refId="Package\VBAP\DB SAP VBAP.Outputs[OLE DB Source Output].Columns[ZORDKEY]"
                       dataType="wstr"
                       errorOrTruncationOperation="Conversion"
                       errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\VBAP\DB SAP VBAP.Outputs[OLE DB Source Output].ExternalColumns[ORDKEY]"
+                      externalMetadataColumnId="Package\VBAP\DB SAP VBAP.Outputs[OLE DB Source Output].ExternalColumns[ZORDKEY]"
                       length="17"
-                      lineageId="Package\VBAP\DB SAP VBAP.Outputs[OLE DB Source Output].Columns[ORDKEY]"
-                      name="ORDKEY"
+                      lineageId="Package\VBAP\DB SAP VBAP.Outputs[OLE DB Source Output].Columns[ZORDKEY]"
+                      name="ZORDKEY"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\VBAP\DB SAP VBAP.Outputs[OLE DB Source Output].Columns[ZMATPLANT]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\VBAP\DB SAP VBAP.Outputs[OLE DB Source Output].ExternalColumns[ZMATPLANT]"
+                      length="23"
+                      lineageId="Package\VBAP\DB SAP VBAP.Outputs[OLE DB Source Output].Columns[ZMATPLANT]"
+                      name="ZMATPLANT"
                       truncationRowDisposition="FailComponent" />
                   </outputColumns>
                   <externalMetadataColumns
@@ -1232,10 +1243,15 @@ ORDER BY
                       length="4"
                       name="BEDAE" />
                     <externalMetadataColumn
-                      refId="Package\VBAP\DB SAP VBAP.Outputs[OLE DB Source Output].ExternalColumns[ORDKEY]"
+                      refId="Package\VBAP\DB SAP VBAP.Outputs[OLE DB Source Output].ExternalColumns[ZORDKEY]"
                       dataType="wstr"
                       length="17"
-                      name="ORDKEY" />
+                      name="ZORDKEY" />
+                    <externalMetadataColumn
+                      refId="Package\VBAP\DB SAP VBAP.Outputs[OLE DB Source Output].ExternalColumns[ZMATPLANT]"
+                      dataType="wstr"
+                      length="23"
+                      name="ZMATPLANT" />
                   </externalMetadataColumns>
                 </output>
                 <output
@@ -1396,11 +1412,17 @@ ORDER BY
                       lineageId="Package\VBAP\DB SAP VBAP.Outputs[OLE DB Source Error Output].Columns[BEDAE]"
                       name="BEDAE" />
                     <outputColumn
-                      refId="Package\VBAP\DB SAP VBAP.Outputs[OLE DB Source Error Output].Columns[ORDKEY]"
+                      refId="Package\VBAP\DB SAP VBAP.Outputs[OLE DB Source Error Output].Columns[ZORDKEY]"
                       dataType="wstr"
                       length="17"
-                      lineageId="Package\VBAP\DB SAP VBAP.Outputs[OLE DB Source Error Output].Columns[ORDKEY]"
-                      name="ORDKEY" />
+                      lineageId="Package\VBAP\DB SAP VBAP.Outputs[OLE DB Source Error Output].Columns[ZORDKEY]"
+                      name="ZORDKEY" />
+                    <outputColumn
+                      refId="Package\VBAP\DB SAP VBAP.Outputs[OLE DB Source Error Output].Columns[ZMATPLANT]"
+                      dataType="wstr"
+                      length="23"
+                      lineageId="Package\VBAP\DB SAP VBAP.Outputs[OLE DB Source Error Output].Columns[ZMATPLANT]"
+                      name="ZMATPLANT" />
                     <outputColumn
                       refId="Package\VBAP\DB SAP VBAP.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
                       dataType="i4"
@@ -1829,12 +1851,19 @@ ORDER BY
                       externalMetadataColumnId="Package\VBAP\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[BEDAE]"
                       lineageId="Package\VBAP\Merge Join.Outputs[Merge Join Output].Columns[BEDAE]" />
                     <inputColumn
-                      refId="Package\VBAP\insert new records.Inputs[OLE DB Destination Input].Columns[ORDKEY]"
+                      refId="Package\VBAP\insert new records.Inputs[OLE DB Destination Input].Columns[ZORDKEY]"
                       cachedDataType="wstr"
                       cachedLength="17"
-                      cachedName="ORDKEY"
-                      externalMetadataColumnId="Package\VBAP\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[ORDKEY]"
-                      lineageId="Package\VBAP\Merge Join.Outputs[Merge Join Output].Columns[ORDKEY]" />
+                      cachedName="ZORDKEY"
+                      externalMetadataColumnId="Package\VBAP\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[ZORDKEY]"
+                      lineageId="Package\VBAP\Merge Join.Outputs[Merge Join Output].Columns[ZORDKEY]" />
+                    <inputColumn
+                      refId="Package\VBAP\insert new records.Inputs[OLE DB Destination Input].Columns[ZMATPLANT]"
+                      cachedDataType="wstr"
+                      cachedLength="23"
+                      cachedName="ZMATPLANT"
+                      externalMetadataColumnId="Package\VBAP\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[ZMATPLANT]"
+                      lineageId="Package\VBAP\Merge Join.Outputs[Merge Join Output].Columns[ZMATPLANT]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -1967,10 +1996,15 @@ ORDER BY
                       length="4"
                       name="BEDAE" />
                     <externalMetadataColumn
-                      refId="Package\VBAP\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[ORDKEY]"
+                      refId="Package\VBAP\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[ZORDKEY]"
                       dataType="wstr"
                       length="17"
-                      name="ORDKEY" />
+                      name="ZORDKEY" />
+                    <externalMetadataColumn
+                      refId="Package\VBAP\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[ZMATPLANT]"
+                      dataType="wstr"
+                      length="23"
+                      name="ZMATPLANT" />
                   </externalMetadataColumns>
                 </input>
               </inputs>
@@ -2187,11 +2221,17 @@ ORDER BY
                       cachedName="BEDAE"
                       lineageId="Package\VBAP\DB SAP VBAP.Outputs[OLE DB Source Output].Columns[BEDAE]" />
                     <inputColumn
-                      refId="Package\VBAP\Merge Join.Inputs[Merge Join Left Input].Columns[ORDKEY]"
+                      refId="Package\VBAP\Merge Join.Inputs[Merge Join Left Input].Columns[ZORDKEY]"
                       cachedDataType="wstr"
                       cachedLength="17"
-                      cachedName="ORDKEY"
-                      lineageId="Package\VBAP\DB SAP VBAP.Outputs[OLE DB Source Output].Columns[ORDKEY]" />
+                      cachedName="ZORDKEY"
+                      lineageId="Package\VBAP\DB SAP VBAP.Outputs[OLE DB Source Output].Columns[ZORDKEY]" />
+                    <inputColumn
+                      refId="Package\VBAP\Merge Join.Inputs[Merge Join Left Input].Columns[ZMATPLANT]"
+                      cachedDataType="wstr"
+                      cachedLength="23"
+                      cachedName="ZMATPLANT"
+                      lineageId="Package\VBAP\DB SAP VBAP.Outputs[OLE DB Source Output].Columns[ZMATPLANT]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
@@ -3063,17 +3103,31 @@ ORDER BY
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\VBAP\Merge Join.Outputs[Merge Join Output].Columns[ORDKEY]"
+                      refId="Package\VBAP\Merge Join.Outputs[Merge Join Output].Columns[ZORDKEY]"
                       dataType="wstr"
                       length="17"
-                      lineageId="Package\VBAP\Merge Join.Outputs[Merge Join Output].Columns[ORDKEY]"
-                      name="ORDKEY">
+                      lineageId="Package\VBAP\Merge Join.Outputs[Merge Join Output].Columns[ZORDKEY]"
+                      name="ZORDKEY">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\VBAP\Merge Join.Inputs[Merge Join Left Input].Columns[ORDKEY]}</property>
+                          name="InputColumnID">#{Package\VBAP\Merge Join.Inputs[Merge Join Left Input].Columns[ZORDKEY]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\VBAP\Merge Join.Outputs[Merge Join Output].Columns[ZMATPLANT]"
+                      dataType="wstr"
+                      length="23"
+                      lineageId="Package\VBAP\Merge Join.Outputs[Merge Join Output].Columns[ZMATPLANT]"
+                      name="ZMATPLANT">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\VBAP\Merge Join.Inputs[Merge Join Left Input].Columns[ZMATPLANT]}</property>
                       </properties>
                     </outputColumn>
                   </outputColumns>
@@ -3339,12 +3393,19 @@ ORDER BY
                       externalMetadataColumnId="Package\VBAP\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[BEDAE]"
                       lineageId="Package\VBAP\Merge Join.Outputs[Merge Join Output].Columns[BEDAE]" />
                     <inputColumn
-                      refId="Package\VBAP\stage changed records.Inputs[OLE DB Destination Input].Columns[ORDKEY]"
+                      refId="Package\VBAP\stage changed records.Inputs[OLE DB Destination Input].Columns[ZORDKEY]"
                       cachedDataType="wstr"
                       cachedLength="17"
-                      cachedName="ORDKEY"
-                      externalMetadataColumnId="Package\VBAP\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[ORDKEY]"
-                      lineageId="Package\VBAP\Merge Join.Outputs[Merge Join Output].Columns[ORDKEY]" />
+                      cachedName="ZORDKEY"
+                      externalMetadataColumnId="Package\VBAP\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[ZORDKEY]"
+                      lineageId="Package\VBAP\Merge Join.Outputs[Merge Join Output].Columns[ZORDKEY]" />
+                    <inputColumn
+                      refId="Package\VBAP\stage changed records.Inputs[OLE DB Destination Input].Columns[ZMATPLANT]"
+                      cachedDataType="wstr"
+                      cachedLength="23"
+                      cachedName="ZMATPLANT"
+                      externalMetadataColumnId="Package\VBAP\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[ZMATPLANT]"
+                      lineageId="Package\VBAP\Merge Join.Outputs[Merge Join Output].Columns[ZMATPLANT]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -3477,10 +3538,15 @@ ORDER BY
                       length="4"
                       name="BEDAE" />
                     <externalMetadataColumn
-                      refId="Package\VBAP\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[ORDKEY]"
+                      refId="Package\VBAP\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[ZORDKEY]"
                       dataType="wstr"
                       length="17"
-                      name="ORDKEY" />
+                      name="ZORDKEY" />
+                    <externalMetadataColumn
+                      refId="Package\VBAP\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[ZMATPLANT]"
+                      dataType="wstr"
+                      length="23"
+                      name="ZMATPLANT" />
                   </externalMetadataColumns>
                 </input>
               </inputs>
@@ -3848,17 +3914,21 @@ ORDER BY
       <GraphLayout
         Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
-          Size="166,42"
-          Id="Package\VBAP\insert new records"
-          TopLeft="59,403" />
-        <NodeLayout
           Size="186,42"
           Id="Package\VBAP\stage changed records"
           TopLeft="343,510" />
         <NodeLayout
+          Size="166,42"
+          Id="Package\VBAP\insert new records"
+          TopLeft="59,403" />
+        <NodeLayout
           Size="130,42"
           Id="Package\VBAP\Merge Join"
           TopLeft="376,162" />
+        <NodeLayout
+          Size="180,42"
+          Id="Package\VBAP\stage deleted records"
+          TopLeft="673,412" />
         <NodeLayout
           Size="151,42"
           Id="Package\VBAP\Identify Record"
@@ -3871,79 +3941,39 @@ ORDER BY
           Size="142,42"
           Id="Package\VBAP\DB DBI VBAP"
           TopLeft="552,63" />
-        <NodeLayout
-          Size="180,42"
-          Id="Package\VBAP\stage deleted records"
-          TopLeft="673,412" />
         <EdgeLayout
-          Id="Package\VBAP.Paths[insert]"
-          TopLeft="411.75,324">
+          Id="Package\VBAP.Paths[update]"
+          TopLeft="447.5,324">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-269.75,79"
+              EndConnector="-11.5,186"
               Start="0,0"
-              End="-269.75,71.5">
+              End="-11.5,178.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,23.2472885032538" />
+                    End="0,89" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,23.2472885032538"
-                    Point2="0,27.2472885032538"
-                    Point3="-4,27.2472885032538" />
+                    Point1="0,89"
+                    Point2="0,93"
+                    Point3="-4,93" />
                   <mssgle:LineSegment
-                    End="-265.75,27.2472885032538" />
+                    End="-7.5,93" />
                   <mssgle:CubicBezierSegment
-                    Point1="-265.75,27.2472885032538"
-                    Point2="-269.75,27.2472885032538"
-                    Point3="-269.75,31.2472885032538" />
+                    Point1="-7.5,93"
+                    Point2="-11.5,93"
+                    Point3="-11.5,97" />
                   <mssgle:LineSegment
-                    End="-269.75,71.5" />
+                    End="-11.5,178.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="-147.82498046875,32.2472885032538,25.8999609375,9.451171875"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\VBAP.Paths[delete]"
-          TopLeft="483.25,324">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="279.75,88"
-              Start="0,0"
-              End="279.75,80.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,26.351409978308" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,26.351409978308"
-                    Point2="0,30.351409978308"
-                    Point3="4,30.351409978308" />
-                  <mssgle:LineSegment
-                    End="275.75,30.351409978308" />
-                  <mssgle:CubicBezierSegment
-                    Point1="275.75,30.351409978308"
-                    Point2="279.75,30.351409978308"
-                    Point3="279.75,34.351409978308" />
-                  <mssgle:LineSegment
-                    End="279.75,80.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="125.67904296875,35.351409978308,28.3919140625,9.7490234375"
+              BoundingBox="-21.5525,98,31.605,11.609375"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
@@ -4038,44 +4068,93 @@ ORDER BY
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package\VBAP.Paths[update]"
-          TopLeft="447.5,324">
+          Id="Package\VBAP.Paths[insert]"
+          TopLeft="411.75,324">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-11.5,186"
+              EndConnector="-269.75,79"
               Start="0,0"
-              End="-11.5,178.5">
+              End="-269.75,71.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,89" />
+                    End="0,23.2472885032538" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,89"
-                    Point2="0,93"
-                    Point3="-4,93" />
+                    Point1="0,23.2472885032538"
+                    Point2="0,27.2472885032538"
+                    Point3="-4,27.2472885032538" />
                   <mssgle:LineSegment
-                    End="-7.5,93" />
+                    End="-265.75,27.2472885032538" />
                   <mssgle:CubicBezierSegment
-                    Point1="-7.5,93"
-                    Point2="-11.5,93"
-                    Point3="-11.5,97" />
+                    Point1="-265.75,27.2472885032538"
+                    Point2="-269.75,27.2472885032538"
+                    Point3="-269.75,31.2472885032538" />
                   <mssgle:LineSegment
-                    End="-11.5,178.5" />
+                    End="-269.75,71.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="-21.5525,98,31.605,11.609375"
+              BoundingBox="-147.82498046875,32.2472885032538,25.8999609375,9.451171875"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\VBAP.Paths[delete]"
+          TopLeft="483.25,324">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="279.75,88"
+              Start="0,0"
+              End="279.75,80.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,26.351409978308" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,26.351409978308"
+                    Point2="0,30.351409978308"
+                    Point3="4,30.351409978308" />
+                  <mssgle:LineSegment
+                    End="275.75,30.351409978308" />
+                  <mssgle:CubicBezierSegment
+                    Point1="275.75,30.351409978308"
+                    Point2="279.75,30.351409978308"
+                    Point3="279.75,34.351409978308" />
+                  <mssgle:LineSegment
+                    End="279.75,80.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="125.67904296875,35.351409978308,28.3919140625,9.7490234375"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
     </LayoutInfo>
   </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\VBAP\stage changed records">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
   <PipelineComponentMetadata
     design-time-name="Package\VBAP\insert new records">
     <Properties>
@@ -4090,7 +4169,7 @@ ORDER BY
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\VBAP\stage changed records">
+    design-time-name="Package\VBAP\stage deleted records">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -4115,19 +4194,6 @@ ORDER BY
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
-    design-time-name="Package\VBAP\stage deleted records">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-      <Property>
-        <Name>TableInfoObjectType</Name>
-        <Value
-          type="q2:string">Table</Value>
       </Property>
     </Properties>
   </PipelineComponentMetadata>
