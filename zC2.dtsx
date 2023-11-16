@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+﻿<?xml version="1.0"?>
 <DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
   DTS:refId="Package"
   DTS:CreationDate="9/3/2021 10:32:49 AM"
@@ -11,8 +11,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="zC2"
   DTS:PackageType="5"
-  DTS:VersionBuild="177"
-  DTS:VersionGUID="{D28A7398-3AC1-4C85-A538-66A97CC51378}">
+  DTS:VersionBuild="191"
+  DTS:VersionGUID="{98506944-63EC-4426-8D2B-F0DD5673D740}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:Variables>
@@ -45,6 +45,15 @@
     </DTS:Variable>
     <DTS:Variable
       DTS:CreationName=""
+      DTS:DTSID="{604DBE86-FE5F-4B74-8700-D83A879010FB}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="LastFIndex">
+      <DTS:VariableValue
+        DTS:DataType="3">0</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
       DTS:DTSID="{83DE8154-9F2A-4EC4-B784-1CDB2AF4863D}"
       DTS:IncludeInDebugDump="6789"
       DTS:Namespace="User"
@@ -54,6 +63,1380 @@
     </DTS:Variable>
   </DTS:Variables>
   <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\First Pass Structure"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Sequence Container"
+      DTS:DTSID="{507b64b5-e536-4e63-a939-c8011fdd8da9}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="First Pass Structure">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\First Pass Structure\Clean Stage"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{72b770e7-ce3e-413e-a235-5a7f38de77f8}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Clean Stage"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+              SQLTask:SqlStatementSource="TRUNCATE TABLE zC2_FPSTRUCTURE_STAGE_INSERT&#xA;GO&#xA;TRUNCATE TABLE zC2_FPSTRUCTURE_STAGE_UPDATE&#xA;GO&#xA;TRUNCATE TABLE zC2_FPSTRUCTURE_STAGE_DELETE&#xA;GO" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\First Pass Structure\Insert Data"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{f89a63d4-9e3d-4b25-aca1-dc352fdcfc1e}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Insert Data"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+              SQLTask:SqlStatementSource="INSERT INTO [zC2_FPSTRUCTURE]&#xA;SELECT * FROM [zC2_FPSTRUCTURE_STAGE_INSERT]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\First Pass Structure\LastJobIndex"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{ce1946a6-a921-4498-844e-5fbe008b8ed7}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="LastJobIndex"
+          DTS:ThreadHint="1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+              SQLTask:SqlStatementSource="SELECT &#xA;  MIN(FIndex) AS LastFIndex &#xA;FROM &#xA;  (&#xA;    SELECT &#xA;      TOP 100 FIndex &#xA;    FROM &#xA;      zC2_FPSTRUCTURE &#xA;    ORDER BY &#xA;      FIndex DESC&#xA;  ) AS t&#xA;"
+              SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ResultBinding
+                SQLTask:ResultName="0"
+                SQLTask:DtsVariableName="User::LastFIndex" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\First Pass Structure\Staging"
+          DTS:CreationName="Microsoft.Pipeline"
+          DTS:Description="Data Flow Task"
+          DTS:DTSID="{93b27742-8b3a-41bd-a1af-8ec69e84e19b}"
+          DTS:ExecutableType="Microsoft.Pipeline"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Staging"
+          DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <pipeline
+              version="1">
+              <components>
+                <component
+                  refId="Package\First Pass Structure\Staging\DB FPStructure"
+                  componentClassID="Microsoft.OLEDBSource"
+                  contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+                  description="OLE DB Source"
+                  name="DB FPStructure"
+                  usesDispositions="true"
+                  version="7">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT 
+  [FIndex], 
+  [Reported], 
+  [Department], 
+  [QAHold], 
+  [FPType], 
+  [FPHit], 
+  [FPDetails] 
+FROM c2fpstructure
+WHERE [FIndex] &gt; ?
+ORDER BY [FIndex]</property>
+                    <property
+                      dataType="System.String"
+                      description="The variable that contains the SQL command to be executed."
+                      name="SqlCommandVariable"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">2</property>
+                    <property
+                      dataType="System.String"
+                      description="The mappings between the parameters in the SQL command and variables."
+                      name="ParameterMapping">"Parameter0:Input",{604DBE86-FE5F-4B74-8700-D83A879010FB};</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\First Pass Structure\Staging\DB FPStructure.Connections[OleDbConnection]"
+                      connectionManagerID="{35AB76DD-FA3E-4263-AC7E-74C932B7441E}:external"
+                      connectionManagerRefId="Project.ConnectionManagers[C2_OperatorInput]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <outputs>
+                    <output
+                      refId="Package\First Pass Structure\Staging\DB FPStructure.Outputs[OLE DB Source Output]"
+                      isSorted="true"
+                      name="OLE DB Source Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\First Pass Structure\Staging\DB FPStructure.Outputs[OLE DB Source Output].Columns[FIndex]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\First Pass Structure\Staging\DB FPStructure.Outputs[OLE DB Source Output].ExternalColumns[FIndex]"
+                          lineageId="Package\First Pass Structure\Staging\DB FPStructure.Outputs[OLE DB Source Output].Columns[FIndex]"
+                          name="FIndex"
+                          sortKeyPosition="1"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\First Pass Structure\Staging\DB FPStructure.Outputs[OLE DB Source Output].Columns[Reported]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\First Pass Structure\Staging\DB FPStructure.Outputs[OLE DB Source Output].ExternalColumns[Reported]"
+                          length="255"
+                          lineageId="Package\First Pass Structure\Staging\DB FPStructure.Outputs[OLE DB Source Output].Columns[Reported]"
+                          name="Reported"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\First Pass Structure\Staging\DB FPStructure.Outputs[OLE DB Source Output].Columns[Department]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\First Pass Structure\Staging\DB FPStructure.Outputs[OLE DB Source Output].ExternalColumns[Department]"
+                          length="255"
+                          lineageId="Package\First Pass Structure\Staging\DB FPStructure.Outputs[OLE DB Source Output].Columns[Department]"
+                          name="Department"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\First Pass Structure\Staging\DB FPStructure.Outputs[OLE DB Source Output].Columns[QAHold]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\First Pass Structure\Staging\DB FPStructure.Outputs[OLE DB Source Output].ExternalColumns[QAHold]"
+                          length="255"
+                          lineageId="Package\First Pass Structure\Staging\DB FPStructure.Outputs[OLE DB Source Output].Columns[QAHold]"
+                          name="QAHold"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\First Pass Structure\Staging\DB FPStructure.Outputs[OLE DB Source Output].Columns[FPType]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\First Pass Structure\Staging\DB FPStructure.Outputs[OLE DB Source Output].ExternalColumns[FPType]"
+                          length="255"
+                          lineageId="Package\First Pass Structure\Staging\DB FPStructure.Outputs[OLE DB Source Output].Columns[FPType]"
+                          name="FPType"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\First Pass Structure\Staging\DB FPStructure.Outputs[OLE DB Source Output].Columns[FPHit]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\First Pass Structure\Staging\DB FPStructure.Outputs[OLE DB Source Output].ExternalColumns[FPHit]"
+                          length="255"
+                          lineageId="Package\First Pass Structure\Staging\DB FPStructure.Outputs[OLE DB Source Output].Columns[FPHit]"
+                          name="FPHit"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\First Pass Structure\Staging\DB FPStructure.Outputs[OLE DB Source Output].Columns[FPDetails]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\First Pass Structure\Staging\DB FPStructure.Outputs[OLE DB Source Output].ExternalColumns[FPDetails]"
+                          length="255"
+                          lineageId="Package\First Pass Structure\Staging\DB FPStructure.Outputs[OLE DB Source Output].Columns[FPDetails]"
+                          name="FPDetails"
+                          truncationRowDisposition="FailComponent" />
+                      </outputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\First Pass Structure\Staging\DB FPStructure.Outputs[OLE DB Source Output].ExternalColumns[FIndex]"
+                          dataType="i4"
+                          name="FIndex" />
+                        <externalMetadataColumn
+                          refId="Package\First Pass Structure\Staging\DB FPStructure.Outputs[OLE DB Source Output].ExternalColumns[Reported]"
+                          dataType="wstr"
+                          length="255"
+                          name="Reported" />
+                        <externalMetadataColumn
+                          refId="Package\First Pass Structure\Staging\DB FPStructure.Outputs[OLE DB Source Output].ExternalColumns[Department]"
+                          dataType="wstr"
+                          length="255"
+                          name="Department" />
+                        <externalMetadataColumn
+                          refId="Package\First Pass Structure\Staging\DB FPStructure.Outputs[OLE DB Source Output].ExternalColumns[QAHold]"
+                          dataType="wstr"
+                          length="255"
+                          name="QAHold" />
+                        <externalMetadataColumn
+                          refId="Package\First Pass Structure\Staging\DB FPStructure.Outputs[OLE DB Source Output].ExternalColumns[FPType]"
+                          dataType="wstr"
+                          length="255"
+                          name="FPType" />
+                        <externalMetadataColumn
+                          refId="Package\First Pass Structure\Staging\DB FPStructure.Outputs[OLE DB Source Output].ExternalColumns[FPHit]"
+                          dataType="wstr"
+                          length="255"
+                          name="FPHit" />
+                        <externalMetadataColumn
+                          refId="Package\First Pass Structure\Staging\DB FPStructure.Outputs[OLE DB Source Output].ExternalColumns[FPDetails]"
+                          dataType="wstr"
+                          length="255"
+                          name="FPDetails" />
+                      </externalMetadataColumns>
+                    </output>
+                    <output
+                      refId="Package\First Pass Structure\Staging\DB FPStructure.Outputs[OLE DB Source Error Output]"
+                      isErrorOut="true"
+                      name="OLE DB Source Error Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\First Pass Structure\Staging\DB FPStructure.Outputs[OLE DB Source Error Output].Columns[FIndex]"
+                          dataType="i4"
+                          lineageId="Package\First Pass Structure\Staging\DB FPStructure.Outputs[OLE DB Source Error Output].Columns[FIndex]"
+                          name="FIndex" />
+                        <outputColumn
+                          refId="Package\First Pass Structure\Staging\DB FPStructure.Outputs[OLE DB Source Error Output].Columns[Reported]"
+                          dataType="wstr"
+                          length="255"
+                          lineageId="Package\First Pass Structure\Staging\DB FPStructure.Outputs[OLE DB Source Error Output].Columns[Reported]"
+                          name="Reported" />
+                        <outputColumn
+                          refId="Package\First Pass Structure\Staging\DB FPStructure.Outputs[OLE DB Source Error Output].Columns[Department]"
+                          dataType="wstr"
+                          length="255"
+                          lineageId="Package\First Pass Structure\Staging\DB FPStructure.Outputs[OLE DB Source Error Output].Columns[Department]"
+                          name="Department" />
+                        <outputColumn
+                          refId="Package\First Pass Structure\Staging\DB FPStructure.Outputs[OLE DB Source Error Output].Columns[QAHold]"
+                          dataType="wstr"
+                          length="255"
+                          lineageId="Package\First Pass Structure\Staging\DB FPStructure.Outputs[OLE DB Source Error Output].Columns[QAHold]"
+                          name="QAHold" />
+                        <outputColumn
+                          refId="Package\First Pass Structure\Staging\DB FPStructure.Outputs[OLE DB Source Error Output].Columns[FPType]"
+                          dataType="wstr"
+                          length="255"
+                          lineageId="Package\First Pass Structure\Staging\DB FPStructure.Outputs[OLE DB Source Error Output].Columns[FPType]"
+                          name="FPType" />
+                        <outputColumn
+                          refId="Package\First Pass Structure\Staging\DB FPStructure.Outputs[OLE DB Source Error Output].Columns[FPHit]"
+                          dataType="wstr"
+                          length="255"
+                          lineageId="Package\First Pass Structure\Staging\DB FPStructure.Outputs[OLE DB Source Error Output].Columns[FPHit]"
+                          name="FPHit" />
+                        <outputColumn
+                          refId="Package\First Pass Structure\Staging\DB FPStructure.Outputs[OLE DB Source Error Output].Columns[FPDetails]"
+                          dataType="wstr"
+                          length="255"
+                          lineageId="Package\First Pass Structure\Staging\DB FPStructure.Outputs[OLE DB Source Error Output].Columns[FPDetails]"
+                          name="FPDetails" />
+                        <outputColumn
+                          refId="Package\First Pass Structure\Staging\DB FPStructure.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\First Pass Structure\Staging\DB FPStructure.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\First Pass Structure\Staging\DB FPStructure.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\First Pass Structure\Staging\DB FPStructure.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\First Pass Structure\Staging\DB PBI"
+                  componentClassID="Microsoft.OLEDBSource"
+                  contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+                  description="OLE DB Source"
+                  name="DB PBI"
+                  usesDispositions="true"
+                  version="7">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT 
+  [FIndex]
+FROM [zC2_FPSTRUCTURE]
+WHERE [FIndex] &gt; ?
+ORDER BY [FIndex]</property>
+                    <property
+                      dataType="System.String"
+                      description="The variable that contains the SQL command to be executed."
+                      name="SqlCommandVariable"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">2</property>
+                    <property
+                      dataType="System.String"
+                      description="The mappings between the parameters in the SQL command and variables."
+                      name="ParameterMapping">"Parameter0:Input",{83DE8154-9F2A-4EC4-B784-1CDB2AF4863D};</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\First Pass Structure\Staging\DB PBI.Connections[OleDbConnection]"
+                      connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
+                      connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <outputs>
+                    <output
+                      refId="Package\First Pass Structure\Staging\DB PBI.Outputs[OLE DB Source Output]"
+                      isSorted="true"
+                      name="OLE DB Source Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\First Pass Structure\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[FIndex]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\First Pass Structure\Staging\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[FIndex]"
+                          lineageId="Package\First Pass Structure\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[FIndex]"
+                          name="FIndex"
+                          sortKeyPosition="1"
+                          truncationRowDisposition="FailComponent" />
+                      </outputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\First Pass Structure\Staging\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[FIndex]"
+                          dataType="i4"
+                          name="FIndex" />
+                      </externalMetadataColumns>
+                    </output>
+                    <output
+                      refId="Package\First Pass Structure\Staging\DB PBI.Outputs[OLE DB Source Error Output]"
+                      isErrorOut="true"
+                      name="OLE DB Source Error Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\First Pass Structure\Staging\DB PBI.Outputs[OLE DB Source Error Output].Columns[FIndex]"
+                          dataType="i4"
+                          lineageId="Package\First Pass Structure\Staging\DB PBI.Outputs[OLE DB Source Error Output].Columns[FIndex]"
+                          name="FIndex" />
+                        <outputColumn
+                          refId="Package\First Pass Structure\Staging\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\First Pass Structure\Staging\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\First Pass Structure\Staging\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\First Pass Structure\Staging\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\First Pass Structure\Staging\DELETE Stage"
+                  componentClassID="Microsoft.OLEDBDestination"
+                  contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                  description="OLE DB Destination"
+                  name="DELETE Stage"
+                  usesDispositions="true"
+                  version="4">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset">[dbo].[zC2_FPSTRUCTURE_STAGE_DELETE]</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">3</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepIdentity">false</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                      name="FastLoadOptions">CHECK_CONSTRAINTS</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                      name="FastLoadMaxInsertCommitSize">2147483647</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\First Pass Structure\Staging\DELETE Stage.Connections[OleDbConnection]"
+                      connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
+                      connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\First Pass Structure\Staging\DELETE Stage.Inputs[OLE DB Destination Input]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="OLE DB Destination Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\First Pass Structure\Staging\DELETE Stage.Inputs[OLE DB Destination Input].Columns[FIndex (1)]"
+                          cachedDataType="i4"
+                          cachedName="FIndex (1)"
+                          externalMetadataColumnId="Package\First Pass Structure\Staging\DELETE Stage.Inputs[OLE DB Destination Input].ExternalColumns[FIndex]"
+                          lineageId="Package\First Pass Structure\Staging\Merge Join.Outputs[Merge Join Output].Columns[FIndex (1)]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\First Pass Structure\Staging\DELETE Stage.Inputs[OLE DB Destination Input].ExternalColumns[FIndex]"
+                          dataType="i4"
+                          name="FIndex" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\First Pass Structure\Staging\DELETE Stage.Outputs[OLE DB Destination Error Output]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="OLE DB Destination Error Output"
+                      synchronousInputId="Package\First Pass Structure\Staging\DELETE Stage.Inputs[OLE DB Destination Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\First Pass Structure\Staging\DELETE Stage.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\First Pass Structure\Staging\DELETE Stage.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\First Pass Structure\Staging\DELETE Stage.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\First Pass Structure\Staging\DELETE Stage.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\First Pass Structure\Staging\Identify Records"
+                  componentClassID="Microsoft.ConditionalSplit"
+                  contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                  description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
+                  name="Identify Records"
+                  usesDispositions="true">
+                  <inputs>
+                    <input
+                      refId="Package\First Pass Structure\Staging\Identify Records.Inputs[Conditional Split Input]"
+                      description="Input to the Conditional Split Transformation"
+                      name="Conditional Split Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\First Pass Structure\Staging\Identify Records.Inputs[Conditional Split Input].Columns[FIndex]"
+                          cachedDataType="i4"
+                          cachedName="FIndex"
+                          cachedSortKeyPosition="1"
+                          lineageId="Package\First Pass Structure\Staging\Merge Join.Outputs[Merge Join Output].Columns[FIndex]" />
+                        <inputColumn
+                          refId="Package\First Pass Structure\Staging\Identify Records.Inputs[Conditional Split Input].Columns[FIndex (1)]"
+                          cachedDataType="i4"
+                          cachedName="FIndex (1)"
+                          lineageId="Package\First Pass Structure\Staging\Merge Join.Outputs[Merge Join Output].Columns[FIndex (1)]" />
+                      </inputColumns>
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\First Pass Structure\Staging\Identify Records.Outputs[update]"
+                      description="Output 1 of the Conditional Split Transformation"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      exclusionGroup="1"
+                      name="update"
+                      synchronousInputId="Package\First Pass Structure\Staging\Identify Records.Inputs[Conditional Split Input]"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                          name="Expression">![ISNULL](#{Package\First Pass Structure\Staging\Merge Join.Outputs[Merge Join Output].Columns[FIndex]}) &amp;&amp; ![ISNULL](#{Package\First Pass Structure\Staging\Merge Join.Outputs[Merge Join Output].Columns[FIndex (1)]})</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Specifies the friendly version of the expression. This expression version uses column names."
+                          expressionType="Notify"
+                          name="FriendlyExpression">!ISNULL(FIndex) &amp;&amp; !ISNULL([FIndex (1)])</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                          name="EvaluationOrder">0</property>
+                      </properties>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\First Pass Structure\Staging\Identify Records.Outputs[insert]"
+                      description="Output 2 of the Conditional Split Transformation"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      exclusionGroup="1"
+                      name="insert"
+                      synchronousInputId="Package\First Pass Structure\Staging\Identify Records.Inputs[Conditional Split Input]"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                          name="Expression">![ISNULL](#{Package\First Pass Structure\Staging\Merge Join.Outputs[Merge Join Output].Columns[FIndex]}) &amp;&amp; [ISNULL](#{Package\First Pass Structure\Staging\Merge Join.Outputs[Merge Join Output].Columns[FIndex (1)]})</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Specifies the friendly version of the expression. This expression version uses column names."
+                          expressionType="Notify"
+                          name="FriendlyExpression">!ISNULL(FIndex) &amp;&amp; ISNULL([FIndex (1)])</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                          name="EvaluationOrder">1</property>
+                      </properties>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\First Pass Structure\Staging\Identify Records.Outputs[delete]"
+                      description="Output 3 of the Conditional Split Transformation"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      exclusionGroup="1"
+                      name="delete"
+                      synchronousInputId="Package\First Pass Structure\Staging\Identify Records.Inputs[Conditional Split Input]"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                          name="Expression">[ISNULL](#{Package\First Pass Structure\Staging\Merge Join.Outputs[Merge Join Output].Columns[FIndex]}) &amp;&amp; ![ISNULL](#{Package\First Pass Structure\Staging\Merge Join.Outputs[Merge Join Output].Columns[FIndex (1)]})</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Specifies the friendly version of the expression. This expression version uses column names."
+                          expressionType="Notify"
+                          name="FriendlyExpression">ISNULL(FIndex) &amp;&amp; !ISNULL([FIndex (1)])</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                          name="EvaluationOrder">2</property>
+                      </properties>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\First Pass Structure\Staging\Identify Records.Outputs[Conditional Split Default Output]"
+                      description="Default Output of the Conditional Split Transformation"
+                      exclusionGroup="1"
+                      name="Conditional Split Default Output"
+                      synchronousInputId="Package\First Pass Structure\Staging\Identify Records.Inputs[Conditional Split Input]">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          name="IsDefaultOut">true</property>
+                      </properties>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\First Pass Structure\Staging\Identify Records.Outputs[Conditional Split Error Output]"
+                      description="Error Output of the Conditional Split Transformation"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Conditional Split Error Output"
+                      synchronousInputId="Package\First Pass Structure\Staging\Identify Records.Inputs[Conditional Split Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\First Pass Structure\Staging\Identify Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\First Pass Structure\Staging\Identify Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\First Pass Structure\Staging\Identify Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\First Pass Structure\Staging\Identify Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\First Pass Structure\Staging\INSERT Stage"
+                  componentClassID="Microsoft.OLEDBDestination"
+                  contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                  description="OLE DB Destination"
+                  name="INSERT Stage"
+                  usesDispositions="true"
+                  version="4">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset">[dbo].[zC2_FPSTRUCTURE_STAGE_INSERT]</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">3</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepIdentity">false</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                      name="FastLoadOptions">CHECK_CONSTRAINTS</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                      name="FastLoadMaxInsertCommitSize">2147483647</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\First Pass Structure\Staging\INSERT Stage.Connections[OleDbConnection]"
+                      connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
+                      connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\First Pass Structure\Staging\INSERT Stage.Inputs[OLE DB Destination Input]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="OLE DB Destination Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\First Pass Structure\Staging\INSERT Stage.Inputs[OLE DB Destination Input].Columns[FIndex]"
+                          cachedDataType="i4"
+                          cachedName="FIndex"
+                          cachedSortKeyPosition="1"
+                          externalMetadataColumnId="Package\First Pass Structure\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[FIndex]"
+                          lineageId="Package\First Pass Structure\Staging\Merge Join.Outputs[Merge Join Output].Columns[FIndex]" />
+                        <inputColumn
+                          refId="Package\First Pass Structure\Staging\INSERT Stage.Inputs[OLE DB Destination Input].Columns[Reported]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="Reported"
+                          externalMetadataColumnId="Package\First Pass Structure\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[Reported]"
+                          lineageId="Package\First Pass Structure\Staging\Merge Join.Outputs[Merge Join Output].Columns[Reported]" />
+                        <inputColumn
+                          refId="Package\First Pass Structure\Staging\INSERT Stage.Inputs[OLE DB Destination Input].Columns[Department]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="Department"
+                          externalMetadataColumnId="Package\First Pass Structure\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[Department]"
+                          lineageId="Package\First Pass Structure\Staging\Merge Join.Outputs[Merge Join Output].Columns[Department]" />
+                        <inputColumn
+                          refId="Package\First Pass Structure\Staging\INSERT Stage.Inputs[OLE DB Destination Input].Columns[QAHold]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="QAHold"
+                          externalMetadataColumnId="Package\First Pass Structure\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[QAHold]"
+                          lineageId="Package\First Pass Structure\Staging\Merge Join.Outputs[Merge Join Output].Columns[QAHold]" />
+                        <inputColumn
+                          refId="Package\First Pass Structure\Staging\INSERT Stage.Inputs[OLE DB Destination Input].Columns[FPType]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="FPType"
+                          externalMetadataColumnId="Package\First Pass Structure\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[FPType]"
+                          lineageId="Package\First Pass Structure\Staging\Merge Join.Outputs[Merge Join Output].Columns[FPType]" />
+                        <inputColumn
+                          refId="Package\First Pass Structure\Staging\INSERT Stage.Inputs[OLE DB Destination Input].Columns[FPHit]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="FPHit"
+                          externalMetadataColumnId="Package\First Pass Structure\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[FPHit]"
+                          lineageId="Package\First Pass Structure\Staging\Merge Join.Outputs[Merge Join Output].Columns[FPHit]" />
+                        <inputColumn
+                          refId="Package\First Pass Structure\Staging\INSERT Stage.Inputs[OLE DB Destination Input].Columns[FPDetails]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="FPDetails"
+                          externalMetadataColumnId="Package\First Pass Structure\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[FPDetails]"
+                          lineageId="Package\First Pass Structure\Staging\Merge Join.Outputs[Merge Join Output].Columns[FPDetails]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\First Pass Structure\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[FIndex]"
+                          dataType="i4"
+                          name="FIndex" />
+                        <externalMetadataColumn
+                          refId="Package\First Pass Structure\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[Reported]"
+                          dataType="wstr"
+                          length="5"
+                          name="Reported" />
+                        <externalMetadataColumn
+                          refId="Package\First Pass Structure\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[Department]"
+                          dataType="wstr"
+                          length="5"
+                          name="Department" />
+                        <externalMetadataColumn
+                          refId="Package\First Pass Structure\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[QAHold]"
+                          dataType="wstr"
+                          length="3"
+                          name="QAHold" />
+                        <externalMetadataColumn
+                          refId="Package\First Pass Structure\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[FPType]"
+                          dataType="wstr"
+                          length="50"
+                          name="FPType" />
+                        <externalMetadataColumn
+                          refId="Package\First Pass Structure\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[FPHit]"
+                          dataType="wstr"
+                          length="50"
+                          name="FPHit" />
+                        <externalMetadataColumn
+                          refId="Package\First Pass Structure\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[FPDetails]"
+                          dataType="wstr"
+                          length="255"
+                          name="FPDetails" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\First Pass Structure\Staging\INSERT Stage.Outputs[OLE DB Destination Error Output]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="OLE DB Destination Error Output"
+                      synchronousInputId="Package\First Pass Structure\Staging\INSERT Stage.Inputs[OLE DB Destination Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\First Pass Structure\Staging\INSERT Stage.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\First Pass Structure\Staging\INSERT Stage.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\First Pass Structure\Staging\INSERT Stage.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\First Pass Structure\Staging\INSERT Stage.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\First Pass Structure\Staging\Merge Join"
+                  componentClassID="Microsoft.MergeJoin"
+                  contactInfo="Merge Join;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
+                  description="Combine two sorted data flows into one using the FULL, LEFT, or INNER join. We recommend this transformation when data flows can be sorted at their sources."
+                  name="Merge Join"
+                  version="1">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the type of join to perform."
+                      name="JoinType"
+                      typeConverter="JoinType">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the number of columns in the ordering key."
+                      name="NumKeyColumns">1</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the null values are treated as equal values."
+                      name="TreatNullsAsEqual">true</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Indicates the requested maximum buffers per input before blocking."
+                      name="MaxBuffersPerInput">5</property>
+                  </properties>
+                  <inputs>
+                    <input
+                      refId="Package\First Pass Structure\Staging\Merge Join.Inputs[Merge Join Left Input]"
+                      hasSideEffects="true"
+                      name="Merge Join Left Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\First Pass Structure\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[FIndex]"
+                          cachedDataType="i4"
+                          cachedName="FIndex"
+                          cachedSortKeyPosition="1"
+                          lineageId="Package\First Pass Structure\Staging\DB FPStructure.Outputs[OLE DB Source Output].Columns[FIndex]" />
+                        <inputColumn
+                          refId="Package\First Pass Structure\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[Reported]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="Reported"
+                          lineageId="Package\First Pass Structure\Staging\DB FPStructure.Outputs[OLE DB Source Output].Columns[Reported]" />
+                        <inputColumn
+                          refId="Package\First Pass Structure\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[Department]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="Department"
+                          lineageId="Package\First Pass Structure\Staging\DB FPStructure.Outputs[OLE DB Source Output].Columns[Department]" />
+                        <inputColumn
+                          refId="Package\First Pass Structure\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[QAHold]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="QAHold"
+                          lineageId="Package\First Pass Structure\Staging\DB FPStructure.Outputs[OLE DB Source Output].Columns[QAHold]" />
+                        <inputColumn
+                          refId="Package\First Pass Structure\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[FPType]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="FPType"
+                          lineageId="Package\First Pass Structure\Staging\DB FPStructure.Outputs[OLE DB Source Output].Columns[FPType]" />
+                        <inputColumn
+                          refId="Package\First Pass Structure\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[FPHit]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="FPHit"
+                          lineageId="Package\First Pass Structure\Staging\DB FPStructure.Outputs[OLE DB Source Output].Columns[FPHit]" />
+                        <inputColumn
+                          refId="Package\First Pass Structure\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[FPDetails]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="FPDetails"
+                          lineageId="Package\First Pass Structure\Staging\DB FPStructure.Outputs[OLE DB Source Output].Columns[FPDetails]" />
+                      </inputColumns>
+                      <externalMetadataColumns />
+                    </input>
+                    <input
+                      refId="Package\First Pass Structure\Staging\Merge Join.Inputs[Merge Join Right Input]"
+                      hasSideEffects="true"
+                      name="Merge Join Right Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\First Pass Structure\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[FIndex]"
+                          cachedDataType="i4"
+                          cachedName="FIndex"
+                          cachedSortKeyPosition="1"
+                          lineageId="Package\First Pass Structure\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[FIndex]" />
+                      </inputColumns>
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\First Pass Structure\Staging\Merge Join.Outputs[Merge Join Output]"
+                      isSorted="true"
+                      name="Merge Join Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\First Pass Structure\Staging\Merge Join.Outputs[Merge Join Output].Columns[FIndex]"
+                          dataType="i4"
+                          lineageId="Package\First Pass Structure\Staging\Merge Join.Outputs[Merge Join Output].Columns[FIndex]"
+                          name="FIndex"
+                          sortKeyPosition="1">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\First Pass Structure\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[FIndex]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\First Pass Structure\Staging\Merge Join.Outputs[Merge Join Output].Columns[Reported]"
+                          dataType="wstr"
+                          length="255"
+                          lineageId="Package\First Pass Structure\Staging\Merge Join.Outputs[Merge Join Output].Columns[Reported]"
+                          name="Reported">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\First Pass Structure\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[Reported]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\First Pass Structure\Staging\Merge Join.Outputs[Merge Join Output].Columns[Department]"
+                          dataType="wstr"
+                          length="255"
+                          lineageId="Package\First Pass Structure\Staging\Merge Join.Outputs[Merge Join Output].Columns[Department]"
+                          name="Department">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\First Pass Structure\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[Department]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\First Pass Structure\Staging\Merge Join.Outputs[Merge Join Output].Columns[QAHold]"
+                          dataType="wstr"
+                          length="255"
+                          lineageId="Package\First Pass Structure\Staging\Merge Join.Outputs[Merge Join Output].Columns[QAHold]"
+                          name="QAHold">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\First Pass Structure\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[QAHold]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\First Pass Structure\Staging\Merge Join.Outputs[Merge Join Output].Columns[FPType]"
+                          dataType="wstr"
+                          length="255"
+                          lineageId="Package\First Pass Structure\Staging\Merge Join.Outputs[Merge Join Output].Columns[FPType]"
+                          name="FPType">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\First Pass Structure\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[FPType]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\First Pass Structure\Staging\Merge Join.Outputs[Merge Join Output].Columns[FPHit]"
+                          dataType="wstr"
+                          length="255"
+                          lineageId="Package\First Pass Structure\Staging\Merge Join.Outputs[Merge Join Output].Columns[FPHit]"
+                          name="FPHit">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\First Pass Structure\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[FPHit]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\First Pass Structure\Staging\Merge Join.Outputs[Merge Join Output].Columns[FPDetails]"
+                          dataType="wstr"
+                          length="255"
+                          lineageId="Package\First Pass Structure\Staging\Merge Join.Outputs[Merge Join Output].Columns[FPDetails]"
+                          name="FPDetails">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\First Pass Structure\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[FPDetails]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\First Pass Structure\Staging\Merge Join.Outputs[Merge Join Output].Columns[FIndex (1)]"
+                          dataType="i4"
+                          lineageId="Package\First Pass Structure\Staging\Merge Join.Outputs[Merge Join Output].Columns[FIndex (1)]"
+                          name="FIndex (1)">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\First Pass Structure\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[FIndex]}</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\First Pass Structure\Staging\UPDATE Stage"
+                  componentClassID="Microsoft.OLEDBDestination"
+                  contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                  description="OLE DB Destination"
+                  name="UPDATE Stage"
+                  usesDispositions="true"
+                  version="4">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset">[dbo].[zC2_FPSTRUCTURE_STAGE_UPDATE]</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">3</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepIdentity">false</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                      name="FastLoadOptions">CHECK_CONSTRAINTS</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                      name="FastLoadMaxInsertCommitSize">2147483647</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\First Pass Structure\Staging\UPDATE Stage.Connections[OleDbConnection]"
+                      connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
+                      connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\First Pass Structure\Staging\UPDATE Stage.Inputs[OLE DB Destination Input]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="OLE DB Destination Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\First Pass Structure\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].Columns[FIndex]"
+                          cachedDataType="i4"
+                          cachedName="FIndex"
+                          cachedSortKeyPosition="1"
+                          externalMetadataColumnId="Package\First Pass Structure\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[FIndex]"
+                          lineageId="Package\First Pass Structure\Staging\Merge Join.Outputs[Merge Join Output].Columns[FIndex]" />
+                        <inputColumn
+                          refId="Package\First Pass Structure\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].Columns[Reported]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="Reported"
+                          externalMetadataColumnId="Package\First Pass Structure\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[Reported]"
+                          lineageId="Package\First Pass Structure\Staging\Merge Join.Outputs[Merge Join Output].Columns[Reported]" />
+                        <inputColumn
+                          refId="Package\First Pass Structure\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].Columns[Department]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="Department"
+                          externalMetadataColumnId="Package\First Pass Structure\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[Department]"
+                          lineageId="Package\First Pass Structure\Staging\Merge Join.Outputs[Merge Join Output].Columns[Department]" />
+                        <inputColumn
+                          refId="Package\First Pass Structure\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].Columns[QAHold]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="QAHold"
+                          externalMetadataColumnId="Package\First Pass Structure\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[QAHold]"
+                          lineageId="Package\First Pass Structure\Staging\Merge Join.Outputs[Merge Join Output].Columns[QAHold]" />
+                        <inputColumn
+                          refId="Package\First Pass Structure\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].Columns[FPType]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="FPType"
+                          externalMetadataColumnId="Package\First Pass Structure\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[FPType]"
+                          lineageId="Package\First Pass Structure\Staging\Merge Join.Outputs[Merge Join Output].Columns[FPType]" />
+                        <inputColumn
+                          refId="Package\First Pass Structure\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].Columns[FPHit]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="FPHit"
+                          externalMetadataColumnId="Package\First Pass Structure\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[FPHit]"
+                          lineageId="Package\First Pass Structure\Staging\Merge Join.Outputs[Merge Join Output].Columns[FPHit]" />
+                        <inputColumn
+                          refId="Package\First Pass Structure\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].Columns[FPDetails]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="FPDetails"
+                          externalMetadataColumnId="Package\First Pass Structure\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[FPDetails]"
+                          lineageId="Package\First Pass Structure\Staging\Merge Join.Outputs[Merge Join Output].Columns[FPDetails]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\First Pass Structure\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[FIndex]"
+                          dataType="i4"
+                          name="FIndex" />
+                        <externalMetadataColumn
+                          refId="Package\First Pass Structure\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[Reported]"
+                          dataType="wstr"
+                          length="5"
+                          name="Reported" />
+                        <externalMetadataColumn
+                          refId="Package\First Pass Structure\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[Department]"
+                          dataType="wstr"
+                          length="5"
+                          name="Department" />
+                        <externalMetadataColumn
+                          refId="Package\First Pass Structure\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[QAHold]"
+                          dataType="wstr"
+                          length="3"
+                          name="QAHold" />
+                        <externalMetadataColumn
+                          refId="Package\First Pass Structure\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[FPType]"
+                          dataType="wstr"
+                          length="50"
+                          name="FPType" />
+                        <externalMetadataColumn
+                          refId="Package\First Pass Structure\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[FPHit]"
+                          dataType="wstr"
+                          length="50"
+                          name="FPHit" />
+                        <externalMetadataColumn
+                          refId="Package\First Pass Structure\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[FPDetails]"
+                          dataType="wstr"
+                          length="255"
+                          name="FPDetails" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\First Pass Structure\Staging\UPDATE Stage.Outputs[OLE DB Destination Error Output]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="OLE DB Destination Error Output"
+                      synchronousInputId="Package\First Pass Structure\Staging\UPDATE Stage.Inputs[OLE DB Destination Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\First Pass Structure\Staging\UPDATE Stage.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\First Pass Structure\Staging\UPDATE Stage.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\First Pass Structure\Staging\UPDATE Stage.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\First Pass Structure\Staging\UPDATE Stage.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+              </components>
+              <paths>
+                <path
+                  refId="Package\First Pass Structure\Staging.Paths[delete]"
+                  endId="Package\First Pass Structure\Staging\DELETE Stage.Inputs[OLE DB Destination Input]"
+                  name="delete"
+                  startId="Package\First Pass Structure\Staging\Identify Records.Outputs[delete]" />
+                <path
+                  refId="Package\First Pass Structure\Staging.Paths[insert]"
+                  endId="Package\First Pass Structure\Staging\INSERT Stage.Inputs[OLE DB Destination Input]"
+                  name="insert"
+                  startId="Package\First Pass Structure\Staging\Identify Records.Outputs[insert]" />
+                <path
+                  refId="Package\First Pass Structure\Staging.Paths[Merge Join Output]"
+                  endId="Package\First Pass Structure\Staging\Identify Records.Inputs[Conditional Split Input]"
+                  name="Merge Join Output"
+                  startId="Package\First Pass Structure\Staging\Merge Join.Outputs[Merge Join Output]" />
+                <path
+                  refId="Package\First Pass Structure\Staging.Paths[OLE DB Source Output]"
+                  endId="Package\First Pass Structure\Staging\Merge Join.Inputs[Merge Join Left Input]"
+                  name="OLE DB Source Output"
+                  startId="Package\First Pass Structure\Staging\DB FPStructure.Outputs[OLE DB Source Output]" />
+                <path
+                  refId="Package\First Pass Structure\Staging.Paths[OLE DB Source Output1]"
+                  endId="Package\First Pass Structure\Staging\Merge Join.Inputs[Merge Join Right Input]"
+                  name="OLE DB Source Output"
+                  startId="Package\First Pass Structure\Staging\DB PBI.Outputs[OLE DB Source Output]" />
+                <path
+                  refId="Package\First Pass Structure\Staging.Paths[update]"
+                  endId="Package\First Pass Structure\Staging\UPDATE Stage.Inputs[OLE DB Destination Input]"
+                  name="update"
+                  startId="Package\First Pass Structure\Staging\Identify Records.Outputs[update]" />
+              </paths>
+            </pipeline>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\First Pass Structure\Update Data"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{96c9ac6e-bc2d-44df-8f96-e0626377c090}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Update Data"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+              SQLTask:SqlStatementSource="UPDATE &#xA;  a &#xA;SET &#xA;  a.[Reported] = b.[Reported], &#xA;  a.[Department] = b.[Department], &#xA;  a.[QAHold] = b.[QAHold], &#xA;  a.[FPType] = b.[FPType], &#xA;  a.[FPHit] = b.[FPHit], &#xA;  a.[FPDetails] = b.[FPDetails] &#xA;FROM &#xA;  zC2_FPSTRUCTURE a &#xA;  INNER JOIN zC2_FPSTRUCTURE_STAGE_UPDATE b ON a.[FIndex] = b.[FIndex]&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\First Pass Structure.PrecedenceConstraints[Constraint]"
+          DTS:CreationName=""
+          DTS:DTSID="{76d359ae-177d-4865-b3b9-c6d99c4c5daf}"
+          DTS:From="Package\First Pass Structure\Clean Stage"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint"
+          DTS:To="Package\First Pass Structure\LastJobIndex" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\First Pass Structure.PrecedenceConstraints[Constraint 1]"
+          DTS:CreationName=""
+          DTS:DTSID="{1a6fcef4-33bc-4e54-859c-1059ede5fe76}"
+          DTS:From="Package\First Pass Structure\Staging"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 1"
+          DTS:To="Package\First Pass Structure\Update Data" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\First Pass Structure.PrecedenceConstraints[Constraint 2]"
+          DTS:CreationName=""
+          DTS:DTSID="{22d9ad99-9e94-4e2a-b148-dbbf374b6a2c}"
+          DTS:From="Package\First Pass Structure\Update Data"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 2"
+          DTS:To="Package\First Pass Structure\Insert Data" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\First Pass Structure.PrecedenceConstraints[Constraint 3]"
+          DTS:CreationName=""
+          DTS:DTSID="{c244ea28-ba3e-4637-b44d-40c60839f224}"
+          DTS:From="Package\First Pass Structure\LastJobIndex"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 3"
+          DTS:To="Package\First Pass Structure\Staging" />
+      </DTS:PrecedenceConstraints>
+    </DTS:Executable>
     <DTS:Executable
       DTS:refId="Package\Job Data"
       DTS:CreationName="STOCK:SEQUENCE"
@@ -73,7 +1456,7 @@
           DTS:LocaleID="-1"
           DTS:ObjectName="Clean Stage"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="3">
+          DTS:ThreadHint="0">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -90,7 +1473,7 @@
           DTS:LocaleID="-1"
           DTS:ObjectName="Delete Data"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="3">
+          DTS:ThreadHint="0">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -107,7 +1490,7 @@
           DTS:LocaleID="-1"
           DTS:ObjectName="Insert Data"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="3">
+          DTS:ThreadHint="0">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -124,7 +1507,7 @@
           DTS:LocaleID="-1"
           DTS:ObjectName="Last DateTime"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="3">
+          DTS:ThreadHint="0">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -176,7 +1559,7 @@
                       dataType="System.String"
                       description="The SQL command to be executed."
                       name="SqlCommand"
-                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT [RecordID]
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT [RecordID]
     ,[DateTime]
     ,[JobIndex]
     ,[Footage]
@@ -363,7 +1746,7 @@ WHERE [DateTime] &gt; ?</property>
                       dataType="System.String"
                       description="The SQL command to be executed."
                       name="SqlCommand"
-                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT Record_ID AS RecordID,
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT Record_ID AS RecordID,
     Date_Time AS [DateTime],
     JobIndex,
     LastRollFt AS Footage,
@@ -552,7 +1935,7 @@ ORDER BY Record_ID,
                       dataType="System.String"
                       description="The SQL command to be executed."
                       name="SqlCommand"
-                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -951,7 +2334,7 @@ ORDER BY Record_ID,
                       dataType="System.String"
                       description="The SQL command to be executed."
                       name="SqlCommand"
-                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -1347,7 +2730,7 @@ ORDER BY Record_ID,
                       dataType="System.String"
                       description="The SQL command to be executed."
                       name="SqlCommand"
-                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -1527,7 +2910,7 @@ ORDER BY Record_ID,
           DTS:LocaleID="-1"
           DTS:ObjectName="Update Data"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="3">
+          DTS:ThreadHint="0">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -1636,7 +3019,7 @@ ORDER BY Record_ID,
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
               SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-              SQLTask:SqlStatementSource="SELECT MAX( PIndex ) - 1000 AS LastPIndex&#xA;FROM zC2_PRIMARYSTRUCT"
+              SQLTask:SqlStatementSource="SELECT &#xA;  MIN(PIndex) AS LastPIndex &#xA;FROM &#xA;  (&#xA;    SELECT &#xA;      TOP 100 PIndex &#xA;    FROM &#xA;      zC2_PRIMARYSTRUCT &#xA;    ORDER BY &#xA;      PIndex DESC&#xA;  ) AS t&#xA;"
               SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
               <SQLTask:ResultBinding
                 SQLTask:ResultName="0"
@@ -1861,7 +3244,7 @@ ORDER BY Record_ID,
                       dataType="System.String"
                       description="The SQL command to be executed."
                       name="SqlCommand"
-                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT [PIndex]
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT [PIndex]
     ,[Category]
     ,[Causes]
     ,[FurtherDetail]
@@ -2145,7 +3528,7 @@ ORDER BY [PIndex]</property>
                       dataType="System.String"
                       description="The SQL command to be executed."
                       name="SqlCommand"
-                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT [PIndex],
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT [PIndex],
     [Category] AS Category,
     [Causes] AS Causes,
     [FurtherDetail] AS FurtherDetail,
@@ -2426,7 +3809,7 @@ ORDER BY [PIndex]</property>
                       dataType="System.String"
                       description="The SQL command to be executed."
                       name="SqlCommand"
-                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -2690,7 +4073,7 @@ ORDER BY [PIndex]</property>
                       dataType="System.String"
                       description="The SQL command to be executed."
                       name="SqlCommand"
-                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -3308,7 +4691,7 @@ ORDER BY [PIndex]</property>
                       dataType="System.String"
                       description="The SQL command to be executed."
                       name="SqlCommand"
-                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -3604,7 +4987,7 @@ ORDER BY [PIndex]</property>
           DTS:LocaleID="-1"
           DTS:ObjectName="Clean Stage"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="0">
+          DTS:ThreadHint="3">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -3621,7 +5004,7 @@ ORDER BY [PIndex]</property>
           DTS:LocaleID="-1"
           DTS:ObjectName="Delete Data"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="0">
+          DTS:ThreadHint="3">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -3638,7 +5021,7 @@ ORDER BY [PIndex]</property>
           DTS:LocaleID="-1"
           DTS:ObjectName="Insert Data"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="0">
+          DTS:ThreadHint="3">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -3655,7 +5038,7 @@ ORDER BY [PIndex]</property>
           DTS:LocaleID="-1"
           DTS:ObjectName="Last DateTime"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="0">
+          DTS:ThreadHint="3">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -3707,7 +5090,7 @@ ORDER BY [PIndex]</property>
                       dataType="System.String"
                       description="The SQL command to be executed."
                       name="SqlCommand"
-                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT [Record_ID]
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT [Record_ID]
       ,[Date_Time]
       ,[JobIndex]
       ,[LineSpeed_FB]
@@ -4446,7 +5829,7 @@ ORDER BY [Date_Time]</property>
                       dataType="System.String"
                       description="The SQL command to be executed."
                       name="SqlCommand"
-                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT       [Record_ID]
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT       [Record_ID]
 	,[Date_Time]
 	,[JobIndex]
 	,[LineSpeed_FB]
@@ -5208,7 +6591,7 @@ ORDER BY [Date_Time]</property>
                       dataType="System.String"
                       description="The SQL command to be executed."
                       name="SqlCommand"
-                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -5894,7 +7277,7 @@ ORDER BY [Date_Time]</property>
                       dataType="System.String"
                       description="The SQL command to be executed."
                       name="SqlCommand"
-                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -7644,7 +9027,7 @@ ORDER BY [Date_Time]</property>
                       dataType="System.String"
                       description="The SQL command to be executed."
                       name="SqlCommand"
-                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -8121,7 +9504,7 @@ ORDER BY [Date_Time]</property>
           DTS:LocaleID="-1"
           DTS:ObjectName="Update Data"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="0">
+          DTS:ThreadHint="3">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -8192,7 +9575,7 @@ ORDER BY [Date_Time]</property>
           DTS:LocaleID="-1"
           DTS:ObjectName="Clean Stage"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="1">
+          DTS:ThreadHint="4">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -8209,7 +9592,7 @@ ORDER BY [Date_Time]</property>
           DTS:LocaleID="-1"
           DTS:ObjectName="Delete Data"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="1">
+          DTS:ThreadHint="4">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -8226,7 +9609,7 @@ ORDER BY [Date_Time]</property>
           DTS:LocaleID="-1"
           DTS:ObjectName="Insert Data"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="1">
+          DTS:ThreadHint="4">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -8243,7 +9626,7 @@ ORDER BY [Date_Time]</property>
           DTS:LocaleID="-1"
           DTS:ObjectName="Last DateTime"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="1">
+          DTS:ThreadHint="4">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -8295,7 +9678,7 @@ ORDER BY [Date_Time]</property>
                       dataType="System.String"
                       description="The SQL command to be executed."
                       name="SqlCommand"
-                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT [Record_ID]
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT [Record_ID]
     ,[Date_Time]
     ,[JobIndex]
     ,[Gage Factor] AS Gage_Factor
@@ -9603,7 +10986,7 @@ ORDER BY [Date_Time]</property>
                       dataType="System.String"
                       description="The SQL command to be executed."
                       name="SqlCommand"
-                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT [Record_ID]
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT [Record_ID]
       ,[Date_Time]
       ,[JobIndex]
       ,[Gage_Factor]
@@ -10911,7 +12294,7 @@ ORDER BY [Date_Time]</property>
                       dataType="System.String"
                       description="The SQL command to be executed."
                       name="SqlCommand"
-                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -11889,7 +13272,7 @@ ORDER BY [Date_Time]</property>
                       dataType="System.String"
                       description="The SQL command to be executed."
                       name="SqlCommand"
-                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -14995,7 +16378,7 @@ ORDER BY [Date_Time]</property>
                       dataType="System.String"
                       description="The SQL command to be executed."
                       name="SqlCommand"
-                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                     <property
                       dataType="System.Int32"
                       description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -15764,7 +17147,7 @@ ORDER BY [Date_Time]</property>
           DTS:LocaleID="-1"
           DTS:ObjectName="Update Data"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="1">
+          DTS:ThreadHint="4">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -15829,6 +17212,121 @@ ORDER BY [Date_Time]</property>
     <LayoutInfo>
       <GraphLayout
         Capacity="64" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="144,42"
+          Id="Package\First Pass Structure\Clean Stage"
+          TopLeft="22,15" />
+        <NodeLayout
+          Size="144,42"
+          Id="Package\First Pass Structure\Insert Data"
+          TopLeft="22,327" />
+        <NodeLayout
+          Size="144,42"
+          Id="Package\First Pass Structure\LastJobIndex"
+          TopLeft="22,93" />
+        <NodeLayout
+          Size="144,42"
+          Id="Package\First Pass Structure\Staging"
+          TopLeft="22,171" />
+        <NodeLayout
+          Size="144,42"
+          Id="Package\First Pass Structure\Update Data"
+          TopLeft="22,249" />
+        <EdgeLayout
+          Id="Package\First Pass Structure.PrecedenceConstraints[Constraint]"
+          TopLeft="94,57">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,36"
+              Start="0,0"
+              End="0,28.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,28.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\First Pass Structure.PrecedenceConstraints[Constraint 1]"
+          TopLeft="94,213">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,36"
+              Start="0,0"
+              End="0,28.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,28.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\First Pass Structure.PrecedenceConstraints[Constraint 2]"
+          TopLeft="94,291">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,36"
+              Start="0,0"
+              End="0,28.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,28.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\First Pass Structure.PrecedenceConstraints[Constraint 3]"
+          TopLeft="94,135">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,36"
+              Start="0,0"
+              End="0,28.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,28.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="198,495"
+          Size="198,538"
+          Id="Package\First Pass Structure"
+          TopLeft="855,11" />
         <NodeLayout
           Size="147,42"
           Id="Package\Job Data\Clean Stage"
@@ -15969,7 +17467,7 @@ ORDER BY [Date_Time]</property>
           PanelSize="185,495"
           Size="185,538"
           Id="Package\Job Data"
-          TopLeft="129,10" />
+          TopLeft="13,11" />
         <NodeLayout
           Size="144,42"
           Id="Package\Primary Structure\Clean Stage"
@@ -16084,7 +17582,7 @@ ORDER BY [Date_Time]</property>
           PanelSize="181,495"
           Size="181,538"
           Id="Package\Primary Structure"
-          TopLeft="326.666666666667,10" />
+          TopLeft="210.5,11" />
         <NodeLayout
           Size="147,42"
           Id="Package\Process Data\Clean Stage"
@@ -16225,7 +17723,7 @@ ORDER BY [Date_Time]</property>
           PanelSize="213,498"
           Size="213,541"
           Id="Package\Process Data"
-          TopLeft="520.333333333333,10" />
+          TopLeft="404,11" />
         <NodeLayout
           Size="147,42"
           Id="Package\Profile\Clean Stage"
@@ -16366,19 +17864,292 @@ ORDER BY [Date_Time]</property>
           PanelSize="213,498"
           Size="213,541"
           Id="Package\Profile"
-          TopLeft="746,10" />
+          TopLeft="629.5,11" />
       </GraphLayout>
     </LayoutInfo>
   </Package>
   <TaskHost
-    design-time-name="Package\Job Data\Staging">
+    design-time-name="Package\First Pass Structure\Staging">
     <LayoutInfo>
       <GraphLayout
         Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
           Size="145,42"
-          Id="Package\Job Data\Staging\INSERT Stage"
-          TopLeft="39,347" />
+          Id="Package\First Pass Structure\Staging\INSERT Stage"
+          TopLeft="17,349" />
+        <NodeLayout
+          Size="130,42"
+          Id="Package\First Pass Structure\Staging\Merge Join"
+          TopLeft="344,117" />
+        <NodeLayout
+          Size="156,42"
+          Id="Package\First Pass Structure\Staging\Identify Records"
+          TopLeft="327,213" />
+        <NodeLayout
+          Size="148,42"
+          Id="Package\First Pass Structure\Staging\UPDATE Stage"
+          TopLeft="337,479" />
+        <NodeLayout
+          Size="146,42"
+          Id="Package\First Pass Structure\Staging\DELETE Stage"
+          TopLeft="706,354" />
+        <NodeLayout
+          Size="112,42"
+          Id="Package\First Pass Structure\Staging\DB PBI"
+          TopLeft="652,10" />
+        <NodeLayout
+          Size="156,42"
+          Id="Package\First Pass Structure\Staging\DB FPStructure"
+          TopLeft="17,11" />
+        <EdgeLayout
+          Id="Package\First Pass Structure\Staging.Paths[update]"
+          TopLeft="408,255">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,224"
+              Start="0,0"
+              End="0,216.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,216.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-15.8025,102.4453125,31.605,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\First Pass Structure\Staging.Paths[OLE DB Source Output1]"
+          TopLeft="708,52">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-278.666666666667,65"
+              Start="0,0"
+              End="-278.666666666667,57.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,34.5258358662614" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,34.5258358662614"
+                    Point2="0,38.5258358662614"
+                    Point3="-4,38.5258358662614" />
+                  <mssgle:LineSegment
+                    End="-274.666666666667,38.5258358662614" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-274.666666666667,38.5258358662614"
+                    Point2="-278.666666666667,38.5258358662614"
+                    Point3="-278.666666666667,42.5258358662614" />
+                  <mssgle:LineSegment
+                    End="-278.666666666667,57.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\First Pass Structure\Staging.Paths[OLE DB Source Output]"
+          TopLeft="95,53">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="293.666666666667,64"
+              Start="0,0"
+              End="293.666666666667,56.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,33.9331306990881" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,33.9331306990881"
+                    Point2="0,37.9331306990881"
+                    Point3="4,37.9331306990881" />
+                  <mssgle:LineSegment
+                    End="289.666666666667,37.9331306990881" />
+                  <mssgle:CubicBezierSegment
+                    Point1="289.666666666667,37.9331306990881"
+                    Point2="293.666666666667,37.9331306990881"
+                    Point3="293.666666666667,41.9331306990881" />
+                  <mssgle:LineSegment
+                    End="293.666666666667,56.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\First Pass Structure\Staging.Paths[Merge Join Output]"
+          TopLeft="407,159">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,54"
+              Start="0,0"
+              End="0,46.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,46.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\First Pass Structure\Staging.Paths[insert]"
+          TopLeft="380.333333333333,255">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-290.833333333333,94"
+              Start="0,0"
+              End="-290.833333333333,86.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,34.1725888324873" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,34.1725888324873"
+                    Point2="0,38.1725888324873"
+                    Point3="-4,38.1725888324873" />
+                  <mssgle:LineSegment
+                    End="-286.833333333333,38.1725888324873" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-286.833333333333,38.1725888324873"
+                    Point2="-290.833333333333,38.1725888324873"
+                    Point3="-290.833333333333,42.1725888324873" />
+                  <mssgle:LineSegment
+                    End="-290.833333333333,86.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-158.366647135416,43.1725888324873,25.8999609375,9.451171875"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\First Pass Structure\Staging.Paths[delete]"
+          TopLeft="429.666666666667,255">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="349.333333333333,99"
+              Start="0,0"
+              End="349.333333333333,91.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,36.2030456852792" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,36.2030456852792"
+                    Point2="0,40.2030456852792"
+                    Point3="4,40.2030456852792" />
+                  <mssgle:LineSegment
+                    End="345.333333333333,40.2030456852792" />
+                  <mssgle:CubicBezierSegment
+                    Point1="345.333333333333,40.2030456852792"
+                    Point2="349.333333333333,40.2030456852792"
+                    Point3="349.333333333333,44.2030456852792" />
+                  <mssgle:LineSegment
+                    End="349.333333333333,91.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="160.470709635416,45.2030456852792,28.3919140625,9.7490234375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\First Pass Structure\Staging\INSERT Stage">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\First Pass Structure\Staging\UPDATE Stage">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\First Pass Structure\Staging\DELETE Stage">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\First Pass Structure\Staging\DB PBI">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\First Pass Structure\Staging\DB FPStructure">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <TaskHost
+    design-time-name="Package\Job Data\Staging">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
           Size="135,42"
           Id="Package\Job Data\Staging\DB Runtime"
@@ -16396,6 +18167,14 @@ ORDER BY [Date_Time]</property>
           Id="Package\Job Data\Staging\DELETE Stage"
           TopLeft="713,344" />
         <NodeLayout
+          Size="145,42"
+          Id="Package\Job Data\Staging\INSERT Stage"
+          TopLeft="39,347" />
+        <NodeLayout
+          Size="112,42"
+          Id="Package\Job Data\Staging\DB PBI"
+          TopLeft="638,57" />
+        <NodeLayout
           Size="148,42"
           Id="Package\Job Data\Staging\UPDATE Stage"
           TopLeft="350,482" />
@@ -16403,34 +18182,6 @@ ORDER BY [Date_Time]</property>
           Size="156,42"
           Id="Package\Job Data\Staging\Identify Records"
           TopLeft="341,243" />
-        <NodeLayout
-          Size="112,42"
-          Id="Package\Job Data\Staging\DB PBI"
-          TopLeft="638,57" />
-        <EdgeLayout
-          Id="Package\Job Data\Staging.Paths[update1]"
-          TopLeft="423,427">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,55"
-              Start="0,0"
-              End="0,47.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,47.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-15.8025,17.9453125,31.605,11.609375"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
         <EdgeLayout
           Id="Package\Job Data\Staging.Paths[update]"
           TopLeft="443.666666666667,285">
@@ -16498,7 +18249,9 @@ ORDER BY [Date_Time]</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -16532,7 +18285,9 @@ ORDER BY [Date_Time]</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -16554,7 +18309,9 @@ ORDER BY [Date_Time]</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -16626,6 +18383,30 @@ ORDER BY [Date_Time]</property>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
               BoundingBox="150.80404296875,25.327731092437,28.3919140625,9.7490234375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Job Data\Staging.Paths[update1]"
+          TopLeft="423,427">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,55"
+              Start="0,0"
+              End="0,47.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,47.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-15.8025,17.9453125,31.605,11.609375"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
@@ -16755,7 +18536,9 @@ ORDER BY [Date_Time]</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -16777,7 +18560,9 @@ ORDER BY [Date_Time]</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -16931,7 +18716,9 @@ ORDER BY [Date_Time]</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
@@ -17002,17 +18789,21 @@ ORDER BY [Date_Time]</property>
           Id="Package\Process Data\Staging\DELETE Stage"
           TopLeft="893,503" />
         <NodeLayout
-          Size="201,42"
-          Id="Package\Process Data\Staging\Identify Changed Records"
-          TopLeft="576.8125,504" />
-        <NodeLayout
           Size="145,42"
           Id="Package\Process Data\Staging\INSERT Stage"
           TopLeft="316,503" />
         <NodeLayout
+          Size="133,42"
+          Id="Package\Process Data\Staging\Merge Join"
+          TopLeft="602,179" />
+        <NodeLayout
           Size="156,42"
           Id="Package\Process Data\Staging\Identify Records"
           TopLeft="599.3125,327" />
+        <NodeLayout
+          Size="201,42"
+          Id="Package\Process Data\Staging\Identify Changed Records"
+          TopLeft="576.8125,504" />
         <NodeLayout
           Size="148,42"
           Id="Package\Process Data\Staging\UPDATE Stage"
@@ -17070,6 +18861,114 @@ ORDER BY [Date_Time]</property>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
               BoundingBox="-15.8025,57.9453125,31.605,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Process Data\Staging.Paths[OLE DB Source Output1]"
+          TopLeft="970.5,113">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-281.166666666667,66"
+              Start="0,0"
+              End="-281.166666666667,58.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,35.1292719167905" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,35.1292719167905"
+                    Point2="0,39.1292719167905"
+                    Point3="-4,39.1292719167905" />
+                  <mssgle:LineSegment
+                    End="-277.166666666667,39.1292719167905" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-277.166666666667,39.1292719167905"
+                    Point2="-281.166666666667,39.1292719167905"
+                    Point3="-281.166666666667,43.1292719167905" />
+                  <mssgle:LineSegment
+                    End="-281.166666666667,58.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Process Data\Staging.Paths[OLE DB Source Output]"
+          TopLeft="382.5,113">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="286,66"
+              Start="0,0"
+              End="286,58.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,29" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,29"
+                    Point2="0,33"
+                    Point3="4,33" />
+                  <mssgle:LineSegment
+                    End="282,33" />
+                  <mssgle:CubicBezierSegment
+                    Point1="282,33"
+                    Point2="286,33"
+                    Point3="286,37" />
+                  <mssgle:LineSegment
+                    End="286,58.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Process Data\Staging.Paths[Merge Join Output]"
+          TopLeft="668.5,221">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="8.8125,106"
+              Start="0,0"
+              End="8.8125,98.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,49" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,49"
+                    Point2="0,53"
+                    Point3="4,53" />
+                  <mssgle:LineSegment
+                    End="4.8125,53" />
+                  <mssgle:CubicBezierSegment
+                    Point1="4.8125,53"
+                    Point2="8.8125,53"
+                    Point3="8.8125,57" />
+                  <mssgle:LineSegment
+                    End="8.8125,98.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
@@ -17145,112 +19044,6 @@ ORDER BY [Date_Time]</property>
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
-        <NodeLayout
-          Size="133,42"
-          Id="Package\Process Data\Staging\Merge Join"
-          TopLeft="602,179" />
-        <EdgeLayout
-          Id="Package\Process Data\Staging.Paths[OLE DB Source Output]"
-          TopLeft="382.5,113">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="286,66"
-              Start="0,0"
-              End="286,58.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,29" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,29"
-                    Point2="0,33"
-                    Point3="4,33" />
-                  <mssgle:LineSegment
-                    End="282,33" />
-                  <mssgle:CubicBezierSegment
-                    Point1="282,33"
-                    Point2="286,33"
-                    Point3="286,37" />
-                  <mssgle:LineSegment
-                    End="286,58.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\Process Data\Staging.Paths[OLE DB Source Output1]"
-          TopLeft="970.5,113">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="-281.166666666667,66"
-              Start="0,0"
-              End="-281.166666666667,58.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,35.1292719167905" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,35.1292719167905"
-                    Point2="0,39.1292719167905"
-                    Point3="-4,39.1292719167905" />
-                  <mssgle:LineSegment
-                    End="-277.166666666667,39.1292719167905" />
-                  <mssgle:CubicBezierSegment
-                    Point1="-277.166666666667,39.1292719167905"
-                    Point2="-281.166666666667,39.1292719167905"
-                    Point3="-281.166666666667,43.1292719167905" />
-                  <mssgle:LineSegment
-                    End="-281.166666666667,58.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\Process Data\Staging.Paths[Merge Join Output]"
-          TopLeft="668.5,221">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="8.8125,106"
-              Start="0,0"
-              End="8.8125,98.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,49" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,49"
-                    Point2="0,53"
-                    Point3="4,53" />
-                  <mssgle:LineSegment
-                    End="4.8125,53" />
-                  <mssgle:CubicBezierSegment
-                    Point1="4.8125,53"
-                    Point2="8.8125,53"
-                    Point3="8.8125,57" />
-                  <mssgle:LineSegment
-                    End="8.8125,98.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
       </GraphLayout>
     </LayoutInfo>
   </TaskHost>
@@ -17315,13 +19108,13 @@ ORDER BY [Date_Time]</property>
       <GraphLayout
         Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
-          Size="148,42"
-          Id="Package\Profile\Staging\UPDATE Stage"
-          TopLeft="600,632" />
-        <NodeLayout
           Size="145,42"
           Id="Package\Profile\Staging\INSERT Stage"
           TopLeft="298,504" />
+        <NodeLayout
+          Size="148,42"
+          Id="Package\Profile\Staging\UPDATE Stage"
+          TopLeft="600,632" />
         <NodeLayout
           Size="201,42"
           Id="Package\Profile\Staging\Identify Changed Records"
@@ -17346,78 +19139,6 @@ ORDER BY [Date_Time]</property>
           Size="133,42"
           Id="Package\Profile\Staging\DB ACCESS"
           TopLeft="316,71" />
-        <EdgeLayout
-          Id="Package\Profile\Staging.Paths[insert]"
-          TopLeft="640.3125,369">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="-269.8125,135"
-              Start="0,0"
-              End="-269.8125,127.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,42.5126050420168" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,42.5126050420168"
-                    Point2="0,46.5126050420168"
-                    Point3="-4,46.5126050420168" />
-                  <mssgle:LineSegment
-                    End="-265.8125,46.5126050420168" />
-                  <mssgle:CubicBezierSegment
-                    Point1="-265.8125,46.5126050420168"
-                    Point2="-269.8125,46.5126050420168"
-                    Point3="-269.8125,50.5126050420168" />
-                  <mssgle:LineSegment
-                    End="-269.8125,127.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-147.85623046875,51.5126050420168,25.8999609375,9.451171875"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\Profile\Staging.Paths[delete]"
-          TopLeft="714.3125,369">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="251.6875,134"
-              Start="0,0"
-              End="251.6875,126.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,42.1680672268908" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,42.1680672268908"
-                    Point2="0,46.1680672268908"
-                    Point3="4,46.1680672268908" />
-                  <mssgle:LineSegment
-                    End="247.6875,46.1680672268908" />
-                  <mssgle:CubicBezierSegment
-                    Point1="247.6875,46.1680672268908"
-                    Point2="251.6875,46.1680672268908"
-                    Point3="251.6875,50.1680672268908" />
-                  <mssgle:LineSegment
-                    End="251.6875,126.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="111.64779296875,51.1680672268908,28.3919140625,9.7490234375"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
         <EdgeLayout
           Id="Package\Profile\Staging.Paths[update1]"
           TopLeft="675.65625,546">
@@ -17497,7 +19218,9 @@ ORDER BY [Date_Time]</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -17531,7 +19254,9 @@ ORDER BY [Date_Time]</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -17553,7 +19278,81 @@ ORDER BY [Date_Time]</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Profile\Staging.Paths[insert]"
+          TopLeft="640.3125,369">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-269.8125,135"
+              Start="0,0"
+              End="-269.8125,127.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,42.5126050420168" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,42.5126050420168"
+                    Point2="0,46.5126050420168"
+                    Point3="-4,46.5126050420168" />
+                  <mssgle:LineSegment
+                    End="-265.8125,46.5126050420168" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-265.8125,46.5126050420168"
+                    Point2="-269.8125,46.5126050420168"
+                    Point3="-269.8125,50.5126050420168" />
+                  <mssgle:LineSegment
+                    End="-269.8125,127.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-147.85623046875,51.5126050420168,25.8999609375,9.451171875"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Profile\Staging.Paths[delete]"
+          TopLeft="714.3125,369">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="251.6875,134"
+              Start="0,0"
+              End="251.6875,126.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,42.1680672268908" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,42.1680672268908"
+                    Point2="0,46.1680672268908"
+                    Point3="4,46.1680672268908" />
+                  <mssgle:LineSegment
+                    End="247.6875,46.1680672268908" />
+                  <mssgle:CubicBezierSegment
+                    Point1="247.6875,46.1680672268908"
+                    Point2="251.6875,46.1680672268908"
+                    Point3="251.6875,50.1680672268908" />
+                  <mssgle:LineSegment
+                    End="251.6875,126.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="111.64779296875,51.1680672268908,28.3919140625,9.7490234375"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
