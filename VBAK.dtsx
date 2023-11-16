@@ -11,8 +11,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="Package1"
   DTS:PackageType="5"
-  DTS:VersionBuild="46"
-  DTS:VersionGUID="{856CD51A-4006-432A-901D-7A27F9FBA69A}">
+  DTS:VersionBuild="51"
+  DTS:VersionGUID="{7CC062BF-9BCF-4820-B391-B060F08B0FAB}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:Variables />
@@ -82,7 +82,7 @@
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
           SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-          SQLTask:SqlStatementSource="UPDATE &#xA;  A01 &#xA;SET &#xA;  A01.[AUDAT] = B01.[AUDAT], &#xA;  A01.[AUART] = B01.[AUART], &#xA;  A01.[LIFSK] = B01.[LIFSK], &#xA;  A01.[FAKSK] = B01.[FAKSK], &#xA;  A01.[KUNNR] = B01.[KUNNR], &#xA;  A01.[BSTNK] = B01.[BSTNK], &#xA;  A01.[VDATU] = B01.[VDATU], &#xA;  A01.[ERDAT] = B01.[ERDAT], &#xA;  A01.[ERNAM] = B01.[ERNAM], &#xA;  A01.[VBTYP] = B01.[VBTYP], &#xA;  A01.[AUGRU] = B01.[AUGRU], &#xA;  A01.[WAERK] = B01.[WAERK], &#xA;  A01.[VKGRP] = B01.[VKGRP], &#xA;  A01.[VKBUR] = B01.[VKBUR], &#xA;  A01.[BUKRS_VF] = B01.[BUKRS_VF], &#xA;  A01.VGBEL = B01.VGBEL &#xA;FROM &#xA;  [VBAK] A01 &#xA;  INNER JOIN [VBAK_STAGE_UPDATE] B01 ON (&#xA;    A01.[MANDT] = B01.[MANDT] &#xA;    AND A01.[VBELN] = B01.[VBELN]&#xA;  )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          SQLTask:SqlStatementSource="UPDATE &#xA;  A01 &#xA;SET &#xA;  A01.[AUDAT] = B01.[AUDAT], &#xA;  A01.[AUART] = B01.[AUART], &#xA;  A01.[LIFSK] = B01.[LIFSK], &#xA;  A01.[FAKSK] = B01.[FAKSK], &#xA;  A01.[KUNNR] = B01.[KUNNR], &#xA;  A01.[BSTNK] = B01.[BSTNK], &#xA;  A01.[VDATU] = B01.[VDATU], &#xA;  A01.[ERDAT] = B01.[ERDAT], &#xA;  A01.[ERNAM] = B01.[ERNAM], &#xA;  A01.[VBTYP] = B01.[VBTYP], &#xA;  A01.[AUGRU] = B01.[AUGRU], &#xA;  A01.[WAERK] = B01.[WAERK], &#xA;  A01.[VKGRP] = B01.[VKGRP], &#xA;  A01.[VKBUR] = B01.[VKBUR], &#xA;  A01.[BUKRS_VF] = B01.[BUKRS_VF], &#xA;  A01.[VGBEL] = B01.[VGBEL],&#xA;  A01.[ZCUSTORG] = B01.[ZCUSTORG]&#xA;FROM &#xA;  [VBAK] A01 &#xA;  INNER JOIN [VBAK_STAGE_UPDATE] B01 ON (&#xA;    A01.[MANDT] = B01.[MANDT] &#xA;    AND A01.[VBELN] = B01.[VBELN]&#xA;  )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
@@ -285,7 +285,8 @@ ORDER BY
   [VKGRP], 
   [VKBUR], 
   [BUKRS_VF], 
-  isnull(VGBEL, '') as VGBEL 
+  ISNULL(VGBEL, '') AS VGBEL, 
+  CONCAT([KUNNR], '|', [VKORG]) AS ZCUSTORG 
 FROM 
   [ecp].[VBAK] (NOLOCK) 
 ORDER BY 
@@ -539,6 +540,16 @@ ORDER BY
                       lineageId="Package\VBAK\DB SAP VBAK.Outputs[OLE DB Source Output].Columns[LIFSK]"
                       name="LIFSK"
                       truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\VBAK\DB SAP VBAK.Outputs[OLE DB Source Output].Columns[ZCUSTORG]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\VBAK\DB SAP VBAK.Outputs[OLE DB Source Output].ExternalColumns[ZCUSTORG]"
+                      length="15"
+                      lineageId="Package\VBAK\DB SAP VBAK.Outputs[OLE DB Source Output].Columns[ZCUSTORG]"
+                      name="ZCUSTORG"
+                      truncationRowDisposition="FailComponent" />
                   </outputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -647,6 +658,11 @@ ORDER BY
                       dataType="wstr"
                       length="2"
                       name="LIFSK" />
+                    <externalMetadataColumn
+                      refId="Package\VBAK\DB SAP VBAK.Outputs[OLE DB Source Output].ExternalColumns[ZCUSTORG]"
+                      dataType="wstr"
+                      length="15"
+                      name="ZCUSTORG" />
                   </externalMetadataColumns>
                 </output>
                 <output
@@ -780,6 +796,12 @@ ORDER BY
                       length="10"
                       lineageId="Package\VBAK\DB SAP VBAK.Outputs[OLE DB Source Error Output].Columns[VGBEL]"
                       name="VGBEL" />
+                    <outputColumn
+                      refId="Package\VBAK\DB SAP VBAK.Outputs[OLE DB Source Error Output].Columns[ZCUSTORG]"
+                      dataType="wstr"
+                      length="15"
+                      lineageId="Package\VBAK\DB SAP VBAK.Outputs[OLE DB Source Error Output].Columns[ZCUSTORG]"
+                      name="ZCUSTORG" />
                     <outputColumn
                       refId="Package\VBAK\DB SAP VBAK.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
                       dataType="i4"
@@ -1177,6 +1199,13 @@ ORDER BY
                       cachedName="LIFSK"
                       externalMetadataColumnId="Package\VBAK\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[LIFSK]"
                       lineageId="Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[LIFSK]" />
+                    <inputColumn
+                      refId="Package\VBAK\insert new records.Inputs[OLE DB Destination Input].Columns[ZCUSTORG]"
+                      cachedDataType="wstr"
+                      cachedLength="15"
+                      cachedName="ZCUSTORG"
+                      externalMetadataColumnId="Package\VBAK\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[ZCUSTORG]"
+                      lineageId="Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[ZCUSTORG]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -1285,6 +1314,11 @@ ORDER BY
                       dataType="wstr"
                       length="2"
                       name="LIFSK" />
+                    <externalMetadataColumn
+                      refId="Package\VBAK\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[ZCUSTORG]"
+                      dataType="wstr"
+                      length="15"
+                      name="ZCUSTORG" />
                   </externalMetadataColumns>
                 </input>
               </inputs>
@@ -1473,6 +1507,12 @@ ORDER BY
                       cachedLength="2"
                       cachedName="LIFSK"
                       lineageId="Package\VBAK\DB SAP VBAK.Outputs[OLE DB Source Output].Columns[LIFSK]" />
+                    <inputColumn
+                      refId="Package\VBAK\Merge Join.Inputs[Merge Join Left Input].Columns[ZCUSTORG]"
+                      cachedDataType="wstr"
+                      cachedLength="15"
+                      cachedName="ZCUSTORG"
+                      lineageId="Package\VBAK\DB SAP VBAK.Outputs[OLE DB Source Output].Columns[ZCUSTORG]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
@@ -1835,6 +1875,20 @@ ORDER BY
                           name="InputColumnID">#{Package\VBAK\Merge Join.Inputs[Merge Join Left Input].Columns[LIFSK]}</property>
                       </properties>
                     </outputColumn>
+                    <outputColumn
+                      refId="Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[ZCUSTORG]"
+                      dataType="wstr"
+                      length="15"
+                      lineageId="Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[ZCUSTORG]"
+                      name="ZCUSTORG">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\VBAK\Merge Join.Inputs[Merge Join Left Input].Columns[ZCUSTORG]}</property>
+                      </properties>
+                    </outputColumn>
                   </outputColumns>
                   <externalMetadataColumns />
                 </output>
@@ -2067,6 +2121,13 @@ ORDER BY
                       cachedName="LIFSK"
                       externalMetadataColumnId="Package\VBAK\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[LIFSK]"
                       lineageId="Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[LIFSK]" />
+                    <inputColumn
+                      refId="Package\VBAK\stage changed records.Inputs[OLE DB Destination Input].Columns[ZCUSTORG]"
+                      cachedDataType="wstr"
+                      cachedLength="15"
+                      cachedName="ZCUSTORG"
+                      externalMetadataColumnId="Package\VBAK\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[ZCUSTORG]"
+                      lineageId="Package\VBAK\Merge Join.Outputs[Merge Join Output].Columns[ZCUSTORG]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -2175,6 +2236,11 @@ ORDER BY
                       dataType="wstr"
                       length="2"
                       name="LIFSK" />
+                    <externalMetadataColumn
+                      refId="Package\VBAK\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[ZCUSTORG]"
+                      dataType="wstr"
+                      length="15"
+                      name="ZCUSTORG" />
                   </externalMetadataColumns>
                 </input>
               </inputs>
@@ -2416,26 +2482,26 @@ ORDER BY
         <NodeLayout
           Size="135,42"
           Id="Package\Clean Stage"
-          TopLeft="140.5,43.5" />
+          TopLeft="17.5,13.5" />
         <NodeLayout
           Size="135,42"
           Id="Package\DELETE"
-          TopLeft="140.5,286" />
+          TopLeft="17.5,256" />
         <NodeLayout
           Size="135,42"
           Id="Package\INSERT"
-          TopLeft="140.5,366.833333333333" />
+          TopLeft="17.5,336.833333333333" />
         <NodeLayout
           Size="135,42"
           Id="Package\UPDATE"
-          TopLeft="140.5,205.166666666667" />
+          TopLeft="17.5,175.166666666667" />
         <NodeLayout
           Size="135,42"
           Id="Package\VBAK"
-          TopLeft="140.5,124.333333333333" />
+          TopLeft="17.5,94.333333333333" />
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint]"
-          TopLeft="208,166.333333333333">
+          TopLeft="85,136.333333333333">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -2457,7 +2523,7 @@ ORDER BY
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 1]"
-          TopLeft="208,85.5">
+          TopLeft="85,55.5">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -2479,7 +2545,7 @@ ORDER BY
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 2]"
-          TopLeft="208,247.166666666667">
+          TopLeft="85,217.166666666667">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -2501,7 +2567,7 @@ ORDER BY
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 3]"
-          TopLeft="208,328">
+          TopLeft="85,298">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -2530,123 +2596,33 @@ ORDER BY
       <GraphLayout
         Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
+          Size="151,42"
+          Id="Package\VBAK\Identify Record"
+          TopLeft="358,283" />
+        <NodeLayout
+          Size="186,42"
+          Id="Package\VBAK\stage changed records"
+          TopLeft="341,511" />
+        <NodeLayout
           Size="180,42"
           Id="Package\VBAK\stage deleted records"
           TopLeft="673,412" />
         <NodeLayout
           Size="130,42"
           Id="Package\VBAK\Merge Join"
-          TopLeft="376,162" />
-        <NodeLayout
-          Size="166,42"
-          Id="Package\VBAK\insert new records"
-          TopLeft="60,403" />
+          TopLeft="375,162" />
         <NodeLayout
           Size="143,42"
           Id="Package\VBAK\DB SAP VBAK"
           TopLeft="197,60" />
         <NodeLayout
-          Size="186,42"
-          Id="Package\VBAK\stage changed records"
-          TopLeft="341,511" />
-        <NodeLayout
-          Size="151,42"
-          Id="Package\VBAK\Identify Record"
-          TopLeft="358,283" />
+          Size="166,42"
+          Id="Package\VBAK\insert new records"
+          TopLeft="60,403" />
         <NodeLayout
           Size="142,42"
           Id="Package\VBAK\DB DBI VBAK"
           TopLeft="550,63" />
-        <EdgeLayout
-          Id="Package\VBAK.Paths[OLE DB Source Output1]"
-          TopLeft="621,105">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="-159.666666666667,57"
-              Start="0,0"
-              End="-159.666666666667,49.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,29.7841945288754" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,29.7841945288754"
-                    Point2="0,33.7841945288754"
-                    Point3="-4,33.7841945288754" />
-                  <mssgle:LineSegment
-                    End="-155.666666666667,33.7841945288754" />
-                  <mssgle:CubicBezierSegment
-                    Point1="-155.666666666667,33.7841945288754"
-                    Point2="-159.666666666667,33.7841945288754"
-                    Point3="-159.666666666667,37.7841945288754" />
-                  <mssgle:LineSegment
-                    End="-159.666666666667,49.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\VBAK.Paths[OLE DB Source Output]"
-          TopLeft="268.5,102">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="172.5,60"
-              Start="0,0"
-              End="172.5,52.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,26" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,26"
-                    Point2="0,30"
-                    Point3="4,30" />
-                  <mssgle:LineSegment
-                    End="168.5,30" />
-                  <mssgle:CubicBezierSegment
-                    Point1="168.5,30"
-                    Point2="172.5,30"
-                    Point3="172.5,34" />
-                  <mssgle:LineSegment
-                    End="172.5,52.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\VBAK.Paths[Merge Join Output]"
-          TopLeft="437.25,204">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,79"
-              Start="0,0"
-              End="0,71.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,71.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
         <EdgeLayout
           Id="Package\VBAK.Paths[insert]"
           TopLeft="397.75,325">
@@ -2743,11 +2719,101 @@ ORDER BY
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
+        <EdgeLayout
+          Id="Package\VBAK.Paths[OLE DB Source Output1]"
+          TopLeft="621,105">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-160.666666666667,57"
+              Start="0,0"
+              End="-160.666666666667,49.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,29.7841945288754" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,29.7841945288754"
+                    Point2="0,33.7841945288754"
+                    Point3="-4,33.7841945288754" />
+                  <mssgle:LineSegment
+                    End="-156.666666666667,33.7841945288754" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-156.666666666667,33.7841945288754"
+                    Point2="-160.666666666667,33.7841945288754"
+                    Point3="-160.666666666667,37.7841945288754" />
+                  <mssgle:LineSegment
+                    End="-160.666666666667,49.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\VBAK.Paths[OLE DB Source Output]"
+          TopLeft="268.5,102">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="151.166666666667,60"
+              Start="0,0"
+              End="151.166666666667,52.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,31.5623100303951" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,31.5623100303951"
+                    Point2="0,35.5623100303951"
+                    Point3="4,35.5623100303951" />
+                  <mssgle:LineSegment
+                    End="147.166666666667,35.5623100303951" />
+                  <mssgle:CubicBezierSegment
+                    Point1="147.166666666667,35.5623100303951"
+                    Point2="151.166666666667,35.5623100303951"
+                    Point3="151.166666666667,39.5623100303951" />
+                  <mssgle:LineSegment
+                    End="151.166666666667,52.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\VBAK.Paths[Merge Join Output]"
+          TopLeft="436.75,204">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,79"
+              Start="0,0"
+              End="0,71.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,71.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
       </GraphLayout>
     </LayoutInfo>
   </TaskHost>
   <PipelineComponentMetadata
-    design-time-name="Package\VBAK\stage deleted records">
+    design-time-name="Package\VBAK\stage changed records">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -2760,7 +2826,7 @@ ORDER BY
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\VBAK\insert new records">
+    design-time-name="Package\VBAK\stage deleted records">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -2781,7 +2847,7 @@ ORDER BY
     </Properties>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
-    design-time-name="Package\VBAK\stage changed records">
+    design-time-name="Package\VBAK\insert new records">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
