@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+﻿<?xml version="1.0"?>
 <DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
   DTS:refId="Package"
   DTS:CreationDate="4/19/2021 1:22:16 PM"
@@ -11,20 +11,20 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="QMEL"
   DTS:PackageType="5"
-  DTS:VersionBuild="13"
-  DTS:VersionGUID="{3EAC401C-DF1A-4675-B53E-5B82D1925B9C}">
+  DTS:VersionBuild="15"
+  DTS:VersionGUID="{7040AAFD-A88D-496F-A55D-2E5B84769C3E}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:Variables />
   <DTS:Executables>
     <DTS:Executable
-      DTS:refId="Package\clean stage"
+      DTS:refId="Package\Clean Stage"
       DTS:CreationName="Microsoft.ExecuteSQLTask"
       DTS:Description="Execute SQL Task"
       DTS:DTSID="{2d1fc780-dd13-4fb7-ba3c-124ac5053856}"
       DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
-      DTS:ObjectName="clean stage"
+      DTS:ObjectName="Clean Stage"
       DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
       DTS:ThreadHint="0">
       <DTS:Variables />
@@ -32,6 +32,40 @@
         <SQLTask:SqlTaskData
           SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
           SQLTask:SqlStatementSource="TRUNCATE TABLE [QMEL_STAGE_UPDATE]&#xA;go&#xA;TRUNCATE TABLE [QMEL_STAGE_DELETE]&#xA;go&#xA;TRUNCATE TABLE [QMEL_STAGE_INSERT]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\DELETE"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{a32f5513-c185-4045-8f7d-b38f1009899d}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="DELETE"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="DELETE A01&#xA;FROM [QMEL] A01 INNER JOIN [QMEL_STAGE_DELETE] B01 ON ( A01.[MANDT] = B01.[MANDT]&#xA;                                                    AND A01.[QMNUM] = B01.[QMNUM] )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\INSERT"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{18965fc7-648c-437c-8e04-8cdd69244bba}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="INSERT"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="INSERT INTO [QMEL]&#xA;SELECT * FROM [QMEL_STAGE_INSERT]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
@@ -73,23 +107,8 @@
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT A01.[MANDT]
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT A01.[MANDT]
       ,A01.[QMNUM]
-      ,A01.[QMART]
-      ,A01.[QMTXT]
-      ,A01.[QMDAT]
-      ,A01.[MATNR]
-      ,A01.[MATKL]
-      ,A01.[QMCOD]
-      ,A01.[CHARG]
-      ,A01.[PRUEFLOS]
-      ,A01.[FERTAUFNR]
-      ,A01.[MGEIG]
-      ,A01.[MGFRD]
-      ,A01.[MGEIN]
-      ,A01.[REFNUM]
-      ,A01.[ERNAM]
-      ,A01.[MAWERK]
 FROM [QMEL] A01 (NOLOCK)
 ORDER BY A01.[MANDT]
       ,A01.[QMNUM]</property>
@@ -151,158 +170,6 @@ ORDER BY A01.[MANDT]
                       name="QMNUM"
                       sortKeyPosition="2"
                       truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].Columns[QMART]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[QMART]"
-                      length="2"
-                      lineageId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].Columns[QMART]"
-                      name="QMART"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].Columns[QMTXT]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[QMTXT]"
-                      length="40"
-                      lineageId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].Columns[QMTXT]"
-                      name="QMTXT"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].Columns[QMDAT]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[QMDAT]"
-                      length="8"
-                      lineageId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].Columns[QMDAT]"
-                      name="QMDAT"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].Columns[MATNR]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[MATNR]"
-                      length="18"
-                      lineageId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].Columns[MATNR]"
-                      name="MATNR"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].Columns[MATKL]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[MATKL]"
-                      length="9"
-                      lineageId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].Columns[MATKL]"
-                      name="MATKL"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].Columns[QMCOD]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[QMCOD]"
-                      length="4"
-                      lineageId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].Columns[QMCOD]"
-                      name="QMCOD"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].Columns[CHARG]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[CHARG]"
-                      length="10"
-                      lineageId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].Columns[CHARG]"
-                      name="CHARG"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].Columns[FERTAUFNR]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[FERTAUFNR]"
-                      length="12"
-                      lineageId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].Columns[FERTAUFNR]"
-                      name="FERTAUFNR"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].Columns[MGEIG]"
-                      dataType="numeric"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[MGEIG]"
-                      lineageId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].Columns[MGEIG]"
-                      name="MGEIG"
-                      precision="13"
-                      scale="3"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].Columns[MGFRD]"
-                      dataType="numeric"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[MGFRD]"
-                      lineageId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].Columns[MGFRD]"
-                      name="MGFRD"
-                      precision="13"
-                      scale="3"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].Columns[MGEIN]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[MGEIN]"
-                      length="3"
-                      lineageId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].Columns[MGEIN]"
-                      name="MGEIN"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].Columns[REFNUM]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[REFNUM]"
-                      length="20"
-                      lineageId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].Columns[REFNUM]"
-                      name="REFNUM"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].Columns[ERNAM]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[ERNAM]"
-                      length="12"
-                      lineageId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].Columns[ERNAM]"
-                      name="ERNAM"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].Columns[PRUEFLOS]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[PRUEFLOS]"
-                      length="12"
-                      lineageId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].Columns[PRUEFLOS]"
-                      name="PRUEFLOS"
-                      truncationRowDisposition="FailComponent" />
-                    <outputColumn
-                      refId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].Columns[MAWERK]"
-                      dataType="wstr"
-                      errorOrTruncationOperation="Conversion"
-                      errorRowDisposition="FailComponent"
-                      externalMetadataColumnId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[MAWERK]"
-                      length="4"
-                      lineageId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].Columns[MAWERK]"
-                      name="MAWERK"
-                      truncationRowDisposition="FailComponent" />
                   </outputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -316,83 +183,6 @@ ORDER BY A01.[MANDT]
                       dataType="wstr"
                       length="12"
                       name="QMNUM" />
-                    <externalMetadataColumn
-                      refId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[QMART]"
-                      dataType="wstr"
-                      length="2"
-                      name="QMART" />
-                    <externalMetadataColumn
-                      refId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[QMTXT]"
-                      dataType="wstr"
-                      length="40"
-                      name="QMTXT" />
-                    <externalMetadataColumn
-                      refId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[QMDAT]"
-                      dataType="wstr"
-                      length="8"
-                      name="QMDAT" />
-                    <externalMetadataColumn
-                      refId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[MATNR]"
-                      dataType="wstr"
-                      length="18"
-                      name="MATNR" />
-                    <externalMetadataColumn
-                      refId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[MATKL]"
-                      dataType="wstr"
-                      length="9"
-                      name="MATKL" />
-                    <externalMetadataColumn
-                      refId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[QMCOD]"
-                      dataType="wstr"
-                      length="4"
-                      name="QMCOD" />
-                    <externalMetadataColumn
-                      refId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[CHARG]"
-                      dataType="wstr"
-                      length="10"
-                      name="CHARG" />
-                    <externalMetadataColumn
-                      refId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[FERTAUFNR]"
-                      dataType="wstr"
-                      length="12"
-                      name="FERTAUFNR" />
-                    <externalMetadataColumn
-                      refId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[MGEIG]"
-                      dataType="numeric"
-                      name="MGEIG"
-                      precision="13"
-                      scale="3" />
-                    <externalMetadataColumn
-                      refId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[MGFRD]"
-                      dataType="numeric"
-                      name="MGFRD"
-                      precision="13"
-                      scale="3" />
-                    <externalMetadataColumn
-                      refId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[MGEIN]"
-                      dataType="wstr"
-                      length="3"
-                      name="MGEIN" />
-                    <externalMetadataColumn
-                      refId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[REFNUM]"
-                      dataType="wstr"
-                      length="20"
-                      name="REFNUM" />
-                    <externalMetadataColumn
-                      refId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[ERNAM]"
-                      dataType="wstr"
-                      length="12"
-                      name="ERNAM" />
-                    <externalMetadataColumn
-                      refId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[PRUEFLOS]"
-                      dataType="wstr"
-                      length="12"
-                      name="PRUEFLOS" />
-                    <externalMetadataColumn
-                      refId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[MAWERK]"
-                      dataType="wstr"
-                      length="4"
-                      name="MAWERK" />
                   </externalMetadataColumns>
                 </output>
                 <output
@@ -412,98 +202,6 @@ ORDER BY A01.[MANDT]
                       length="12"
                       lineageId="Package\QMEL\DB PBI.Outputs[OLE DB Source Error Output].Columns[QMNUM]"
                       name="QMNUM" />
-                    <outputColumn
-                      refId="Package\QMEL\DB PBI.Outputs[OLE DB Source Error Output].Columns[QMART]"
-                      dataType="wstr"
-                      length="2"
-                      lineageId="Package\QMEL\DB PBI.Outputs[OLE DB Source Error Output].Columns[QMART]"
-                      name="QMART" />
-                    <outputColumn
-                      refId="Package\QMEL\DB PBI.Outputs[OLE DB Source Error Output].Columns[QMTXT]"
-                      dataType="wstr"
-                      length="40"
-                      lineageId="Package\QMEL\DB PBI.Outputs[OLE DB Source Error Output].Columns[QMTXT]"
-                      name="QMTXT" />
-                    <outputColumn
-                      refId="Package\QMEL\DB PBI.Outputs[OLE DB Source Error Output].Columns[QMDAT]"
-                      dataType="wstr"
-                      length="8"
-                      lineageId="Package\QMEL\DB PBI.Outputs[OLE DB Source Error Output].Columns[QMDAT]"
-                      name="QMDAT" />
-                    <outputColumn
-                      refId="Package\QMEL\DB PBI.Outputs[OLE DB Source Error Output].Columns[MATNR]"
-                      dataType="wstr"
-                      length="18"
-                      lineageId="Package\QMEL\DB PBI.Outputs[OLE DB Source Error Output].Columns[MATNR]"
-                      name="MATNR" />
-                    <outputColumn
-                      refId="Package\QMEL\DB PBI.Outputs[OLE DB Source Error Output].Columns[MATKL]"
-                      dataType="wstr"
-                      length="9"
-                      lineageId="Package\QMEL\DB PBI.Outputs[OLE DB Source Error Output].Columns[MATKL]"
-                      name="MATKL" />
-                    <outputColumn
-                      refId="Package\QMEL\DB PBI.Outputs[OLE DB Source Error Output].Columns[QMCOD]"
-                      dataType="wstr"
-                      length="4"
-                      lineageId="Package\QMEL\DB PBI.Outputs[OLE DB Source Error Output].Columns[QMCOD]"
-                      name="QMCOD" />
-                    <outputColumn
-                      refId="Package\QMEL\DB PBI.Outputs[OLE DB Source Error Output].Columns[CHARG]"
-                      dataType="wstr"
-                      length="10"
-                      lineageId="Package\QMEL\DB PBI.Outputs[OLE DB Source Error Output].Columns[CHARG]"
-                      name="CHARG" />
-                    <outputColumn
-                      refId="Package\QMEL\DB PBI.Outputs[OLE DB Source Error Output].Columns[PRUEFLOS]"
-                      dataType="wstr"
-                      length="12"
-                      lineageId="Package\QMEL\DB PBI.Outputs[OLE DB Source Error Output].Columns[PRUEFLOS]"
-                      name="PRUEFLOS" />
-                    <outputColumn
-                      refId="Package\QMEL\DB PBI.Outputs[OLE DB Source Error Output].Columns[FERTAUFNR]"
-                      dataType="wstr"
-                      length="12"
-                      lineageId="Package\QMEL\DB PBI.Outputs[OLE DB Source Error Output].Columns[FERTAUFNR]"
-                      name="FERTAUFNR" />
-                    <outputColumn
-                      refId="Package\QMEL\DB PBI.Outputs[OLE DB Source Error Output].Columns[MGEIG]"
-                      dataType="numeric"
-                      lineageId="Package\QMEL\DB PBI.Outputs[OLE DB Source Error Output].Columns[MGEIG]"
-                      name="MGEIG"
-                      precision="13"
-                      scale="3" />
-                    <outputColumn
-                      refId="Package\QMEL\DB PBI.Outputs[OLE DB Source Error Output].Columns[MGFRD]"
-                      dataType="numeric"
-                      lineageId="Package\QMEL\DB PBI.Outputs[OLE DB Source Error Output].Columns[MGFRD]"
-                      name="MGFRD"
-                      precision="13"
-                      scale="3" />
-                    <outputColumn
-                      refId="Package\QMEL\DB PBI.Outputs[OLE DB Source Error Output].Columns[MGEIN]"
-                      dataType="wstr"
-                      length="3"
-                      lineageId="Package\QMEL\DB PBI.Outputs[OLE DB Source Error Output].Columns[MGEIN]"
-                      name="MGEIN" />
-                    <outputColumn
-                      refId="Package\QMEL\DB PBI.Outputs[OLE DB Source Error Output].Columns[REFNUM]"
-                      dataType="wstr"
-                      length="20"
-                      lineageId="Package\QMEL\DB PBI.Outputs[OLE DB Source Error Output].Columns[REFNUM]"
-                      name="REFNUM" />
-                    <outputColumn
-                      refId="Package\QMEL\DB PBI.Outputs[OLE DB Source Error Output].Columns[ERNAM]"
-                      dataType="wstr"
-                      length="12"
-                      lineageId="Package\QMEL\DB PBI.Outputs[OLE DB Source Error Output].Columns[ERNAM]"
-                      name="ERNAM" />
-                    <outputColumn
-                      refId="Package\QMEL\DB PBI.Outputs[OLE DB Source Error Output].Columns[MAWERK]"
-                      dataType="wstr"
-                      length="4"
-                      lineageId="Package\QMEL\DB PBI.Outputs[OLE DB Source Error Output].Columns[MAWERK]"
-                      name="MAWERK" />
                     <outputColumn
                       refId="Package\QMEL\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
                       dataType="i4"
@@ -546,7 +244,7 @@ ORDER BY A01.[MANDT]
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT A01.[MANDT]
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT A01.[MANDT]
       ,A01.[QMNUM]
       ,A01.[QMART]
       ,A01.[QMTXT]
@@ -563,6 +261,7 @@ ORDER BY A01.[MANDT]
       ,A01.[REFNUM]
       ,A01.[ERNAM]
       ,A01.[MAWERK]
+      ,A01.[QMDAB]
 FROM [ecp].[QMEL] A01 (NOLOCK)
 ORDER BY A01.[MANDT]
       ,A01.[QMNUM]</property>
@@ -776,6 +475,16 @@ ORDER BY A01.[MANDT]
                       lineageId="Package\QMEL\DB SAP.Outputs[OLE DB Source Output].Columns[MAWERK]"
                       name="MAWERK"
                       truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\QMEL\DB SAP.Outputs[OLE DB Source Output].Columns[QMDAB]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\QMEL\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[QMDAB]"
+                      length="8"
+                      lineageId="Package\QMEL\DB SAP.Outputs[OLE DB Source Output].Columns[QMDAB]"
+                      name="QMDAB"
+                      truncationRowDisposition="FailComponent" />
                   </outputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -866,6 +575,11 @@ ORDER BY A01.[MANDT]
                       dataType="wstr"
                       length="4"
                       name="MAWERK" />
+                    <externalMetadataColumn
+                      refId="Package\QMEL\DB SAP.Outputs[OLE DB Source Output].ExternalColumns[QMDAB]"
+                      dataType="wstr"
+                      length="8"
+                      name="QMDAB" />
                   </externalMetadataColumns>
                 </output>
                 <output
@@ -978,6 +692,12 @@ ORDER BY A01.[MANDT]
                       lineageId="Package\QMEL\DB SAP.Outputs[OLE DB Source Error Output].Columns[MAWERK]"
                       name="MAWERK" />
                     <outputColumn
+                      refId="Package\QMEL\DB SAP.Outputs[OLE DB Source Error Output].Columns[QMDAB]"
+                      dataType="wstr"
+                      length="8"
+                      lineageId="Package\QMEL\DB SAP.Outputs[OLE DB Source Error Output].Columns[QMDAB]"
+                      name="QMDAB" />
+                    <outputColumn
                       refId="Package\QMEL\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
                       dataType="i4"
                       lineageId="Package\QMEL\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
@@ -987,274 +707,6 @@ ORDER BY A01.[MANDT]
                       refId="Package\QMEL\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
                       dataType="i4"
                       lineageId="Package\QMEL\DB SAP.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
-                      name="ErrorColumn"
-                      specialFlags="2" />
-                  </outputColumns>
-                  <externalMetadataColumns />
-                </output>
-              </outputs>
-            </component>
-            <component
-              refId="Package\QMEL\Find Changed Records"
-              componentClassID="Microsoft.ConditionalSplit"
-              contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
-              description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
-              name="Find Changed Records"
-              usesDispositions="true">
-              <inputs>
-                <input
-                  refId="Package\QMEL\Find Changed Records.Inputs[Conditional Split Input]"
-                  description="Input to the Conditional Split Transformation"
-                  name="Conditional Split Input">
-                  <inputColumns>
-                    <inputColumn
-                      refId="Package\QMEL\Find Changed Records.Inputs[Conditional Split Input].Columns[QMART]"
-                      cachedDataType="wstr"
-                      cachedLength="2"
-                      cachedName="QMART"
-                      lineageId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[QMART]" />
-                    <inputColumn
-                      refId="Package\QMEL\Find Changed Records.Inputs[Conditional Split Input].Columns[QMTXT]"
-                      cachedDataType="wstr"
-                      cachedLength="40"
-                      cachedName="QMTXT"
-                      lineageId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[QMTXT]" />
-                    <inputColumn
-                      refId="Package\QMEL\Find Changed Records.Inputs[Conditional Split Input].Columns[QMDAT]"
-                      cachedDataType="wstr"
-                      cachedLength="8"
-                      cachedName="QMDAT"
-                      lineageId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[QMDAT]" />
-                    <inputColumn
-                      refId="Package\QMEL\Find Changed Records.Inputs[Conditional Split Input].Columns[MATNR]"
-                      cachedDataType="wstr"
-                      cachedLength="18"
-                      cachedName="MATNR"
-                      lineageId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[MATNR]" />
-                    <inputColumn
-                      refId="Package\QMEL\Find Changed Records.Inputs[Conditional Split Input].Columns[MATKL]"
-                      cachedDataType="wstr"
-                      cachedLength="9"
-                      cachedName="MATKL"
-                      lineageId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[MATKL]" />
-                    <inputColumn
-                      refId="Package\QMEL\Find Changed Records.Inputs[Conditional Split Input].Columns[QMCOD]"
-                      cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="QMCOD"
-                      lineageId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[QMCOD]" />
-                    <inputColumn
-                      refId="Package\QMEL\Find Changed Records.Inputs[Conditional Split Input].Columns[CHARG]"
-                      cachedDataType="wstr"
-                      cachedLength="10"
-                      cachedName="CHARG"
-                      lineageId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[CHARG]" />
-                    <inputColumn
-                      refId="Package\QMEL\Find Changed Records.Inputs[Conditional Split Input].Columns[FERTAUFNR]"
-                      cachedDataType="wstr"
-                      cachedLength="12"
-                      cachedName="FERTAUFNR"
-                      lineageId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[FERTAUFNR]" />
-                    <inputColumn
-                      refId="Package\QMEL\Find Changed Records.Inputs[Conditional Split Input].Columns[MGEIG]"
-                      cachedDataType="numeric"
-                      cachedName="MGEIG"
-                      cachedPrecision="13"
-                      cachedScale="3"
-                      lineageId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[MGEIG]" />
-                    <inputColumn
-                      refId="Package\QMEL\Find Changed Records.Inputs[Conditional Split Input].Columns[MGFRD]"
-                      cachedDataType="numeric"
-                      cachedName="MGFRD"
-                      cachedPrecision="13"
-                      cachedScale="3"
-                      lineageId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[MGFRD]" />
-                    <inputColumn
-                      refId="Package\QMEL\Find Changed Records.Inputs[Conditional Split Input].Columns[MGEIN]"
-                      cachedDataType="wstr"
-                      cachedLength="3"
-                      cachedName="MGEIN"
-                      lineageId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[MGEIN]" />
-                    <inputColumn
-                      refId="Package\QMEL\Find Changed Records.Inputs[Conditional Split Input].Columns[REFNUM]"
-                      cachedDataType="wstr"
-                      cachedLength="20"
-                      cachedName="REFNUM"
-                      lineageId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[REFNUM]" />
-                    <inputColumn
-                      refId="Package\QMEL\Find Changed Records.Inputs[Conditional Split Input].Columns[QMART (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="2"
-                      cachedName="QMART (1)"
-                      lineageId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[QMART (1)]" />
-                    <inputColumn
-                      refId="Package\QMEL\Find Changed Records.Inputs[Conditional Split Input].Columns[QMTXT (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="40"
-                      cachedName="QMTXT (1)"
-                      lineageId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[QMTXT (1)]" />
-                    <inputColumn
-                      refId="Package\QMEL\Find Changed Records.Inputs[Conditional Split Input].Columns[QMDAT (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="8"
-                      cachedName="QMDAT (1)"
-                      lineageId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[QMDAT (1)]" />
-                    <inputColumn
-                      refId="Package\QMEL\Find Changed Records.Inputs[Conditional Split Input].Columns[MATNR (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="18"
-                      cachedName="MATNR (1)"
-                      lineageId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[MATNR (1)]" />
-                    <inputColumn
-                      refId="Package\QMEL\Find Changed Records.Inputs[Conditional Split Input].Columns[MATKL (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="9"
-                      cachedName="MATKL (1)"
-                      lineageId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[MATKL (1)]" />
-                    <inputColumn
-                      refId="Package\QMEL\Find Changed Records.Inputs[Conditional Split Input].Columns[QMCOD (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="QMCOD (1)"
-                      lineageId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[QMCOD (1)]" />
-                    <inputColumn
-                      refId="Package\QMEL\Find Changed Records.Inputs[Conditional Split Input].Columns[CHARG (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="10"
-                      cachedName="CHARG (1)"
-                      lineageId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[CHARG (1)]" />
-                    <inputColumn
-                      refId="Package\QMEL\Find Changed Records.Inputs[Conditional Split Input].Columns[FERTAUFNR (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="12"
-                      cachedName="FERTAUFNR (1)"
-                      lineageId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[FERTAUFNR (1)]" />
-                    <inputColumn
-                      refId="Package\QMEL\Find Changed Records.Inputs[Conditional Split Input].Columns[MGEIG (1)]"
-                      cachedDataType="numeric"
-                      cachedName="MGEIG (1)"
-                      cachedPrecision="13"
-                      cachedScale="3"
-                      lineageId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[MGEIG (1)]" />
-                    <inputColumn
-                      refId="Package\QMEL\Find Changed Records.Inputs[Conditional Split Input].Columns[MGFRD (1)]"
-                      cachedDataType="numeric"
-                      cachedName="MGFRD (1)"
-                      cachedPrecision="13"
-                      cachedScale="3"
-                      lineageId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[MGFRD (1)]" />
-                    <inputColumn
-                      refId="Package\QMEL\Find Changed Records.Inputs[Conditional Split Input].Columns[MGEIN (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="3"
-                      cachedName="MGEIN (1)"
-                      lineageId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[MGEIN (1)]" />
-                    <inputColumn
-                      refId="Package\QMEL\Find Changed Records.Inputs[Conditional Split Input].Columns[REFNUM (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="20"
-                      cachedName="REFNUM (1)"
-                      lineageId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[REFNUM (1)]" />
-                    <inputColumn
-                      refId="Package\QMEL\Find Changed Records.Inputs[Conditional Split Input].Columns[ERNAM]"
-                      cachedDataType="wstr"
-                      cachedLength="12"
-                      cachedName="ERNAM"
-                      lineageId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[ERNAM]" />
-                    <inputColumn
-                      refId="Package\QMEL\Find Changed Records.Inputs[Conditional Split Input].Columns[ERNAM (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="12"
-                      cachedName="ERNAM (1)"
-                      lineageId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[ERNAM (1)]" />
-                    <inputColumn
-                      refId="Package\QMEL\Find Changed Records.Inputs[Conditional Split Input].Columns[PRUEFLOS]"
-                      cachedDataType="wstr"
-                      cachedLength="12"
-                      cachedName="PRUEFLOS"
-                      lineageId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[PRUEFLOS]" />
-                    <inputColumn
-                      refId="Package\QMEL\Find Changed Records.Inputs[Conditional Split Input].Columns[PRUEFLOS (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="12"
-                      cachedName="PRUEFLOS (1)"
-                      lineageId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[PRUEFLOS (1)]" />
-                    <inputColumn
-                      refId="Package\QMEL\Find Changed Records.Inputs[Conditional Split Input].Columns[MAWERK]"
-                      cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="MAWERK"
-                      lineageId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[MAWERK]" />
-                    <inputColumn
-                      refId="Package\QMEL\Find Changed Records.Inputs[Conditional Split Input].Columns[MAWERK (1)]"
-                      cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="MAWERK (1)"
-                      lineageId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[MAWERK (1)]" />
-                  </inputColumns>
-                  <externalMetadataColumns />
-                </input>
-              </inputs>
-              <outputs>
-                <output
-                  refId="Package\QMEL\Find Changed Records.Outputs[update]"
-                  description="Output 1 of the Conditional Split Transformation"
-                  errorOrTruncationOperation="Computation"
-                  errorRowDisposition="FailComponent"
-                  exclusionGroup="1"
-                  name="update"
-                  synchronousInputId="Package\QMEL\Find Changed Records.Inputs[Conditional Split Input]"
-                  truncationRowDisposition="FailComponent">
-                  <properties>
-                    <property
-                      containsID="true"
-                      dataType="System.String"
-                      description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
-                      name="Expression">#{Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[QMART]} != #{Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[QMART (1)]} || #{Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[QMTXT]} != #{Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[QMTXT (1)]} || #{Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[QMDAT]} != #{Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[QMDAT (1)]} || #{Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[MATNR]} != #{Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[MATNR (1)]} || #{Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[MATKL]} != #{Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[MATKL (1)]} || #{Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[QMCOD]} != #{Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[QMCOD (1)]} || #{Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[CHARG]} != #{Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[CHARG (1)]} || #{Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[FERTAUFNR]} != #{Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[FERTAUFNR (1)]} || #{Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[MGEIG]} != #{Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[MGEIG (1)]} || #{Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[MGFRD]} != #{Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[MGFRD (1)]} || #{Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[MGEIN]} != #{Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[MGEIN (1)]} || #{Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[REFNUM]} != #{Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[REFNUM (1)]} || #{Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[ERNAM]} != #{Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[ERNAM (1)]} || #{Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[PRUEFLOS]} != #{Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[PRUEFLOS (1)]} || #{Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[MAWERK]} != #{Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[MAWERK (1)]}</property>
-                    <property
-                      containsID="true"
-                      dataType="System.String"
-                      description="Specifies the friendly version of the expression. This expression version uses column names."
-                      expressionType="Notify"
-                      name="FriendlyExpression">QMART != [QMART (1)] || QMTXT != [QMTXT (1)] || QMDAT != [QMDAT (1)] || MATNR != [MATNR (1)] || MATKL != [MATKL (1)] || QMCOD != [QMCOD (1)] || CHARG != [CHARG (1)] || FERTAUFNR != [FERTAUFNR (1)] || MGEIG != [MGEIG (1)] || MGFRD != [MGFRD (1)] || MGEIN != [MGEIN (1)] || REFNUM != [REFNUM (1)] || ERNAM != [ERNAM (1)] || PRUEFLOS != [PRUEFLOS (1)] || MAWERK != [MAWERK (1)]</property>
-                    <property
-                      dataType="System.Int32"
-                      description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
-                      name="EvaluationOrder">0</property>
-                  </properties>
-                  <externalMetadataColumns />
-                </output>
-                <output
-                  refId="Package\QMEL\Find Changed Records.Outputs[Conditional Split Default Output]"
-                  description="Default Output of the Conditional Split Transformation"
-                  exclusionGroup="1"
-                  name="Conditional Split Default Output"
-                  synchronousInputId="Package\QMEL\Find Changed Records.Inputs[Conditional Split Input]">
-                  <properties>
-                    <property
-                      dataType="System.Boolean"
-                      name="IsDefaultOut">true</property>
-                  </properties>
-                  <externalMetadataColumns />
-                </output>
-                <output
-                  refId="Package\QMEL\Find Changed Records.Outputs[Conditional Split Error Output]"
-                  description="Error Output of the Conditional Split Transformation"
-                  exclusionGroup="1"
-                  isErrorOut="true"
-                  name="Conditional Split Error Output"
-                  synchronousInputId="Package\QMEL\Find Changed Records.Inputs[Conditional Split Input]">
-                  <outputColumns>
-                    <outputColumn
-                      refId="Package\QMEL\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
-                      dataType="i4"
-                      lineageId="Package\QMEL\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
-                      name="ErrorCode"
-                      specialFlags="1" />
-                    <outputColumn
-                      refId="Package\QMEL\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
-                      dataType="i4"
-                      lineageId="Package\QMEL\Find Changed Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
                       name="ErrorColumn"
                       specialFlags="2" />
                   </outputColumns>
@@ -1440,7 +892,7 @@ ORDER BY A01.[MANDT]
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                 <property
                   dataType="System.Int32"
                   description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -1610,6 +1062,13 @@ ORDER BY A01.[MANDT]
                       cachedName="MAWERK"
                       externalMetadataColumnId="Package\QMEL\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[MAWERK]"
                       lineageId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[MAWERK]" />
+                    <inputColumn
+                      refId="Package\QMEL\insert new records.Inputs[OLE DB Destination Input].Columns[QMDAB]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="QMDAB"
+                      externalMetadataColumnId="Package\QMEL\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[QMDAB]"
+                      lineageId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[QMDAB]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -1700,6 +1159,11 @@ ORDER BY A01.[MANDT]
                       dataType="wstr"
                       length="4"
                       name="MAWERK" />
+                    <externalMetadataColumn
+                      refId="Package\QMEL\insert new records.Inputs[OLE DB Destination Input].ExternalColumns[QMDAB]"
+                      dataType="wstr"
+                      length="8"
+                      name="QMDAB" />
                   </externalMetadataColumns>
                 </input>
               </inputs>
@@ -1866,6 +1330,12 @@ ORDER BY A01.[MANDT]
                       cachedLength="4"
                       cachedName="MAWERK"
                       lineageId="Package\QMEL\DB SAP.Outputs[OLE DB Source Output].Columns[MAWERK]" />
+                    <inputColumn
+                      refId="Package\QMEL\Merge Join.Inputs[Merge Join Left Input].Columns[QMDAB]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="QMDAB"
+                      lineageId="Package\QMEL\DB SAP.Outputs[OLE DB Source Output].Columns[QMDAB]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
@@ -1888,98 +1358,6 @@ ORDER BY A01.[MANDT]
                       cachedName="QMNUM"
                       cachedSortKeyPosition="2"
                       lineageId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].Columns[QMNUM]" />
-                    <inputColumn
-                      refId="Package\QMEL\Merge Join.Inputs[Merge Join Right Input].Columns[QMART]"
-                      cachedDataType="wstr"
-                      cachedLength="2"
-                      cachedName="QMART"
-                      lineageId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].Columns[QMART]" />
-                    <inputColumn
-                      refId="Package\QMEL\Merge Join.Inputs[Merge Join Right Input].Columns[QMTXT]"
-                      cachedDataType="wstr"
-                      cachedLength="40"
-                      cachedName="QMTXT"
-                      lineageId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].Columns[QMTXT]" />
-                    <inputColumn
-                      refId="Package\QMEL\Merge Join.Inputs[Merge Join Right Input].Columns[QMDAT]"
-                      cachedDataType="wstr"
-                      cachedLength="8"
-                      cachedName="QMDAT"
-                      lineageId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].Columns[QMDAT]" />
-                    <inputColumn
-                      refId="Package\QMEL\Merge Join.Inputs[Merge Join Right Input].Columns[MATNR]"
-                      cachedDataType="wstr"
-                      cachedLength="18"
-                      cachedName="MATNR"
-                      lineageId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].Columns[MATNR]" />
-                    <inputColumn
-                      refId="Package\QMEL\Merge Join.Inputs[Merge Join Right Input].Columns[MATKL]"
-                      cachedDataType="wstr"
-                      cachedLength="9"
-                      cachedName="MATKL"
-                      lineageId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].Columns[MATKL]" />
-                    <inputColumn
-                      refId="Package\QMEL\Merge Join.Inputs[Merge Join Right Input].Columns[QMCOD]"
-                      cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="QMCOD"
-                      lineageId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].Columns[QMCOD]" />
-                    <inputColumn
-                      refId="Package\QMEL\Merge Join.Inputs[Merge Join Right Input].Columns[CHARG]"
-                      cachedDataType="wstr"
-                      cachedLength="10"
-                      cachedName="CHARG"
-                      lineageId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].Columns[CHARG]" />
-                    <inputColumn
-                      refId="Package\QMEL\Merge Join.Inputs[Merge Join Right Input].Columns[FERTAUFNR]"
-                      cachedDataType="wstr"
-                      cachedLength="12"
-                      cachedName="FERTAUFNR"
-                      lineageId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].Columns[FERTAUFNR]" />
-                    <inputColumn
-                      refId="Package\QMEL\Merge Join.Inputs[Merge Join Right Input].Columns[MGEIG]"
-                      cachedDataType="numeric"
-                      cachedName="MGEIG"
-                      cachedPrecision="13"
-                      cachedScale="3"
-                      lineageId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].Columns[MGEIG]" />
-                    <inputColumn
-                      refId="Package\QMEL\Merge Join.Inputs[Merge Join Right Input].Columns[MGFRD]"
-                      cachedDataType="numeric"
-                      cachedName="MGFRD"
-                      cachedPrecision="13"
-                      cachedScale="3"
-                      lineageId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].Columns[MGFRD]" />
-                    <inputColumn
-                      refId="Package\QMEL\Merge Join.Inputs[Merge Join Right Input].Columns[MGEIN]"
-                      cachedDataType="wstr"
-                      cachedLength="3"
-                      cachedName="MGEIN"
-                      lineageId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].Columns[MGEIN]" />
-                    <inputColumn
-                      refId="Package\QMEL\Merge Join.Inputs[Merge Join Right Input].Columns[REFNUM]"
-                      cachedDataType="wstr"
-                      cachedLength="20"
-                      cachedName="REFNUM"
-                      lineageId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].Columns[REFNUM]" />
-                    <inputColumn
-                      refId="Package\QMEL\Merge Join.Inputs[Merge Join Right Input].Columns[ERNAM]"
-                      cachedDataType="wstr"
-                      cachedLength="12"
-                      cachedName="ERNAM"
-                      lineageId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].Columns[ERNAM]" />
-                    <inputColumn
-                      refId="Package\QMEL\Merge Join.Inputs[Merge Join Right Input].Columns[PRUEFLOS]"
-                      cachedDataType="wstr"
-                      cachedLength="12"
-                      cachedName="PRUEFLOS"
-                      lineageId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].Columns[PRUEFLOS]" />
-                    <inputColumn
-                      refId="Package\QMEL\Merge Join.Inputs[Merge Join Right Input].Columns[MAWERK]"
-                      cachedDataType="wstr"
-                      cachedLength="4"
-                      cachedName="MAWERK"
-                      lineageId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output].Columns[MAWERK]" />
                   </inputColumns>
                   <externalMetadataColumns />
                 </input>
@@ -2219,176 +1597,6 @@ ORDER BY A01.[MANDT]
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[QMART (1)]"
-                      dataType="wstr"
-                      length="2"
-                      lineageId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[QMART (1)]"
-                      name="QMART (1)">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\QMEL\Merge Join.Inputs[Merge Join Right Input].Columns[QMART]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[QMTXT (1)]"
-                      dataType="wstr"
-                      length="40"
-                      lineageId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[QMTXT (1)]"
-                      name="QMTXT (1)">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\QMEL\Merge Join.Inputs[Merge Join Right Input].Columns[QMTXT]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[QMDAT (1)]"
-                      dataType="wstr"
-                      length="8"
-                      lineageId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[QMDAT (1)]"
-                      name="QMDAT (1)">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\QMEL\Merge Join.Inputs[Merge Join Right Input].Columns[QMDAT]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[MATNR (1)]"
-                      dataType="wstr"
-                      length="18"
-                      lineageId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[MATNR (1)]"
-                      name="MATNR (1)">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\QMEL\Merge Join.Inputs[Merge Join Right Input].Columns[MATNR]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[MATKL (1)]"
-                      dataType="wstr"
-                      length="9"
-                      lineageId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[MATKL (1)]"
-                      name="MATKL (1)">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\QMEL\Merge Join.Inputs[Merge Join Right Input].Columns[MATKL]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[QMCOD (1)]"
-                      dataType="wstr"
-                      length="4"
-                      lineageId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[QMCOD (1)]"
-                      name="QMCOD (1)">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\QMEL\Merge Join.Inputs[Merge Join Right Input].Columns[QMCOD]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[CHARG (1)]"
-                      dataType="wstr"
-                      length="10"
-                      lineageId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[CHARG (1)]"
-                      name="CHARG (1)">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\QMEL\Merge Join.Inputs[Merge Join Right Input].Columns[CHARG]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[FERTAUFNR (1)]"
-                      dataType="wstr"
-                      length="12"
-                      lineageId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[FERTAUFNR (1)]"
-                      name="FERTAUFNR (1)">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\QMEL\Merge Join.Inputs[Merge Join Right Input].Columns[FERTAUFNR]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[MGEIG (1)]"
-                      dataType="numeric"
-                      lineageId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[MGEIG (1)]"
-                      name="MGEIG (1)"
-                      precision="13"
-                      scale="3">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\QMEL\Merge Join.Inputs[Merge Join Right Input].Columns[MGEIG]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[MGFRD (1)]"
-                      dataType="numeric"
-                      lineageId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[MGFRD (1)]"
-                      name="MGFRD (1)"
-                      precision="13"
-                      scale="3">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\QMEL\Merge Join.Inputs[Merge Join Right Input].Columns[MGFRD]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[MGEIN (1)]"
-                      dataType="wstr"
-                      length="3"
-                      lineageId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[MGEIN (1)]"
-                      name="MGEIN (1)">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\QMEL\Merge Join.Inputs[Merge Join Right Input].Columns[MGEIN]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[REFNUM (1)]"
-                      dataType="wstr"
-                      length="20"
-                      lineageId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[REFNUM (1)]"
-                      name="REFNUM (1)">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\QMEL\Merge Join.Inputs[Merge Join Right Input].Columns[REFNUM]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
                       refId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[ERNAM]"
                       dataType="wstr"
                       length="12"
@@ -2400,20 +1608,6 @@ ORDER BY A01.[MANDT]
                           dataType="System.Int32"
                           description="The input column associated with this output column"
                           name="InputColumnID">#{Package\QMEL\Merge Join.Inputs[Merge Join Left Input].Columns[ERNAM]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
-                      refId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[ERNAM (1)]"
-                      dataType="wstr"
-                      length="12"
-                      lineageId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[ERNAM (1)]"
-                      name="ERNAM (1)">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\QMEL\Merge Join.Inputs[Merge Join Right Input].Columns[ERNAM]}</property>
                       </properties>
                     </outputColumn>
                     <outputColumn
@@ -2431,20 +1625,6 @@ ORDER BY A01.[MANDT]
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[PRUEFLOS (1)]"
-                      dataType="wstr"
-                      length="12"
-                      lineageId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[PRUEFLOS (1)]"
-                      name="PRUEFLOS (1)">
-                      <properties>
-                        <property
-                          containsID="true"
-                          dataType="System.Int32"
-                          description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\QMEL\Merge Join.Inputs[Merge Join Right Input].Columns[PRUEFLOS]}</property>
-                      </properties>
-                    </outputColumn>
-                    <outputColumn
                       refId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[MAWERK]"
                       dataType="wstr"
                       length="4"
@@ -2459,17 +1639,17 @@ ORDER BY A01.[MANDT]
                       </properties>
                     </outputColumn>
                     <outputColumn
-                      refId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[MAWERK (1)]"
+                      refId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[QMDAB]"
                       dataType="wstr"
-                      length="4"
-                      lineageId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[MAWERK (1)]"
-                      name="MAWERK (1)">
+                      length="8"
+                      lineageId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[QMDAB]"
+                      name="QMDAB">
                       <properties>
                         <property
                           containsID="true"
                           dataType="System.Int32"
                           description="The input column associated with this output column"
-                          name="InputColumnID">#{Package\QMEL\Merge Join.Inputs[Merge Join Right Input].Columns[MAWERK]}</property>
+                          name="InputColumnID">#{Package\QMEL\Merge Join.Inputs[Merge Join Left Input].Columns[QMDAB]}</property>
                       </properties>
                     </outputColumn>
                   </outputColumns>
@@ -2502,7 +1682,7 @@ ORDER BY A01.[MANDT]
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                 <property
                   dataType="System.Int32"
                   description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -2672,6 +1852,13 @@ ORDER BY A01.[MANDT]
                       cachedName="MAWERK"
                       externalMetadataColumnId="Package\QMEL\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[MAWERK]"
                       lineageId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[MAWERK]" />
+                    <inputColumn
+                      refId="Package\QMEL\stage changed records.Inputs[OLE DB Destination Input].Columns[QMDAB]"
+                      cachedDataType="wstr"
+                      cachedLength="8"
+                      cachedName="QMDAB"
+                      externalMetadataColumnId="Package\QMEL\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[QMDAB]"
+                      lineageId="Package\QMEL\Merge Join.Outputs[Merge Join Output].Columns[QMDAB]" />
                   </inputColumns>
                   <externalMetadataColumns
                     isUsed="True">
@@ -2762,6 +1949,11 @@ ORDER BY A01.[MANDT]
                       dataType="wstr"
                       length="4"
                       name="MAWERK" />
+                    <externalMetadataColumn
+                      refId="Package\QMEL\stage changed records.Inputs[OLE DB Destination Input].ExternalColumns[QMDAB]"
+                      dataType="wstr"
+                      length="8"
+                      name="QMDAB" />
                   </externalMetadataColumns>
                 </input>
               </inputs>
@@ -2815,7 +2007,7 @@ ORDER BY A01.[MANDT]
                   dataType="System.String"
                   description="The SQL command to be executed."
                   name="SqlCommand"
-                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
                 <property
                   dataType="System.Int32"
                   description="Specifies the column code page to use when code page information is unavailable from the data source."
@@ -2946,119 +2138,64 @@ ORDER BY A01.[MANDT]
               startId="Package\QMEL\DB PBI.Outputs[OLE DB Source Output]" />
             <path
               refId="Package\QMEL.Paths[update]"
-              endId="Package\QMEL\Find Changed Records.Inputs[Conditional Split Input]"
-              name="update"
-              startId="Package\QMEL\Identity records.Outputs[update]" />
-            <path
-              refId="Package\QMEL.Paths[update1]"
               endId="Package\QMEL\stage changed records.Inputs[OLE DB Destination Input]"
               name="update"
-              startId="Package\QMEL\Find Changed Records.Outputs[update]" />
+              startId="Package\QMEL\Identity records.Outputs[update]" />
           </paths>
         </pipeline>
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
-      DTS:refId="Package\Sequence Container"
-      DTS:CreationName="STOCK:SEQUENCE"
-      DTS:Description="Sequence Container"
-      DTS:DTSID="{02d7833a-a5e7-4e19-87d1-8479c2114da1}"
-      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:refId="Package\UPDATE"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{a9f6b780-8f6d-4fe2-9a37-c25ddc2838a5}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
-      DTS:ObjectName="Sequence Container">
+      DTS:ObjectName="UPDATE"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
       <DTS:Variables />
-      <DTS:Executables>
-        <DTS:Executable
-          DTS:refId="Package\Sequence Container\delete"
-          DTS:CreationName="Microsoft.ExecuteSQLTask"
-          DTS:Description="Execute SQL Task"
-          DTS:DTSID="{a32f5513-c185-4045-8f7d-b38f1009899d}"
-          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
-          DTS:LocaleID="-1"
-          DTS:ObjectName="delete"
-          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="0">
-          <DTS:Variables />
-          <DTS:ObjectData>
-            <SQLTask:SqlTaskData
-              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-              SQLTask:SqlStatementSource="DELETE A01&#xA;FROM [QMEL] A01 INNER JOIN [QMEL_STAGE_DELETE] B01 ON ( A01.[MANDT] = B01.[MANDT]&#xA;                                                    AND A01.[QMNUM] = B01.[QMNUM] )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
-          </DTS:ObjectData>
-        </DTS:Executable>
-        <DTS:Executable
-          DTS:refId="Package\Sequence Container\update"
-          DTS:CreationName="Microsoft.ExecuteSQLTask"
-          DTS:Description="Execute SQL Task"
-          DTS:DTSID="{a9f6b780-8f6d-4fe2-9a37-c25ddc2838a5}"
-          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
-          DTS:LocaleID="-1"
-          DTS:ObjectName="update"
-          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="1">
-          <DTS:Variables />
-          <DTS:ObjectData>
-            <SQLTask:SqlTaskData
-              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-              SQLTask:SqlStatementSource="UPDATE A01&#xA;SET A01.[QMART] = B01.[QMART]&#xA;   ,A01.[QMTXT] = B01.[QMTXT]&#xA;   ,A01.[QMDAT] = B01.[QMDAT]&#xA;   ,A01.[MATNR] = B01.[MATNR]&#xA;   ,A01.[MATKL] = B01.[MATKL]&#xA;   ,A01.[QMCOD] = B01.[QMCOD]&#xA;   ,A01.[CHARG] = B01.[CHARG]&#xA;   ,A01.[PRUEFLOS] = B01.[PRUEFLOS]&#xA;   ,A01.[FERTAUFNR] = B01.[FERTAUFNR]&#xA;   ,A01.[MGEIG] = B01.[MGEIG]&#xA;   ,A01.[MGFRD] = B01.[MGFRD]&#xA;   ,A01.[MGEIN] = B01.[MGEIN]&#xA;   ,A01.[REFNUM] = B01.[REFNUM]&#xA;   ,A01.[ERNAM] = B01.[ERNAM]&#xA;   ,A01.[MAWERK] = B01.[MAWERK]&#xA;FROM [QMEL] A01 INNER JOIN [QMEL_STAGE_UPDATE] B01 ON ( A01.[MANDT] = B01.[MANDT]&#xA;                                                    AND A01.[QMNUM] = B01.[QMNUM] )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
-          </DTS:ObjectData>
-        </DTS:Executable>
-      </DTS:Executables>
-    </DTS:Executable>
-    <DTS:Executable
-      DTS:refId="Package\Sequence Container 1"
-      DTS:CreationName="STOCK:SEQUENCE"
-      DTS:Description="Sequence Container"
-      DTS:DTSID="{44205d63-d7a8-480f-941b-1efe8f75e1a3}"
-      DTS:ExecutableType="STOCK:SEQUENCE"
-      DTS:LocaleID="-1"
-      DTS:ObjectName="Sequence Container 1">
-      <DTS:Variables />
-      <DTS:Executables>
-        <DTS:Executable
-          DTS:refId="Package\Sequence Container 1\Insert"
-          DTS:CreationName="Microsoft.ExecuteSQLTask"
-          DTS:Description="Execute SQL Task"
-          DTS:DTSID="{18965fc7-648c-437c-8e04-8cdd69244bba}"
-          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
-          DTS:LocaleID="-1"
-          DTS:ObjectName="Insert"
-          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="0">
-          <DTS:Variables />
-          <DTS:ObjectData>
-            <SQLTask:SqlTaskData
-              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
-              SQLTask:SqlStatementSource="INSERT INTO [QMEL]&#xA;SELECT * FROM [QMEL_STAGE_INSERT]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
-          </DTS:ObjectData>
-        </DTS:Executable>
-      </DTS:Executables>
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+          SQLTask:SqlStatementSource="UPDATE &#xA;  A01 &#xA;SET &#xA;  A01.[QMART] = B01.[QMART], &#xA;  A01.[QMTXT] = B01.[QMTXT], &#xA;  A01.[QMDAT] = B01.[QMDAT], &#xA;  A01.[MATNR] = B01.[MATNR], &#xA;  A01.[MATKL] = B01.[MATKL], &#xA;  A01.[QMCOD] = B01.[QMCOD], &#xA;  A01.[CHARG] = B01.[CHARG], &#xA;  A01.[PRUEFLOS] = B01.[PRUEFLOS], &#xA;  A01.[FERTAUFNR] = B01.[FERTAUFNR], &#xA;  A01.[MGEIG] = B01.[MGEIG], &#xA;  A01.[MGFRD] = B01.[MGFRD], &#xA;  A01.[MGEIN] = B01.[MGEIN], &#xA;  A01.[REFNUM] = B01.[REFNUM], &#xA;  A01.[ERNAM] = B01.[ERNAM], &#xA;  A01.[MAWERK] = B01.[MAWERK],&#xA;  A01.[QMDAB] = B01.[QMDAB] &#xA;FROM &#xA;  [QMEL] A01 &#xA;  INNER JOIN [QMEL_STAGE_UPDATE] B01 ON (&#xA;    A01.[MANDT] = B01.[MANDT] &#xA;    AND A01.[QMNUM] = B01.[QMNUM]&#xA;  )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
     </DTS:Executable>
   </DTS:Executables>
   <DTS:PrecedenceConstraints>
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint]"
       DTS:CreationName=""
-      DTS:DTSID="{05095dd8-de84-4c0e-97b1-8fe4db10c2fb}"
+      DTS:DTSID="{3484151B-5C46-4DCD-AFA5-D3DA8F98C782}"
       DTS:From="Package\QMEL"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint"
-      DTS:To="Package\Sequence Container" />
+      DTS:To="Package\UPDATE" />
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
       DTS:CreationName=""
       DTS:DTSID="{EC62E323-12C8-435B-A280-A76E7462336D}"
-      DTS:From="Package\clean stage"
+      DTS:From="Package\Clean Stage"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 1"
       DTS:To="Package\QMEL" />
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
       DTS:CreationName=""
-      DTS:DTSID="{2BD07A2D-13E9-4137-B23D-AFAB997B967A}"
-      DTS:From="Package\Sequence Container"
+      DTS:DTSID="{8589EC33-8DB2-4F09-BADD-66655AA83E63}"
+      DTS:From="Package\UPDATE"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 2"
-      DTS:To="Package\Sequence Container 1" />
+      DTS:To="Package\DELETE" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 3]"
+      DTS:CreationName=""
+      DTS:DTSID="{A6E995BB-38C9-4BF8-A2D5-D7737D6EA8F1}"
+      DTS:From="Package\DELETE"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 3"
+      DTS:To="Package\INSERT" />
   </DTS:PrecedenceConstraints>
   <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
 <!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
@@ -3073,65 +2210,27 @@ ORDER BY A01.[MANDT]
       <GraphLayout
         Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
-          Size="132,42"
-          Id="Package\clean stage"
-          TopLeft="354,18" />
+          Size="139,42"
+          Id="Package\Clean Stage"
+          TopLeft="21,24" />
         <NodeLayout
-          Size="106,42"
+          Size="139,42"
           Id="Package\QMEL"
-          TopLeft="170,60" />
-        <NodeLayout
-          Size="108,42"
-          Id="Package\Sequence Container\delete"
-          TopLeft="195,39" />
-        <NodeLayout
-          Size="112,42"
-          Id="Package\Sequence Container\update"
-          TopLeft="17,42" />
-        <ContainerLayout
-          HeaderHeight="43"
-          IsExpanded="True"
-          PanelSize="383,139"
-          Size="383,182"
-          Id="Package\Sequence Container"
-          TopLeft="60,174" />
-        <NodeLayout
-          Size="107,42"
-          Id="Package\Sequence Container 1\Insert"
-          TopLeft="120,42" />
-        <ContainerLayout
-          HeaderHeight="43"
-          IsExpanded="True"
-          PanelSize="383,139"
-          Size="383,182"
-          Id="Package\Sequence Container 1"
-          TopLeft="60,416" />
+          TopLeft="21,95.75" />
         <EdgeLayout
-          Id="Package.PrecedenceConstraints[Constraint]"
-          TopLeft="223,102">
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="90.5,66">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="28.5,72"
+              EndConnector="0,29.75"
               Start="0,0"
-              End="28.5,64.5">
+              End="0,22.25">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,32" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,32"
-                    Point2="0,36"
-                    Point3="4,36" />
-                  <mssgle:LineSegment
-                    End="24.5,36" />
-                  <mssgle:CubicBezierSegment
-                    Point1="24.5,36"
-                    Point2="28.5,36"
-                    Point3="28.5,40" />
-                  <mssgle:LineSegment
-                    End="28.5,64.5" />
+                    End="0,22.25" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -3140,32 +2239,32 @@ ORDER BY A01.[MANDT]
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
+        <NodeLayout
+          Size="139,42"
+          Id="Package\UPDATE"
+          TopLeft="21,167.5" />
+        <NodeLayout
+          Size="139,42"
+          Id="Package\DELETE"
+          TopLeft="21,239.25" />
+        <NodeLayout
+          Size="139,42"
+          Id="Package\INSERT"
+          TopLeft="21,311" />
         <EdgeLayout
-          Id="Package.PrecedenceConstraints[Constraint 1]"
-          TopLeft="354,39">
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="90.5,137.75">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-78,42"
+              EndConnector="0,29.75"
               Start="0,0"
-              End="-70.5,42">
+              End="0,22.25">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="-35,0" />
-                  <mssgle:CubicBezierSegment
-                    Point1="-35,0"
-                    Point2="-39,0"
-                    Point3="-39,4" />
-                  <mssgle:LineSegment
-                    End="-39,38" />
-                  <mssgle:CubicBezierSegment
-                    Point1="-39,38"
-                    Point2="-39,42"
-                    Point3="-43,42" />
-                  <mssgle:LineSegment
-                    End="-70.5,42" />
+                    End="0,22.25" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -3176,18 +2275,40 @@ ORDER BY A01.[MANDT]
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 2]"
-          TopLeft="251.5,356">
+          TopLeft="90.5,209.5">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,60"
+              EndConnector="0,29.75"
               Start="0,0"
-              End="0,52.5">
+              End="0,22.25">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,52.5" />
+                    End="0,22.25" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 3]"
+          TopLeft="90.5,281.25">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,29.75"
+              Start="0,0"
+              End="0,22.25">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,22.25" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -3204,10 +2325,6 @@ ORDER BY A01.[MANDT]
     <LayoutInfo>
       <GraphLayout
         Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
-        <NodeLayout
-          Size="184,42"
-          Id="Package\QMEL\Find Changed Records"
-          TopLeft="420,366" />
         <NodeLayout
           Size="130,42"
           Id="Package\QMEL\Merge Join"
@@ -3236,66 +2353,6 @@ ORDER BY A01.[MANDT]
           Size="114,42"
           Id="Package\QMEL\DB SAP"
           TopLeft="199,46" />
-        <EdgeLayout
-          Id="Package\QMEL.Paths[update1]"
-          TopLeft="512,408">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="9,71"
-              Start="0,0"
-              End="9,63.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,31.5" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,31.5"
-                    Point2="0,35.5"
-                    Point3="4,35.5" />
-                  <mssgle:LineSegment
-                    End="5,35.5" />
-                  <mssgle:CubicBezierSegment
-                    Point1="5,35.5"
-                    Point2="9,35.5"
-                    Point3="9,39.5" />
-                  <mssgle:LineSegment
-                    End="9,63.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-11.3025,40.5,31.605,11.609375"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\QMEL.Paths[update]"
-          TopLeft="510.25,278">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="0,88"
-              Start="0,0"
-              End="0,80.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,80.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="-15.8025,34.4453125,31.605,11.609375"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
         <EdgeLayout
           Id="Package\QMEL.Paths[OLE DB Source Output1]"
           TopLeft="727,90">
@@ -3455,6 +2512,42 @@ ORDER BY A01.[MANDT]
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
               BoundingBox="101.92904296875,37.0620985010707,28.3919140625,9.7490234375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\QMEL.Paths[update]"
+          TopLeft="508.5,278">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="12.5,201"
+              Start="0,0"
+              End="12.5,193.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,96.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,96.5"
+                    Point2="0,100.5"
+                    Point3="4,100.5" />
+                  <mssgle:LineSegment
+                    End="8.5,100.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="8.5,100.5"
+                    Point2="12.5,100.5"
+                    Point3="12.5,104.5" />
+                  <mssgle:LineSegment
+                    End="12.5,193.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-9.5525,105.5,31.605,11.609375"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
