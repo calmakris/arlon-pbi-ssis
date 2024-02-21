@@ -11,8 +11,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="zC2"
   DTS:PackageType="5"
-  DTS:VersionBuild="192"
-  DTS:VersionGUID="{CE192D5E-7C68-4626-9287-7846E6810F12}">
+  DTS:VersionBuild="198"
+  DTS:VersionGUID="{18DD7146-7CD4-4CCB-8063-63A9856BD215}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:Variables>
@@ -82,7 +82,7 @@
           DTS:LocaleID="-1"
           DTS:ObjectName="Clean Stage"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="2">
+          DTS:ThreadHint="0">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -99,7 +99,7 @@
           DTS:LocaleID="-1"
           DTS:ObjectName="Insert Data"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="2">
+          DTS:ThreadHint="0">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -115,7 +115,7 @@
           DTS:ExecutableType="Microsoft.ExecuteSQLTask"
           DTS:LocaleID="-1"
           DTS:ObjectName="LastJobIndex"
-          DTS:ThreadHint="2">
+          DTS:ThreadHint="0">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -1393,7 +1393,7 @@ ORDER BY [FIndex]</property>
           DTS:LocaleID="-1"
           DTS:ObjectName="Update Data"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="2">
+          DTS:ThreadHint="0">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -2963,9 +2963,1695 @@ ORDER BY Record_ID,
       </DTS:PrecedenceConstraints>
     </DTS:Executable>
     <DTS:Executable
+      DTS:refId="Package\Operator Input"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Sequence Container"
+      DTS:DTSID="{6aa74b21-bbf6-4e8d-9aa1-b2bc9aae4064}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Operator Input">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\Operator Input\Clean Stage"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{af224cb5-f084-4a94-abfe-8148e3c4d4fa}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Clean Stage"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="4">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+              SQLTask:SqlStatementSource="TRUNCATE TABLE zC2_OPERATORINPUT_STAGE_INSERT&#xA;GO&#xA;TRUNCATE TABLE zC2_OPERATORINPUT_STAGE_UPDATE&#xA;GO&#xA;TRUNCATE TABLE zC2_OPERATORINPUT_STAGE_DELETE&#xA;GO" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Operator Input\Insert Data"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{53783662-5f0f-4528-a5b4-4eaeca8442b8}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Insert Data"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="4">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+              SQLTask:SqlStatementSource="INSERT INTO [zC2_OPERATORINPUT]&#xA;SELECT * FROM [zC2_OPERATORINPUT_STAGE_INSERT]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Operator Input\LastJobIndex"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{f79f3d8b-cf84-41f2-ba80-c50d561b302e}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="LastJobIndex"
+          DTS:ThreadHint="4">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+              SQLTask:SqlStatementSource="SELECT &#xA;  MIN(JobIndex) AS LastJobIndex &#xA;FROM &#xA;  (&#xA;    SELECT &#xA;      TOP 1000 ISNULL( JobIndex, 0 ) AS JobIndex&#xA;    FROM &#xA;      zC2_OPERATORINPUT &#xA;    ORDER BY &#xA;      JobIndex DESC&#xA;  ) AS t&#xA;"
+              SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ResultBinding
+                SQLTask:ResultName="0"
+                SQLTask:DtsVariableName="User::LastJobIndex" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Operator Input\Staging"
+          DTS:CreationName="Microsoft.Pipeline"
+          DTS:Description="Data Flow Task"
+          DTS:DTSID="{e3129769-37f5-4170-a660-5e029c1d56bb}"
+          DTS:ExecutableType="Microsoft.Pipeline"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Staging"
+          DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <pipeline
+              version="1">
+              <components>
+                <component
+                  refId="Package\Operator Input\Staging\DB ENGR01"
+                  componentClassID="Microsoft.OLEDBSource"
+                  contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+                  description="OLE DB Source"
+                  name="DB ENGR01"
+                  usesDispositions="true"
+                  version="7">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT [JobIndex]
+      ,[Category]
+      ,[Causes]
+      ,[FurtherDetail]
+      ,[Comments]
+      ,[LotNumber]
+      ,[Spec]
+      ,[ProcessOrder]
+      ,[SpecLS]
+      ,[MENumber]
+      ,[FirstPass]
+      ,[FPDetails]
+FROM c2operatorinput
+WHERE [JobIndex] &gt; ?
+    AND [Category] IS NOT NULL
+ORDER BY [JobIndex]</property>
+                    <property
+                      dataType="System.String"
+                      description="The variable that contains the SQL command to be executed."
+                      name="SqlCommandVariable"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">2</property>
+                    <property
+                      dataType="System.String"
+                      description="The mappings between the parameters in the SQL command and variables."
+                      name="ParameterMapping">"Parameter0:Input",{83DE8154-9F2A-4EC4-B784-1CDB2AF4863D};</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\Operator Input\Staging\DB ENGR01.Connections[OleDbConnection]"
+                      connectionManagerID="{06B62958-358E-4E48-A8C7-31C459A80EAD}:external"
+                      connectionManagerRefId="Project.ConnectionManagers[ARLON-PL-ENGR01.OAS]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <outputs>
+                    <output
+                      refId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Output]"
+                      isSorted="true"
+                      name="OLE DB Source Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Output].Columns[JobIndex]"
+                          dataType="i8"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Output].ExternalColumns[JobIndex]"
+                          lineageId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Output].Columns[JobIndex]"
+                          name="JobIndex"
+                          sortKeyPosition="1"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Output].Columns[Category]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Output].ExternalColumns[Category]"
+                          length="25"
+                          lineageId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Output].Columns[Category]"
+                          name="Category"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Output].Columns[Causes]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Output].ExternalColumns[Causes]"
+                          length="50"
+                          lineageId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Output].Columns[Causes]"
+                          name="Causes"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Output].Columns[FurtherDetail]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Output].ExternalColumns[FurtherDetail]"
+                          length="255"
+                          lineageId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Output].Columns[FurtherDetail]"
+                          name="FurtherDetail"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Output].Columns[Comments]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Output].ExternalColumns[Comments]"
+                          length="255"
+                          lineageId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Output].Columns[Comments]"
+                          name="Comments"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Output].Columns[LotNumber]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Output].ExternalColumns[LotNumber]"
+                          length="10"
+                          lineageId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Output].Columns[LotNumber]"
+                          name="LotNumber"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Output].Columns[Spec]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Output].ExternalColumns[Spec]"
+                          length="25"
+                          lineageId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Output].Columns[Spec]"
+                          name="Spec"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Output].Columns[ProcessOrder]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Output].ExternalColumns[ProcessOrder]"
+                          lineageId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Output].Columns[ProcessOrder]"
+                          name="ProcessOrder"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Output].Columns[SpecLS]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Output].ExternalColumns[SpecLS]"
+                          lineageId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Output].Columns[SpecLS]"
+                          name="SpecLS"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Output].Columns[MENumber]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Output].ExternalColumns[MENumber]"
+                          length="50"
+                          lineageId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Output].Columns[MENumber]"
+                          name="MENumber"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Output].Columns[FirstPass]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Output].ExternalColumns[FirstPass]"
+                          length="255"
+                          lineageId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Output].Columns[FirstPass]"
+                          name="FirstPass"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Output].Columns[FPDetails]"
+                          dataType="wstr"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Output].ExternalColumns[FPDetails]"
+                          length="255"
+                          lineageId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Output].Columns[FPDetails]"
+                          name="FPDetails"
+                          truncationRowDisposition="FailComponent" />
+                      </outputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Output].ExternalColumns[JobIndex]"
+                          dataType="i8"
+                          name="JobIndex" />
+                        <externalMetadataColumn
+                          refId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Output].ExternalColumns[Category]"
+                          dataType="wstr"
+                          length="25"
+                          name="Category" />
+                        <externalMetadataColumn
+                          refId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Output].ExternalColumns[Causes]"
+                          dataType="wstr"
+                          length="50"
+                          name="Causes" />
+                        <externalMetadataColumn
+                          refId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Output].ExternalColumns[FurtherDetail]"
+                          dataType="wstr"
+                          length="255"
+                          name="FurtherDetail" />
+                        <externalMetadataColumn
+                          refId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Output].ExternalColumns[Comments]"
+                          dataType="wstr"
+                          length="255"
+                          name="Comments" />
+                        <externalMetadataColumn
+                          refId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Output].ExternalColumns[LotNumber]"
+                          dataType="wstr"
+                          length="10"
+                          name="LotNumber" />
+                        <externalMetadataColumn
+                          refId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Output].ExternalColumns[Spec]"
+                          dataType="wstr"
+                          length="25"
+                          name="Spec" />
+                        <externalMetadataColumn
+                          refId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Output].ExternalColumns[ProcessOrder]"
+                          dataType="i4"
+                          name="ProcessOrder" />
+                        <externalMetadataColumn
+                          refId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Output].ExternalColumns[SpecLS]"
+                          dataType="i4"
+                          name="SpecLS" />
+                        <externalMetadataColumn
+                          refId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Output].ExternalColumns[MENumber]"
+                          dataType="wstr"
+                          length="50"
+                          name="MENumber" />
+                        <externalMetadataColumn
+                          refId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Output].ExternalColumns[FirstPass]"
+                          dataType="wstr"
+                          length="255"
+                          name="FirstPass" />
+                        <externalMetadataColumn
+                          refId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Output].ExternalColumns[FPDetails]"
+                          dataType="wstr"
+                          length="255"
+                          name="FPDetails" />
+                      </externalMetadataColumns>
+                    </output>
+                    <output
+                      refId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Error Output]"
+                      isErrorOut="true"
+                      name="OLE DB Source Error Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Error Output].Columns[JobIndex]"
+                          dataType="i8"
+                          lineageId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Error Output].Columns[JobIndex]"
+                          name="JobIndex" />
+                        <outputColumn
+                          refId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Error Output].Columns[Category]"
+                          dataType="wstr"
+                          length="25"
+                          lineageId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Error Output].Columns[Category]"
+                          name="Category" />
+                        <outputColumn
+                          refId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Error Output].Columns[Causes]"
+                          dataType="wstr"
+                          length="50"
+                          lineageId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Error Output].Columns[Causes]"
+                          name="Causes" />
+                        <outputColumn
+                          refId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Error Output].Columns[FurtherDetail]"
+                          dataType="wstr"
+                          length="255"
+                          lineageId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Error Output].Columns[FurtherDetail]"
+                          name="FurtherDetail" />
+                        <outputColumn
+                          refId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Error Output].Columns[Comments]"
+                          dataType="wstr"
+                          length="255"
+                          lineageId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Error Output].Columns[Comments]"
+                          name="Comments" />
+                        <outputColumn
+                          refId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Error Output].Columns[LotNumber]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Error Output].Columns[LotNumber]"
+                          name="LotNumber" />
+                        <outputColumn
+                          refId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Error Output].Columns[Spec]"
+                          dataType="wstr"
+                          length="25"
+                          lineageId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Error Output].Columns[Spec]"
+                          name="Spec" />
+                        <outputColumn
+                          refId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Error Output].Columns[ProcessOrder]"
+                          dataType="i4"
+                          lineageId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Error Output].Columns[ProcessOrder]"
+                          name="ProcessOrder" />
+                        <outputColumn
+                          refId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Error Output].Columns[SpecLS]"
+                          dataType="i4"
+                          lineageId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Error Output].Columns[SpecLS]"
+                          name="SpecLS" />
+                        <outputColumn
+                          refId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Error Output].Columns[MENumber]"
+                          dataType="wstr"
+                          length="50"
+                          lineageId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Error Output].Columns[MENumber]"
+                          name="MENumber" />
+                        <outputColumn
+                          refId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Error Output].Columns[FirstPass]"
+                          dataType="wstr"
+                          length="255"
+                          lineageId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Error Output].Columns[FirstPass]"
+                          name="FirstPass" />
+                        <outputColumn
+                          refId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Error Output].Columns[FPDetails]"
+                          dataType="wstr"
+                          length="255"
+                          lineageId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Error Output].Columns[FPDetails]"
+                          name="FPDetails" />
+                        <outputColumn
+                          refId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\Operator Input\Staging\DB PBI"
+                  componentClassID="Microsoft.OLEDBSource"
+                  contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+                  description="OLE DB Source"
+                  name="DB PBI"
+                  usesDispositions="true"
+                  version="7">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset"></property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT [JobIndex]
+FROM zC2_OPERATORINPUT
+WHERE [JobIndex] &gt; ?
+ORDER BY [JobIndex]</property>
+                    <property
+                      dataType="System.String"
+                      description="The variable that contains the SQL command to be executed."
+                      name="SqlCommandVariable"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">2</property>
+                    <property
+                      dataType="System.String"
+                      description="The mappings between the parameters in the SQL command and variables."
+                      name="ParameterMapping">"Parameter0:Input",{83DE8154-9F2A-4EC4-B784-1CDB2AF4863D};</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\Operator Input\Staging\DB PBI.Connections[OleDbConnection]"
+                      connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
+                      connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <outputs>
+                    <output
+                      refId="Package\Operator Input\Staging\DB PBI.Outputs[OLE DB Source Output]"
+                      isSorted="true"
+                      name="OLE DB Source Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Operator Input\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[JobIndex]"
+                          dataType="i8"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Operator Input\Staging\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[JobIndex]"
+                          lineageId="Package\Operator Input\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[JobIndex]"
+                          name="JobIndex"
+                          sortKeyPosition="1"
+                          truncationRowDisposition="FailComponent" />
+                      </outputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\Operator Input\Staging\DB PBI.Outputs[OLE DB Source Output].ExternalColumns[JobIndex]"
+                          dataType="i8"
+                          name="JobIndex" />
+                      </externalMetadataColumns>
+                    </output>
+                    <output
+                      refId="Package\Operator Input\Staging\DB PBI.Outputs[OLE DB Source Error Output]"
+                      isErrorOut="true"
+                      name="OLE DB Source Error Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Operator Input\Staging\DB PBI.Outputs[OLE DB Source Error Output].Columns[JobIndex]"
+                          dataType="i8"
+                          lineageId="Package\Operator Input\Staging\DB PBI.Outputs[OLE DB Source Error Output].Columns[JobIndex]"
+                          name="JobIndex" />
+                        <outputColumn
+                          refId="Package\Operator Input\Staging\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\Operator Input\Staging\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\Operator Input\Staging\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\Operator Input\Staging\DB PBI.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\Operator Input\Staging\DELETE Stage"
+                  componentClassID="Microsoft.OLEDBDestination"
+                  contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                  description="OLE DB Destination"
+                  name="DELETE Stage"
+                  usesDispositions="true"
+                  version="4">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset">[dbo].[zC2_OPERATORINPUT_STAGE_DELETE]</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">3</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepIdentity">false</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                      name="FastLoadOptions">CHECK_CONSTRAINTS</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                      name="FastLoadMaxInsertCommitSize">2147483647</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\Operator Input\Staging\DELETE Stage.Connections[OleDbConnection]"
+                      connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
+                      connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\Operator Input\Staging\DELETE Stage.Inputs[OLE DB Destination Input]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="OLE DB Destination Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\Operator Input\Staging\DELETE Stage.Inputs[OLE DB Destination Input].Columns[JobIndex (1)]"
+                          cachedDataType="i8"
+                          cachedName="JobIndex (1)"
+                          externalMetadataColumnId="Package\Operator Input\Staging\DELETE Stage.Inputs[OLE DB Destination Input].ExternalColumns[JobIndex]"
+                          lineageId="Package\Operator Input\Staging\Merge Join.Outputs[Merge Join Output].Columns[JobIndex (1)]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\Operator Input\Staging\DELETE Stage.Inputs[OLE DB Destination Input].ExternalColumns[JobIndex]"
+                          dataType="i8"
+                          name="JobIndex" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\Operator Input\Staging\DELETE Stage.Outputs[OLE DB Destination Error Output]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="OLE DB Destination Error Output"
+                      synchronousInputId="Package\Operator Input\Staging\DELETE Stage.Inputs[OLE DB Destination Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Operator Input\Staging\DELETE Stage.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\Operator Input\Staging\DELETE Stage.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\Operator Input\Staging\DELETE Stage.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\Operator Input\Staging\DELETE Stage.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\Operator Input\Staging\Identify Records"
+                  componentClassID="Microsoft.ConditionalSplit"
+                  contactInfo="Conditional Split;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                  description="Routes data rows to different outputs depending on the content of the data. Use conditions (SSIS expressions) to specify which rows are routed. For example, separate records that need to be cleaned from those that are ready to be loaded or route only a subset of records."
+                  name="Identify Records"
+                  usesDispositions="true">
+                  <inputs>
+                    <input
+                      refId="Package\Operator Input\Staging\Identify Records.Inputs[Conditional Split Input]"
+                      description="Input to the Conditional Split Transformation"
+                      name="Conditional Split Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\Operator Input\Staging\Identify Records.Inputs[Conditional Split Input].Columns[JobIndex]"
+                          cachedDataType="i8"
+                          cachedName="JobIndex"
+                          cachedSortKeyPosition="1"
+                          lineageId="Package\Operator Input\Staging\Merge Join.Outputs[Merge Join Output].Columns[JobIndex]" />
+                        <inputColumn
+                          refId="Package\Operator Input\Staging\Identify Records.Inputs[Conditional Split Input].Columns[JobIndex (1)]"
+                          cachedDataType="i8"
+                          cachedName="JobIndex (1)"
+                          lineageId="Package\Operator Input\Staging\Merge Join.Outputs[Merge Join Output].Columns[JobIndex (1)]" />
+                      </inputColumns>
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\Operator Input\Staging\Identify Records.Outputs[update]"
+                      description="Output 1 of the Conditional Split Transformation"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      exclusionGroup="1"
+                      name="update"
+                      synchronousInputId="Package\Operator Input\Staging\Identify Records.Inputs[Conditional Split Input]"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                          name="Expression">![ISNULL](#{Package\Operator Input\Staging\Merge Join.Outputs[Merge Join Output].Columns[JobIndex]}) &amp;&amp; ![ISNULL](#{Package\Operator Input\Staging\Merge Join.Outputs[Merge Join Output].Columns[JobIndex (1)]})</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Specifies the friendly version of the expression. This expression version uses column names."
+                          expressionType="Notify"
+                          name="FriendlyExpression">!ISNULL(JobIndex) &amp;&amp; !ISNULL([JobIndex (1)])</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                          name="EvaluationOrder">0</property>
+                      </properties>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\Operator Input\Staging\Identify Records.Outputs[insert]"
+                      description="Output 2 of the Conditional Split Transformation"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      exclusionGroup="1"
+                      name="insert"
+                      synchronousInputId="Package\Operator Input\Staging\Identify Records.Inputs[Conditional Split Input]"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                          name="Expression">![ISNULL](#{Package\Operator Input\Staging\Merge Join.Outputs[Merge Join Output].Columns[JobIndex]}) &amp;&amp; [ISNULL](#{Package\Operator Input\Staging\Merge Join.Outputs[Merge Join Output].Columns[JobIndex (1)]})</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Specifies the friendly version of the expression. This expression version uses column names."
+                          expressionType="Notify"
+                          name="FriendlyExpression">!ISNULL(JobIndex) &amp;&amp; ISNULL([JobIndex (1)])</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                          name="EvaluationOrder">1</property>
+                      </properties>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\Operator Input\Staging\Identify Records.Outputs[delete]"
+                      description="Output 3 of the Conditional Split Transformation"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      exclusionGroup="1"
+                      name="delete"
+                      synchronousInputId="Package\Operator Input\Staging\Identify Records.Inputs[Conditional Split Input]"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Specifies the expression. This expression version uses lineage identifiers instead of column names."
+                          name="Expression">[ISNULL](#{Package\Operator Input\Staging\Merge Join.Outputs[Merge Join Output].Columns[JobIndex]}) &amp;&amp; ![ISNULL](#{Package\Operator Input\Staging\Merge Join.Outputs[Merge Join Output].Columns[JobIndex (1)]})</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Specifies the friendly version of the expression. This expression version uses column names."
+                          expressionType="Notify"
+                          name="FriendlyExpression">ISNULL(JobIndex) &amp;&amp; !ISNULL([JobIndex (1)])</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the position of the condition in the list of conditions that the transformation evaluates. The evaluation order is from the lowest to the highest value."
+                          name="EvaluationOrder">2</property>
+                      </properties>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\Operator Input\Staging\Identify Records.Outputs[Conditional Split Default Output]"
+                      description="Default Output of the Conditional Split Transformation"
+                      exclusionGroup="1"
+                      name="Conditional Split Default Output"
+                      synchronousInputId="Package\Operator Input\Staging\Identify Records.Inputs[Conditional Split Input]">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          name="IsDefaultOut">true</property>
+                      </properties>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\Operator Input\Staging\Identify Records.Outputs[Conditional Split Error Output]"
+                      description="Error Output of the Conditional Split Transformation"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Conditional Split Error Output"
+                      synchronousInputId="Package\Operator Input\Staging\Identify Records.Inputs[Conditional Split Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Operator Input\Staging\Identify Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\Operator Input\Staging\Identify Records.Outputs[Conditional Split Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\Operator Input\Staging\Identify Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\Operator Input\Staging\Identify Records.Outputs[Conditional Split Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\Operator Input\Staging\INSERT Stage"
+                  componentClassID="Microsoft.OLEDBDestination"
+                  contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                  description="OLE DB Destination"
+                  name="INSERT Stage"
+                  usesDispositions="true"
+                  version="4">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset">[dbo].[zC2_OPERATORINPUT_STAGE_INSERT]</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">3</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepIdentity">false</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                      name="FastLoadOptions">CHECK_CONSTRAINTS</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                      name="FastLoadMaxInsertCommitSize">2147483647</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\Operator Input\Staging\INSERT Stage.Connections[OleDbConnection]"
+                      connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
+                      connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\Operator Input\Staging\INSERT Stage.Inputs[OLE DB Destination Input]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="OLE DB Destination Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\Operator Input\Staging\INSERT Stage.Inputs[OLE DB Destination Input].Columns[Category]"
+                          cachedDataType="wstr"
+                          cachedLength="25"
+                          cachedName="Category"
+                          externalMetadataColumnId="Package\Operator Input\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[Category]"
+                          lineageId="Package\Operator Input\Staging\Merge Join.Outputs[Merge Join Output].Columns[Category]" />
+                        <inputColumn
+                          refId="Package\Operator Input\Staging\INSERT Stage.Inputs[OLE DB Destination Input].Columns[Causes]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="Causes"
+                          externalMetadataColumnId="Package\Operator Input\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[Causes]"
+                          lineageId="Package\Operator Input\Staging\Merge Join.Outputs[Merge Join Output].Columns[Causes]" />
+                        <inputColumn
+                          refId="Package\Operator Input\Staging\INSERT Stage.Inputs[OLE DB Destination Input].Columns[FurtherDetail]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="FurtherDetail"
+                          externalMetadataColumnId="Package\Operator Input\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[FurtherDetail]"
+                          lineageId="Package\Operator Input\Staging\Merge Join.Outputs[Merge Join Output].Columns[FurtherDetail]" />
+                        <inputColumn
+                          refId="Package\Operator Input\Staging\INSERT Stage.Inputs[OLE DB Destination Input].Columns[Comments]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="Comments"
+                          externalMetadataColumnId="Package\Operator Input\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[Comments]"
+                          lineageId="Package\Operator Input\Staging\Merge Join.Outputs[Merge Join Output].Columns[Comments]" />
+                        <inputColumn
+                          refId="Package\Operator Input\Staging\INSERT Stage.Inputs[OLE DB Destination Input].Columns[JobIndex]"
+                          cachedDataType="i8"
+                          cachedName="JobIndex"
+                          cachedSortKeyPosition="1"
+                          externalMetadataColumnId="Package\Operator Input\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[JobIndex]"
+                          lineageId="Package\Operator Input\Staging\Merge Join.Outputs[Merge Join Output].Columns[JobIndex]" />
+                        <inputColumn
+                          refId="Package\Operator Input\Staging\INSERT Stage.Inputs[OLE DB Destination Input].Columns[LotNumber]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="LotNumber"
+                          externalMetadataColumnId="Package\Operator Input\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[LotNumber]"
+                          lineageId="Package\Operator Input\Staging\Merge Join.Outputs[Merge Join Output].Columns[LotNumber]" />
+                        <inputColumn
+                          refId="Package\Operator Input\Staging\INSERT Stage.Inputs[OLE DB Destination Input].Columns[Spec]"
+                          cachedDataType="wstr"
+                          cachedLength="25"
+                          cachedName="Spec"
+                          externalMetadataColumnId="Package\Operator Input\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[Spec]"
+                          lineageId="Package\Operator Input\Staging\Merge Join.Outputs[Merge Join Output].Columns[Spec]" />
+                        <inputColumn
+                          refId="Package\Operator Input\Staging\INSERT Stage.Inputs[OLE DB Destination Input].Columns[ProcessOrder]"
+                          cachedDataType="i4"
+                          cachedName="ProcessOrder"
+                          externalMetadataColumnId="Package\Operator Input\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[ProcessOrder]"
+                          lineageId="Package\Operator Input\Staging\Merge Join.Outputs[Merge Join Output].Columns[ProcessOrder]" />
+                        <inputColumn
+                          refId="Package\Operator Input\Staging\INSERT Stage.Inputs[OLE DB Destination Input].Columns[SpecLS]"
+                          cachedDataType="i4"
+                          cachedName="SpecLS"
+                          externalMetadataColumnId="Package\Operator Input\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[SpecLS]"
+                          lineageId="Package\Operator Input\Staging\Merge Join.Outputs[Merge Join Output].Columns[SpecLS]" />
+                        <inputColumn
+                          refId="Package\Operator Input\Staging\INSERT Stage.Inputs[OLE DB Destination Input].Columns[MENumber]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="MENumber"
+                          externalMetadataColumnId="Package\Operator Input\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[MENumber]"
+                          lineageId="Package\Operator Input\Staging\Merge Join.Outputs[Merge Join Output].Columns[MENumber]" />
+                        <inputColumn
+                          refId="Package\Operator Input\Staging\INSERT Stage.Inputs[OLE DB Destination Input].Columns[FirstPass]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="FirstPass"
+                          externalMetadataColumnId="Package\Operator Input\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[FirstPass]"
+                          lineageId="Package\Operator Input\Staging\Merge Join.Outputs[Merge Join Output].Columns[FirstPass]" />
+                        <inputColumn
+                          refId="Package\Operator Input\Staging\INSERT Stage.Inputs[OLE DB Destination Input].Columns[FPDetails]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="FPDetails"
+                          externalMetadataColumnId="Package\Operator Input\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[FPDetails]"
+                          lineageId="Package\Operator Input\Staging\Merge Join.Outputs[Merge Join Output].Columns[FPDetails]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\Operator Input\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[Category]"
+                          dataType="wstr"
+                          length="25"
+                          name="Category" />
+                        <externalMetadataColumn
+                          refId="Package\Operator Input\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[Causes]"
+                          dataType="wstr"
+                          length="50"
+                          name="Causes" />
+                        <externalMetadataColumn
+                          refId="Package\Operator Input\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[FurtherDetail]"
+                          dataType="wstr"
+                          length="255"
+                          name="FurtherDetail" />
+                        <externalMetadataColumn
+                          refId="Package\Operator Input\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[Comments]"
+                          dataType="wstr"
+                          length="255"
+                          name="Comments" />
+                        <externalMetadataColumn
+                          refId="Package\Operator Input\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[JobIndex]"
+                          dataType="i8"
+                          name="JobIndex" />
+                        <externalMetadataColumn
+                          refId="Package\Operator Input\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[LotNumber]"
+                          dataType="wstr"
+                          length="10"
+                          name="LotNumber" />
+                        <externalMetadataColumn
+                          refId="Package\Operator Input\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[Spec]"
+                          dataType="wstr"
+                          length="25"
+                          name="Spec" />
+                        <externalMetadataColumn
+                          refId="Package\Operator Input\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[ProcessOrder]"
+                          dataType="i4"
+                          name="ProcessOrder" />
+                        <externalMetadataColumn
+                          refId="Package\Operator Input\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[SpecLS]"
+                          dataType="i4"
+                          name="SpecLS" />
+                        <externalMetadataColumn
+                          refId="Package\Operator Input\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[MENumber]"
+                          dataType="wstr"
+                          length="50"
+                          name="MENumber" />
+                        <externalMetadataColumn
+                          refId="Package\Operator Input\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[FirstPass]"
+                          dataType="wstr"
+                          length="255"
+                          name="FirstPass" />
+                        <externalMetadataColumn
+                          refId="Package\Operator Input\Staging\INSERT Stage.Inputs[OLE DB Destination Input].ExternalColumns[FPDetails]"
+                          dataType="wstr"
+                          length="255"
+                          name="FPDetails" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\Operator Input\Staging\INSERT Stage.Outputs[OLE DB Destination Error Output]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="OLE DB Destination Error Output"
+                      synchronousInputId="Package\Operator Input\Staging\INSERT Stage.Inputs[OLE DB Destination Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Operator Input\Staging\INSERT Stage.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\Operator Input\Staging\INSERT Stage.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\Operator Input\Staging\INSERT Stage.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\Operator Input\Staging\INSERT Stage.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\Operator Input\Staging\Merge Join"
+                  componentClassID="Microsoft.MergeJoin"
+                  contactInfo="Merge Join;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
+                  description="Combine two sorted data flows into one using the FULL, LEFT, or INNER join. We recommend this transformation when data flows can be sorted at their sources."
+                  name="Merge Join"
+                  version="1">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the type of join to perform."
+                      name="JoinType"
+                      typeConverter="JoinType">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the number of columns in the ordering key."
+                      name="NumKeyColumns">1</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the null values are treated as equal values."
+                      name="TreatNullsAsEqual">true</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Indicates the requested maximum buffers per input before blocking."
+                      name="MaxBuffersPerInput">5</property>
+                  </properties>
+                  <inputs>
+                    <input
+                      refId="Package\Operator Input\Staging\Merge Join.Inputs[Merge Join Left Input]"
+                      hasSideEffects="true"
+                      name="Merge Join Left Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\Operator Input\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[JobIndex]"
+                          cachedDataType="i8"
+                          cachedName="JobIndex"
+                          cachedSortKeyPosition="1"
+                          lineageId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Output].Columns[JobIndex]" />
+                        <inputColumn
+                          refId="Package\Operator Input\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[Category]"
+                          cachedDataType="wstr"
+                          cachedLength="25"
+                          cachedName="Category"
+                          lineageId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Output].Columns[Category]" />
+                        <inputColumn
+                          refId="Package\Operator Input\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[Causes]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="Causes"
+                          lineageId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Output].Columns[Causes]" />
+                        <inputColumn
+                          refId="Package\Operator Input\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[FurtherDetail]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="FurtherDetail"
+                          lineageId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Output].Columns[FurtherDetail]" />
+                        <inputColumn
+                          refId="Package\Operator Input\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[Comments]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="Comments"
+                          lineageId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Output].Columns[Comments]" />
+                        <inputColumn
+                          refId="Package\Operator Input\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[LotNumber]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="LotNumber"
+                          lineageId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Output].Columns[LotNumber]" />
+                        <inputColumn
+                          refId="Package\Operator Input\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[Spec]"
+                          cachedDataType="wstr"
+                          cachedLength="25"
+                          cachedName="Spec"
+                          lineageId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Output].Columns[Spec]" />
+                        <inputColumn
+                          refId="Package\Operator Input\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[ProcessOrder]"
+                          cachedDataType="i4"
+                          cachedName="ProcessOrder"
+                          lineageId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Output].Columns[ProcessOrder]" />
+                        <inputColumn
+                          refId="Package\Operator Input\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[SpecLS]"
+                          cachedDataType="i4"
+                          cachedName="SpecLS"
+                          lineageId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Output].Columns[SpecLS]" />
+                        <inputColumn
+                          refId="Package\Operator Input\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[MENumber]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="MENumber"
+                          lineageId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Output].Columns[MENumber]" />
+                        <inputColumn
+                          refId="Package\Operator Input\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[FirstPass]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="FirstPass"
+                          lineageId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Output].Columns[FirstPass]" />
+                        <inputColumn
+                          refId="Package\Operator Input\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[FPDetails]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="FPDetails"
+                          lineageId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Output].Columns[FPDetails]" />
+                      </inputColumns>
+                      <externalMetadataColumns />
+                    </input>
+                    <input
+                      refId="Package\Operator Input\Staging\Merge Join.Inputs[Merge Join Right Input]"
+                      hasSideEffects="true"
+                      name="Merge Join Right Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\Operator Input\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[JobIndex]"
+                          cachedDataType="i8"
+                          cachedName="JobIndex"
+                          cachedSortKeyPosition="1"
+                          lineageId="Package\Operator Input\Staging\DB PBI.Outputs[OLE DB Source Output].Columns[JobIndex]" />
+                      </inputColumns>
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\Operator Input\Staging\Merge Join.Outputs[Merge Join Output]"
+                      isSorted="true"
+                      name="Merge Join Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Operator Input\Staging\Merge Join.Outputs[Merge Join Output].Columns[JobIndex]"
+                          dataType="i8"
+                          lineageId="Package\Operator Input\Staging\Merge Join.Outputs[Merge Join Output].Columns[JobIndex]"
+                          name="JobIndex"
+                          sortKeyPosition="1">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\Operator Input\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[JobIndex]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Operator Input\Staging\Merge Join.Outputs[Merge Join Output].Columns[Category]"
+                          dataType="wstr"
+                          length="25"
+                          lineageId="Package\Operator Input\Staging\Merge Join.Outputs[Merge Join Output].Columns[Category]"
+                          name="Category">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\Operator Input\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[Category]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Operator Input\Staging\Merge Join.Outputs[Merge Join Output].Columns[Causes]"
+                          dataType="wstr"
+                          length="50"
+                          lineageId="Package\Operator Input\Staging\Merge Join.Outputs[Merge Join Output].Columns[Causes]"
+                          name="Causes">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\Operator Input\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[Causes]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Operator Input\Staging\Merge Join.Outputs[Merge Join Output].Columns[FurtherDetail]"
+                          dataType="wstr"
+                          length="255"
+                          lineageId="Package\Operator Input\Staging\Merge Join.Outputs[Merge Join Output].Columns[FurtherDetail]"
+                          name="FurtherDetail">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\Operator Input\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[FurtherDetail]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Operator Input\Staging\Merge Join.Outputs[Merge Join Output].Columns[Comments]"
+                          dataType="wstr"
+                          length="255"
+                          lineageId="Package\Operator Input\Staging\Merge Join.Outputs[Merge Join Output].Columns[Comments]"
+                          name="Comments">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\Operator Input\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[Comments]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Operator Input\Staging\Merge Join.Outputs[Merge Join Output].Columns[LotNumber]"
+                          dataType="wstr"
+                          length="10"
+                          lineageId="Package\Operator Input\Staging\Merge Join.Outputs[Merge Join Output].Columns[LotNumber]"
+                          name="LotNumber">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\Operator Input\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[LotNumber]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Operator Input\Staging\Merge Join.Outputs[Merge Join Output].Columns[Spec]"
+                          dataType="wstr"
+                          length="25"
+                          lineageId="Package\Operator Input\Staging\Merge Join.Outputs[Merge Join Output].Columns[Spec]"
+                          name="Spec">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\Operator Input\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[Spec]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Operator Input\Staging\Merge Join.Outputs[Merge Join Output].Columns[ProcessOrder]"
+                          dataType="i4"
+                          lineageId="Package\Operator Input\Staging\Merge Join.Outputs[Merge Join Output].Columns[ProcessOrder]"
+                          name="ProcessOrder">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\Operator Input\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[ProcessOrder]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Operator Input\Staging\Merge Join.Outputs[Merge Join Output].Columns[SpecLS]"
+                          dataType="i4"
+                          lineageId="Package\Operator Input\Staging\Merge Join.Outputs[Merge Join Output].Columns[SpecLS]"
+                          name="SpecLS">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\Operator Input\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[SpecLS]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Operator Input\Staging\Merge Join.Outputs[Merge Join Output].Columns[MENumber]"
+                          dataType="wstr"
+                          length="50"
+                          lineageId="Package\Operator Input\Staging\Merge Join.Outputs[Merge Join Output].Columns[MENumber]"
+                          name="MENumber">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\Operator Input\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[MENumber]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Operator Input\Staging\Merge Join.Outputs[Merge Join Output].Columns[JobIndex (1)]"
+                          dataType="i8"
+                          lineageId="Package\Operator Input\Staging\Merge Join.Outputs[Merge Join Output].Columns[JobIndex (1)]"
+                          name="JobIndex (1)">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\Operator Input\Staging\Merge Join.Inputs[Merge Join Right Input].Columns[JobIndex]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Operator Input\Staging\Merge Join.Outputs[Merge Join Output].Columns[FirstPass]"
+                          dataType="wstr"
+                          length="255"
+                          lineageId="Package\Operator Input\Staging\Merge Join.Outputs[Merge Join Output].Columns[FirstPass]"
+                          name="FirstPass">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\Operator Input\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[FirstPass]}</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Operator Input\Staging\Merge Join.Outputs[Merge Join Output].Columns[FPDetails]"
+                          dataType="wstr"
+                          length="255"
+                          lineageId="Package\Operator Input\Staging\Merge Join.Outputs[Merge Join Output].Columns[FPDetails]"
+                          name="FPDetails">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.Int32"
+                              description="The input column associated with this output column"
+                              name="InputColumnID">#{Package\Operator Input\Staging\Merge Join.Inputs[Merge Join Left Input].Columns[FPDetails]}</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\Operator Input\Staging\UPDATE Stage"
+                  componentClassID="Microsoft.OLEDBDestination"
+                  contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                  description="OLE DB Destination"
+                  name="UPDATE Stage"
+                  usesDispositions="true"
+                  version="4">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset">[dbo].[zC2_OPERATORINPUT_STAGE_UPDATE]</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=16.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">3</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepIdentity">false</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                      name="FastLoadOptions">CHECK_CONSTRAINTS</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                      name="FastLoadMaxInsertCommitSize">2147483647</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\Operator Input\Staging\UPDATE Stage.Connections[OleDbConnection]"
+                      connectionManagerID="{78466612-5867-4FB3-99F1-75B71BAC4CEB}:external"
+                      connectionManagerRefId="Project.ConnectionManagers[SQL_STAGE]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\Operator Input\Staging\UPDATE Stage.Inputs[OLE DB Destination Input]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="OLE DB Destination Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\Operator Input\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].Columns[Category]"
+                          cachedDataType="wstr"
+                          cachedLength="25"
+                          cachedName="Category"
+                          externalMetadataColumnId="Package\Operator Input\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[Category]"
+                          lineageId="Package\Operator Input\Staging\Merge Join.Outputs[Merge Join Output].Columns[Category]" />
+                        <inputColumn
+                          refId="Package\Operator Input\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].Columns[Causes]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="Causes"
+                          externalMetadataColumnId="Package\Operator Input\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[Causes]"
+                          lineageId="Package\Operator Input\Staging\Merge Join.Outputs[Merge Join Output].Columns[Causes]" />
+                        <inputColumn
+                          refId="Package\Operator Input\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].Columns[FurtherDetail]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="FurtherDetail"
+                          externalMetadataColumnId="Package\Operator Input\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[FurtherDetail]"
+                          lineageId="Package\Operator Input\Staging\Merge Join.Outputs[Merge Join Output].Columns[FurtherDetail]" />
+                        <inputColumn
+                          refId="Package\Operator Input\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].Columns[Comments]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="Comments"
+                          externalMetadataColumnId="Package\Operator Input\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[Comments]"
+                          lineageId="Package\Operator Input\Staging\Merge Join.Outputs[Merge Join Output].Columns[Comments]" />
+                        <inputColumn
+                          refId="Package\Operator Input\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].Columns[JobIndex]"
+                          cachedDataType="i8"
+                          cachedName="JobIndex"
+                          cachedSortKeyPosition="1"
+                          externalMetadataColumnId="Package\Operator Input\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[JobIndex]"
+                          lineageId="Package\Operator Input\Staging\Merge Join.Outputs[Merge Join Output].Columns[JobIndex]" />
+                        <inputColumn
+                          refId="Package\Operator Input\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].Columns[LotNumber]"
+                          cachedDataType="wstr"
+                          cachedLength="10"
+                          cachedName="LotNumber"
+                          externalMetadataColumnId="Package\Operator Input\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[LotNumber]"
+                          lineageId="Package\Operator Input\Staging\Merge Join.Outputs[Merge Join Output].Columns[LotNumber]" />
+                        <inputColumn
+                          refId="Package\Operator Input\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].Columns[Spec]"
+                          cachedDataType="wstr"
+                          cachedLength="25"
+                          cachedName="Spec"
+                          externalMetadataColumnId="Package\Operator Input\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[Spec]"
+                          lineageId="Package\Operator Input\Staging\Merge Join.Outputs[Merge Join Output].Columns[Spec]" />
+                        <inputColumn
+                          refId="Package\Operator Input\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].Columns[ProcessOrder]"
+                          cachedDataType="i4"
+                          cachedName="ProcessOrder"
+                          externalMetadataColumnId="Package\Operator Input\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[ProcessOrder]"
+                          lineageId="Package\Operator Input\Staging\Merge Join.Outputs[Merge Join Output].Columns[ProcessOrder]" />
+                        <inputColumn
+                          refId="Package\Operator Input\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].Columns[SpecLS]"
+                          cachedDataType="i4"
+                          cachedName="SpecLS"
+                          externalMetadataColumnId="Package\Operator Input\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[SpecLS]"
+                          lineageId="Package\Operator Input\Staging\Merge Join.Outputs[Merge Join Output].Columns[SpecLS]" />
+                        <inputColumn
+                          refId="Package\Operator Input\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].Columns[MENumber]"
+                          cachedDataType="wstr"
+                          cachedLength="50"
+                          cachedName="MENumber"
+                          externalMetadataColumnId="Package\Operator Input\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[MENumber]"
+                          lineageId="Package\Operator Input\Staging\Merge Join.Outputs[Merge Join Output].Columns[MENumber]" />
+                        <inputColumn
+                          refId="Package\Operator Input\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].Columns[FirstPass]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="FirstPass"
+                          externalMetadataColumnId="Package\Operator Input\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[FirstPass]"
+                          lineageId="Package\Operator Input\Staging\Merge Join.Outputs[Merge Join Output].Columns[FirstPass]" />
+                        <inputColumn
+                          refId="Package\Operator Input\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].Columns[FPDetails]"
+                          cachedDataType="wstr"
+                          cachedLength="255"
+                          cachedName="FPDetails"
+                          externalMetadataColumnId="Package\Operator Input\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[FPDetails]"
+                          lineageId="Package\Operator Input\Staging\Merge Join.Outputs[Merge Join Output].Columns[FPDetails]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\Operator Input\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[Category]"
+                          dataType="wstr"
+                          length="25"
+                          name="Category" />
+                        <externalMetadataColumn
+                          refId="Package\Operator Input\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[Causes]"
+                          dataType="wstr"
+                          length="50"
+                          name="Causes" />
+                        <externalMetadataColumn
+                          refId="Package\Operator Input\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[FurtherDetail]"
+                          dataType="wstr"
+                          length="255"
+                          name="FurtherDetail" />
+                        <externalMetadataColumn
+                          refId="Package\Operator Input\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[Comments]"
+                          dataType="wstr"
+                          length="255"
+                          name="Comments" />
+                        <externalMetadataColumn
+                          refId="Package\Operator Input\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[JobIndex]"
+                          dataType="i8"
+                          name="JobIndex" />
+                        <externalMetadataColumn
+                          refId="Package\Operator Input\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[LotNumber]"
+                          dataType="wstr"
+                          length="10"
+                          name="LotNumber" />
+                        <externalMetadataColumn
+                          refId="Package\Operator Input\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[Spec]"
+                          dataType="wstr"
+                          length="25"
+                          name="Spec" />
+                        <externalMetadataColumn
+                          refId="Package\Operator Input\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[ProcessOrder]"
+                          dataType="i4"
+                          name="ProcessOrder" />
+                        <externalMetadataColumn
+                          refId="Package\Operator Input\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[SpecLS]"
+                          dataType="i4"
+                          name="SpecLS" />
+                        <externalMetadataColumn
+                          refId="Package\Operator Input\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[MENumber]"
+                          dataType="wstr"
+                          length="50"
+                          name="MENumber" />
+                        <externalMetadataColumn
+                          refId="Package\Operator Input\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[FirstPass]"
+                          dataType="wstr"
+                          length="255"
+                          name="FirstPass" />
+                        <externalMetadataColumn
+                          refId="Package\Operator Input\Staging\UPDATE Stage.Inputs[OLE DB Destination Input].ExternalColumns[FPDetails]"
+                          dataType="wstr"
+                          length="255"
+                          name="FPDetails" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\Operator Input\Staging\UPDATE Stage.Outputs[OLE DB Destination Error Output]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="OLE DB Destination Error Output"
+                      synchronousInputId="Package\Operator Input\Staging\UPDATE Stage.Inputs[OLE DB Destination Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Operator Input\Staging\UPDATE Stage.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\Operator Input\Staging\UPDATE Stage.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\Operator Input\Staging\UPDATE Stage.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\Operator Input\Staging\UPDATE Stage.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+              </components>
+              <paths>
+                <path
+                  refId="Package\Operator Input\Staging.Paths[delete]"
+                  endId="Package\Operator Input\Staging\DELETE Stage.Inputs[OLE DB Destination Input]"
+                  name="delete"
+                  startId="Package\Operator Input\Staging\Identify Records.Outputs[delete]" />
+                <path
+                  refId="Package\Operator Input\Staging.Paths[insert]"
+                  endId="Package\Operator Input\Staging\INSERT Stage.Inputs[OLE DB Destination Input]"
+                  name="insert"
+                  startId="Package\Operator Input\Staging\Identify Records.Outputs[insert]" />
+                <path
+                  refId="Package\Operator Input\Staging.Paths[Merge Join Output]"
+                  endId="Package\Operator Input\Staging\Identify Records.Inputs[Conditional Split Input]"
+                  name="Merge Join Output"
+                  startId="Package\Operator Input\Staging\Merge Join.Outputs[Merge Join Output]" />
+                <path
+                  refId="Package\Operator Input\Staging.Paths[OLE DB Source Output]"
+                  endId="Package\Operator Input\Staging\Merge Join.Inputs[Merge Join Left Input]"
+                  name="OLE DB Source Output"
+                  startId="Package\Operator Input\Staging\DB ENGR01.Outputs[OLE DB Source Output]" />
+                <path
+                  refId="Package\Operator Input\Staging.Paths[OLE DB Source Output1]"
+                  endId="Package\Operator Input\Staging\Merge Join.Inputs[Merge Join Right Input]"
+                  name="OLE DB Source Output"
+                  startId="Package\Operator Input\Staging\DB PBI.Outputs[OLE DB Source Output]" />
+                <path
+                  refId="Package\Operator Input\Staging.Paths[update]"
+                  endId="Package\Operator Input\Staging\UPDATE Stage.Inputs[OLE DB Destination Input]"
+                  name="update"
+                  startId="Package\Operator Input\Staging\Identify Records.Outputs[update]" />
+              </paths>
+            </pipeline>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Operator Input\Update Data"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{0503cad2-c9fa-4e35-be09-f3a6a21ebdda}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Update Data"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="4">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{78466612-5867-4FB3-99F1-75B71BAC4CEB}"
+              SQLTask:SqlStatementSource="UPDATE a&#xA; SET a.[Category] = b.[Category],&#xA; a.[Causes] = b.[Causes],&#xA; a.[FurtherDetail] = b.[FurtherDetail],&#xA; a.[Comments] = b.[Comments],&#xA; a.[LotNumber] = b.[LotNumber],&#xA; a.[Spec] = b.[Spec],&#xA; a.[ProcessOrder] = b.[ProcessOrder],&#xA; a.[SpecLS] = b.[SpecLS],&#xA; a.[MENumber] = b.[MENumber],&#xA; a.[FirstPass] = b.[FirstPass],&#xA; a.[FPDetails] = b.[FPDetails]&#xA;FROM zC2_OPERATORINPUT a&#xA;INNER JOIN zC2_OPERATORINPUT_STAGE_UPDATE b&#xA;ON a.[JobIndex] = b.[JobIndex]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Operator Input.PrecedenceConstraints[Constraint]"
+          DTS:CreationName=""
+          DTS:DTSID="{29f47b82-5839-4576-b069-80b32615a423}"
+          DTS:From="Package\Operator Input\Clean Stage"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint"
+          DTS:To="Package\Operator Input\LastJobIndex" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Operator Input.PrecedenceConstraints[Constraint 1]"
+          DTS:CreationName=""
+          DTS:DTSID="{5e7f2bb9-de9a-4061-9204-06d067f3ea9c}"
+          DTS:From="Package\Operator Input\Staging"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 1"
+          DTS:To="Package\Operator Input\Update Data" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Operator Input.PrecedenceConstraints[Constraint 2]"
+          DTS:CreationName=""
+          DTS:DTSID="{b6e4682f-6929-4723-899a-a2de68de37f8}"
+          DTS:From="Package\Operator Input\Update Data"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 2"
+          DTS:To="Package\Operator Input\Insert Data" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Operator Input.PrecedenceConstraints[Constraint 3]"
+          DTS:CreationName=""
+          DTS:DTSID="{b06be219-9d21-4cfd-b0ef-8c0b06e7d749}"
+          DTS:From="Package\Operator Input\LastJobIndex"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 3"
+          DTS:To="Package\Operator Input\Staging" />
+      </DTS:PrecedenceConstraints>
+    </DTS:Executable>
+    <DTS:Executable
       DTS:refId="Package\Primary Structure"
       DTS:CreationName="STOCK:SEQUENCE"
       DTS:Description="Sequence Container"
+      DTS:Disabled="True"
       DTS:DTSID="{322C26BA-D56C-445F-A97D-D548A812B5B2}"
       DTS:ExecutableType="STOCK:SEQUENCE"
       DTS:LocaleID="-1"
@@ -2981,7 +4667,7 @@ ORDER BY Record_ID,
           DTS:LocaleID="-1"
           DTS:ObjectName="Clean Stage"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="0">
+          DTS:ThreadHint="5">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -2998,7 +4684,7 @@ ORDER BY Record_ID,
           DTS:LocaleID="-1"
           DTS:ObjectName="Insert Data"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="0">
+          DTS:ThreadHint="5">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -3014,7 +4700,7 @@ ORDER BY Record_ID,
           DTS:ExecutableType="Microsoft.ExecuteSQLTask"
           DTS:LocaleID="-1"
           DTS:ObjectName="LastJobIndex"
-          DTS:ThreadHint="0">
+          DTS:ThreadHint="5">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -4924,7 +6610,7 @@ ORDER BY [PIndex]</property>
           DTS:LocaleID="-1"
           DTS:ObjectName="Update Data"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="0">
+          DTS:ThreadHint="5">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -4987,7 +6673,7 @@ ORDER BY [PIndex]</property>
           DTS:LocaleID="-1"
           DTS:ObjectName="Clean Stage"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="4">
+          DTS:ThreadHint="2">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -5004,7 +6690,7 @@ ORDER BY [PIndex]</property>
           DTS:LocaleID="-1"
           DTS:ObjectName="Delete Data"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="4">
+          DTS:ThreadHint="2">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -5021,7 +6707,7 @@ ORDER BY [PIndex]</property>
           DTS:LocaleID="-1"
           DTS:ObjectName="Insert Data"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="4">
+          DTS:ThreadHint="2">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -5038,7 +6724,7 @@ ORDER BY [PIndex]</property>
           DTS:LocaleID="-1"
           DTS:ObjectName="Last DateTime"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="4">
+          DTS:ThreadHint="2">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -9504,7 +11190,7 @@ ORDER BY [Date_Time]</property>
           DTS:LocaleID="-1"
           DTS:ObjectName="Update Data"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="4">
+          DTS:ThreadHint="2">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -17211,7 +18897,7 @@ ORDER BY [Date_Time]</property>
     design-time-name="Package">
     <LayoutInfo>
       <GraphLayout
-        Capacity="64" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        Capacity="128" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
           Size="144,42"
           Id="Package\First Pass Structure\Clean Stage"
@@ -17865,6 +19551,121 @@ ORDER BY [Date_Time]</property>
           Size="213,541"
           Id="Package\Profile"
           TopLeft="629.5,11" />
+        <NodeLayout
+          Size="144,42"
+          Id="Package\Operator Input\Clean Stage"
+          TopLeft="17,17" />
+        <NodeLayout
+          Size="144,42"
+          Id="Package\Operator Input\Insert Data"
+          TopLeft="17,329" />
+        <NodeLayout
+          Size="144,42"
+          Id="Package\Operator Input\LastJobIndex"
+          TopLeft="17,95" />
+        <NodeLayout
+          Size="144,42"
+          Id="Package\Operator Input\Staging"
+          TopLeft="17,173" />
+        <NodeLayout
+          Size="144,42"
+          Id="Package\Operator Input\Update Data"
+          TopLeft="17,251" />
+        <EdgeLayout
+          Id="Package\Operator Input.PrecedenceConstraints[Constraint]"
+          TopLeft="89,59">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,36"
+              Start="0,0"
+              End="0,28.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,28.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Operator Input.PrecedenceConstraints[Constraint 1]"
+          TopLeft="89,215">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,36"
+              Start="0,0"
+              End="0,28.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,28.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Operator Input.PrecedenceConstraints[Constraint 2]"
+          TopLeft="89,293">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,36"
+              Start="0,0"
+              End="0,28.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,28.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Operator Input.PrecedenceConstraints[Constraint 3]"
+          TopLeft="89,137">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,36"
+              Start="0,0"
+              End="0,28.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,28.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="185,498"
+          Size="185,541"
+          Id="Package\Operator Input"
+          TopLeft="1063,11" />
       </GraphLayout>
     </LayoutInfo>
   </Package>
@@ -17956,7 +19757,9 @@ ORDER BY [Date_Time]</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -17990,7 +19793,9 @@ ORDER BY [Date_Time]</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -18012,7 +19817,9 @@ ORDER BY [Date_Time]</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -19410,6 +21217,295 @@ ORDER BY [Date_Time]</property>
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <TaskHost
+    design-time-name="Package\Operator Input\Staging">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="156,42"
+          Id="Package\Operator Input\Staging\Identify Records"
+          TopLeft="327,213" />
+        <NodeLayout
+          Size="146,42"
+          Id="Package\Operator Input\Staging\DELETE Stage"
+          TopLeft="706,354" />
+        <NodeLayout
+          Size="115,42"
+          Id="Package\Operator Input\Staging\DB PBI"
+          TopLeft="668,25" />
+        <NodeLayout
+          Size="145,42"
+          Id="Package\Operator Input\Staging\INSERT Stage"
+          TopLeft="17,349" />
+        <NodeLayout
+          Size="141,42"
+          Id="Package\Operator Input\Staging\DB ENGR01"
+          TopLeft="31,26" />
+        <NodeLayout
+          Size="148,42"
+          Id="Package\Operator Input\Staging\UPDATE Stage"
+          TopLeft="337,479" />
+        <EdgeLayout
+          Id="Package\Operator Input\Staging.Paths[delete]"
+          TopLeft="429.666666666667,255">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="349.333333333333,99"
+              Start="0,0"
+              End="349.333333333333,91.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,36.2030456852792" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,36.2030456852792"
+                    Point2="0,40.2030456852792"
+                    Point3="4,40.2030456852792" />
+                  <mssgle:LineSegment
+                    End="345.333333333333,40.2030456852792" />
+                  <mssgle:CubicBezierSegment
+                    Point1="345.333333333333,40.2030456852792"
+                    Point2="349.333333333333,40.2030456852792"
+                    Point3="349.333333333333,44.2030456852792" />
+                  <mssgle:LineSegment
+                    End="349.333333333333,91.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="160.470709635416,45.2030456852792,28.3919140625,9.7490234375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Operator Input\Staging.Paths[update]"
+          TopLeft="408,255">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,224"
+              Start="0,0"
+              End="0,216.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,216.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-15.8025,102.4453125,31.605,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Operator Input\Staging.Paths[insert]"
+          TopLeft="380.333333333333,255">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-290.833333333333,94"
+              Start="0,0"
+              End="-290.833333333333,86.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,34.1725888324873" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,34.1725888324873"
+                    Point2="0,38.1725888324873"
+                    Point3="-4,38.1725888324873" />
+                  <mssgle:LineSegment
+                    End="-286.833333333333,38.1725888324873" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-286.833333333333,38.1725888324873"
+                    Point2="-290.833333333333,38.1725888324873"
+                    Point3="-290.833333333333,42.1725888324873" />
+                  <mssgle:LineSegment
+                    End="-290.833333333333,86.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-158.366647135416,43.1725888324873,25.8999609375,9.451171875"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="133,42"
+          Id="Package\Operator Input\Staging\Merge Join"
+          TopLeft="327,100" />
+        <EdgeLayout
+          Id="Package\Operator Input\Staging.Paths[Merge Join Output]"
+          TopLeft="393.5,142">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="11.5,71"
+              Start="0,0"
+              End="11.5,63.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,31.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,31.5"
+                    Point2="0,35.5"
+                    Point3="4,35.5" />
+                  <mssgle:LineSegment
+                    End="7.5,35.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="7.5,35.5"
+                    Point2="11.5,35.5"
+                    Point3="11.5,39.5" />
+                  <mssgle:LineSegment
+                    End="11.5,63.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Operator Input\Staging.Paths[OLE DB Source Output]"
+          TopLeft="101.5,68">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="292,32"
+              Start="0,0"
+              End="292,24.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,12" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,12"
+                    Point2="0,16"
+                    Point3="4,16" />
+                  <mssgle:LineSegment
+                    End="288,16" />
+                  <mssgle:CubicBezierSegment
+                    Point1="288,16"
+                    Point2="292,16"
+                    Point3="292,20" />
+                  <mssgle:LineSegment
+                    End="292,24.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Operator Input\Staging.Paths[OLE DB Source Output1]"
+          TopLeft="725.5,67">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-311.166666666667,33"
+              Start="0,0"
+              End="-311.166666666667,25.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,15.5646359583952" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,15.5646359583952"
+                    Point2="0,19.5646359583952"
+                    Point3="-4,19.5646359583952" />
+                  <mssgle:LineSegment
+                    End="-307.166666666667,19.5646359583952" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-307.166666666667,19.5646359583952"
+                    Point2="-311.166666666667,19.5646359583952"
+                    Point3="-311.166666666667,23.5646359583952" />
+                  <mssgle:LineSegment
+                    End="-311.166666666667,25.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Operator Input\Staging\DELETE Stage">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Operator Input\Staging\DB PBI">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Operator Input\Staging\INSERT Stage">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Operator Input\Staging\DB ENGR01">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Operator Input\Staging\UPDATE Stage">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
       </Property>
     </Properties>
   </PipelineComponentMetadata>
